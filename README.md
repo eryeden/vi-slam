@@ -22,6 +22,7 @@ Try to make Visual Inertial SLAM
 - Separate library and utilities
 
 ## Memo
+- 開発指針としたい[資料](docs/problemsandsolutionsforslamdevelopment-191215161142.pdf)
 - 評価にデータセットを使うのは大事っぽい
 - SLAMは大量のHyperParameterがあるので、これを自動探索できるようになるのは大事っぽい : optuna
 - SLAMは密結合なコードとなることが多いので、バグの発見が難しい
