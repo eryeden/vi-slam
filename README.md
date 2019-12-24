@@ -37,7 +37,7 @@ Try to make Visual Inertial SLAM
 ## SSHについて
 git pullするときのURLを修正する必要あり。
 eryedenのリポジトリに対する鍵はgithub-eryedenで紐付けられている。`~/.ssh/config`参照。
-なので、`git@github.com:eryeden/vi-slam.git`は`git@github-eryeden:eryeden/vi-slam.git`として設定し治す必要あり。
+なので、`git@github.com:eryeden/vi-slam.git`は`git@github-eryeden:eryeden/vi-slam.git`として設定しなおす必要あり。
 方法は以下の二通り。
 1. 設定済みURLをコマンドで修正
 ``` bash
