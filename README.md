@@ -32,3 +32,23 @@ Try to make Visual Inertial SLAM
     - SymPyが結構使えそう : [co-lab link](https://colab.research.google.com/drive/1wflhGRVzdlosxHsC63HX2WvXrCG-b8p0)
     - Mathematica使えればベスト
   - テスト結果とパラメータの管理が重要 => mlflow
+
+
+## SSHについて
+git pullするときのURLを修正する必要あり。
+eryedenのリポジトリに対する鍵はgithub-eryedenで紐付けられている。`~/.ssh/config`参照。
+なので、`git@github.com:eryeden/vi-slam.git`は`git@github-eryeden:eryeden/vi-slam.git`として設定し治す必要あり。
+方法は以下の二通り。
+1. 設定済みURLをコマンドで修正
+``` bash
+cd path/to/this/repository
+git remote set-url origin git@github-eryeden:eryeden/vi-slam.git
+```
+2. `git clone`時に修正したURLでCloneする。
+``` bash
+git clone git@github-eryeden:eryeden/vi-slam.git
+```
+
+### 注意
+URLである`git@github.com:eryeden/vi-slam.git`の`github-eryeden`の部分は実行するPCの`~/.ssh/config`に依存する。
+違う可能性があるので注意。
