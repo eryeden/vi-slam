@@ -22,6 +22,31 @@ endif()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 
+# ----- Set options for debugging -----
+
+set(USE_CCACHE ON CACHE BOOL "Use ccache to accelerate build")
+find_program(CCACHE_EXE ccache)
+if(USE_CCACHE AND CCACHE_EXE)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_EXE}")
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK "${CCACHE_EXE}")
+    message(STATUS "ccache: Enabled")
+else()
+    set(USE_CCACHE OFF)
+    message(STATUS "ccache: Disabled")
+endif()
+
+set(USE_SANITIZER OFF CACHE BOOL "Enable Address/Memory sanitizer (set env as ASAN_OPTIONS=detect_leaks=1)")
+if(USE_SANITIZER)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
+    message(STATUS "Address/Memory sanitizer: ENABLED")
+else()
+    message(STATUS "Address/Memory sanitizer: DISABLED")
+endif()
+
+
 # ----- Set compiler options -----
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
@@ -44,6 +69,14 @@ else()
     message(STATUS "Architecture-aware optimization (-march=native): DISABLED")
 endif()
 
+# ----- Find dependenies -----
+
+# Eigen
+find_package(Eigen3 3.3 REQUIRED)
+
+# yaml-cpp
+find_package(yaml-cpp REQUIRED)
+
 # OpenCV
 find_package(OpenCV 3.3.1 QUIET
              COMPONENTS
@@ -57,3 +90,17 @@ if(NOT OpenCV_FOUND)
     endif()
 endif()
 message(STATUS "Use OpenCV ${OpenCV_VERSION}")
+
+# ----- Build selection -----
+add_subdirectory(src)
+
+set(BUILD_EXAMPLES ON CACHE BOOL "Build examples")
+if(BUILD_EXAMPLES)
+    add_subdirectory(example)
+endif()
+
+set(BUILD_TESTS OFF CACHE BOOL "Build tests")
+if(BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(test)
+endif()

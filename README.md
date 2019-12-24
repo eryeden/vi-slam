@@ -10,3 +10,24 @@ Try to make Visual Inertial SLAM
 ## Plan
 1. Feature tracker
 
+## What is important?
+- Do tests
+- Evaluate things by metrics
+  - Perfomance metrics
+  - Trajectory or Pose metrics
+- Use logger
+- Use emacs as much as possible
+- Use parameter file
+- Use CI tools
+- Separate library and utilities
+
+## Memo
+- 評価にデータセットを使うのは大事っぽい
+- SLAMは大量のHyperParameterがあるので、これを自動探索できるようになるのは大事っぽい : optuna
+- SLAMは密結合なコードとなることが多いので、バグの発見が難しい
+  - できるだけ単体テストをする
+  - 自動的な統合テストをできるだけ行う
+  - 代数計算ツールを活用する
+    - SymPyが結構使えそう : [co-lab link](https://colab.research.google.com/drive/1wflhGRVzdlosxHsC63HX2WvXrCG-b8p0)
+    - Mathematica使えればベスト
+  - テスト結果とパラメータの管理が重要 => mlflow
