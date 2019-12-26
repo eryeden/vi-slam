@@ -52,3 +52,6 @@ git clone git@github-eryeden:eryeden/vi-slam.git
 ### 注意
 URLである`git@github.com:eryeden/vi-slam.git`の`github-eryeden`の部分は実行するPCの`~/.ssh/config`に依存する。
 違う可能性があるので注意。
+
+
+### 修正
