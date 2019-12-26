@@ -1,2 +1,2 @@
 add_subdirectory(vislam)
-add_subdirectory(loader)
+add_subdirectory(utils)

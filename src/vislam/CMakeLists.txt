@@ -1,21 +1,23 @@
-# OpenMP
-set(USE_OPENMP OFF CACHE BOOL "Use OpenMP")
-if(USE_OPENMP)
-    find_package(OpenMP)
-    if(OpenMP_FOUND)
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-        target_compile_definitions(${PROJECT_NAME} PUBLIC USE_OPENMP)
-        message(STATUS "OpenMP: ENABLED")
-    else()
-        message(STATUS "OpenMP: DISABLED")
-    endif()
-else()
-    message(STATUS "OpenMP: DISABLED")
-endif()
+# ----- Create vislam library -----
 
+add_library(${PROJECT_NAME}
+            SHARED)
 
+# Include directories
+# ここでInclude diretoryを追加しておけば、target_link_librariesやったときに参照されるようになる
+target_include_directories(${PROJECT_NAME}
+                           PUBLIC
+                           $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/>
+                           $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/feature>
+                           $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/data>)
+
+# Link to required libraries
+target_link_libraries(${PROJECT_NAME}
+                      PUBLIC
+                      yaml-cpp
+                      opencv_core
+                      opencv_features2d
+                      opencv_calib3d)
 
 add_subdirectory(data)
 add_subdirectory(feature)
-
