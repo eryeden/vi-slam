@@ -97,6 +97,8 @@ find_package(Threads REQUIRED)
 # ----- Build selection -----
 add_subdirectory(src)
 add_subdirectory(example)
+
+enable_testing()
 add_subdirectory(test)
 
 # set(BUILD_EXAMPLES ON CACHE BOOL "Build examples")
