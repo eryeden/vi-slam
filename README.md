@@ -20,6 +20,11 @@ Try to make Visual Inertial SLAM
 - Use parameter file
 - Use CI tools
 - Separate library and utilities
+- Write codes and keep style as Google CPP coding style.
+
+## Things need discussions
+- Use .cpp or .cc
+- Use .hpp or .h
 
 ## Memo
 - 開発指針としたい[資料](docs/problemsandsolutionsforslamdevelopment-191215161142.pdf)
