@@ -6,12 +6,12 @@
 ### プレ実装
 #### 曲率画像の生成
 OpenCVの画像演算系を使って実装した。パフォーマンスの計測は指定いないが、結構重そうな感じがする。
-参考：http://opencv.jp/opencv-2svn/cpp/operations_on_arrays.html#cv-reduce
+- 参考：http://opencv.jp/opencv-2svn/cpp/operations_on_arrays.html#cv-reduce
 
 #### 曲率ピークピック
 画素中心からの８近傍探索を繰り返すことでピークピックを行う。
 時間がかかるかを思っていたが、意外と処理できている。OpenMPかなにかで並列化できればより高速に処理できると思われる。
-参考：https://stackoverflow.com/questions/23274906/opencv-fast-mat-element-and-neighbour-access
+- 参考：https://stackoverflow.com/questions/23274906/opencv-fast-mat-element-and-neighbour-access
 
 
 #### Dominant flow estimation
