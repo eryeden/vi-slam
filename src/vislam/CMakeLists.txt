@@ -14,6 +14,7 @@ target_include_directories(${PROJECT_NAME}
 # Link to required libraries
 target_link_libraries(${PROJECT_NAME}
                       PUBLIC
+                      utils
                       yaml-cpp
                       opencv_core
                       opencv_features2d
