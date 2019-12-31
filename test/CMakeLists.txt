@@ -1,5 +1,3 @@
-set(INSTALL_GTEST OFF CACHE BOOL "Install google-test" FORCE)
-
 # ----- Download google-test -----
 # Download projectというCMake projectでGoogleTestのソースコードを自動ダウンロードして利用するようにする
 # GoogleTestのバージョン違い環境準備が必要なくなるのが利点？
@@ -14,6 +12,7 @@ set(INSTALL_GTEST OFF CACHE BOOL "Install google-test" FORCE)
 # ビルド済みのバイナリを利用する場合
 # バージョン、アーキテクチャ固定になるので注意
 # だがオフラインでも利用できるので便利
+# set(INSTALL_GTEST OFF CACHE BOOL "Install google-test" FORCE)
 set (GTEST_ROOT ${CMAKE_SOURCE_DIR}/3rd/gtest)
 find_package(GTest REQUIRED)
 include(GoogleTest)
@@ -23,6 +22,9 @@ include(GoogleTest)
 # テストしたいコードをまとめて追加するようにしている、ここでは<PROJECT_ROOT/test/sample>以下のcppを追加するようにしている。
 file(GLOB_RECURSE TEST_SAMPLE_SOURCE_PATHS "./sample/*.cpp")
 list(APPEND SOURCE_PATHS ${TEST_SAMPLE_SOURCE_PATHS})
+
+file(GLOB_RECURSE TEST_VISLAM_SOURCE_PATHS "./vislam/*.cpp")
+list(APPEND SOURCE_PATHS ${TEST_VISLAM_SOURCE_PATHS})
 
 # ----- Build test executables -----
 # ${SOURCE_PATHS}にテストコードをすべて入れておく。これに対して次の処理を加えている

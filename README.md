@@ -19,6 +19,11 @@ Try to make Visual Inertial SLAM
 - Use emacs as much as possible
 - Use parameter file
 - Use CI tools
+    - できればLocalで実行可能なCI toolにしたい
+    - werckerはLocalでもいけるらしい
+    - Jenkins, Gitlab CI, Droneなどいろいろあるぽい
+    - GitLab CIは有料らしいのでJenkinsかDroneがよさそう
+    - docker使えるなうな環境としてはDroneがいいか？
 - Separate library and utilities
 - Write codes and keep style as Google CPP coding style.
 

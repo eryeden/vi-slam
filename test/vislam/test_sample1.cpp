@@ -5,16 +5,16 @@
 namespace {
 
 // テスト対象となるクラス Foo のためのフィクスチャ
-class SampleFooTest : public ::testing::Test {
+class FooTest : public ::testing::Test {
  protected:
   // 以降の関数で中身のないものは自由に削除できます．
   //
 
-  SampleFooTest() {
+  FooTest() {
     // テスト毎に実行される set-up をここに書きます．
   }
 
-  virtual ~SampleFooTest() {
+  virtual ~FooTest() {
     // テスト毎に実行される，例外を投げない clean-up をここに書きます．
   }
 
@@ -35,13 +35,13 @@ virtual void TearDown() {
 };
 
 // Abc を行う Foo::Bar() メソッドをテストします．
-TEST_F(SampleFooTest, MethodBarDoesAbc) {
+TEST_F(FooTest, viSlamMethodBarDoesAbc) {
   EXPECT_EQ(0, 0);
 }
 
 // Xyz を行う Foo をテストします．
-TEST_F(SampleFooTest, DoesXyz) {
-  // Foo の Xyz を検査
+TEST_F(FooTest, viSlamDoesXyz) {
+    EXPECT_EQ(0, 1);
 }
 
 }  // namespace
