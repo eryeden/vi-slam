@@ -28,9 +28,7 @@ public:
 
     cv::Point2i get_neighbor_max(const cv::Mat &img_mono, const cv::Point2i &input_point);
 
-    cv::Point2i track_local_max(const cv::Mat &img_mono, const cv::Point2i &initial_point);
-
-    void get_dominant_flow(const cv::Mat &img_color);
+    cv::Mat get_dominant_flow(const cv::Mat &img_color);
 
 private:
     std::vector<cv::Point2i> feature_points;

@@ -27,6 +27,9 @@ void dense_feature_extructor::run_extruction(const std::string &path_to_log_dir)
         // 曲率画像を生成
         cv::Mat outimg = get_curavture(img);
 
+        // dominant flowを計算
+        cv::Mat dominant_affine = get_dominant_flow(img);
+
         // 一様分布で特徴点初期位置
         int32_t num_points = 10000;
         if (is_initialize)
@@ -58,8 +61,6 @@ void dense_feature_extructor::run_extruction(const std::string &path_to_log_dir)
         {
             is_initialize = false;
         }
-
-        get_dominant_flow(img);
 
         cv::Mat outimg_normed;
         cv::normalize(outimg, outimg_normed, 0, 1, cv::NORM_MINMAX);
@@ -242,7 +243,7 @@ cv::Point2i dense_feature_extructor::track_local_max(const cv::Mat &img_mono, co
     return prev_neigbhor_max;
 }
 
-void dense_feature_extructor::get_dominant_flow(const cv::Mat &img_color)
+cv::Mat dense_feature_extructor::get_dominant_flow(const cv::Mat &img_color)
 {
 
     // モノクロ化とサイズをちっさくする
@@ -265,6 +266,7 @@ void dense_feature_extructor::get_dominant_flow(const cv::Mat &img_color)
 
     // feature matching、最初のフレームは計算しない
     std::vector<cv::DMatch> good_matches;
+    cv::Mat est_affine;
     if (!is_initialize_dominant_flow)
     {
         // auto matcher = cv::DescriptorMatcher::create(cv::DescriptorMatcher::BRUTEFORCE_HAMMING);
@@ -281,10 +283,20 @@ void dense_feature_extructor::get_dominant_flow(const cv::Mat &img_color)
                 good_matches.push_back(knn_matches[i][0]);
             }
         }
+
+        // Affineの推定を行う
+        std::vector<cv::Point2f> keypoints_src, keypoints_dst;
+        for (const auto &good_match : good_matches)
+        {
+            auto ck = current_keypoints[good_match.queryIdx].pt * (1.0 / scale);
+            auto pk = prev_keypoints[good_match.trainIdx].pt * (1.0 / scale);
+            keypoints_src.emplace_back(pk);
+            keypoints_dst.emplace_back(ck);
+        }
+        est_affine = cv::estimateRigidTransform(keypoints_src, keypoints_dst, false);
     }
 
     cv::Mat match_img;
-
     // Feature pointを描画する
     if (is_initialize_dominant_flow)
     {
@@ -299,6 +311,10 @@ void dense_feature_extructor::get_dominant_flow(const cv::Mat &img_color)
         {
             auto ck = current_keypoints[good_match.queryIdx].pt * (1.0 / scale);
             auto pk = prev_keypoints[good_match.trainIdx].pt * (1.0 / scale);
+            cv::Mat pk_mat = (cv::Mat_<double>(3, 1) << pk.x, pk.y, 1);
+
+            cv::Mat ck_est = est_affine * pk_mat;
+            cv::Point2f ck_est_pt(ck_est.at<double>(0, 0), ck_est.at<double>(1, 0));
 
             // auto ck = current_keypoints[good_match.trainIdx].pt * (1.0 / scale);
             // auto pk = prev_keypoints[good_match.queryIdx].pt * (1.0 / scale);
@@ -306,6 +322,8 @@ void dense_feature_extructor::get_dominant_flow(const cv::Mat &img_color)
             cv::circle(img_draw, ck, 2, cv::Scalar(255, 0, 0), 1, CV_AA);
             cv::circle(img_draw, pk, 2, cv::Scalar(0, 255, 0), 1, CV_AA);
             cv::line(img_draw, ck, pk, cv::Scalar(255, 255, 255), 1, CV_AA);
+            cv::line(img_draw, pk, ck_est_pt, cv::Scalar(255, 0, 255), 1, CV_AA);
+            cv::circle(img_draw, ck_est_pt, 2, cv::Scalar(0, 0, 255), 1, CV_AA);
         }
 
         // cv::drawMatches(input_small, current_keypoints, prev_img, prev_keypoints, good_matches, match_img);
@@ -322,4 +340,6 @@ void dense_feature_extructor::get_dominant_flow(const cv::Mat &img_color)
     prev_descriptor = current_descriptor;
     prev_keypoints = current_keypoints;
     input_small.copyTo(prev_img);
+
+    return est_affine;
 }
