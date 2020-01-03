@@ -7,14 +7,15 @@
 *.o
 *.obj
 
-# Precompiled Headers
+# Precompiled Headers    test tt;
+    tt.do_test();
 *.gch
 *.pch
 
 # Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# *.so
+# *.dylib
+# *.dll
 
 # Fortran module files
 *.mod
