@@ -27,15 +27,39 @@ public:
     cv::Mat get_curavture(const cv::Mat &input_color);
 
     cv::Point2i get_neighbor_max(const cv::Mat &img_mono, const cv::Point2i &input_point);
+    cv::Point2i get_neighbor_max_with_regularization(const cv::Mat &img_mono,
+                                                     const cv::Point2i &input_point,
+                                                     const double lambda_coeff,
+                                                     const double sigma_coeff,
+                                                     const cv::Point2f &estimated_point);
+    cv::Point2i track_local_max(const cv::Mat &img_mono, const cv::Point2i &initial_point);
 
     cv::Mat get_dominant_flow(const cv::Mat &img_color);
 
 private:
-    std::vector<cv::Point2i> feature_points;
+    std::vector<cv::Point2f> feature_points;
     bool is_initialize;
 
     cv::Mat prev_descriptor;
     std::vector<cv::KeyPoint> prev_keypoints;
     bool is_initialize_dominant_flow;
     cv::Mat prev_img;
+
+    double get_regularization_term(const double lambda_coeff,
+                                   const double sigma_coeff,
+                                   const cv::Point2f &input_point,
+                                   const cv::Point2f &estimated_point);
+
+    // cv::Point2f
+
+    bool warp_point(
+        const cv::Point2f &input,
+        const cv::Mat &affine_mat,
+        const cv::Size &image_size,
+        cv::Point2f &output);
+
+    std::vector<cv::Point2f> warp_points(
+        const std::vector<cv::Point2f> &inputs,
+        cv::Mat &affine_mat,
+        cv::Size image_size);
 };

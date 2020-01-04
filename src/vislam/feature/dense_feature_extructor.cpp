@@ -51,10 +51,14 @@ void dense_feature_extructor::run_extruction(const std::string &path_to_log_dir)
                 feature_points[i].x = rand_width(mt);
                 feature_points[i].y = rand_height(mt);
             }
+            else
+            {
+                bool is_inside = warp_point(feature_points[i], dominant_affine, img.size(), feature_points[i]);
+            }
 
             feature_points[i] = track_local_max(outimg, feature_points[i]);
             // std::cout << feature_points[i] << std::endl;
-            cv::circle(img_show, feature_points[i], 2, cv::Scalar(255, 0, 0), 1, CV_AA);
+            cv::circle(img_show, feature_points[i], 1, cv::Scalar(255, 0, 0), 1);
         }
 
         if (i > 10)
@@ -66,7 +70,7 @@ void dense_feature_extructor::run_extruction(const std::string &path_to_log_dir)
         cv::normalize(outimg, outimg_normed, 0, 1, cv::NORM_MINMAX);
         cv::imshow("Test", outimg_normed);
         cv::imshow("Feature", img_show);
-        cv::waitKey(1);
+        cv::waitKey(10);
     }
 }
 
@@ -87,6 +91,9 @@ void dense_feature_extructor::run_extruction_cam(const std::string &path_to_cam,
 
         // 曲率画像を生成
         cv::Mat outimg = get_curavture(img);
+
+        // dominant flowを計算
+        cv::Mat dominant_affine = get_dominant_flow(img);
 
         // 一様分布で特徴点初期位置
         int32_t num_points = 10000;
@@ -109,6 +116,10 @@ void dense_feature_extructor::run_extruction_cam(const std::string &path_to_cam,
                 feature_points[i].x = rand_width(mt);
                 feature_points[i].y = rand_height(mt);
             }
+            else
+            {
+                bool is_inside = warp_point(feature_points[i], dominant_affine, img.size(), feature_points[i]);
+            }
 
             feature_points[i] = track_local_max(outimg, feature_points[i]);
             // std::cout << feature_points[i] << std::endl;
@@ -119,8 +130,6 @@ void dense_feature_extructor::run_extruction_cam(const std::string &path_to_cam,
         {
             is_initialize = false;
         }
-
-        get_dominant_flow(img);
 
         cv::Mat outimg_normed;
         cv::normalize(outimg, outimg_normed, 0, 1, cv::NORM_MINMAX);
@@ -140,21 +149,23 @@ cv::Mat dense_feature_extructor::get_curavture(const cv::Mat &input_color)
          * あまり結果が変わらないようなら32bitのバージョンで計算するのがよさそう。
          * 
          */
-// #define USE_CV_FP64
+#define USE_CV_FP64
 #ifdef USE_CV_FP64
     cv::Mat img_x, img_xx;
-    cv::Sobel(img_gray, img_x, CV_64FC1, 1, 0);
-    cv::Sobel(img_x, img_xx, CV_64FC1, 1, 0);
+    cv::Sobel(img_gray, img_x, CV_64FC1, 1, 0, 5);
+    // cv::Sobel(img_x, img_xx, CV_64FC1, 1, 0);
+    cv::Sobel(img_gray, img_xx, CV_64FC1, 2, 0, 5);
 
     cv::Mat img_y, img_yy;
-    cv::Sobel(img_gray, img_y, CV_64FC1, 0, 1);
-    cv::Sobel(img_y, img_yy, CV_64FC1, 0, 1);
+    cv::Sobel(img_gray, img_y, CV_64FC1, 0, 1, 5);
+    // cv::Sobel(img_y, img_yy, CV_64FC1, 0, 1);
+    cv::Sobel(img_gray, img_yy, CV_64FC1, 0, 2, 5);
 
     // cv::Mat img_xy;
     // cv::Sobel(img_x, img_xy, CV_64FC1, 0, 1);
 
     cv::Mat img_xy;
-    cv::Sobel(img_gray, img_xy, CV_64FC1, 1, 1);
+    cv::Sobel(img_gray, img_xy, CV_64FC1, 1, 1, 5);
 #else
     cv::Mat img_x, img_xx;
     cv::Sobel(img_gray, img_x, CV_32FC1, 1, 0);
@@ -177,19 +188,22 @@ cv::Mat dense_feature_extructor::get_curavture(const cv::Mat &input_color)
     cv::multiply(img_xx, img_y_p2, term1);
 
     cv::multiply(img_x, img_y, term2);
-    cv::multiply(term2, img_xy, term2, -2.0);
+    // cv::multiply(term2, img_xy, term2, -2.0);
+    cv::multiply(term2, img_xy, term2);
 
     cv::multiply(img_yy, img_x_p2, term3);
 
     cv::Mat curv;
-    curv = term1 + term2 + term3;
+    curv = term1 + term2 * (-2.0) + term3;
 
     return curv;
     // return term3;
     // return img_x;
 }
 
-cv::Point2i dense_feature_extructor::get_neighbor_max(const cv::Mat &img_mono, const cv::Point2i &input_point)
+cv::Point2i dense_feature_extructor::get_neighbor_max(
+    const cv::Mat &img_mono,
+    const cv::Point2i &input_point)
 {
     // std::cout << "Neigbhor ######### " << std::endl;
     // std::cout << "Neigbhor: " << input_point << std::endl;
@@ -222,14 +236,59 @@ cv::Point2i dense_feature_extructor::get_neighbor_max(const cv::Mat &img_mono, c
     return max_point;
 }
 
-cv::Point2i dense_feature_extructor::track_local_max(const cv::Mat &img_mono, const cv::Point2i &initial_point)
+cv::Point2i dense_feature_extructor::get_neighbor_max_with_regularization(
+    const cv::Mat &img_mono,
+    const cv::Point2i &input_point,
+    const double lambda_coeff,
+    const double sigma_coeff,
+    const cv::Point2f &estimated_point)
+{
+    // std::cout << "Neigbhor ######### " << std::endl;
+    // std::cout << "Neigbhor: " << input_point << std::endl;
+    double max = img_mono.at<double>(input_point.y, input_point.x) +
+                 get_regularization_term(lambda_coeff, sigma_coeff, input_point, estimated_point);
+    std::vector<int32_t> dxs = {1, -1};
+    std::vector<int32_t> dys = {1, -1};
+    cv::Point2i max_point = input_point;
+
+    for (const auto dx : dxs)
+    {
+        for (const auto dy : dys)
+        {
+            int32_t px, py;
+            px = input_point.x + dx;
+            py = input_point.y + dy;
+            if ((px > 0) && (px < img_mono.size().width) && ((py > 0) && (py < img_mono.size().height)))
+            {
+                // std::cout << "Neigbhor: " << px << ", " << py << std::endl;
+                auto curren_value = img_mono.at<double>(py, px) +
+                                    get_regularization_term(lambda_coeff, sigma_coeff, cv::Point2f(px, py), estimated_point);
+
+                if (max < curren_value)
+                {
+                    max = curren_value;
+                    max_point.x = px;
+                    max_point.y = py;
+                }
+            }
+        }
+    }
+
+    return max_point;
+}
+
+cv::Point2i dense_feature_extructor::track_local_max(
+    const cv::Mat &img_mono,
+    const cv::Point2i &initial_point)
 {
     cv::Point2i prev_neigbhor_max = initial_point;
 
     // std::cout << "########################" << std::endl;
     for (size_t i = 0;; i++)
     {
-        cv::Point2i neighbor_max = get_neighbor_max(img_mono, prev_neigbhor_max);
+        // cv::Point2i neighbor_max = get_neighbor_max(img_mono, prev_neigbhor_max);
+        cv::Point2i neighbor_max = get_neighbor_max_with_regularization(
+            img_mono, prev_neigbhor_max, 0.1, 5, initial_point);
         // std::cout << "Test: " << i << ", " << neighbor_max << std::endl;
         // std::cout << "PrevTest: " << i << ", " << prev_neigbhor_max << std::endl;
         if (neighbor_max == prev_neigbhor_max)
@@ -250,7 +309,7 @@ cv::Mat dense_feature_extructor::get_dominant_flow(const cv::Mat &img_color)
     cv::Mat input_small, img_draw, img_mono;
     img_color.copyTo(img_draw);
     cv::cvtColor(img_color, img_mono, CV_BGR2GRAY);
-    double scale = 1.0 / 2.0;
+    double scale = 1.0 / 3.0;
     cv::resize(img_mono, input_small, cv::Size(), scale, scale, CV_INTER_LINEAR);
 
     // Feature pointを抽出する
@@ -319,18 +378,18 @@ cv::Mat dense_feature_extructor::get_dominant_flow(const cv::Mat &img_color)
             // auto ck = current_keypoints[good_match.trainIdx].pt * (1.0 / scale);
             // auto pk = prev_keypoints[good_match.queryIdx].pt * (1.0 / scale);
 
-            cv::circle(img_draw, ck, 2, cv::Scalar(255, 0, 0), 1, CV_AA);
-            cv::circle(img_draw, pk, 2, cv::Scalar(0, 255, 0), 1, CV_AA);
-            cv::line(img_draw, ck, pk, cv::Scalar(255, 255, 255), 1, CV_AA);
-            cv::line(img_draw, pk, ck_est_pt, cv::Scalar(255, 0, 255), 1, CV_AA);
-            cv::circle(img_draw, ck_est_pt, 2, cv::Scalar(0, 0, 255), 1, CV_AA);
+            // cv::circle(img_draw, ck, 2, cv::Scalar(255, 0, 0), 1, CV_AA);
+            // cv::circle(img_draw, pk, 2, cv::Scalar(0, 255, 0), 1, CV_AA);
+            // cv::line(img_draw, ck, pk, cv::Scalar(255, 255, 255), 1, CV_AA);
+            // cv::line(img_draw, pk, ck_est_pt, cv::Scalar(255, 0, 255), 1, CV_AA);
+            // cv::circle(img_draw, ck_est_pt, 2, cv::Scalar(0, 0, 255), 1, CV_AA);
         }
 
         // cv::drawMatches(input_small, current_keypoints, prev_img, prev_keypoints, good_matches, match_img);
         // cv::imshow("match", match_img);
     }
 
-    cv::imshow("feature", img_draw);
+    // cv::imshow("feature", img_draw);
 
     // 後処理
     if (is_initialize_dominant_flow)
@@ -342,4 +401,64 @@ cv::Mat dense_feature_extructor::get_dominant_flow(const cv::Mat &img_color)
     input_small.copyTo(prev_img);
 
     return est_affine;
+}
+
+double dense_feature_extructor::get_regularization_term(
+    const double lambda_coeff,
+    const double sigma_coeff,
+    const cv::Point2f &input_point,
+    const cv::Point2f &estimated_point)
+{
+    double dest = cv::norm(input_point - estimated_point);
+    double rho = dest * dest / (dest * dest + sigma_coeff);
+    double omega = 1 - rho;
+    double reg = lambda_coeff * omega;
+
+    return reg;
+}
+
+std::vector<cv::Point2f> dense_feature_extructor::warp_points(
+    const std::vector<cv::Point2f> &inputs,
+    cv::Mat &affine_mat,
+    cv::Size image_size)
+{
+    std::vector<cv::Point2f> outputs;
+    outputs.reserve(inputs.size());
+
+    for (const auto input : inputs)
+    {
+        cv::Mat input_mat = (cv::Mat_<double>(3, 1) << input.x, input.y, 1);
+
+        cv::Mat ck_est = affine_mat * input_mat;
+        cv::Point2f ck_est_pt(ck_est.at<double>(0, 0), ck_est.at<double>(1, 0));
+
+        if ((ck_est_pt.x >= 0) && (ck_est_pt.x < image_size.width) && (ck_est_pt.y >= 0) && (ck_est_pt.y < image_size.height))
+        {
+            outputs.emplace_back(ck_est_pt);
+        }
+    }
+
+    return outputs;
+}
+
+bool dense_feature_extructor::warp_point(
+    const cv::Point2f &input,
+    const cv::Mat &affine_mat,
+    const cv::Size &image_size,
+    cv::Point2f &output)
+{
+    cv::Mat input_mat = (cv::Mat_<double>(3, 1) << input.x, input.y, 1);
+    cv::Mat ck_est = affine_mat * input_mat;
+    cv::Point2f ck_est_pt(ck_est.at<double>(0, 0), ck_est.at<double>(1, 0));
+
+    if ((ck_est_pt.x >= 0) && (ck_est_pt.x < image_size.width) && (ck_est_pt.y >= 0) && (ck_est_pt.y < image_size.height))
+    {
+        output = ck_est_pt;
+        return true;
+    }
+    else
+    {
+        output = input;
+        return false;
+    }
 }
