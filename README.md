@@ -42,7 +42,23 @@ Try to make Visual Inertial SLAM
     - SymPyが結構使えそう : [co-lab link](https://colab.research.google.com/drive/1wflhGRVzdlosxHsC63HX2WvXrCG-b8p0)
     - Mathematica使えればベスト
   - テスト結果とパラメータの管理が重要 => mlflow
+- 不利な状況を楽しむようにする
+  - 天候：雨、霧、低照度、逆光、直射日光
+  - 低FPS、Static仮定を破る環境（カメラの前をウロウロする人がいるとか）、はっきり結像しない環境について（草むら画像をJPEG圧縮した場合など）
+  - ライブハウス？レーザー飛び交う現場は一番難しそう。
 
+
+## TODO
+### feature point detection and tracking
+- lambdaとsigmaのチューニング
+- 同じ点として収束してしまった特徴点の扱い
+- 特徴点密度の維持
+- 特徴点検出、トラッキング手法の評価方法
+### slam
+- subspace gauss-newton methodの理解
+- Inertial mesurementの導入
+- data structure
+  - slamの処理に必要なグラフ、データ構造を準備する
 
 ## SSHについて
 git pullするときのURLを修正する必要あり。
