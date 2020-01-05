@@ -2,6 +2,41 @@
 #include <opencv2/features2d.hpp>
 #include <opencv2/xfeatures2d.hpp>
 
+#include <omp.h>
+
+dense_feature::dense_feature(uint64_t id_, const Eigen::Vector2i &feature_point)
+    : id(id_), feature_history({feature_point})
+{
+    ;
+}
+
+dense_feature::dense_feature()
+    : id(std::numeric_limits<uint64_t>::max())
+{
+}
+
+void dense_feature::add_feature(const Eigen::Vector2i &feature)
+{
+    feature_history.emplace_back(feature);
+}
+const Eigen::Vector2i dense_feature::get_latest_feature() const
+{
+    return *(feature_history.end());
+}
+const std::vector<Eigen::Vector2i, Eigen::aligned_allocator<Eigen::Vector2i>> &dense_feature::get_feature_history() const
+{
+    return feature_history;
+}
+
+uint64_t dense_feature::get_id() const
+{
+    return id;
+}
+void dense_feature::set_id(const uint64_t id_)
+{
+    id = id_;
+}
+
 dense_feature_extructor::dense_feature_extructor()
 {
     is_initialize = true;
@@ -43,7 +78,7 @@ void dense_feature_extructor::run_extruction(const std::string &path_to_log_dir)
         std::uniform_int_distribution<int32_t> rand_width(0, outimg.size().width - 1);   // [0, 99] 範囲の一様乱数
         std::uniform_int_distribution<int32_t> rand_height(0, outimg.size().height - 1); // [0, 99] 範囲の一様乱数
 
-        //#pragma omp parallel for
+#pragma omp parallel for
         for (size_t i = 0; i < num_points; i++)
         {
             if (is_initialize == true)
@@ -139,7 +174,14 @@ void dense_feature_extructor::run_extruction_cam(const std::string &path_to_cam,
     }
 }
 
-cv::Mat dense_feature_extructor::get_curavture(const cv::Mat &input_color)
+
+
+void dense_feature_extructor::detect_and_track(const cv::Mat &input_colored)
+{
+}
+
+cv::Mat
+dense_feature_extructor::get_curavture(const cv::Mat &input_color)
 {
     cv::Mat img_gray;
     cv::cvtColor(input_color, img_gray, CV_BGR2GRAY);
