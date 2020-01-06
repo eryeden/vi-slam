@@ -24,9 +24,14 @@ public:
     uint64_t get_id() const;
     void set_id(const uint64_t id_);
 
+    bool get_is_tracking() const;
+    void set_is_tracking(const bool is_tracking_);
+
 private:
     uint64_t id;
     std::vector<Eigen::Vector2i, Eigen::aligned_allocator<Eigen::Vector2i>> feature_history;
+
+    bool is_tracking;
 };
 
 /**
@@ -56,7 +61,7 @@ public:
      * 
      * @param input_colored 
      */
-    void detect_and_track(const cv::Mat &input_colored);
+    void detect_and_track(const cv::Mat &input_color);
 
     cv::Mat get_curavture(const cv::Mat &input_color);
 

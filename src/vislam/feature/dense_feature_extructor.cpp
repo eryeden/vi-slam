@@ -37,6 +37,15 @@ void dense_feature::set_id(const uint64_t id_)
     id = id_;
 }
 
+bool dense_feature::get_is_tracking() const
+{
+    return is_tracking;
+}
+void dense_feature::set_is_tracking(const bool is_tracking_)
+{
+    is_tracking = is_tracking_;
+}
+
 dense_feature_extructor::dense_feature_extructor()
 {
     is_initialize = true;
@@ -174,11 +183,45 @@ void dense_feature_extructor::run_extruction_cam(const std::string &path_to_cam,
     }
 }
 
-
-
-void dense_feature_extructor::detect_and_track(const cv::Mat &input_colored)
+void dense_feature_extructor::detect_and_track(const cv::Mat &input_color)
 {
 
+    // 曲率画像を生成
+    cv::Mat outimg = get_curavture(input_color);
+
+    // dominant flowを計算
+    cv::Mat dominant_affine = get_dominant_flow(input_color);
+
+    // 一様分布で特徴点初期位置
+    int32_t num_points = 10000;
+    if (is_initialize)
+    {
+        feature_points.clear();
+        feature_points.resize(num_points);
+    }
+
+    std::random_device rnd;                                                          // 非決定的な乱数生成器を生成
+    std::mt19937 mt(rnd());                                                          //  メルセンヌ・ツイスタの32ビット版、引数は初期シード値
+    std::uniform_int_distribution<int32_t> rand_width(0, outimg.size().width - 1);   // [0, 99] 範囲の一様乱数
+    std::uniform_int_distribution<int32_t> rand_height(0, outimg.size().height - 1); // [0, 99] 範囲の一様乱数
+
+#pragma omp parallel for
+    for (size_t i = 0; i < num_points; i++)
+    {
+        if (is_initialize == true)
+        {
+            feature_points[i].x = rand_width(mt);
+            feature_points[i].y = rand_height(mt);
+        }
+        else
+        {
+            bool is_inside = warp_point(feature_points[i], dominant_affine, input_color.size(), feature_points[i]);
+        }
+
+        feature_points[i] = track_local_max(outimg, feature_points[i]);
+    }
+
+    is_initialize = false;
 }
 
 cv::Mat dense_feature_extructor::get_curavture(const cv::Mat &input_color)
