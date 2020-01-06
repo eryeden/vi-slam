@@ -178,10 +178,10 @@ void dense_feature_extructor::run_extruction_cam(const std::string &path_to_cam,
 
 void dense_feature_extructor::detect_and_track(const cv::Mat &input_colored)
 {
+
 }
 
-cv::Mat
-dense_feature_extructor::get_curavture(const cv::Mat &input_color)
+cv::Mat dense_feature_extructor::get_curavture(const cv::Mat &input_color)
 {
     cv::Mat img_gray;
     cv::cvtColor(input_color, img_gray, CV_BGR2GRAY);
