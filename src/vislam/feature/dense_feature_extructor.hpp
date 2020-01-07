@@ -47,9 +47,6 @@ class dense_feature_extructor
 public:
     dense_feature_extructor();
 
-    void run_extruction(const std::string &path_to_log_dir);
-    void run_extruction_cam(const std::string &path_to_log_dir, double scale);
-
     /**
      * @brief 特徴点の検出と追跡を両方行う
      * @details
@@ -62,8 +59,15 @@ public:
      * @param input_colored 
      */
     void detect_and_track(const cv::Mat &input_color);
+    void detect_and_track_proto(const cv::Mat &input_color); // 試作バージョン
 
-    cv::Mat get_curavture(const cv::Mat &input_color);
+    // 曲率画像を生成する
+    cv::Mat get_curavture(const cv::Mat &input_mono);
+
+    // とにかくLocal maxを探索する
+    cv::Point2i track_local_max(const cv::Mat &img_mono, const cv::Point2i &initial_point);
+    // 探索開始点をアンカーとしてLocal maxを探索する
+    cv::Point2i track_local_max_with_regularization(const cv::Mat &img_mono, const cv::Point2i &initial_point);
 
     cv::Point2i get_neighbor_max(const cv::Mat &img_mono, const cv::Point2i &input_point);
     cv::Point2i get_neighbor_max_with_regularization(const cv::Mat &img_mono,
@@ -71,13 +75,17 @@ public:
                                                      const double lambda_coeff,
                                                      const double sigma_coeff,
                                                      const cv::Point2f &estimated_point);
-    cv::Point2i track_local_max(const cv::Mat &img_mono, const cv::Point2i &initial_point);
 
-    cv::Mat get_dominant_flow(const cv::Mat &img_color);
+    // 大域的な画像のフローを求める。
+    cv::Mat get_dominant_flow(const cv::Mat &img_mono);
+
+    const std::vector<cv::Point2f> &get_feature_points() const;
 
 private:
     // 特徴点のトラッキング結果が入れられる
-    std::map<uint64_t, dense_feature> features;
+    std::vector<dense_feature> features;
+    // // トラッキング中のインデックスを保持しておく
+    // std::vector<uint64_t> tracking_indices;
 
     std::vector<cv::Point2f> feature_points;
     bool is_initialize;
@@ -102,4 +110,10 @@ private:
         const std::vector<cv::Point2f> &inputs,
         cv::Mat &affine_mat,
         cv::Size image_size);
+
+    std::vector<dense_feature> initialize_fearure(
+        const cv::Mat &img_curvature,
+        const std::vector<cv::Point2f> &pre_points,
+        const int32_t num_points = 10000);
+    std::vector<dense_feature> remove_duplicated_feature(std::vector<dense_feature> &features, const cv::Size &img_size);
 };

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -18,7 +20,8 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgcodecs.hpp>
 
-class LogPlayer_extended {
+class LogPlayer_extended
+{
 public:
     using log_pack = std::tuple<
         uint64_t,   //index
@@ -35,21 +38,22 @@ public:
         >;
 
     LogPlayer_extended(
-        const std::string& path_to_log_dir,
+        const std::string &path_to_log_dir,
         const double log_sample_time_step)
         : pathToLogDir(path_to_log_dir),
           logSampleTimeStep(static_cast<uint64_t>(log_sample_time_step * 1e9)),
-          loggerClock(0) {
+          loggerClock(0)
+    {
         logsStored = log_parser(pathToLogDir + "/log.csv");
         printf("%s : %s Log loaded %ld lines\n", __func__, path_to_log_dir.c_str(), logsStored.size());
         loggerClock = std::get<1>(logsStored[0]);
         lastIndex = 0;
     }
 
-
-
-    bool get_frame_by_index(cv::Mat& img, double& timestamp_in_sec, const uint64_t frame_index) {
-        if (!(frame_index < logsStored.size())) {
+    bool get_frame_by_index(cv::Mat &img, double &timestamp_in_sec, const uint64_t frame_index)
+    {
+        if (!(frame_index < logsStored.size()))
+        {
             return false;
         }
 
@@ -64,27 +68,31 @@ public:
         return true;
     }
 
-    int32_t get_frame_size() {
+    int32_t get_frame_size()
+    {
         return logsStored.size();
     }
 
 private:
     std::string GetPathToImageByIndexAndZeroFillNum(
-        const std::string& path_to_image_prefix_,
-        const std::string& path_to_image_postfix_,
+        const std::string &path_to_image_prefix_,
+        const std::string &path_to_image_postfix_,
         int32_t zero_fill_qty_,
         int32_t image_index_,
-        const std::string& image_type) {
+        const std::string &image_type)
+    {
         std::ostringstream sout;
         sout << std::setfill('0') << std::setw(zero_fill_qty_) << image_index_;
         return path_to_image_prefix_ + sout.str() + path_to_image_postfix_ + image_type;
     }
 
-    std::string basename(const std::string& path) {
+    std::string basename(const std::string &path)
+    {
         return path.substr(path.find_last_of('/') + 1);
     }
 
-    std::vector<log_pack> log_parser(const std::string& path_to_csv) {
+    std::vector<log_pack> log_parser(const std::string &path_to_csv)
+    {
         std::vector<log_pack> logs;
 
         //                std::string csv_line = std::to_string(image_index);
@@ -111,7 +119,8 @@ private:
                                std::get<7>(tmp_log_pack),
                                std::get<8>(tmp_log_pack),
                                std::get<9>(tmp_log_pack),
-                               std::get<10>(tmp_log_pack))) {
+                               std::get<10>(tmp_log_pack)))
+        {
             logs.emplace_back(tmp_log_pack);
         }
         return logs;

@@ -21,7 +21,8 @@ void dense_feature::add_feature(const Eigen::Vector2i &feature)
 }
 const Eigen::Vector2i dense_feature::get_latest_feature() const
 {
-    return *(feature_history.end());
+    // return *(feature_history.end());
+    return feature_history[feature_history.size() - 1];
 }
 const std::vector<Eigen::Vector2i, Eigen::aligned_allocator<Eigen::Vector2i>> &dense_feature::get_feature_history() const
 {
@@ -52,182 +53,149 @@ dense_feature_extructor::dense_feature_extructor()
     is_initialize_dominant_flow = true;
 }
 
-void dense_feature_extructor::run_extruction(const std::string &path_to_log_dir)
-{
-    LogPlayer_extended lpe(path_to_log_dir, 0.01);
-
-    for (size_t i = 0; i < static_cast<uint32_t>(lpe.get_frame_size()); i++)
-    {
-        /**
-             * @brief Log dataから画像を読み込む
-             * 
-             */
-        cv::Mat img;
-        double timestamp;
-        lpe.get_frame_by_index(img, timestamp, i);
-        cv::Mat img_show;
-        img.copyTo(img_show);
-
-        // 曲率画像を生成
-        cv::Mat outimg = get_curavture(img);
-
-        // dominant flowを計算
-        cv::Mat dominant_affine = get_dominant_flow(img);
-
-        // 一様分布で特徴点初期位置
-        int32_t num_points = 10000;
-        if (is_initialize)
-        {
-            feature_points.clear();
-            feature_points.resize(num_points);
-        }
-
-        std::random_device rnd;                                                          // 非決定的な乱数生成器を生成
-        std::mt19937 mt(rnd());                                                          //  メルセンヌ・ツイスタの32ビット版、引数は初期シード値
-        std::uniform_int_distribution<int32_t> rand_width(0, outimg.size().width - 1);   // [0, 99] 範囲の一様乱数
-        std::uniform_int_distribution<int32_t> rand_height(0, outimg.size().height - 1); // [0, 99] 範囲の一様乱数
-
-#pragma omp parallel for
-        for (size_t i = 0; i < num_points; i++)
-        {
-            if (is_initialize == true)
-            {
-                feature_points[i].x = rand_width(mt);
-                feature_points[i].y = rand_height(mt);
-            }
-            else
-            {
-                bool is_inside = warp_point(feature_points[i], dominant_affine, img.size(), feature_points[i]);
-            }
-
-            feature_points[i] = track_local_max(outimg, feature_points[i]);
-            // std::cout << feature_points[i] << std::endl;
-            cv::circle(img_show, feature_points[i], 1, cv::Scalar(255, 0, 0), 1);
-        }
-
-        if (i > 10)
-        {
-            is_initialize = false;
-        }
-
-        cv::Mat outimg_normed;
-        cv::normalize(outimg, outimg_normed, 0, 1, cv::NORM_MINMAX);
-        cv::imshow("Test", outimg_normed);
-        cv::imshow("Feature", img_show);
-        cv::waitKey(10);
-    }
-}
-
-void dense_feature_extructor::run_extruction_cam(const std::string &path_to_cam, double scale)
-{
-    // LogPlayer_extended lpe(path_to_log_dir, 0.01);
-
-    cv::VideoCapture cam(path_to_cam);
-
-    for (size_t i = 0;; i++)
-    {
-        cv::Mat img, tmp_img;
-        double timestamp;
-        cam >> tmp_img;
-        cv::resize(tmp_img, img, cv::Size(), scale, scale, CV_INTER_LINEAR);
-        cv::Mat img_show;
-        img.copyTo(img_show);
-
-        // 曲率画像を生成
-        cv::Mat outimg = get_curavture(img);
-
-        // dominant flowを計算
-        cv::Mat dominant_affine = get_dominant_flow(img);
-
-        // 一様分布で特徴点初期位置
-        int32_t num_points = 10000;
-        if (is_initialize)
-        {
-            feature_points.clear();
-            feature_points.resize(num_points);
-        }
-
-        std::random_device rnd;                                                          // 非決定的な乱数生成器を生成
-        std::mt19937 mt(rnd());                                                          //  メルセンヌ・ツイスタの32ビット版、引数は初期シード値
-        std::uniform_int_distribution<int32_t> rand_width(0, outimg.size().width - 1);   // [0, 99] 範囲の一様乱数
-        std::uniform_int_distribution<int32_t> rand_height(0, outimg.size().height - 1); // [0, 99] 範囲の一様乱数
-
-        //#pragma omp parallel for
-        for (size_t i = 0; i < num_points; i++)
-        {
-            if (is_initialize == true)
-            {
-                feature_points[i].x = rand_width(mt);
-                feature_points[i].y = rand_height(mt);
-            }
-            else
-            {
-                bool is_inside = warp_point(feature_points[i], dominant_affine, img.size(), feature_points[i]);
-            }
-
-            feature_points[i] = track_local_max(outimg, feature_points[i]);
-            // std::cout << feature_points[i] << std::endl;
-            cv::circle(img_show, feature_points[i], 2, cv::Scalar(255, 0, 0), 1, CV_AA);
-        }
-
-        if (i > 10)
-        {
-            is_initialize = false;
-        }
-
-        cv::Mat outimg_normed;
-        cv::normalize(outimg, outimg_normed, 0, 1, cv::NORM_MINMAX);
-        cv::imshow("Test", outimg_normed);
-        cv::imshow("Feature", img_show);
-        cv::waitKey(1);
-    }
-}
-
+/**
+ * @brief feature pointクラスを使って実装し直す + Feature pointの数をキープする処理を何らか追加する
+ * @details
+ * 処理の流れ
+ * （０．特徴点の初期化、初回のみ）
+ * １．特徴点トラッキング
+ * ２．特徴点の追加
+ * ３．特徴点のメンテナンス
+ * 
+ * 初期化処理について詳しく
+ * １．一様分布のランダム初期値からHill-climbして曲率ピックを行う
+ * ２．重複する点があるはずなのでこれを排除
+ * 
+ * 特徴点の追加について詳しくて
+ * これも初期化処理と同じ感じでもOKか？
+ * 特徴点メンテは、重複しているものを排除する。どの特徴点を排除するのかがポイントになる。
+ * 長くトラックできている特徴点を優先して残すべき？
+ * 
+ * こんな感じで実装してみる。
+ * 
+ * 
+ * @param input_color 
+ */
 void dense_feature_extructor::detect_and_track(const cv::Mat &input_color)
 {
+    // モノクロ画像を用意
+    cv::Mat img_mono;
+    cv::cvtColor(input_color, img_mono, CV_BGR2GRAY);
 
     // 曲率画像を生成
-    cv::Mat outimg = get_curavture(input_color);
+    cv::Mat outimg = get_curavture(img_mono);
 
     // dominant flowを計算
-    cv::Mat dominant_affine = get_dominant_flow(input_color);
+    cv::Mat dominant_affine = get_dominant_flow(img_mono);
 
-    // 一様分布で特徴点初期位置
-    int32_t num_points = 10000;
+    /**
+     * @brief 初期化処理
+     * 
+     */
     if (is_initialize)
     {
-        feature_points.clear();
-        feature_points.resize(num_points);
+
+        features = initialize_fearure(outimg, {}, 100000);
+        feature_points.reserve(features.size());
+
+        for (const auto &f : features)
+        {
+            feature_points.emplace_back(cv::Point2i(f.get_latest_feature()[0], f.get_latest_feature()[1]));
+        }
+        // features = initialize_fearure(outimg);
+
+        // // 一様分布で特徴点初期位置
+        // int32_t num_points = 10000;
+        // feature_points.clear();
+        // feature_points.resize(num_points);
+
+        // std::random_device rnd;                                                          // 非決定的な乱数生成器を生成
+        // std::mt19937 mt(rnd());                                                          //  メルセンヌ・ツイスタの32ビット版、引数は初期シード値
+        // std::uniform_int_distribution<int32_t> rand_width(0, outimg.size().width - 1);   // [0, 99] 範囲の一様乱数
+        // std::uniform_int_distribution<int32_t> rand_height(0, outimg.size().height - 1); // [0, 99] 範囲の一様乱数
+
+        // for (size_t i = 0; i < num_points; i++)
+        // {
+        //     feature_points[i].x = rand_width(mt);
+        //     feature_points[i].y = rand_height(mt);
+        //     feature_points[i] = track_local_max(outimg, feature_points[i]);
+        // }
     }
 
-    std::random_device rnd;                                                          // 非決定的な乱数生成器を生成
-    std::mt19937 mt(rnd());                                                          //  メルセンヌ・ツイスタの32ビット版、引数は初期シード値
-    std::uniform_int_distribution<int32_t> rand_width(0, outimg.size().width - 1);   // [0, 99] 範囲の一様乱数
-    std::uniform_int_distribution<int32_t> rand_height(0, outimg.size().height - 1); // [0, 99] 範囲の一様乱数
+    if (!is_initialize)
+    {
 
 #pragma omp parallel for
-    for (size_t i = 0; i < num_points; i++)
-    {
-        if (is_initialize == true)
-        {
-            feature_points[i].x = rand_width(mt);
-            feature_points[i].y = rand_height(mt);
-        }
-        else
+        for (size_t i = 0; i < feature_points.size(); i++)
         {
             bool is_inside = warp_point(feature_points[i], dominant_affine, input_color.size(), feature_points[i]);
+            feature_points[i] = track_local_max_with_regularization(outimg, feature_points[i]);
         }
 
-        feature_points[i] = track_local_max(outimg, feature_points[i]);
+        features = initialize_fearure(outimg, feature_points, 10000000);
+        for (const auto &f : features)
+        {
+            feature_points.emplace_back(cv::Point2i(f.get_latest_feature()[0], f.get_latest_feature()[1]));
+        }
     }
 
     is_initialize = false;
 }
 
-cv::Mat dense_feature_extructor::get_curavture(const cv::Mat &input_color)
+void dense_feature_extructor::detect_and_track_proto(const cv::Mat &input_color)
 {
-    cv::Mat img_gray;
-    cv::cvtColor(input_color, img_gray, CV_BGR2GRAY);
+
+    // モノクロ画像を用意
+    cv::Mat img_mono;
+    cv::cvtColor(input_color, img_mono, CV_BGR2GRAY);
+
+    // 曲率画像を生成
+    cv::Mat outimg = get_curavture(img_mono);
+
+    // dominant flowを計算
+    cv::Mat dominant_affine = get_dominant_flow(img_mono);
+
+    /**
+     * @brief 初期化処理
+     * 
+     */
+    if (is_initialize)
+    {
+        // 一様分布で特徴点初期位置
+        int32_t num_points = 10000;
+        feature_points.clear();
+        feature_points.resize(num_points);
+
+        std::random_device rnd;                                                          // 非決定的な乱数生成器を生成
+        std::mt19937 mt(rnd());                                                          //  メルセンヌ・ツイスタの32ビット版、引数は初期シード値
+        std::uniform_int_distribution<int32_t> rand_width(0, outimg.size().width - 1);   // [0, 99] 範囲の一様乱数
+        std::uniform_int_distribution<int32_t> rand_height(0, outimg.size().height - 1); // [0, 99] 範囲の一様乱数
+
+        for (size_t i = 0; i < num_points; i++)
+        {
+            feature_points[i].x = rand_width(mt);
+            feature_points[i].y = rand_height(mt);
+            feature_points[i] = track_local_max(outimg, feature_points[i]);
+        }
+    }
+
+    if (!is_initialize)
+    {
+#pragma omp parallel for
+        for (size_t i = 0; i < feature_points.size(); i++)
+        {
+            bool is_inside = warp_point(feature_points[i], dominant_affine, input_color.size(), feature_points[i]);
+            feature_points[i] = track_local_max(outimg, feature_points[i]);
+        }
+    }
+
+    is_initialize = false;
+}
+
+cv::Mat dense_feature_extructor::get_curavture(const cv::Mat &img_gray)
+{
+    // cv::Mat img_gray;
+    // cv::cvtColor(input_color, img_gray, CV_BGR2GRAY);
 
 /**
          * @brief CV_64FC1とCV_32FC1では32bitのほうが処理が結構早い。
@@ -237,20 +205,20 @@ cv::Mat dense_feature_extructor::get_curavture(const cv::Mat &input_color)
 #define USE_CV_FP64
 #ifdef USE_CV_FP64
     cv::Mat img_x, img_xx;
-    cv::Sobel(img_gray, img_x, CV_64FC1, 1, 0, 5);
+    cv::Sobel(img_gray, img_x, CV_64FC1, 1, 0, 3);
     // cv::Sobel(img_x, img_xx, CV_64FC1, 1, 0);
-    cv::Sobel(img_gray, img_xx, CV_64FC1, 2, 0, 5);
+    cv::Sobel(img_gray, img_xx, CV_64FC1, 2, 0, 3);
 
     cv::Mat img_y, img_yy;
-    cv::Sobel(img_gray, img_y, CV_64FC1, 0, 1, 5);
+    cv::Sobel(img_gray, img_y, CV_64FC1, 0, 1, 3);
     // cv::Sobel(img_y, img_yy, CV_64FC1, 0, 1);
-    cv::Sobel(img_gray, img_yy, CV_64FC1, 0, 2, 5);
+    cv::Sobel(img_gray, img_yy, CV_64FC1, 0, 2, 3);
 
     // cv::Mat img_xy;
     // cv::Sobel(img_x, img_xy, CV_64FC1, 0, 1);
 
     cv::Mat img_xy;
-    cv::Sobel(img_gray, img_xy, CV_64FC1, 1, 1, 5);
+    cv::Sobel(img_gray, img_xy, CV_64FC1, 1, 1, 3);
 #else
     cv::Mat img_x, img_xx;
     cv::Sobel(img_gray, img_x, CV_32FC1, 1, 0);
@@ -269,17 +237,18 @@ cv::Mat dense_feature_extructor::get_curavture(const cv::Mat &input_color)
     cv::Mat img_y_p2;
     cv::multiply(img_y, img_y, img_y_p2);
 
-    cv::Mat term1, term2, term3;
+    cv::Mat term1, term2, term2tmp, term3;
     cv::multiply(img_xx, img_y_p2, term1);
 
-    cv::multiply(img_x, img_y, term2);
+    cv::multiply(img_x, img_y, term2tmp);
     // cv::multiply(term2, img_xy, term2, -2.0);
-    cv::multiply(term2, img_xy, term2);
+    cv::multiply(term2tmp, img_xy, term2);
 
     cv::multiply(img_yy, img_x_p2, term3);
 
     cv::Mat curv;
-    curv = term1 + term2 * (-2.0) + term3;
+    // curv = term1 + term2 * (-2.0) + term3;
+    curv = term1 + (-2.0) * term2 + term3;
 
     return curv;
     // return term3;
@@ -372,6 +341,30 @@ cv::Point2i dense_feature_extructor::track_local_max(
     for (size_t i = 0;; i++)
     {
         // cv::Point2i neighbor_max = get_neighbor_max(img_mono, prev_neigbhor_max);
+        cv::Point2i neighbor_max = get_neighbor_max(img_mono, prev_neigbhor_max);
+        // std::cout << "Test: " << i << ", " << neighbor_max << std::endl;
+        // std::cout << "PrevTest: " << i << ", " << prev_neigbhor_max << std::endl;
+        if (neighbor_max == prev_neigbhor_max)
+        {
+            break;
+        }
+
+        prev_neigbhor_max = neighbor_max;
+    }
+
+    return prev_neigbhor_max;
+}
+
+cv::Point2i dense_feature_extructor::track_local_max_with_regularization(
+    const cv::Mat &img_mono,
+    const cv::Point2i &initial_point)
+{
+    cv::Point2i prev_neigbhor_max = initial_point;
+
+    // std::cout << "########################" << std::endl;
+    for (size_t i = 0;; i++)
+    {
+        // cv::Point2i neighbor_max = get_neighbor_max(img_mono, prev_neigbhor_max);
         cv::Point2i neighbor_max = get_neighbor_max_with_regularization(
             img_mono, prev_neigbhor_max, 0.1, 5, initial_point);
         // std::cout << "Test: " << i << ", " << neighbor_max << std::endl;
@@ -387,13 +380,13 @@ cv::Point2i dense_feature_extructor::track_local_max(
     return prev_neigbhor_max;
 }
 
-cv::Mat dense_feature_extructor::get_dominant_flow(const cv::Mat &img_color)
+cv::Mat dense_feature_extructor::get_dominant_flow(const cv::Mat &img_mono)
 {
 
     // モノクロ化とサイズをちっさくする
-    cv::Mat input_small, img_draw, img_mono;
-    img_color.copyTo(img_draw);
-    cv::cvtColor(img_color, img_mono, CV_BGR2GRAY);
+    cv::Mat input_small; //, img_draw, img_mono;
+    // img_color.copyTo(img_draw);
+    // cv::cvtColor(img_color, img_mono, CV_BGR2GRAY);
     double scale = 1.0 / 3.0;
     cv::resize(img_mono, input_small, cv::Size(), scale, scale, CV_INTER_LINEAR);
 
@@ -447,10 +440,10 @@ cv::Mat dense_feature_extructor::get_dominant_flow(const cv::Mat &img_color)
     }
     else
     {
-        for (const auto &p : points_from_input)
-        {
-            cv::circle(img_draw, p * (1.0 / scale), 1, cv::Scalar(0, 0, 255), 1);
-        }
+        // for (const auto &p : points_from_input)
+        // {
+        //     cv::circle(img_draw, p * (1.0 / scale), 1, cv::Scalar(0, 0, 255), 1);
+        // }
         for (const auto &good_match : good_matches)
         {
             auto ck = current_keypoints[good_match.queryIdx].pt * (1.0 / scale);
@@ -546,4 +539,61 @@ bool dense_feature_extructor::warp_point(
         output = input;
         return false;
     }
+}
+
+const std::vector<cv::Point2f> &dense_feature_extructor::get_feature_points() const
+{
+    return feature_points;
+}
+
+std::vector<dense_feature> dense_feature_extructor::initialize_fearure(
+    const cv::Mat &img_curvature,
+    const std::vector<cv::Point2f> &pre_points,
+    const int32_t num_points)
+{
+    std::vector<dense_feature> feature_points;
+    feature_points.reserve(num_points);
+    std::random_device rnd;                                                                 // 非決定的な乱数生成器を生成
+    std::mt19937 mt(rnd());                                                                 //  メルセンヌ・ツイスタの32ビット版、引数は初期シード値
+    std::uniform_int_distribution<int32_t> rand_width(0, img_curvature.size().width - 1);   // [0, 99] 範囲の一様乱数
+    std::uniform_int_distribution<int32_t> rand_height(0, img_curvature.size().height - 1); // [0, 99] 範囲の一様乱数
+
+    int32_t del_count = 0;
+
+    cv::Mat flag_img(img_curvature.size(), CV_8U);
+    flag_img = 0;
+
+    // // prepointsをフラグに書き込む
+    // for (const auto &p : pre_points)
+    // {
+    //     if (p.x > 0 && p.x < img_curvature.size().width && p.y > 0 && p.y < img_curvature.size().width)
+    //     {
+    //         std::cout << p << std::endl;
+    //         flag_img.at<uint8_t>(static_cast<int32_t>(p.y), static_cast<int32_t>(p.x)) = 1;
+    //     }
+    // }
+    // for (size_t i = 0; i < pre_points.size(); i++)
+    // {
+    //     flag_img.at<uint8_t>((pre_points[i].y), (pre_points[i].x)) = 1;
+    // }
+
+    for (size_t i = 0; i < num_points; i++)
+    {
+        cv::Point2i tmp_point(rand_width(mt), rand_height(mt));
+        tmp_point = track_local_max(img_curvature, tmp_point);
+
+        uint8_t flag = flag_img.at<uint8_t>(tmp_point.y, tmp_point.x);
+        double curv = img_curvature.at<uint8_t>(tmp_point.y, tmp_point.x);
+        if ((!flag) && (curv > 200.0))
+        {
+            feature_points.emplace_back(dense_feature(0, Eigen::Vector2i(tmp_point.x, tmp_point.y)));
+            flag_img.at<uint8_t>(tmp_point.y, tmp_point.x) = 1;
+        }
+        else
+        {
+            del_count++;
+        }
+    }
+
+    return feature_points;
 }
