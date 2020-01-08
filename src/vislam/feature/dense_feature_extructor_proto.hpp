@@ -34,6 +34,35 @@ private:
     bool is_tracking;
 };
 
+class frame_dense_feature
+{
+public:
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+    // using feature_and_id_pair = std::map<uint64_t, Eigen::Vector2i,
+    //                                      std::less<uint64_t>,
+    //                                      Eigen::aligned_allocator<std::pair<const uint64_t, Eigen::Vector2i>>>;
+
+    using feature_and_id_pair = std::map<uint64_t, Eigen::Vector2i>;
+
+    frame_dense_feature()
+        : frame_id(0)
+    {
+    }
+
+    frame_dense_feature(const uint64_t frame_id, const feature_and_id_pair &features)
+        : frame_id(frame_id), fearture_points(features)
+    {
+    }
+
+    feature_and_id_pair fearture_points;
+    // std::map<uint64_t, Eigen::Vector2i> fearture_points;
+
+    uint64_t frame_id;
+
+private:
+};
+
 /**
  * @brief 特徴点抽出部分の開発方針について
  * @details
@@ -87,6 +116,8 @@ private:
     // // トラッキング中のインデックスを保持しておく
     // std::vector<uint64_t> tracking_indices;
 
+    std::vector<frame_dense_feature> feature_with_frame;
+
     std::vector<cv::Point2f> feature_points;
     bool is_initialize;
 
@@ -115,5 +146,19 @@ private:
         const cv::Mat &img_curvature,
         const std::vector<cv::Point2f> &pre_points,
         const int32_t num_points = 10000);
+
+    /**
+     * @brief フレーム中の特徴点を初期化する
+     * 
+     * @param img_curvature 
+     * @param prev_features 
+     * @param num_points 
+     * @return frame_dense_feature 
+     */
+    frame_dense_feature initialize_features(
+        const cv::Mat &img_curvature,
+        const frame_dense_feature &prev_features,
+        const int32_t num_points = 10000);
+
     std::vector<dense_feature> remove_duplicated_feature(std::vector<dense_feature> &features, const cv::Size &img_size);
 };

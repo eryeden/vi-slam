@@ -1,4 +1,4 @@
-#include "dense_feature_extructor.hpp"
+#include "dense_feature_extructor_proto.hpp"
 #include <opencv2/features2d.hpp>
 #include <opencv2/xfeatures2d.hpp>
 
@@ -95,8 +95,10 @@ void dense_feature_extructor::detect_and_track(const cv::Mat &input_color)
     if (is_initialize)
     {
 
-        features = initialize_fearure(outimg, {}, 100000);
+        features = initialize_fearure(outimg, {}, 10000);
         feature_points.reserve(features.size());
+
+        // feature_with_frame.emplace_back(initialize_features(outimg, frame_dense_feature()));
 
         for (const auto &f : features)
         {
@@ -132,7 +134,7 @@ void dense_feature_extructor::detect_and_track(const cv::Mat &input_color)
             feature_points[i] = track_local_max_with_regularization(outimg, feature_points[i]);
         }
 
-        features = initialize_fearure(outimg, feature_points, 10000000);
+        features = initialize_fearure(outimg, feature_points, 100);
         for (const auto &f : features)
         {
             feature_points.emplace_back(cv::Point2i(f.get_latest_feature()[0], f.get_latest_feature()[1]));
@@ -376,6 +378,9 @@ cv::Point2i dense_feature_extructor::track_local_max_with_regularization(
 
         prev_neigbhor_max = neighbor_max;
     }
+    // cv::Point2i diff = initial_point - prev_neigbhor_max;
+    // double norm = cv::norm(diff);
+    // printf("Norm: %f\n", norm);
 
     return prev_neigbhor_max;
 }
@@ -596,4 +601,79 @@ std::vector<dense_feature> dense_feature_extructor::initialize_fearure(
     }
 
     return feature_points;
+}
+
+/**
+     * @brief フレーム中の特徴点を初期化する
+     * 
+     * @param img_curvature 
+     * @param prev_features 
+     * @param num_points 
+     * @return frame_dense_feature 
+     */
+frame_dense_feature dense_feature_extructor::initialize_features(
+    const cv::Mat &img_curvature,
+    const frame_dense_feature &prev_features,
+    const int32_t num_points)
+{
+
+    frame_dense_feature features;
+    features.fearture_points = prev_features.fearture_points;
+
+    std::random_device rnd;                                                                 // 非決定的な乱数生成器を生成
+    std::mt19937 mt(rnd());                                                                 //  メルセンヌ・ツイスタの32ビット版、引数は初期シード値
+    std::uniform_int_distribution<int32_t> rand_width(0, img_curvature.size().width - 1);   // [0, 99] 範囲の一様乱数
+    std::uniform_int_distribution<int32_t> rand_height(0, img_curvature.size().height - 1); // [0, 99] 範囲の一様乱数
+
+    int32_t del_count = 0;
+
+    // cv::Mat flag_img(img_curvature.size(), CV_8U);
+    cv::Mat flag_img = cv::Mat::zeros(img_curvature.size(), CV_8U);
+    // cv::Mat flag_img(cv::Size(640, 480), CV_8U);
+    flag_img = 0;
+
+    uint64_t max_id = 0;
+    // for (const auto &[id, point] : prev_features.fearture_points)
+    // {
+    //     if (max_id < id)
+    //     {
+    //         max_id = id;
+    //     }
+    //     printf("## %ld,  %f, %f\n", id, point[0], point[1]);
+    //     flag_img.at<uint8_t>(point[1], point[0]) = 1;
+    //     // flag_img.at<uint8_t>(0, 0) = 1;
+    // }
+
+    for (auto i = features.fearture_points.begin(); i != features.fearture_points.end(); ++i)
+    {
+        uint64_t id = i->first;
+        Eigen::Vector2i p = i->second;
+        if (max_id < id)
+        {
+            max_id = id;
+        }
+        // printf("## %ld,  %f, %f\n", id, p[0], p[1]);
+        // flag_img.at<uint8_t>(p[1], p[0]) = 1;
+    }
+
+    for (size_t i = 0; i < num_points; i++)
+    {
+        cv::Point2i tmp_point(rand_width(mt), rand_height(mt));
+        tmp_point = track_local_max(img_curvature, tmp_point);
+
+        uint8_t flag = flag_img.at<uint8_t>(tmp_point.y, tmp_point.x);
+        double curv = img_curvature.at<uint8_t>(tmp_point.y, tmp_point.x);
+        if ((!flag))
+        {
+            features.fearture_points[max_id] = Eigen::Vector2i(tmp_point.x, tmp_point.y);
+            max_id++;
+            flag_img.at<uint8_t>(tmp_point.y, tmp_point.x) = 1;
+        }
+        else
+        {
+            del_count++;
+        }
+    }
+
+    return features;
 }

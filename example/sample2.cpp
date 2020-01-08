@@ -1,6 +1,6 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
-#include "dense_feature_extructor.hpp"
+#include "dense_feature_extructor_proto.hpp"
 
 #include "log_util.h"
 
