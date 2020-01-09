@@ -134,3 +134,92 @@ private:
     uint64_t loggerClock;
     uint64_t lastIndex;
 };
+
+class LogPlayer_euroc_mav
+{
+public:
+    using log_pack = std::tuple<
+        uint64_t,   //save time
+        std::string // path to image
+        >;
+
+    LogPlayer_euroc_mav(
+        const std::string &path_to_log_dir,
+        const double log_sample_time_step)
+        : pathToLogDir(path_to_log_dir),
+          logSampleTimeStep(static_cast<uint64_t>(log_sample_time_step * 1e9)),
+          loggerClock(0)
+    {
+        logsStored = log_parser(pathToLogDir + "/data.csv");
+        printf("%s : %s Log loaded %ld lines\n", __func__, path_to_log_dir.c_str(), logsStored.size());
+        loggerClock = std::get<0>(logsStored[0]);
+        lastIndex = 0;
+    }
+
+    bool get_frame_by_index(cv::Mat &img, double &timestamp_in_sec, const uint64_t frame_index)
+    {
+        if (!(frame_index < logsStored.size()))
+        {
+            return false;
+        }
+
+        std::string path_to_image = pathToLogDir + "/data/" + basename(std::get<1>(logsStored[frame_index]));
+
+        cv::Mat loaded_img = cv::imread(path_to_image, -1);
+
+        loaded_img.copyTo(img);
+
+        timestamp_in_sec = static_cast<double>(std::get<0>(logsStored[frame_index])) * 1e-9;
+
+        return true;
+    }
+
+    int32_t get_frame_size()
+    {
+        return logsStored.size();
+    }
+
+private:
+    std::string GetPathToImageByIndexAndZeroFillNum(
+        const std::string &path_to_image_prefix_,
+        const std::string &path_to_image_postfix_,
+        int32_t zero_fill_qty_,
+        int32_t image_index_,
+        const std::string &image_type)
+    {
+        std::ostringstream sout;
+        sout << std::setfill('0') << std::setw(zero_fill_qty_) << image_index_;
+        return path_to_image_prefix_ + sout.str() + path_to_image_postfix_ + image_type;
+    }
+
+    std::string basename(const std::string &path)
+    {
+        return path.substr(path.find_last_of('/') + 1);
+    }
+
+    std::vector<log_pack> log_parser(const std::string &path_to_csv)
+    {
+        std::vector<log_pack> logs;
+
+        io::CSVReader<2> in_csv(path_to_csv);
+        // in_csv.set_header("timestamp", "filename");
+        // in_csv.read_header(io::ignore_column, "timestamp", "filename");
+        in_csv.read_header(io::ignore_missing_column, "#timestamp [ns]", "filename");
+
+        log_pack tmp_log_pack;
+        while (in_csv.read_row(std::get<0>(tmp_log_pack),
+                               std::get<1>(tmp_log_pack)))
+        {
+            logs.emplace_back(tmp_log_pack);
+        }
+        return logs;
+    }
+
+    std::string pathToLogDir;
+    uint64_t logSampleTimeStep;
+
+    std::vector<log_pack> logsStored;
+
+    uint64_t loggerClock;
+    uint64_t lastIndex;
+};

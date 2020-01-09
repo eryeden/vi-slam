@@ -68,45 +68,25 @@ int main()
         colors[i] = HSVtoRGB(h, 1, 1);
     }
 
-    // LogPlayer_extended lpe("/home/ery/Devel/tmp/assets/20191219_2/20191219_24", 0);
-
-    // dense_feature_extructor dfe;
     dense_feature::dense_feature_extructor dfe(0.1, 0.1);
 
-    // dfe.run_extruction("/home/ery/assets/20191219_2/20191219_31");
-    // dfe.run_extruction("/home/ery/assets/20191219_1/20191219_2");
-    // dfe.run_extruction("/home/ery/assets/20191115/20191115_40_2m_track");
-
-    // dfe.run_extruction("/home/ery/Devel/tmp/assets/20191219_2/20191219_31");
-    // dfe.run_extruction_cam("/dev/video0", 1.0);
-    // dfe.run_extruction_cam("/home/ery/Devel/tmp/assets/IMG_5144.MOV", 1.0 / 2.0);
-
-    // std::string path_to_log_dir = "/home/ery/assets/20191115/20191115_40_2m_track";
-    // std::string path_to_log_dir = "/home/ery/Devel/tmp/assets/20191219_1/20191219_3";
-    std::string path_to_log_dir = "/home/ery/Devel/tmp/assets/20191219_2/20191219_31";
-    LogPlayer_extended lpe(path_to_log_dir, 0.01);
-
-    // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
+    // cv::VideoCapture cap("/dev/video0");
+    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4257.MOV");
+    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4287.MOV");
+    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4306.MOV");
+    cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5144.MOV");
 
     int64_t ref_size = 5;
+    double scale = 1.0 / 2.0;
+    // double scale = 1.0;
 
-    for (size_t i = 0; i < lpe.get_frame_size(); i++)
+    for (size_t i = 0;; i++)
     {
-        cv::Mat img, img_undistort;
-        double tstamp;
-        lpe.get_frame_by_index(img, tstamp, i);
+        cv::Mat img, img_tmp;
+        cap >> img_tmp;
+        cv::resize(img_tmp, img, cv::Size(), scale, scale);
 
-        // カメラ画像を補正するようにする
-        // カメラの歪み補正 パラメータ FIXME 外用Econカメラの4:3画像サイズの補正用パラメータなので、カメラでパラメータを変更できるようにしなければならない
-        cv::Mat intrinsic_matrix(3, 3, CV_32FC1);
-        intrinsic_matrix = (cv::Mat_<float>(3, 3) << 2.9055658344721849e+02, 0.0000000000000000e+00, 3.3084971542082224e+02,
-                            0.0000000000000000e+00, 2.9090444676137702e+02, 2.3369200839351839e+02,
-                            0.0000000000000000e+00, 0.0000000000000000e+00, 1.0000000000000000e+00);
-        cv::Mat distortion_coeffs(5, 1, CV_32FC1);
-        distortion_coeffs = (cv::Mat_<float>(5, 1) << -2.4556825095656906e-01, 7.5388587025469550e-02, 1.3153851332293872e-03, -1.3332173710016491e-04, -1.0879007108602111e-02);
-        cv::undistort(img, img_undistort, intrinsic_matrix, distortion_coeffs);
-
-        dfe.detect_and_track(img_undistort);
+        dfe.detect_and_track(img);
 
         // for (size_t fnum = std::max(static_cast<int64_t>(dfe.features.size()) - ref_size, 0l);
         //      fnum < dfe.features.size(); fnum++)
@@ -114,7 +94,7 @@ int main()
         //     for (size_t i = 0; i < dfe.features[fnum].features.size(); i++)
         //     {
         //         auto &f = dfe.features[fnum];
-        //         cv::circle(img_undistort, cv::Point2i(f.features[i][0], f.features[i][1]), 1, colors[f.featureIDs[i] % num_colors], 1);
+        //         cv::circle(img, cv::Point2i(f.features[i][0], f.features[i][1]), 1, colors[f.featureIDs[i] % num_colors], 1);
         //     }
         // }
 
@@ -158,27 +138,11 @@ int main()
             cv::Scalar dcolor = HSVtoRGB(len / maxlen * 360.0, 1, 1);
 
             // cv::polylines(img_color, p, false, colors[id % num_colors]);
-            cv::polylines(img_undistort, p, false, dcolor, 1);
-            cv::circle(img_undistort, p[0], 2, dcolor, 1);
+            cv::polylines(img, p, false, dcolor, 1);
+            cv::circle(img, p[0], 2, dcolor, 1);
         }
 
-        // for (const auto &[id, p] : feature_lists)
-        // {
-        //     cv::Point2i d = p[0] - p[p.size() - 1];
-        //     double angle = std::atan2(d.y, d.x) * 180.0 / M_PI;
-        //     angle += 180;
-        //     // cv::polylines(img_color, p, false, colors[id % num_colors]);
-        //     cv::polylines(img_undistort, p, false, HSVtoRGB(angle, 1, 1), 1);
-        //     cv::circle(img_undistort, p[0], 2, HSVtoRGB(angle, 1, 1), 1);
-        // }
-
-        // for (size_t i = 0; i < dfe.features[dfe.features.size() - 1].features.size(); i++)
-        // {
-        //     auto &f = dfe.features[dfe.features.size() - 1];
-        //     cv::circle(img_undistort, cv::Point2i(f.features[i][0], f.features[i][1]), 1, colors[f.featureIDs[i] % num_colors], 1);
-        // }
-
-        cv::imshow("feature", img_undistort);
+        cv::imshow("feature", img);
         cv::waitKey(1);
     }
 }

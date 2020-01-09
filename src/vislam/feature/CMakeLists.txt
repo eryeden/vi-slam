@@ -6,4 +6,8 @@ target_sources(${PROJECT_NAME}
             ${CMAKE_CURRENT_SOURCE_DIR}/feature_test.hpp
             ${CMAKE_CURRENT_SOURCE_DIR}/dense_feature_extructor_proto.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/dense_feature_extructor_proto.hpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/dense_feature_extructor.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/dense_feature_utils.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/dense_feature_features.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/dense_feature_extructor.hpp
             )

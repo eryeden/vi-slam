@@ -2,6 +2,11 @@ add_executable(sample1 sample1.cpp)
 list(APPEND EXECUTABLE_TARGETS sample1)
 add_executable(sample2 sample2.cpp)
 list(APPEND EXECUTABLE_TARGETS sample2)
+add_executable(sample2_cam sample2_cam.cpp)
+list(APPEND EXECUTABLE_TARGETS sample2_cam)
+add_executable(sample2_euroc_mav sample2_euroc_mav.cpp)
+list(APPEND EXECUTABLE_TARGETS sample2_euroc_mav)
+
 
 
 foreach(EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)

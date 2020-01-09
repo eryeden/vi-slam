@@ -83,40 +83,31 @@ int main()
 
     // std::string path_to_log_dir = "/home/ery/assets/20191115/20191115_40_2m_track";
     // std::string path_to_log_dir = "/home/ery/Devel/tmp/assets/20191219_1/20191219_3";
-    std::string path_to_log_dir = "/home/ery/Devel/tmp/assets/20191219_2/20191219_31";
-    LogPlayer_extended lpe(path_to_log_dir, 0.01);
 
     // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
+    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V2_01_easy/mav0/cam0", 0.001);
 
     int64_t ref_size = 5;
 
-    for (size_t i = 0; i < lpe.get_frame_size(); i++)
+    // // カメラ画像を補正するようにする
+    // // カメラの歪み補正 パラメータ FIXME 外用Econカメラの4:3画像サイズの補正用パラメータなので、カメラでパラメータを変更できるようにしなければならない
+    cv::Mat intrinsic_matrix(3, 3, CV_32FC1);
+    intrinsic_matrix = (cv::Mat_<float>(3, 3) << 458.654, 0.0000000000000000e+00, 367.215,
+                        0.0000000000000000e+00, 457.296, 248.375,
+                        0.0000000000000000e+00, 0.0000000000000000e+00, 1.0000000000000000e+00);
+    cv::Mat distortion_coeffs(5, 1, CV_32FC1);
+    distortion_coeffs = (cv::Mat_<float>(5, 1) << -0.28340811, 0.07395907, 0.00019359, 1.76187114e-05);
+
+    for (size_t i = 0; i < lp_mav.get_frame_size(); i++)
     {
-        cv::Mat img, img_undistort;
+        cv::Mat img, img_undistort, img_color;
         double tstamp;
-        lpe.get_frame_by_index(img, tstamp, i);
+        lp_mav.get_frame_by_index(img, tstamp, i);
 
-        // カメラ画像を補正するようにする
-        // カメラの歪み補正 パラメータ FIXME 外用Econカメラの4:3画像サイズの補正用パラメータなので、カメラでパラメータを変更できるようにしなければならない
-        cv::Mat intrinsic_matrix(3, 3, CV_32FC1);
-        intrinsic_matrix = (cv::Mat_<float>(3, 3) << 2.9055658344721849e+02, 0.0000000000000000e+00, 3.3084971542082224e+02,
-                            0.0000000000000000e+00, 2.9090444676137702e+02, 2.3369200839351839e+02,
-                            0.0000000000000000e+00, 0.0000000000000000e+00, 1.0000000000000000e+00);
-        cv::Mat distortion_coeffs(5, 1, CV_32FC1);
-        distortion_coeffs = (cv::Mat_<float>(5, 1) << -2.4556825095656906e-01, 7.5388587025469550e-02, 1.3153851332293872e-03, -1.3332173710016491e-04, -1.0879007108602111e-02);
         cv::undistort(img, img_undistort, intrinsic_matrix, distortion_coeffs);
+        cv::cvtColor(img_undistort, img_color, CV_GRAY2BGR);
 
-        dfe.detect_and_track(img_undistort);
-
-        // for (size_t fnum = std::max(static_cast<int64_t>(dfe.features.size()) - ref_size, 0l);
-        //      fnum < dfe.features.size(); fnum++)
-        // {
-        //     for (size_t i = 0; i < dfe.features[fnum].features.size(); i++)
-        //     {
-        //         auto &f = dfe.features[fnum];
-        //         cv::circle(img_undistort, cv::Point2i(f.features[i][0], f.features[i][1]), 1, colors[f.featureIDs[i] % num_colors], 1);
-        //     }
-        // }
+        dfe.detect_and_track(img_undistort, false);
 
         std::map<uint64_t, std::vector<cv::Point2i>> feature_lists;
         for (size_t i = 0; i < (dfe.features[dfe.features.size() - 1]).features.size(); i++)
@@ -158,27 +149,11 @@ int main()
             cv::Scalar dcolor = HSVtoRGB(len / maxlen * 360.0, 1, 1);
 
             // cv::polylines(img_color, p, false, colors[id % num_colors]);
-            cv::polylines(img_undistort, p, false, dcolor, 1);
-            cv::circle(img_undistort, p[0], 2, dcolor, 1);
+            cv::polylines(img_color, p, false, dcolor, 1);
+            cv::circle(img_color, p[0], 2, dcolor, 1);
         }
 
-        // for (const auto &[id, p] : feature_lists)
-        // {
-        //     cv::Point2i d = p[0] - p[p.size() - 1];
-        //     double angle = std::atan2(d.y, d.x) * 180.0 / M_PI;
-        //     angle += 180;
-        //     // cv::polylines(img_color, p, false, colors[id % num_colors]);
-        //     cv::polylines(img_undistort, p, false, HSVtoRGB(angle, 1, 1), 1);
-        //     cv::circle(img_undistort, p[0], 2, HSVtoRGB(angle, 1, 1), 1);
-        // }
-
-        // for (size_t i = 0; i < dfe.features[dfe.features.size() - 1].features.size(); i++)
-        // {
-        //     auto &f = dfe.features[dfe.features.size() - 1];
-        //     cv::circle(img_undistort, cv::Point2i(f.features[i][0], f.features[i][1]), 1, colors[f.featureIDs[i] % num_colors], 1);
-        // }
-
-        cv::imshow("feature", img_undistort);
+        cv::imshow("feature", img_color);
         cv::waitKey(1);
     }
 }
