@@ -81,9 +81,9 @@ int main()
     // dfe.run_extruction_cam("/dev/video0", 1.0);
     // dfe.run_extruction_cam("/home/ery/Devel/tmp/assets/IMG_5144.MOV", 1.0 / 2.0);
 
-    // std::string path_to_log_dir = "/home/ery/assets/20191115/20191115_40_2m_track";
-    // std::string path_to_log_dir = "/home/ery/Devel/tmp/assets/20191219_1/20191219_3";
-    std::string path_to_log_dir = "/home/ery/Devel/tmp/assets/20191219_2/20191219_31";
+    // std::string path_to_log_dir = "/home/ery/Devel/tmp/assets/20191115/20191115_40_2m_track";
+    std::string path_to_log_dir = "/home/ery/Devel/tmp/assets/20191219_1/20191219_3";
+    // std::string path_to_log_dir = "/home/ery/Devel/tmp/assets/20191219_2/20191219_31";
     LogPlayer_extended lpe(path_to_log_dir, 0.01);
 
     // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
@@ -155,10 +155,11 @@ int main()
             angle += 180;
 
             // cv::Scalar dcolor = HSVtoRGB(angle, 1, 1);
-            cv::Scalar dcolor = HSVtoRGB(len / maxlen * 360.0, 1, 1);
+            // cv::Scalar dcolor = HSVtoRGB(len / maxlen * 360.0, 1, 1);
+            cv::Scalar dcolor = colors[id % num_colors];
 
             // cv::polylines(img_color, p, false, colors[id % num_colors]);
-            cv::polylines(img_undistort, p, false, dcolor, 1);
+            // cv::polylines(img_undistort, p, false, dcolor, 1);
             cv::circle(img_undistort, p[0], 2, dcolor, 1);
         }
 

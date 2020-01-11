@@ -5,8 +5,8 @@
 
 using namespace dense_feature;
 
-dense_feature_extructor::dense_feature_extructor(const double lambda_, const double sigma_)
-    : lambda(lambda_), sigma(sigma_)
+dense_feature_extructor::dense_feature_extructor(const double lambda_, const double sigma_, const double dominant_flow_scale_)
+    : lambda(lambda_), sigma(sigma_), dominant_flow_scale(dominant_flow_scale_)
 {
     is_initialize = true;
     is_initialize_dominant_flow = true;
@@ -38,7 +38,7 @@ void dense_feature_extructor::detect_and_track(const cv::Mat &input_color, bool 
     if (is_initialize)
     {
 
-        features.emplace_back(initialize_features(outimg, feature_in_frame(), 100000));
+        features.emplace_back(initialize_features(outimg, feature_in_frame(), 10000));
     }
 
     if (!is_initialize)
@@ -55,13 +55,17 @@ void dense_feature_extructor::detect_and_track(const cv::Mat &input_color, bool 
 
             if (is_inside)
             {
-                prev_point = utils::track_local_max_with_regularization(outimg, prev_point);
-                current_feature.featureIDs.emplace_back(prev_feature.featureIDs[i]);
-                current_feature.features.emplace_back(Eigen::Vector2i(prev_point.x, prev_point.y));
+                cv::Point2f prev_point_mod = utils::track_local_max_with_regularization(outimg, prev_point);
+                double mod_diff = cv::norm(prev_point_mod - prev_point);
+                if (mod_diff > 0.0)
+                {
+                    current_feature.featureIDs.emplace_back(prev_feature.featureIDs[i]);
+                    current_feature.features.emplace_back(Eigen::Vector2i(prev_point_mod.x, prev_point_mod.y));
+                }
             }
         }
 
-        features.emplace_back(initialize_features(outimg, current_feature, 100));
+        features.emplace_back(initialize_features(outimg, current_feature, 200));
     }
 
     is_initialize = false;
@@ -73,7 +77,8 @@ cv::Mat dense_feature_extructor::get_dominant_flow(const cv::Mat &img_mono)
     cv::Mat input_small; //, img_draw, img_mono;
     // img_color.copyTo(img_draw);
     // cv::cvtColor(img_color, img_mono, CV_BGR2GRAY);
-    double scale = 1.0 / 3.0;
+    // double scale = 1.0 / 3.0;
+    double scale = dominant_flow_scale;
     cv::resize(img_mono, input_small, cv::Size(), scale, scale, CV_INTER_LINEAR);
 
     // Feature pointを抽出する
@@ -192,16 +197,22 @@ feature_in_frame dense_feature_extructor::initialize_features(
     std::uniform_int_distribution<int32_t> rand_height(0, img_curvature.size().height - 1); // [0, 99] 範囲の一様乱数
 
     // cv::Mat flag_img(img_curvature.size(), CV_8U);
-    cv::Mat flag_img = cv::Mat::zeros(img_curvature.size(), CV_8U);
-    // cv::Mat flag_img(cv::Size(640, 480), CV_8U);
+    cv::Mat flag_img = cv::Mat::zeros(img_curvature.size(), CV_8UC1);
+    cv::Mat_<uchar> flag_img_ac = cv::Mat_<uchar>(flag_img);
     flag_img = 0;
 
+    // cv::Mat flag_img2 = cv::Mat::zeros(img_curvature.size(), CV_8U);
+    // cv::Mat flag_img(cv::Size(640, 480), CV_8U);
+    // flag_img = 0;
+
     // // 事前に検出されている特徴点を登録する
-    // for (const auto &p : current_features.features)
-    // {
-    //     printf("## %d, %d\n", p[0], p[1]);
-    //     flag_img.at<uint8_t>(p[1], p[0]) = 1;
-    // }
+    for (const auto &p : current_features.features)
+    {
+        if (p[0] > 0 && p[0] < img_curvature.size().width && p[1] > 0 && p[1] < img_curvature.size().height)
+        {
+            flag_img_ac(p[1], p[0]) = 1;
+        }
+    }
 
     // 現状のMAXID
     uint64_t max_id = 0;
@@ -219,12 +230,15 @@ feature_in_frame dense_feature_extructor::initialize_features(
 
         uint8_t flag = flag_img.at<uint8_t>(tmp_point.y, tmp_point.x);
         double curv = img_curvature.at<uint8_t>(tmp_point.y, tmp_point.x);
-        if ((!flag) && (curv > 10))
+        if ((!flag) && (curv > 100))
+        // if ((!flag))
         {
             max_id++;
             current_features.features.emplace_back(Eigen::Vector2i(tmp_point.x, tmp_point.y));
             current_features.featureIDs.emplace_back(max_id);
-            flag_img.at<uint8_t>(tmp_point.y, tmp_point.x) = 1;
+            // flag_img.at<uint8_t>(tmp_point.y, tmp_point.x) = 1;
+
+            flag_img_ac(tmp_point.y, tmp_point.x) = 1;
         }
     }
 

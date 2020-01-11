@@ -72,15 +72,27 @@ int main()
 
     // cv::VideoCapture cap("/dev/video0");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4257.MOV");
+    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4134.MOV");
+    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4240.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4287.MOV");
-    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4306.MOV");
-    cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5144.MOV");
+    cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4306.MOV");
+    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5144.MOV");
 
     int64_t ref_size = 5;
-    double scale = 1.0 / 2.0;
+    double scale = 1.0 / 2.5;
     // double scale = 1.0;
 
+    cv::Mat tmp, tmp_resized;
+    cap >> tmp;
+    cv::resize(tmp, tmp_resized, cv::Size(), scale, scale);
+
+#ifdef REC
+    cv::VideoWriter wrt("test.mp4", cv::VideoWriter::fourcc('M', 'P', '4', 'V'), 30, tmp_resized.size());
+    for (size_t i = 0; i < 1000; i++)
+#else
     for (size_t i = 0;; i++)
+#endif
+
     {
         cv::Mat img, img_tmp;
         cap >> img_tmp;
@@ -127,6 +139,8 @@ int main()
             }
         }
 
+        img *= 0.7;
+
         for (const auto &[id, p] : feature_lists)
         {
             cv::Point2i d = p[0] - p[p.size() - 1];
@@ -136,13 +150,17 @@ int main()
 
             // cv::Scalar dcolor = HSVtoRGB(angle, 1, 1);
             cv::Scalar dcolor = HSVtoRGB(len / maxlen * 360.0, 1, 1);
+            // cv::Scalar dcolor = colors[id % num_colors];
 
-            // cv::polylines(img_color, p, false, colors[id % num_colors]);
+            // cv::polylines(img, p, false, colors[id % num_colors]);
             cv::polylines(img, p, false, dcolor, 1);
-            cv::circle(img, p[0], 2, dcolor, 1);
+            cv::circle(img, p[0], 1, dcolor, 1);
         }
 
         cv::imshow("feature", img);
+#ifdef REC
+        wrt << img;
+#endif
         cv::waitKey(1);
     }
 }

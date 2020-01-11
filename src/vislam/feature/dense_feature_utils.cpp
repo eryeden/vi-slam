@@ -13,21 +13,23 @@ cv::Mat utils::generate_curvature_image(const cv::Mat &img_gray)
  */
 #define USE_CV_FP64
 #ifdef USE_CV_FP64
+    // const int32_t size_kernel = 11;
+    const int32_t size_kernel = 31;
     cv::Mat img_x, img_xx;
-    cv::Sobel(img_gray, img_x, CV_64FC1, 1, 0, 5);
+    cv::Sobel(img_gray, img_x, CV_64FC1, 1, 0, size_kernel);
     // cv::Sobel(img_x, img_xx, CV_64FC1, 1, 0);
-    cv::Sobel(img_gray, img_xx, CV_64FC1, 2, 0, 5);
+    cv::Sobel(img_gray, img_xx, CV_64FC1, 2, 0, size_kernel);
 
     cv::Mat img_y, img_yy;
-    cv::Sobel(img_gray, img_y, CV_64FC1, 0, 1, 5);
+    cv::Sobel(img_gray, img_y, CV_64FC1, 0, 1, size_kernel);
     // cv::Sobel(img_y, img_yy, CV_64FC1, 0, 1);
-    cv::Sobel(img_gray, img_yy, CV_64FC1, 0, 2, 5);
+    cv::Sobel(img_gray, img_yy, CV_64FC1, 0, 2, size_kernel);
 
     // cv::Mat img_xy;
     // cv::Sobel(img_x, img_xy, CV_64FC1, 0, 1, 5);
 
     cv::Mat img_xy;
-    cv::Sobel(img_gray, img_xy, CV_64FC1, 1, 1, 5);
+    cv::Sobel(img_gray, img_xy, CV_64FC1, 1, 1, size_kernel);
 
 #else
     cv::Mat img_x, img_xx;
@@ -66,7 +68,7 @@ cv::Mat utils::generate_curvature_image(const cv::Mat &img_gray)
 // Local maxの探索を行う
 cv::Point2i utils::track_local_max(
     const cv::Mat &img_mono,
-    const cv::Point2i &initial_point)
+    const cv::Point2f &initial_point)
 {
     cv::Point2i prev_neigbhor_max = initial_point;
 
@@ -91,7 +93,7 @@ cv::Point2i utils::track_local_max(
 // 探索開始点をアンカーとしてLocal maxを探索する
 cv::Point2i utils::track_local_max_with_regularization(
     const cv::Mat &img_mono,
-    const cv::Point2i &initial_point)
+    const cv::Point2f &initial_point)
 {
     cv::Point2i prev_neigbhor_max = initial_point;
 
@@ -100,7 +102,7 @@ cv::Point2i utils::track_local_max_with_regularization(
     {
         // cv::Point2i neighbor_max = get_neighbor_max(img_mono, prev_neigbhor_max);
         cv::Point2i neighbor_max = get_neighbor_max_with_regularization(
-            img_mono, prev_neigbhor_max, 0.01, 1, initial_point);
+            img_mono, prev_neigbhor_max, 0, 1, initial_point);
         // std::cout << "Test: " << i << ", " << neighbor_max << std::endl;
         // std::cout << "PrevTest: " << i << ", " << prev_neigbhor_max << std::endl;
         if (neighbor_max == prev_neigbhor_max)

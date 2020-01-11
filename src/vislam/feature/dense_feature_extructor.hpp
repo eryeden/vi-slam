@@ -18,11 +18,11 @@ cv::Mat generate_curvature_image(const cv::Mat &input_mono);
 // Local maxの探索を行う
 cv::Point2i track_local_max(
     const cv::Mat &img_mono,
-    const cv::Point2i &initial_point);
+    const cv::Point2f &initial_point);
 // 探索開始点をアンカーとしてLocal maxを探索する
 cv::Point2i track_local_max_with_regularization(
     const cv::Mat &img_mono,
-    const cv::Point2i &initial_point);
+    const cv::Point2f &initial_point);
 
 // 3近傍の最大値探索を行う
 cv::Point2i get_neighbor_max(const cv::Mat &img_mono, const cv::Point2i &input_point);
@@ -87,7 +87,9 @@ class dense_feature_extructor
 
 public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-    dense_feature_extructor(const double lambda_, const double sigma_);
+    dense_feature_extructor(const double lambda_,
+                            const double sigma_,
+                            const double dominant_flow_scale_ = 1.0 / 2.0);
 
     /**
      * @brief 特徴点の検出とトラッキングをする
@@ -117,6 +119,7 @@ private:
      */
     double lambda;
     double sigma;
+    double dominant_flow_scale;
 
     // 大域的な画像のフローを求める
     cv::Mat get_dominant_flow(const cv::Mat &img_mono);

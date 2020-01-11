@@ -105,7 +105,7 @@ int main()
         lp_mav.get_frame_by_index(img, tstamp, i);
 
         cv::undistort(img, img_undistort, intrinsic_matrix, distortion_coeffs);
-        cv::cvtColor(img_undistort, img_color, CV_GRAY2BGR);
+        cv::cvtColor(img_undistort * 0.5, img_color, CV_GRAY2BGR);
 
         dfe.detect_and_track(img_undistort, false);
 
@@ -149,7 +149,7 @@ int main()
             cv::Scalar dcolor = HSVtoRGB(len / maxlen * 360.0, 1, 1);
 
             // cv::polylines(img_color, p, false, colors[id % num_colors]);
-            cv::polylines(img_color, p, false, dcolor, 1);
+            // cv::polylines(img_color, p, false, dcolor, 2);
             cv::circle(img_color, p[0], 2, dcolor, 1);
         }
 
