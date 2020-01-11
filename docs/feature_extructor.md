@@ -6,6 +6,8 @@
 ### プレ実装
 #### 曲率画像の生成
 OpenCVの画像演算系を使って実装した。パフォーマンスの計測は指定いないが、結構重そうな感じがする。
+曲率画像は、大きいカーネルサイズで計算したほうが、トラッキングの成績が良かった。
+現状はカーネルサイズ３１を利用
 - 参考：http://opencv.jp/opencv-2svn/cpp/operations_on_arrays.html#cv-reduce
 
 #### 曲率ピークピック
@@ -35,3 +37,11 @@ cmake-gui .. # EXTRAで検索して/path/to/opencv_contrib/modulesを設定、�
 make -j12
 sudo make install
 ```
+
+
+
+
+#### SLAM Problem
+- 初期化：基礎行列の分解で行う。
+- BA：部分空間ガウスニュートンを利用するが、その初期値の計算も必要になる。
+- BA：初期値は、カメラ系：P3P、特徴点位置：三角測量＝＞このあとに最適化するBAを実行する
