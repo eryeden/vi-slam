@@ -187,25 +187,40 @@ cv::Mat dense_feature_extructor::get_dominant_flow(const cv::Mat &img_mono)
 feature_in_frame dense_feature_extructor::initialize_features(
     const cv::Mat &img_curvature,
     const feature_in_frame &previous_frame,
+    const int32_t num_grids_x,
+    const int32_t num_grids_y,
     const int32_t num_points)
 {
     feature_in_frame current_features = previous_frame;
 
-    std::random_device rnd;                                                                 // 非決定的な乱数生成器を生成
-    std::mt19937 mt(rnd());                                                                 //  メルセンヌ・ツイスタの32ビット版、引数は初期シード値
-    std::uniform_int_distribution<int32_t> rand_width(0, img_curvature.size().width - 1);   // [0, 99] 範囲の一様乱数
-    std::uniform_int_distribution<int32_t> rand_height(0, img_curvature.size().height - 1); // [0, 99] 範囲の一様乱数
+    // 乱数初期化
+    std::random_device rnd; // 非決定的な乱数生成器を生成
+    std::mt19937 mt(rnd()); //  メルセンヌ・ツイスタの32ビット版、引数は初期シード値
+    // std::uniform_int_distribution<int32_t> rand_width(0, img_curvature.size().width - 1);   // [0, 99] 範囲の一様乱数
+    // std::uniform_int_distribution<int32_t> rand_height(0, img_curvature.size().height - 1); // [0, 99] 範囲の一様乱数
 
-    // cv::Mat flag_img(img_curvature.size(), CV_8U);
+    // 検出済みマスク
     cv::Mat flag_img = cv::Mat::zeros(img_curvature.size(), CV_8UC1);
     cv::Mat_<uchar> flag_img_ac = cv::Mat_<uchar>(flag_img);
     flag_img = 0;
 
-    // cv::Mat flag_img2 = cv::Mat::zeros(img_curvature.size(), CV_8U);
-    // cv::Mat flag_img(cv::Size(640, 480), CV_8U);
-    // flag_img = 0;
+    // 画像をグリッドで分割して均等な分布になるようにする
+    double dx, dy;
+    dx = static_cast<double>(img_curvature.size().width) / static_cast<double>(num_grids_x);
+    dy = static_cast<double>(img_curvature.size().height) / static_cast<double>(num_grids_y);
+    std::vector<cv::Rect2f> grid_def(0);
+    grid_def.reserve(num_grids_x * num_grids_y);
+    for (int32_t x = 0; x < num_grids_x; x++)
+    {
+        for (int32_t y = 0; y < num_grids_y; y++)
+        {
+            cv::Point2f left_up(x * dx, y * dy);
+            cv::Point2f right_down = left_up + cv::Point2f(dx, dy);
+            grid_def.emplace_back(cv::Rect2f(left_up, right_down));
+        }
+    }
 
-    // // 事前に検出されている特徴点を登録する
+    // 事前に検出されている特徴点を登録する
     for (const auto &p : current_features.features)
     {
         if (p[0] > 0 && p[0] < img_curvature.size().width && p[1] > 0 && p[1] < img_curvature.size().height)
@@ -222,25 +237,49 @@ feature_in_frame dense_feature_extructor::initialize_features(
     }
     // printf("max id : %ld\n", max_id);
 
-    // 特徴点を検出、追加する
-    for (size_t i = 0; i < num_points; i++)
+    // Gridに分割して特徴点の追加を行う
+    int32_t num_max_features = num_points / (num_grids_x * num_grids_y);
+    for (const auto &grect : grid_def)
     {
-        cv::Point2i tmp_point(rand_width(mt), rand_height(mt));
-        tmp_point = utils::track_local_max(img_curvature, tmp_point);
-
-        uint8_t flag = flag_img.at<uint8_t>(tmp_point.y, tmp_point.x);
-        double curv = img_curvature.at<uint8_t>(tmp_point.y, tmp_point.x);
-        if ((!flag) && (curv > 100))
-        // if ((!flag))
+        int32_t num_features = cv::countNonZero(flag_img(grect)); // すでに存在するGrid内の特徴点数をカウントする
+        std::uniform_int_distribution<int32_t> grid_rand_width(grect.x, grect.width + grect.x - 1);
+        std::uniform_int_distribution<int32_t> grid_rand_height(grect.y, grect.height + grect.y - 1);
+        for (size_t i = num_features; i < num_max_features; i++)
         {
-            max_id++;
-            current_features.features.emplace_back(Eigen::Vector2i(tmp_point.x, tmp_point.y));
-            current_features.featureIDs.emplace_back(max_id);
-            // flag_img.at<uint8_t>(tmp_point.y, tmp_point.x) = 1;
+            cv::Point2i tmp_point(grid_rand_width(mt), grid_rand_height(mt));
+            tmp_point = utils::track_local_max(img_curvature, tmp_point);
 
-            flag_img_ac(tmp_point.y, tmp_point.x) = 1;
+            uint8_t flag = flag_img.at<uint8_t>(tmp_point.y, tmp_point.x);
+            double curv = img_curvature.at<uint8_t>(tmp_point.y, tmp_point.x);
+            if ((!flag))
+            {
+                max_id++;
+                current_features.features.emplace_back(Eigen::Vector2i(tmp_point.x, tmp_point.y));
+                current_features.featureIDs.emplace_back(max_id);
+                flag_img_ac(tmp_point.y, tmp_point.x) = 1;
+            }
         }
     }
+
+    // 特徴点を検出、追加する // 全体対象の追加
+    // for (size_t i = 0; i < num_points; i++)
+    // {
+    //     cv::Point2i tmp_point(rand_width(mt), rand_height(mt));
+    //     tmp_point = utils::track_local_max(img_curvature, tmp_point);
+
+    //     uint8_t flag = flag_img.at<uint8_t>(tmp_point.y, tmp_point.x);
+    //     double curv = img_curvature.at<uint8_t>(tmp_point.y, tmp_point.x);
+    //     // if ((!flag) && (curv > 200))
+    //     if ((!flag))
+    //     {
+    //         max_id++;
+    //         current_features.features.emplace_back(Eigen::Vector2i(tmp_point.x, tmp_point.y));
+    //         current_features.featureIDs.emplace_back(max_id);
+    //         // flag_img.at<uint8_t>(tmp_point.y, tmp_point.x) = 1;
+
+    //         flag_img_ac(tmp_point.y, tmp_point.x) = 1;
+    //     }
+    // }
 
     return current_features;
 }

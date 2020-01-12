@@ -48,6 +48,9 @@ bool warp_point(
     const cv::Size &image_size,
     cv::Point2f &output);
 
+// 曲率画像を見やすいようにする
+cv::Mat visualize_curvature_image(const cv::Mat &input_curvature_image);
+
 } // namespace utils
 
 /**
@@ -140,7 +143,9 @@ private:
     feature_in_frame initialize_features(
         const cv::Mat &img_curvature,
         const feature_in_frame &previous_frame,
-        const int32_t num_points = 10000);
+        const int32_t num_grids_x = 5,
+        const int32_t num_grids_y = 5,
+        const int32_t num_points = 1000);
 };
 
 } // namespace dense_feature

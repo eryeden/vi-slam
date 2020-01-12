@@ -75,17 +75,21 @@ int main()
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4134.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4240.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4287.MOV");
-    cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4306.MOV");
-    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5144.MOV");
+    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4306.MOV");
+    cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5144.MOV");
+    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5151.MOV");
+    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5156.MOV");
+    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5162.MOV");
 
     int64_t ref_size = 5;
-    double scale = 1.0 / 2.5;
+    double scale = 1.0 / 2;
     // double scale = 1.0;
 
     cv::Mat tmp, tmp_resized;
     cap >> tmp;
     cv::resize(tmp, tmp_resized, cv::Size(), scale, scale);
 
+#define REC
 #ifdef REC
     cv::VideoWriter wrt("test.mp4", cv::VideoWriter::fourcc('M', 'P', '4', 'V'), 30, tmp_resized.size());
     for (size_t i = 0; i < 1000; i++)
@@ -130,12 +134,27 @@ int main()
         }
 
         double maxlen = 0;
+        std::vector<double> lens(0);
         for (const auto &[id, p] : feature_lists)
         {
             cv::Point2i d = p[0] - p[p.size() - 1];
-            if (maxlen < cv::norm(d))
+            double dist = cv::norm(d) / p.size();
+            // cv::Point2i d = p[0] - p[1];
+
+            lens.emplace_back(cv::norm(dist));
+            // if (maxlen < cv::norm(d))
+            // {
+            //     maxlen = cv::norm(d);
+            // }
+        }
+        double len_sum = std::accumulate(std::begin(lens), std::end(lens), 0.0);
+        double len_ave = len_sum / lens.size();
+        double len_var = std::inner_product(std::begin(lens), std::end(lens), std::begin(lens), 0.0) / lens.size() - len_ave * len_ave;
+        for (const auto l : lens)
+        {
+            if ((maxlen < l) && (l < (1.0 * std::sqrt(len_var)) + len_ave))
             {
-                maxlen = cv::norm(d);
+                maxlen = l;
             }
         }
 
@@ -144,17 +163,22 @@ int main()
         for (const auto &[id, p] : feature_lists)
         {
             cv::Point2i d = p[0] - p[p.size() - 1];
+            // cv::Point2i d = p[0] - p[1];
             double angle = std::atan2(d.y, d.x) * 180.0 / M_PI;
-            double len = cv::norm(d);
+            // double len = cv::norm(d);
+            double len = cv::norm(d) / p.size();
             angle += 180;
 
             // cv::Scalar dcolor = HSVtoRGB(angle, 1, 1);
             cv::Scalar dcolor = HSVtoRGB(len / maxlen * 360.0, 1, 1);
             // cv::Scalar dcolor = colors[id % num_colors];
 
-            // cv::polylines(img, p, false, colors[id % num_colors]);
-            cv::polylines(img, p, false, dcolor, 1);
-            cv::circle(img, p[0], 1, dcolor, 1);
+            // cv::polylines(img_color, p, false, colors[id % num_colors]);
+            if (len < (2.0 * std::sqrt(len_var) + len_ave))
+            {
+                cv::polylines(img, p, false, dcolor, 1);
+                cv::circle(img, p[0], 2, dcolor, 1);
+            }
         }
 
         cv::imshow("feature", img);

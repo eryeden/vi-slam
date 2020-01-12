@@ -2,6 +2,9 @@
 
 using namespace dense_feature;
 
+#define USE_CV_FP64
+#define SHOW_CURVATURE
+
 // 曲率画像を生成する
 cv::Mat utils::generate_curvature_image(const cv::Mat &img_gray)
 {
@@ -11,7 +14,6 @@ cv::Mat utils::generate_curvature_image(const cv::Mat &img_gray)
  * あまり結果が変わらないようなら32bitのバージョンで計算するのがよさそう。
  * 
  */
-#define USE_CV_FP64
 #ifdef USE_CV_FP64
     // const int32_t size_kernel = 11;
     const int32_t size_kernel = 31;
@@ -32,16 +34,18 @@ cv::Mat utils::generate_curvature_image(const cv::Mat &img_gray)
     cv::Sobel(img_gray, img_xy, CV_64FC1, 1, 1, size_kernel);
 
 #else
+    // const int32_t size_kernel = 11;
+    const int32_t size_kernel = 3;
     cv::Mat img_x, img_xx;
-    cv::Sobel(img_gray, img_x, CV_32FC1, 1, 0);
-    cv::Sobel(img_x, img_xx, CV_32FC1, 1, 0);
+    cv::Sobel(img_gray, img_x, CV_32FC1, 1, 0, size_kernel);
+    cv::Sobel(img_gray, img_xx, CV_32FC1, 2, 0, size_kernel);
 
     cv::Mat img_y, img_yy;
-    cv::Sobel(img_gray, img_y, CV_32FC1, 0, 1);
-    cv::Sobel(img_y, img_yy, CV_32FC1, 0, 1);
+    cv::Sobel(img_gray, img_y, CV_32FC1, 0, 1, size_kernel);
+    cv::Sobel(img_gray, img_yy, CV_32FC1, 0, 2, size_kernel);
 
     cv::Mat img_xy;
-    cv::Sobel(img_x, img_xy, CV_32FC1, 0, 1);
+    cv::Sobel(img_gray, img_xy, CV_32FC1, 1, 1, size_kernel);
 #endif
 
     cv::Mat img_x_p2;
@@ -61,6 +65,12 @@ cv::Mat utils::generate_curvature_image(const cv::Mat &img_gray)
     cv::Mat curv;
     // curv = term1 + term2 * (-2.0) + term3;
     curv = term1 + (-2.0) * term2 + term3;
+
+#ifdef SHOW_CURVATURE
+    cv::Mat outimg_normed;
+    cv::normalize(curv, outimg_normed, 0, 1, cv::NORM_MINMAX);
+    cv::imshow("Curvature", outimg_normed);
+#endif
 
     return curv;
 }
@@ -231,4 +241,9 @@ bool utils::warp_point(
         output = input;
         return false;
     }
+}
+
+// 曲率画像を見やすいようにする
+cv::Mat utils::visualize_curvature_image(const cv::Mat &input_curvature_image)
+{
 }

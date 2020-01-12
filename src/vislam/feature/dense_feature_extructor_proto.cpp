@@ -252,6 +252,10 @@ cv::Mat dense_feature_extructor::get_curavture(const cv::Mat &img_gray)
     // curv = term1 + term2 * (-2.0) + term3;
     curv = term1 + (-2.0) * term2 + term3;
 
+    // cv::Mat outimg_normed;
+    // cv::normalize(curv, outimg_normed, 0, 1, cv::NORM_MINMAX);
+    // cv::imshow("Curvature", outimg_normed);
+
     return curv;
     // return term3;
     // return img_x;

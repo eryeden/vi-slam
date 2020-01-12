@@ -84,10 +84,10 @@ int main()
     // std::string path_to_log_dir = "/home/ery/assets/20191115/20191115_40_2m_track";
     // std::string path_to_log_dir = "/home/ery/Devel/tmp/assets/20191219_1/20191219_3";
 
-    // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
-    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V2_01_easy/mav0/cam0", 0.001);
+    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
+    // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V2_01_easy/mav0/cam0", 0.001);
 
-    int64_t ref_size = 5;
+    int64_t ref_size = 10;
 
     // // カメラ画像を補正するようにする
     // // カメラの歪み補正 パラメータ FIXME 外用Econカメラの4:3画像サイズの補正用パラメータなので、カメラでパラメータを変更できるようにしなければならない
@@ -98,7 +98,15 @@ int main()
     cv::Mat distortion_coeffs(5, 1, CV_32FC1);
     distortion_coeffs = (cv::Mat_<float>(5, 1) << -0.28340811, 0.07395907, 0.00019359, 1.76187114e-05);
 
+#ifdef REC
+    cv::Mat tmp;
+    double tst;
+    lp_mav.get_frame_by_index(tmp, tst, 0);
+    cv::VideoWriter wrt("test.mp4", cv::VideoWriter::fourcc('M', 'P', '4', 'V'), 30, tmp.size());
+    for (size_t i = 0; i < 1000; i++)
+#else
     for (size_t i = 0; i < lp_mav.get_frame_size(); i++)
+#endif
     {
         cv::Mat img, img_undistort, img_color;
         double tstamp;
@@ -129,12 +137,22 @@ int main()
         }
 
         double maxlen = 0;
+        std::vector<double> lens(0);
         for (const auto &[id, p] : feature_lists)
         {
             cv::Point2i d = p[0] - p[p.size() - 1];
-            if (maxlen < cv::norm(d))
+            double dist = cv::norm(d) / p.size();
+
+            lens.emplace_back(cv::norm(dist));
+        }
+        double len_sum = std::accumulate(std::begin(lens), std::end(lens), 0.0);
+        double len_ave = len_sum / lens.size();
+        double len_var = std::inner_product(std::begin(lens), std::end(lens), std::begin(lens), 0.0) / lens.size() - len_ave * len_ave;
+        for (const auto l : lens)
+        {
+            if ((maxlen < l) && (l < (1.0 * std::sqrt(len_var)) + len_ave))
             {
-                maxlen = cv::norm(d);
+                maxlen = l;
             }
         }
 
@@ -142,18 +160,26 @@ int main()
         {
             cv::Point2i d = p[0] - p[p.size() - 1];
             double angle = std::atan2(d.y, d.x) * 180.0 / M_PI;
-            double len = cv::norm(d);
+            double len = cv::norm(d) / p.size();
             angle += 180;
 
             // cv::Scalar dcolor = HSVtoRGB(angle, 1, 1);
             cv::Scalar dcolor = HSVtoRGB(len / maxlen * 360.0, 1, 1);
+            // cv::Scalar dcolor = cv::Scalar(255, 255, 255);
+            // cv::Scalar dcolor = colors[id % num_colors];
 
-            // cv::polylines(img_color, p, false, colors[id % num_colors]);
-            // cv::polylines(img_color, p, false, dcolor, 2);
-            cv::circle(img_color, p[0], 2, dcolor, 1);
+            if (len < (2.0 * std::sqrt(len_var) + len_ave))
+            {
+                // cv::polylines(img_color, p, false, dcolor, 1);
+                // cv::polylines(img_color, p, false, cv::Scalar(255, 255, 255), 1);
+                cv::circle(img_color, p[0], 2, dcolor, 1);
+            }
         }
 
         cv::imshow("feature", img_color);
         cv::waitKey(1);
+#ifdef REC
+        wrt << img;
+#endif
     }
 }
