@@ -7,17 +7,19 @@
 #### 曲率画像の生成
 OpenCVの画像演算系を使って実装した。パフォーマンスの計測は指定いないが、結構重そうな感じがする。
 曲率画像は、大きいカーネルサイズで計算したほうが、トラッキングの成績が良かった。
-現状はカーネルサイズ３１を利用
+現状はカーネルサイズ３１を利用。カーネルサイズが７以上の場合、周りを０でPaddingされるので意味がないらしいが、出力された曲率画像は変わるので何か変わっているはず。
 - 参考：http://opencv.jp/opencv-2svn/cpp/operations_on_arrays.html#cv-reduce
 
 #### 曲率ピークピック
 画素中心からの８近傍探索を繰り返すことでピークピックを行う。
+端の処理でバグがあるぽい？たまにジャンプ？端ワープが見られる。
 時間がかかるかを思っていたが、意外と処理できている。OpenMPかなにかで並列化できればより高速に処理できると思われる。
 - 参考：https://stackoverflow.com/questions/23274906/opencv-fast-mat-element-and-neighbour-access
 
 
 #### Dominant flow estimation
-ここではopencv_contribに入っているFeature descripterを利用している。
+ここではopencv_contribに入っているFeature descripter(Belief, 32bit)を利用している。
+たまに、Featureマッチングに失敗することもある。その場合は恒等変換の単位行列を返すようにしている。
 なのでOpenCV contribも入れておく必要あり。以下メモ。
 
 1. ダウンロード：今はバージョン、3.4.9を利用するのでこのソースコードを落とす。
