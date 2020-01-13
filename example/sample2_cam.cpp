@@ -71,7 +71,7 @@ int main()
     dense_feature::dense_feature_extructor dfe(0.1, 0.1);
 
     // cv::VideoCapture cap("/dev/video0");
-    cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4257.MOV");
+    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4257.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4134.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4240.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4287.MOV");
@@ -81,10 +81,11 @@ int main()
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5156.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5162.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/test_fukuroi_ryou303.mp4");
+    cv::VideoCapture cap("/home/ery/Devel/tmp/assets/imgs_jetson/frame%d.jpg");
 
     int64_t ref_size = 5;
-    double scale = 1.0 / 2;
-    // double scale = 1.0;
+    // double scale = 1.0 / 2;
+    double scale = 1.0;
 
     cv::Mat tmp, tmp_resized;
     cap >> tmp;
@@ -177,7 +178,7 @@ int main()
             // cv::polylines(img_color, p, false, colors[id % num_colors]);
             if (len < (2.0 * std::sqrt(len_var) + len_ave))
             {
-                cv::polylines(img, p, false, dcolor, 1);
+                // cv::polylines(img, p, false, dcolor, 1);
                 cv::circle(img, p[0], 2, dcolor, 1);
             }
         }
