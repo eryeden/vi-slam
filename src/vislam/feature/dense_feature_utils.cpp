@@ -3,7 +3,7 @@
 using namespace dense_feature;
 
 #define USE_CV_FP64
-#define SHOW_CURVATURE
+// #define SHOW_CURVATURE
 
 // 曲率画像を生成する
 cv::Mat utils::generate_curvature_image(const cv::Mat &img_gray)

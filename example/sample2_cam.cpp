@@ -71,15 +71,16 @@ int main()
     dense_feature::dense_feature_extructor dfe(0.1, 0.1);
 
     // cv::VideoCapture cap("/dev/video0");
-    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4257.MOV");
+    cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4257.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4134.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4240.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4287.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_4306.MOV");
-    cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5144.MOV");
+    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5144.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5151.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5156.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5162.MOV");
+    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/test_fukuroi_ryou303.mp4");
 
     int64_t ref_size = 5;
     double scale = 1.0 / 2;
@@ -89,7 +90,7 @@ int main()
     cap >> tmp;
     cv::resize(tmp, tmp_resized, cv::Size(), scale, scale);
 
-#define REC
+// #define REC
 #ifdef REC
     cv::VideoWriter wrt("test.mp4", cv::VideoWriter::fourcc('M', 'P', '4', 'V'), 30, tmp_resized.size());
     for (size_t i = 0; i < 1000; i++)
@@ -182,9 +183,9 @@ int main()
         }
 
         cv::imshow("feature", img);
+        cv::waitKey(1);
 #ifdef REC
         wrt << img;
 #endif
-        cv::waitKey(1);
     }
 }
