@@ -84,7 +84,10 @@ int main()
     // std::string path_to_log_dir = "/home/ery/assets/20191115/20191115_40_2m_track";
     // std::string path_to_log_dir = "/home/ery/Devel/tmp/assets/20191219_1/20191219_3";
 
-    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
+    // /e/subspace/tmp/tmp/V1_01_easy/mav0/cam0
+    // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
+    // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
+    LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/MH_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V2_01_easy/mav0/cam0", 0.001);
 
     int64_t ref_size = 10;
@@ -117,13 +120,16 @@ int main()
 
         dfe.detect_and_track(img_undistort, false);
 
+        /**
+         * @brief 特徴点のトラッキング結果とIDの対応Mapを生成する
+         * 
+         */
         std::map<uint64_t, std::vector<cv::Point2i>> feature_lists;
         for (size_t i = 0; i < (dfe.features[dfe.features.size() - 1]).features.size(); i++)
         {
             auto &f = dfe.features[dfe.features.size() - 1];
             feature_lists[f.featureIDs[i]] = std::vector<cv::Point2i>({cv::Point2i(f.features[i][0], f.features[i][1])});
         }
-
         for (size_t fnum = dfe.features.size() - 1; fnum > std::max(static_cast<int64_t>(dfe.features.size()) - ref_size, 0l); fnum--)
         {
             for (size_t i = 0; i < dfe.features[fnum].features.size(); i++)
