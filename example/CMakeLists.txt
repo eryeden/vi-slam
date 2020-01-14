@@ -7,6 +7,8 @@ list(APPEND EXECUTABLE_TARGETS sample2_cam)
 add_executable(sample2_euroc_mav sample2_euroc_mav.cpp)
 list(APPEND EXECUTABLE_TARGETS sample2_euroc_mav)
 
+add_executable(sample_viz sample_viz.cpp)
+list(APPEND EXECUTABLE_TARGETS sample_viz)
 
 
 foreach(EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
@@ -15,6 +17,8 @@ foreach(EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
         ${PROJECT_NAME}
         utils
         opencv_imgcodecs
-        opencv_videoio)
+        opencv_videoio
+        opencv_viz
+        opencv_calib3d)
 
 endforeach(EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
