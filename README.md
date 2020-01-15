@@ -56,7 +56,7 @@ Try to make Visual Inertial SLAM
 
 
 ## Deps
-- OpenCV, opeencv_contrib : vizを使うためにvtk6.3をインストールしてコンパイルしてほしいです。
+See [__Setup__.](docs/setup.md)
 
 
 ## TODO
