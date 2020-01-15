@@ -1,6 +1,11 @@
 # vi-slam
 Try to make Visual Inertial SLAM
 
+## Docs
+- [Test enviromnent](docs/about_test.md)
+- [Feature detection and tracking](docs/feature_extructor.md)
+- [Initialization](docs/initialization.md)
+
 ## Policy
 1. Keep a license of this repo as non-GPL.
 2. Try to use GTSAM.
@@ -46,6 +51,7 @@ Try to make Visual Inertial SLAM
   - 天候：雨、霧、低照度、逆光、直射日光
   - 低FPS、Static仮定を破る環境（カメラの前をウロウロする人がいるとか）、はっきり結像しない環境について（草むら画像をJPEG圧縮した場合など）
   - ライブハウス？レーザー飛び交う現場は一番難しそう。
+- https://github.com/PaoPaoRobot/SLAMPaperReading
 
 
 ## TODO
