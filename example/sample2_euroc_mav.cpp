@@ -87,8 +87,8 @@ int main()
     // std::string path_to_log_dir = "/home/ery/Devel/tmp/assets/20191219_1/20191219_3";
 
     // /e/subspace/tmp/tmp/V1_01_easy/mav0/cam0
-    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
-    // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
+    // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
+    LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/MH_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V2_01_easy/mav0/cam0", 0.001);
 
@@ -166,7 +166,7 @@ int main()
 
         /**
          * @brief 初期化処理をとりあえず実装してみる
-         * 
+         *
          */
         double focal = 1; //1.0;
         cv::Point2d pp(0, 0);
@@ -174,103 +174,103 @@ int main()
         std::vector<cv::Point2f> prev_points(0), current_points(0), current_points_device(0);
         if (dfe.features.size() >= 2)
         {
-            // 前フレームと今のフレームの特徴点ペアを生成する
-            int32_t num_ref_frames = 9;
-            for (const auto &[id, p] : feature_lists)
-            {
-                if (p.size() >= num_ref_frames)
-                {
-                    cv::Mat p_tmp = cv::Mat_<double>(3, 1, CV_64FC1);
-                    p_tmp = Kinv * (cv::Mat_<double>(3, 1, CV_64FC1) << p[0].x, p[0].y, 1.0);
-                    current_points.emplace_back(cv::Point2f(p_tmp.at<double>(0), p_tmp.at<double>(1)));
-                    current_points_device.emplace_back(p[0]);
+            // // 前フレームと今のフレームの特徴点ペアを生成する
+            // int32_t num_ref_frames = 9;
+            // for (const auto &[id, p] : feature_lists)
+            // {
+            //     if (p.size() >= num_ref_frames)
+            //     {
+            //         cv::Mat p_tmp = cv::Mat_<double>(3, 1, CV_64FC1);
+            //         p_tmp = Kinv * (cv::Mat_<double>(3, 1, CV_64FC1) << p[0].x, p[0].y, 1.0);
+            //         current_points.emplace_back(cv::Point2f(p_tmp.at<double>(0), p_tmp.at<double>(1)));
+            //         current_points_device.emplace_back(p[0]);
 
-                    p_tmp = Kinv * (cv::Mat_<double>(3, 1, CV_64FC1) << p[num_ref_frames - 1].x, p[num_ref_frames - 1].y, 1.0);
-                    prev_points.emplace_back(cv::Point2f(p_tmp.at<double>(0), p_tmp.at<double>(1)));
-                }
-            }
+            //         p_tmp = Kinv * (cv::Mat_<double>(3, 1, CV_64FC1) << p[num_ref_frames - 1].x, p[num_ref_frames - 1].y, 1.0);
+            //         prev_points.emplace_back(cv::Point2f(p_tmp.at<double>(0), p_tmp.at<double>(1)));
+            //     }
+            // }
 
-            if (current_points.size() >= num_ref_frames)
-            {
-                E = cv::findEssentialMat(prev_points, current_points, focal, pp, cv::RANSAC, 0.999, 0.001, mask);
-                cv::recoverPose(E, prev_points, current_points, R, t, focal, pp, mask);
-                std::cout << R << std::endl;
-                std::cout << t << std::endl;
-                // std::cout << mask << std::endl;
-                // current_attitude = R * current_attitude;
-                // current_position += current_attitude * t;
+            // if (current_points.size() >= num_ref_frames)
+            // {
+            //     E = cv::findEssentialMat(prev_points, current_points, focal, pp, cv::RANSAC, 0.999, 0.001, mask);
+            //     cv::recoverPose(E, prev_points, current_points, R, t, focal, pp, mask);
+            //     std::cout << R << std::endl;
+            //     std::cout << t << std::endl;
+            //     // std::cout << mask << std::endl;
+            //     // current_attitude = R * current_attitude;
+            //     // current_position += current_attitude * t;
 
-                current_attitude = R;
-                current_position = t;
+            //     current_attitude = R;
+            //     current_position = t;
 
-                double matching_rate = static_cast<double>(cv::countNonZero(mask)) / prev_points.size();
-                std::cout << "Match rate: " << matching_rate << std::endl;
-                if (matching_rate > 0.5)
-                {
-                    //正規化座標系で計算しているのでProjection matrix=Extrinsic camera parameter matrix
-                    cv::Mat prjMat1, prjMat2;
-                    prjMat1 = cv::Mat::eye(3, 4, CV_64FC1); //片方は回転、並進ともに0
-                    prjMat2 = cv::Mat(3, 4, CV_64FC1);
-                    for (int ii = 0; ii < 3; ++ii)
-                    {
-                        for (int j = 0; j < 3; ++j)
-                        {
-                            prjMat2.at<double>(ii, j) = R.at<double>(ii, j);
-                        }
-                    }
-                    prjMat2.at<double>(0, 3) = t.at<double>(0);
-                    prjMat2.at<double>(1, 3) = t.at<double>(1);
-                    prjMat2.at<double>(2, 3) = t.at<double>(2);
+            //     double matching_rate = static_cast<double>(cv::countNonZero(mask)) / prev_points.size();
+            //     std::cout << "Match rate: " << matching_rate << std::endl;
+            //     if (matching_rate > 0.5)
+            //     {
+            //         //正規化座標系で計算しているのでProjection matrix=Extrinsic camera parameter matrix
+            //         cv::Mat prjMat1, prjMat2;
+            //         prjMat1 = cv::Mat::eye(3, 4, CV_64FC1); //片方は回転、並進ともに0
+            //         prjMat2 = cv::Mat(3, 4, CV_64FC1);
+            //         for (int ii = 0; ii < 3; ++ii)
+            //         {
+            //             for (int j = 0; j < 3; ++j)
+            //             {
+            //                 prjMat2.at<double>(ii, j) = R.at<double>(ii, j);
+            //             }
+            //         }
+            //         prjMat2.at<double>(0, 3) = t.at<double>(0);
+            //         prjMat2.at<double>(1, 3) = t.at<double>(1);
+            //         prjMat2.at<double>(2, 3) = t.at<double>(2);
 
-                    std::cout << "Projection Matrix 1:\n"
-                              << prjMat1 << std::endl;
-                    std::cout << "Projection Matrix 2:\n"
-                              << prjMat2 << std::endl;
+            //         std::cout << "Projection Matrix 1:\n"
+            //                   << prjMat1 << std::endl;
+            //         std::cout << "Projection Matrix 2:\n"
+            //                   << prjMat2 << std::endl;
 
-                    //三角測量による三次元位置の推定
-                    cv::Mat point3D;
-                    cv::triangulatePoints(prjMat1, prjMat2, prev_points, current_points, point3D);
+            //         //三角測量による三次元位置の推定
+            //         cv::Mat point3D;
+            //         cv::triangulatePoints(prjMat1, prjMat2, prev_points, current_points, point3D);
 
-                    // std::cout << point3D << std::endl;
+            //         // std::cout << point3D << std::endl;
 
-                    //保存
-                    std::vector<cv::Point3d> pointCloud;
-                    for (int ii = 0; ii < point3D.cols; ++ii)
-                    {
-                        //誤対応以外の点を保存
-                        if (mask.at<unsigned char>(ii) > 0)
-                        {
-                            // //色情報を取得
-                            // pointCloud.emplace_back(cv::Point3f(point3D.at<double>(0, ii) / point3D.at<double>(3, ii),
-                            //                                     point3D.at<double>(1, ii) / point3D.at<double>(3, ii),
-                            //                                     point3D.at<double>(2, ii) / point3D.at<double>(3, ii)));
-                            pointCloud.emplace_back(cv::Point3d(point3D.at<double>(0, ii),
-                                                                point3D.at<double>(1, ii),
-                                                                point3D.at<double>(2, ii)));
-                            // std::cout << ii << std::endl;
-                            // std::cout << pointCloud[pointCloud.size() - 1] << std::endl;
-                        }
-                    }
+            //         //保存
+            //         std::vector<cv::Point3d> pointCloud;
+            //         for (int ii = 0; ii < point3D.cols; ++ii)
+            //         {
+            //             //誤対応以外の点を保存
+            //             if (mask.at<unsigned char>(ii) > 0)
+            //             {
+            //                 // //色情報を取得
+            //                 // pointCloud.emplace_back(cv::Point3f(point3D.at<double>(0, ii) / point3D.at<double>(3, ii),
+            //                 //                                     point3D.at<double>(1, ii) / point3D.at<double>(3, ii),
+            //                 //                                     point3D.at<double>(2, ii) / point3D.at<double>(3, ii)));
+            //                 pointCloud.emplace_back(cv::Point3d(point3D.at<double>(0, ii),
+            //                                                     point3D.at<double>(1, ii),
+            //                                                     point3D.at<double>(2, ii)));
+            //                 // std::cout << ii << std::endl;
+            //                 // std::cout << pointCloud[pointCloud.size() - 1] << std::endl;
+            //             }
+            //         }
 
-                    // 点群の描画
-                    cv::viz::WCloud cloud(pointCloud);
-                    myWindow.showWidget("CLOUD", cloud);
+            //         // // 点群の描画
+            //         // cv::viz::WCloud cloud(pointCloud);
+            //         // myWindow.showWidget("CLOUD", cloud);
 
-                    // カメラ移動量の描画
-                    cv::Affine3d current_cam_pose(current_attitude, cv::Vec3f(current_position));
-                    myWindow.showWidget("1", wcamera, current_cam_pose);
-                }
-            }
+            //         // // カメラ移動量の描画
+            //         // cv::Affine3d current_cam_pose(current_attitude, cv::Vec3f(current_position));
+            //         // myWindow.showWidget("1", wcamera, current_cam_pose);
+            // }
+            // }
 
-            // 対応した特徴点の描画
-            for (size_t j = 0; j < current_points_device.size(); j++)
-            {
-                if (mask.at<int32_t>(j, 0))
-                {
-                    cv::circle(img_color, current_points_device[j], 2, cv::Scalar(255, 0, 255));
-                    // cv::circle(img_color, prev_points[j], 2, cv::Scalar(0, 0, 255));
-                }
-            }
+            // // 対応した特徴点の描画
+            // for (size_t j = 0; j < current_points_device.size(); j++)
+            // {
+            //     if (mask.at<int32_t>(j, 0))
+            //     {
+            //         cv::circle(img_color, current_points_device[j], 2, cv::Scalar(255, 0, 255));
+            //         cv::circle(img_color, prev_points[j], 2, cv::Scalar(0, 0, 255));
+            //     }
+            // }
         }
 
         /**
@@ -312,8 +312,8 @@ int main()
             if (len < (2.0 * std::sqrt(len_var) + len_ave))
             {
                 // cv::polylines(img_color, p, false, dcolor, 1);
-                // cv::polylines(img_color, p, false, cv::Scalar(255, 255, 255), 1);
-                // cv::circle(img_color, p[0], 2, dcolor, 1);
+                cv::polylines(img_color, p, false, cv::Scalar(255, 255, 255), 1);
+                cv::circle(img_color, p[0], 2, dcolor, 1);
             }
         }
 

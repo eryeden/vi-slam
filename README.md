@@ -8,7 +8,7 @@ Try to make Visual Inertial SLAM
 
 ## Policy
 1. Keep a license of this repo as non-GPL.
-2. Try to use GTSAM.
+2. Try to use GTSAM. <= Optimization時に計算が不安定になることがあるらしい。
 3. Implement the VETAMIN-E feature.
 
 
@@ -52,6 +52,10 @@ Try to make Visual Inertial SLAM
   - 低FPS、Static仮定を破る環境（カメラの前をウロウロする人がいるとか）、はっきり結像しない環境について（草むら画像をJPEG圧縮した場合など）
   - ライブハウス？レーザー飛び交う現場は一番難しそう。
 - https://github.com/PaoPaoRobot/SLAMPaperReading
+
+
+## Deps
+- OpenCV, opeencv_contrib : vizを使うためにvtk6.3をインストールしてコンパイルしてほしいです。
 
 
 ## TODO
