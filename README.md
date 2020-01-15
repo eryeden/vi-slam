@@ -2,7 +2,7 @@
 Try to make Visual Inertial SLAM
 
 ## Docs
-- [Test enviromnent](docs/about_test.md)
+- [Test environment](docs/about_test.md)
 - [Feature detection and tracking](docs/feature_extructor.md)
 - [Initialization](docs/initialization.md)
 
