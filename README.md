@@ -60,6 +60,9 @@ See [__Setup__.](docs/setup.md)
 
 
 ## TODO
+### Calibration
+- Rollingシャッターのキャリブレーションについて
+- 参考:kalibr https://github.com/ethz-asl/kalibr/pull/261
 ### feature point detection and tracking
 - lambdaとsigmaのチューニング
 - 同じ点として収束してしまった特徴点の扱い
