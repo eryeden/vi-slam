@@ -65,7 +65,7 @@ void dense_feature_extructor::detect_and_track(const cv::Mat &input_color, bool 
             }
         }
 
-        features.emplace_back(initialize_features(outimg, current_feature, 200));
+        features.emplace_back(initialize_features(outimg, current_feature, 10, 10, 3000));
     }
 
     is_initialize = false;
@@ -239,9 +239,16 @@ feature_in_frame dense_feature_extructor::initialize_features(
 
     // Gridに分割して特徴点の追加を行う
     int32_t num_max_features = num_points / (num_grids_x * num_grids_y);
+
+    // cv::Mat mask;
+    // utils::non_maxima_suppression(img_curvature, mask, true);
+    // std::vector<cv::Point2i> locations; // output, locations of non-zero pixels
+    // cv::findNonZero(mask, locations);
+
     for (const auto &grect : grid_def)
     {
         int32_t num_features = cv::countNonZero(flag_img(grect)); // すでに存在するGrid内の特徴点数をカウントする
+
         std::uniform_int_distribution<int32_t> grid_rand_width(grect.x, grect.width + grect.x - 1);
         std::uniform_int_distribution<int32_t> grid_rand_height(grect.y, grect.height + grect.y - 1);
         for (size_t i = num_features; i < num_max_features; i++)
@@ -259,6 +266,30 @@ feature_in_frame dense_feature_extructor::initialize_features(
                 flag_img_ac(tmp_point.y, tmp_point.x) = 1;
             }
         }
+
+        // for (size_t i = 0; i < locations.size(); i++)
+        // {
+        //     cv::Point2i tmp_point = locations[i];
+        //     if (grect.contains(tmp_point))
+        //     {
+        //         tmp_point = utils::track_local_max(img_curvature, tmp_point);
+        //         uint8_t flag = flag_img.at<uint8_t>(tmp_point.y, tmp_point.x);
+        //         double curv = img_curvature.at<uint8_t>(tmp_point.y, tmp_point.x);
+        //         if ((!flag))
+        //         {
+        //             max_id++;
+        //             current_features.features.emplace_back(Eigen::Vector2i(tmp_point.x, tmp_point.y));
+        //             current_features.featureIDs.emplace_back(max_id);
+        //             flag_img_ac(tmp_point.y, tmp_point.x) = 1;
+
+        //             num_features++;
+        //             if (num_features > num_max_features)
+        //             {
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     // 特徴点を検出、追加する // 全体対象の追加

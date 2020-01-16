@@ -87,10 +87,10 @@ int main()
     // std::string path_to_log_dir = "/home/ery/Devel/tmp/assets/20191219_1/20191219_3";
 
     // /e/subspace/tmp/tmp/V1_01_easy/mav0/cam0
-    // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
-    // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
-    LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/MH_01_easy/mav0/cam0", 0.001);
+    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V2_01_easy/mav0/cam0", 0.001);
+    // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
+    // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/MH_01_easy/mav0/cam0", 0.001);
 
     int64_t ref_size = 30;
 
@@ -144,11 +144,10 @@ int main()
     {
         cv::Mat img, img_undistort, img_color;
         double tstamp;
-        lp_mav.get_frame_by_index(img, tstamp, i);
 
+        lp_mav.get_frame_by_index(img, tstamp, i);
         cv::undistort(img, img_undistort, intrinsic_matrix, distortion_coeffs);
         cv::cvtColor(img_undistort * 0.5, img_color, CV_GRAY2BGR);
-
         dfe.detect_and_track(img_undistort, false);
 
         /**
@@ -188,7 +187,7 @@ int main()
         if (dfe.features.size() >= 2)
         {
             // 前フレームと今のフレームの特徴点ペアを生成する
-            int32_t num_ref_frames = 20;
+            int32_t num_ref_frames = 30;
             for (const auto &[id, p] : feature_lists)
             {
                 if (p.size() >= num_ref_frames)
@@ -207,12 +206,16 @@ int main()
 
             if (current_points.size() >= num_ref_frames)
             {
-                E = cv::findEssentialMat(prev_points, current_points, focal, pp, cv::RANSAC, 0.999, 0.9, mask);
-                cv::decomposeEssentialMat(E, R1, R2, trans);
+                E = cv::findEssentialMat(prev_points, current_points, focal, pp, cv::RANSAC, 0.999, 0.99, mask);
+                // E = cv::findEssentialMat(prev_points, current_points, focal, pp, cv::LMEDS, 0.999, 0.99, mask);
+                // cv::decomposeEssentialMat(E, R1, R2, trans);
 
                 cv::recoverPose(E, prev_points, current_points, R, t, focal, pp, mask);
                 std::cout << R << std::endl;
                 std::cout << t << std::endl;
+
+                current_attitude = R;
+                current_position = t;
 
                 // R = R.t();
                 // t = -1.0 * t;
@@ -230,14 +233,14 @@ int main()
                     {
                         for (int j = 0; j < 3; ++j)
                         {
-                            prjMat2.at<double>(ii, j) = R.at<double>(ii, j);
+                            prjMat2.at<double>(ii, j) = current_attitude.at<double>(ii, j);
                         }
                     }
                     prjMat1 = intrinsic_matrix_d * prjMat1;
 
-                    prjMat2.at<double>(0, 3) = t.at<double>(0);
-                    prjMat2.at<double>(1, 3) = t.at<double>(1);
-                    prjMat2.at<double>(2, 3) = t.at<double>(2);
+                    prjMat2.at<double>(0, 3) = current_position.at<double>(0);
+                    prjMat2.at<double>(1, 3) = current_position.at<double>(1);
+                    prjMat2.at<double>(2, 3) = current_position.at<double>(2);
                     prjMat2 = intrinsic_matrix_d * prjMat2;
 
                     std::cout << "Projection Matrix 1:\n"
@@ -248,46 +251,38 @@ int main()
                     // 三角測量による三次元位置の推定
                     std::vector<cv::Point2d> cam0pnts;
                     std::vector<cv::Point2d> cam1pnts;
+                    std::vector<int32_t> point_indices;
                     for (size_t idx = 0; idx < prev_points.size(); idx++)
                     {
                         if (mask.at<unsigned char>(idx) > 0)
                         {
                             cam0pnts.emplace_back(prev_points[idx].x, prev_points[idx].y);
                             cam1pnts.emplace_back(current_points[idx].x, current_points[idx].y);
+                            point_indices.emplace_back(idx);
                         }
                     }
                     cv::Mat pnts3D(4, cam0pnts.size(), CV_64F);
                     cv::triangulatePoints(prjMat1, prjMat2, cam0pnts, cam1pnts, pnts3D);
                     std::vector<cv::Point3d> pointCloud;
+
                     for (int ii = 0; ii < pnts3D.cols; ++ii)
                     {
                         pointCloud.emplace_back(cv::Point3d(pnts3D.at<double>(0, ii),
                                                             pnts3D.at<double>(1, ii),
                                                             pnts3D.at<double>(2, ii)) /
                                                 pnts3D.at<double>(3, ii));
+                        double pix_color = img.at<uint8_t>(current_points_device[point_indices[ii]].y, current_points_device[point_indices[ii]].x);
                     }
-
-                    current_attitude = R;
-                    current_position = t;
 
                     // 点群の描画
                     cv::viz::WCloud cloud(pointCloud);
                     myWindow.showWidget("CLOUD", cloud);
 
                     // カメラ移動量の描画
-                    cv::Affine3d current_cam_pose(cv::Mat::eye(3, 3, CV_64FC1), cv::Vec3f(0, 0, 0));
-                    myWindow.showWidget("1", wcamera, current_cam_pose);
-                    cv::Affine3d initial_cam_pose(current_attitude, cv::Vec3f(current_position));
-                    myWindow.showWidget("2", wcamera2, initial_cam_pose);
-
-                    // cv::Affine3d pose_cand1(R1, cv::Vec3f(trans));
-                    // cv::Affine3d pose_cand2(R1, cv::Vec3f(trans) * -1.0);
-                    // cv::Affine3d pose_cand3(R2, cv::Vec3f(trans));
-                    // cv::Affine3d pose_cand4(R2, cv::Vec3f(trans) * -1.0);
-                    // myWindow.showWidget("can1", wcamera_cand1, pose_cand1);
-                    // myWindow.showWidget("can2", wcamera_cand2, pose_cand2);
-                    // myWindow.showWidget("can3", wcamera_cand3, pose_cand3);
-                    // myWindow.showWidget("can4", wcamera_cand4, pose_cand4);
+                    cv::Affine3d initial_cam_pose(cv::Mat::eye(3, 3, CV_64FC1), cv::Vec3f(0, 0, 0));
+                    cv::Affine3d current_cam_pose(current_attitude.t(), cv::Vec3f(current_position) * -1.0);
+                    myWindow.showWidget("1", wcamera2, initial_cam_pose);
+                    myWindow.showWidget("2", wcamera, current_cam_pose);
                 }
             }
 
@@ -297,54 +292,57 @@ int main()
                 if (mask.at<int32_t>(j, 0))
                 {
                     cv::circle(img_color, current_points_device[j], 2, cv::Scalar(255, 0, 255));
-                    // cv::circle(img_color, prev_points[j], 2, cv::Scalar(0, 0, 255));
+                }
+                else
+                {
+                    cv::circle(img_color, prev_points[j], 2, cv::Scalar(0, 0, 255));
                 }
             }
         }
 
-        /**
-         * @brief トラッキング長を計算する
-         * 
-         */
-        double maxlen = 0;
-        std::vector<double> lens(0);
-        for (const auto &[id, p] : feature_lists)
-        {
-            cv::Point2i d = p[0] - p[p.size() - 1];
-            double dist = cv::norm(d) / p.size();
+        // /**
+        //  * @brief トラッキング長を計算する
+        //  *
+        //  */
+        // double maxlen = 0;
+        // std::vector<double> lens(0);
+        // for (const auto &[id, p] : feature_lists)
+        // {
+        //     cv::Point2i d = p[0] - p[p.size() - 1];
+        //     double dist = cv::norm(d) / p.size();
 
-            lens.emplace_back(cv::norm(dist));
-        }
-        double len_sum = std::accumulate(std::begin(lens), std::end(lens), 0.0);
-        double len_ave = len_sum / lens.size();
-        double len_var = std::inner_product(std::begin(lens), std::end(lens), std::begin(lens), 0.0) / lens.size() - len_ave * len_ave;
-        for (const auto l : lens)
-        {
-            if ((maxlen < l) && (l < (1.0 * std::sqrt(len_var)) + len_ave))
-            {
-                maxlen = l;
-            }
-        }
+        //     lens.emplace_back(cv::norm(dist));
+        // }
+        // double len_sum = std::accumulate(std::begin(lens), std::end(lens), 0.0);
+        // double len_ave = len_sum / lens.size();
+        // double len_var = std::inner_product(std::begin(lens), std::end(lens), std::begin(lens), 0.0) / lens.size() - len_ave * len_ave;
+        // for (const auto l : lens)
+        // {
+        //     if ((maxlen < l) && (l < (1.0 * std::sqrt(len_var)) + len_ave))
+        //     {
+        //         maxlen = l;
+        //     }
+        // }
 
-        for (const auto &[id, p] : feature_lists)
-        {
-            cv::Point2i d = p[0] - p[p.size() - 1];
-            double angle = std::atan2(d.y, d.x) * 180.0 / M_PI;
-            double len = cv::norm(d) / p.size();
-            angle += 180;
+        // for (const auto &[id, p] : feature_lists)
+        // {
+        //     cv::Point2i d = p[0] - p[p.size() - 1];
+        //     double angle = std::atan2(d.y, d.x) * 180.0 / M_PI;
+        //     double len = cv::norm(d) / p.size();
+        //     angle += 180;
 
-            // cv::Scalar dcolor = HSVtoRGB(angle, 1, 1);
-            cv::Scalar dcolor = HSVtoRGB(len / maxlen * 360.0, 1, 1);
-            // cv::Scalar dcolor = cv::Scalar(255, 255, 255);
-            // cv::Scalar dcolor = colors[id % num_colors];
+        //     // cv::Scalar dcolor = HSVtoRGB(angle, 1, 1);
+        //     cv::Scalar dcolor = HSVtoRGB(len / maxlen * 360.0, 1, 1);
+        //     // cv::Scalar dcolor = cv::Scalar(255, 255, 255);
+        //     // cv::Scalar dcolor = colors[id % num_colors];
 
-            if (len < (2.0 * std::sqrt(len_var) + len_ave))
-            {
-                // cv::polylines(img_color, p, false, dcolor, 1);
-                // cv::polylines(img_color, p, false, cv::Scalar(255, 255, 255), 1);
-                // cv::circle(img_color, p[0], 2, dcolor, 1);
-            }
-        }
+        //     if (len < (2.0 * std::sqrt(len_var) + len_ave))
+        //     {
+        //         // cv::polylines(img_color, p, false, dcolor, 1);
+        //         // cv::polylines(img_color, p, false, cv::Scalar(255, 255, 255), 1);
+        //         // cv::circle(img_color, p[0], 2, dcolor, 1);
+        //     }
+        // }
 
         cv::imshow("feature", img_color);
         cv::waitKey(1);

@@ -9,6 +9,8 @@ using namespace dense_feature;
 cv::Mat utils::generate_curvature_image(const cv::Mat &img_gray)
 {
 
+    // cv::GaussianBlur(img_gray, img_gray, cv::Size(3, 3), 10);
+
 /**
  * @brief CV_64FC1とCV_32FC1では32bitのほうが処理が結構早い。
  * あまり結果が変わらないようなら32bitのバージョンで計算するのがよさそう。
@@ -66,6 +68,14 @@ cv::Mat utils::generate_curvature_image(const cv::Mat &img_gray)
     // curv = term1 + term2 * (-2.0) + term3;
     curv = term1 + (-2.0) * term2 + term3;
 
+    // cv::Mat mask;
+    // non_maxima_suppression(curv, mask, true);
+    // cv::imshow("mask", mask);
+
+    // cv::GaussianBlur(curv, curv, cv::Size(31, 31), 1);
+
+    // cv::threshold(curv, curv, 100, 0, CV_THRESH_TOZERO);
+
 #ifdef SHOW_CURVATURE
     cv::Mat outimg_normed;
     cv::normalize(curv, outimg_normed, 0, 1, cv::NORM_MINMAX);
@@ -73,6 +83,7 @@ cv::Mat utils::generate_curvature_image(const cv::Mat &img_gray)
 #endif
 
     return curv;
+    // return curv_blur;
 }
 
 // Local maxの探索を行う
@@ -240,6 +251,78 @@ bool utils::warp_point(
     {
         output = input;
         return false;
+    }
+}
+
+// void localMaxima(cv::Mat src, cv::Mat &dst, int squareSize)
+// {
+//     if (squareSize == 0)
+//     {
+//         dst = src.clone();
+//         return;
+//     }
+
+//     cv::Mat m0;
+//     dst = src.clone();
+//     cv::Point maxLoc(0, 0);
+
+//     //1.Be sure to have at least 3x3 for at least looking at 1 pixel close neighbours
+//     //  Also the window must be <odd>x<odd>
+//     int sqrCenter = (squareSize - 1) / 2;
+
+//     //2.Create the localWindow mask to get things done faster
+//     //  When we find a local maxima we will multiply the subwindow with this MASK
+//     //  So that we will not search for those 0 values again and again
+//     cv::Mat localWindowMask = cv::Mat::zeros(cv::Size(squareSize, squareSize), CV_8U); //boolean
+//     localWindowMask.at<unsigned char>(sqrCenter, sqrCenter) = 1;
+
+//     //3.Find the threshold value to threshold the image
+//     //this function here returns the peak of histogram of picture
+//     //the picture is a thresholded picture it will have a lot of zero values in it
+//     //so that the second boolean variable says :
+//     //  (boolean) ? "return peak even if it is at 0" : "return peak discarding 0"
+//     int thrshld = maxUsedValInHistogramData(dst, false);
+//     cv::threshold(dst, m0, thrshld, 1, CV_THRESH_BINARY);
+
+//     //4.Now delete all thresholded values from picture
+//     dst = dst.mul(m0);
+
+//     //put the src in the middle of the big array
+//     for (int row = sqrCenter; row < dst.size().height - sqrCenter; row++)
+//         for (int col = sqrCenter; col < dst.size().width - sqrCenter; col++)
+//         {
+//             //1.if the value is zero it can not be a local maxima
+//             if (dst.at<unsigned char>(row, col) == 0)
+//                 continue;
+//             //2.the value at (row,col) is not 0 so it can be a local maxima point
+//             m0 = dst.colRange(col - sqrCenter, col + sqrCenter + 1).rowRange(row - sqrCenter, row + sqrCenter + 1);
+//             minMaxLoc(m0, NULL, NULL, NULL, &maxLoc);
+//             //if the maximum location of this subWindow is at center
+//             //it means we found the local maxima
+//             //so we should delete the surrounding values which lies in the subWindow area
+//             //hence we will not try to find if a point is at localMaxima when already found a neighbour was
+//             if ((maxLoc.x == sqrCenter) && (maxLoc.y == sqrCenter))
+//             {
+//                 m0 = m0.mul(localWindowMask);
+//                 //we can skip the values that we already made 0 by the above function
+//                 col += sqrCenter;
+//             }
+//         }
+// }
+
+void utils::non_maxima_suppression(const cv::Mat &image, cv::Mat &mask, bool remove_plateaus)
+{
+    // find pixels that are equal to the local neighborhood not maximum (including 'plateaus')
+    cv::dilate(image, mask, cv::Mat());
+    cv::compare(image, mask, mask, cv::CMP_GE);
+
+    // optionally filter out pixels that are equal to the local minimum ('plateaus')
+    if (remove_plateaus)
+    {
+        cv::Mat non_plateau_mask;
+        cv::erode(image, non_plateau_mask, cv::Mat());
+        cv::compare(image, non_plateau_mask, non_plateau_mask, cv::CMP_GT);
+        cv::bitwise_and(mask, non_plateau_mask, mask);
     }
 }
 

@@ -48,6 +48,8 @@ bool warp_point(
     const cv::Size &image_size,
     cv::Point2f &output);
 
+void non_maxima_suppression(const cv::Mat &image, cv::Mat &mask, bool remove_plateaus);
+
 // 曲率画像を見やすいようにする
 cv::Mat visualize_curvature_image(const cv::Mat &input_curvature_image);
 
