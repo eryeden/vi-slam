@@ -4,6 +4,7 @@ Try to make Visual Inertial SLAM
 ## Docs
 - [__Setup__](docs/setup.md)
 - [Test environment](docs/about_test.md)
+- [Coordinate setup](docs/coordinate_setup.md)
 - [Feature detection and tracking](docs/feature_extructor.md)
 - [Initialization](docs/initialization.md)
 
