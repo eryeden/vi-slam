@@ -53,6 +53,8 @@ OpenCVでも実装できそうだが、OpenGVにもいろいろ関数が実装�
 - OpenCV::viz : https://docs.opencv.org/master/d7/df9/tutorial_table_of_content_viz.html
 - OpenGV? : https://github.com/laurentkneip/opengv
 
+ひとまずOpenCVのVIZを利用している。
+
 ### リンク集
 - [３次元復元関係の用語についていい感じのまとめ](https://medium.com/@NegativeMind/2d-3d%E5%BE%A9%E5%85%83%E6%8A%80%E8%A1%93%E3%81%A7%E4%BD%BF%E3%82%8F%E3%82%8C%E3%82%8B%E7%94%A8%E8%AA%9E%E3%81%BE%E3%81%A8%E3%82%81-27403689da1b)
 - [エピポーラについて](https://qiita.com/ykoga/items/14300e8cdf5aa7bd8d31)
