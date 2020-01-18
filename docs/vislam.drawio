@@ -1,4 +1,4 @@
-<mxfile host="www.draw.io" modified="2020-01-17T12:43:50.972Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Safari/537.36" etag="mjBQJwyQglMmv37zGWgI" version="12.5.5" type="github" pages="3">
+<mxfile host="www.draw.io" modified="2020-01-18T06:06:12.243Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Safari/537.36" etag="xZEGeZNY8WhEasAavXEf" version="12.5.5" type="github" pages="4">
   <diagram id="_37ZfE2wD_X3_YTgAkfA" name="Top">
     <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -8,7 +8,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="psCmlDZE3tVd538Jrg62" name="FeatureExtructor">
-    <mxGraphModel dx="2186" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3092" dy="1490" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="KRiQTR37dp_EB_8YDpK1-0"/>
         <mxCell id="KRiQTR37dp_EB_8YDpK1-1" parent="KRiQTR37dp_EB_8YDpK1-0"/>
@@ -76,7 +76,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="H0uU_kFGj13HSg9YGo_l" name="Coordinats">
-    <mxGraphModel dx="1960" dy="745" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="1604" dy="511" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="0IS2U3QtcljcEeAQ51mi-0"/>
         <mxCell id="0IS2U3QtcljcEeAQ51mi-1" parent="0IS2U3QtcljcEeAQ51mi-0"/>
@@ -214,6 +214,243 @@
         </mxCell>
         <mxCell id="8hChCW3FszteUkoNeu8G-37" value="変換の関係" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="0IS2U3QtcljcEeAQ51mi-1">
           <mxGeometry x="320" y="650" width="80" height="20" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="DPrh5EcJE---_pXr7yhz" name="SLAM Process">
+    <mxGraphModel dx="2768" dy="1277" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+      <root>
+        <mxCell id="KwsuU6XtCkrVDZlp-KHl-0"/>
+        <mxCell id="KwsuU6XtCkrVDZlp-KHl-1" parent="KwsuU6XtCkrVDZlp-KHl-0"/>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-0" value="V-SLAM" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="-430" y="120" width="60" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1" source="7yz1Ov67Ck8_X91Pyg3R-17" target="7yz1Ov67Ck8_X91Pyg3R-3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-1" value="画像" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="327" y="60" width="40" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1" source="7yz1Ov67Ck8_X91Pyg3R-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="347" y="188.9999999999999" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-3" value="特徴点の検出＆トラッキング" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="262" y="140" width="170" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-7" value="フレームID&lt;br&gt;[特徴点位置]&lt;br&gt;[特徴点ID]" style="rounded=0;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="275" y="199" width="104" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-8" value="フレームID&lt;br&gt;[特徴点位置]&lt;br&gt;[特徴点ID]" style="rounded=0;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="285" y="209" width="104" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-9" value="フレームID&lt;br&gt;[特徴点位置]&lt;br&gt;[特徴点ID]" style="rounded=0;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="295" y="219" width="104" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-10" value="フレームID&lt;br&gt;[特徴点位置]&lt;br&gt;[特徴点ID]" style="rounded=0;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="305" y="229" width="104" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-11" value="フレームID&lt;br&gt;[特徴点位置]&lt;br&gt;[特徴点ID]" style="rounded=0;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="315" y="239" width="104" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-13" value="初期化" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="62" y="310" width="50" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-14" value="" style="shape=flexArrow;endArrow=classic;html=1;width=10.344827586206897;endSize=5.089655172413793;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="351.71000000000004" y="300" as="sourcePoint"/>
+            <mxPoint x="351.71000000000004" y="340" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1" source="7yz1Ov67Ck8_X91Pyg3R-15" target="7yz1Ov67Ck8_X91Pyg3R-16">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-15" value="２枚分のフレームを持ってくる&lt;br&gt;フレームの名前：&lt;br&gt;F_ref : 初期化に使うリファレンスフレーム&lt;br&gt;F_current : 最新のフレーム" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="232" y="360" width="240" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1" source="7yz1Ov67Ck8_X91Pyg3R-16" target="7yz1Ov67Ck8_X91Pyg3R-19">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-16" value="特徴点の対応関係からEssential行列を推定" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="232" y="440" width="240" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1" source="7yz1Ov67Ck8_X91Pyg3R-19" target="7yz1Ov67Ck8_X91Pyg3R-31">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-19" value="Essential行列を分解して回転行列と平行移動成分を取り出す" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="182" y="480" width="340" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1" source="7yz1Ov67Ck8_X91Pyg3R-21">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="352" y="650" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-21" value="カメラの回転と移動量がわかったので特徴点位置を三角測量する" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="172" y="590" width="360" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-17" value="歪など画像の補正" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="292" y="100" width="110" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1" source="7yz1Ov67Ck8_X91Pyg3R-1" target="7yz1Ov67Ck8_X91Pyg3R-17">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="346.7241379310344" y="80" as="sourcePoint"/>
+            <mxPoint x="346.7241379310344" y="129" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-25" value="回転行列" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="262" y="660" width="60" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-26" value="$$R^{ref\ to\ current}$$" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="404" y="660" width="140" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-27" value="平行移動成分" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="247" y="680" width="90" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-29" value="マッチングの取れた特徴点３次元位置&lt;br&gt;（Currentカメラ座標系）" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="182" y="700" width="220" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1" source="7yz1Ov67Ck8_X91Pyg3R-31" target="7yz1Ov67Ck8_X91Pyg3R-21">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.999;entryY=0.607;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1" source="7yz1Ov67Ck8_X91Pyg3R-31" target="7yz1Ov67Ck8_X91Pyg3R-15">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="547" y="390" as="targetPoint"/>
+            <Array as="points">
+              <mxPoint x="527" y="550"/>
+              <mxPoint x="527" y="396"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-31" value="特徴点のマッチング数をチェック&lt;br&gt;十分な対応点がない場合は次のフレームを使って初期化" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="197" y="530" width="310" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-42" value="カメラ位置のトラッキング&lt;br&gt;特徴点位置の推定" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="850" y="100" width="160" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-44" value="初期化に成功したら、そのときのCurrentカメラ位置を&lt;br&gt;World座標系の原点と同一フレームにする" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="197" y="750" width="310" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-46" value="Input" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="50" y="70" width="40" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-47" value="Output" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="40" y="150" width="50" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-48" value="" style="endArrow=none;dashed=1;html=1;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="45" y="170" as="sourcePoint"/>
+            <mxPoint x="712" y="170" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-49" value="" style="endArrow=none;dashed=1;html=1;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="90" as="sourcePoint"/>
+            <mxPoint x="717" y="90" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-50" value="Output" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="40" y="610" width="50" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-51" value="" style="endArrow=none;dashed=1;html=1;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="45" y="630" as="sourcePoint"/>
+            <mxPoint x="712" y="630" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-52" value="Input" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="880" y="210" width="40" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-53" value="" style="endArrow=none;dashed=1;html=1;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="883" y="230" as="sourcePoint"/>
+            <mxPoint x="1550" y="230" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-54" value="対応点数が不十分の場合" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="532" y="535" width="150" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-55" value="前回のカメラPose（世界座標系）" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="1090" y="110" width="200" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-56" value="前回フレームの特徴点３次元位置（世界座標系）" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="1090" y="130" width="280" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-57" value="$$R^{W\ to\ C_{i-1}}$$" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="1360" y="110" width="140" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="7yz1Ov67Ck8_X91Pyg3R-59" value="$$\boldsymbol{t}^{W\ to\ C_{i-1}}$$" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="1395" y="110" width="200" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-0" value="&lt;span style=&quot;text-align: left&quot;&gt;$$\boldsymbol{t}^{ref\ to\ current}$$&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="367" y="680" width="210" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-1" value="&lt;span style=&quot;text-align: left&quot;&gt;$$\left[\boldsymbol{p}_i^{current}\right]$$&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="347" y="700" width="230" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-2" value="&lt;span style=&quot;text-align: left&quot;&gt;$$\left[\boldsymbol{p}_{i-1}^{W}\right]$$&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="1300" y="130" width="230" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-3" value="入力に利用する特徴点位置はなにを利用するべきか？&lt;br&gt;全フレーム分の特徴点を利用するべき？&lt;br&gt;このあたりの工夫はOrbSLAMなどのスパニングツリーなどあるらしいのでおいおい調べる？" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="890" y="40" width="510" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-4" value="" style="endArrow=classic;html=1;exitX=0.268;exitY=0.986;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1" source="phfHnVdt7umejEUPn07p-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1040" y="190" as="sourcePoint"/>
+            <mxPoint x="1090" y="140" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-5" value="特徴点抽出＆トラッキング" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="62" y="40" width="160" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-6" value="" style="endArrow=classic;html=1;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1189.66" y="200" as="sourcePoint"/>
+            <mxPoint x="1189.66" y="260" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-9" value="今回フレームの特徴点＆追跡結果&lt;br&gt;特徴点の画像中位置（デバイス座標系）と特徴点ID" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="1070" y="160" width="290" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-10" value="&lt;span style=&quot;text-align: left&quot;&gt;$$\left[id : \boldsymbol{p}_{i}^{D}\right]$$&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="1308" y="165" width="230" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-11" value="&lt;div&gt;&lt;span&gt;・今回のカメラPoseの仮定&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;とりあえず、前回カメラPoseを今回カメラPoseとして仮定する&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;この結果はP3Pの計算の初期値に利用される。&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;BAの初期値はP3Pによるカメラ位置とそこから三角測量で求めた特徴点位置を利用する&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;この部分はカメラ運動を推定して位置を予測するなど(OrbSLAM?)いろいろあるので要調査&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="965" y="250" width="500" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-12" value="$$R_{est}^{W\ to\ C_i} = R^{W\ to\ C_{i-1}}$$" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="1059.9999999999995" y="330" width="260" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-13" value="$$\boldsymbol{t}_{est}^{W\ to\ C_i} = \boldsymbol{t}^{W\ to\ C_{i-1}}$$" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="994.9999999999997" y="359" width="390" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-14" value="" style="endArrow=classic;html=1;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1189.6599999999999" y="398.9999999999999" as="sourcePoint"/>
+            <mxPoint x="1189.6599999999999" y="458.9999999999999" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-15" value="&lt;div&gt;&lt;span&gt;・BAに利用する初期値の計算&lt;/span&gt;&lt;/div&gt;&lt;div&gt;P3Pを利用して今回のカメラ位置を推定&lt;/div&gt;&lt;div&gt;推定したカメラ位置から、今回特徴点の３次元位置を三角測量する&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="980" y="460" width="380" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-17" value="$$R_{initial}^{W\ to\ C_i}, \boldsymbol{t}_{initial}^{W\ to\ C_i}= pnp\left( R_{est}^{W\ to\ C_i}, \boldsymbol{t}_{est}^{W\ to\ C_i}, \left[ \boldsymbol{p}^{D}... \right] \right)$$" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="749.9999999999995" y="515" width="900" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-18" value="$$\left[ \boldsymbol{p}_{initial}^{W}... \right] = triangulation\left(pose and features from i-1 and est i \right)$$" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="920" y="540" width="580" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-19" value="" style="endArrow=classic;html=1;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1189.5799999999997" y="579.9999999999999" as="sourcePoint"/>
+            <mxPoint x="1189.5799999999997" y="639.9999999999999" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-21" value="・BAの計算" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="980" y="650" width="80" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="phfHnVdt7umejEUPn07p-22" value="こっから先はよくわからない・・・" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="1040" y="720" width="320" height="20" as="geometry"/>
         </mxCell>
       </root>
     </mxGraphModel>
