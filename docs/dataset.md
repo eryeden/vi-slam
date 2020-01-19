@@ -1,4 +1,4 @@
 ## データセットについて
 
 ### セルフ収集
-[Google drive](https://drive.google.com/file/d/1HcfxBagz_oV5f2lHrmbzcRWRUoj9oTB5/view?usp=sharing)にアップロードされています。
+[Google drive](https://drive.google.com/open?id=1gT22U4BGp3Pl6bmFh903gLjdv_042Eh2)にアップロードされています。
