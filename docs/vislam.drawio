@@ -1,4 +1,4 @@
-<mxfile host="www.draw.io" modified="2020-01-19T10:43:00.178Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Safari/537.36" etag="O3ZVfdGRF8pwl_7z9rEG" version="12.5.5" type="github" pages="4">
+<mxfile host="www.draw.io" modified="2020-01-19T15:46:21.631Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Safari/537.36" etag="KFydeNO4oXHdn71AB1u6" version="12.5.5" type="github" pages="4">
   <diagram id="_37ZfE2wD_X3_YTgAkfA" name="Top">
     <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -76,7 +76,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="H0uU_kFGj13HSg9YGo_l" name="Coordinats">
-    <mxGraphModel dx="2426" dy="1052" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="2768" dy="1277" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="0IS2U3QtcljcEeAQ51mi-0"/>
         <mxCell id="0IS2U3QtcljcEeAQ51mi-1" parent="0IS2U3QtcljcEeAQ51mi-0"/>
@@ -219,7 +219,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="DPrh5EcJE---_pXr7yhz" name="SLAM Process">
-    <mxGraphModel dx="3358" dy="1677" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="1371" dy="358" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="KwsuU6XtCkrVDZlp-KHl-0"/>
         <mxCell id="KwsuU6XtCkrVDZlp-KHl-1" parent="KwsuU6XtCkrVDZlp-KHl-0"/>
@@ -451,6 +451,15 @@
         </mxCell>
         <mxCell id="phfHnVdt7umejEUPn07p-22" value="こっから先はよくわからない・・・" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
           <mxGeometry x="1040" y="720" width="320" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="j_z1cge8MNPJE1UNdcW2-0" value="ここの$$p^W$$はどのフレーム間で求める？" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="750" y="580" width="260" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="j_z1cge8MNPJE1UNdcW2-3" value="" style="endArrow=classic;html=1;entryX=0.139;entryY=0.55;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.565;exitY=0.2;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="KwsuU6XtCkrVDZlp-KHl-1" source="j_z1cge8MNPJE1UNdcW2-0" target="phfHnVdt7umejEUPn07p-18">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="880" y="570" as="sourcePoint"/>
+            <mxPoint x="930" y="520" as="targetPoint"/>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
