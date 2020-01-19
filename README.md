@@ -7,6 +7,7 @@ Try to make Visual Inertial SLAM
 - [Coordinate setup](docs/coordinate_setup.md)
 - [Feature detection and tracking](docs/feature_extructor.md)
 - [Initialization](docs/initialization.md)
+- [Dataset](docs/dataset.md)
 
 ## Policy
 1. Keep a license of this repo as non-GPL.
