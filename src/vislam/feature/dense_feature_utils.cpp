@@ -122,8 +122,8 @@ cv::Point2i utils::track_local_max_with_regularization(
     for (size_t i = 0;; i++)
     {
         // cv::Point2i neighbor_max = get_neighbor_max(img_mono, prev_neigbhor_max);
-        cv::Point2i neighbor_max = get_neighbor_max_with_regularization(
-            img_mono, prev_neigbhor_max, 0, 1, initial_point);
+        // cv::Point2i neighbor_max = get_neighbor_max_with_regularization(img_mono, prev_neigbhor_max, 0, 1, initial_point);
+        cv::Point2i neighbor_max = get_neighbor_max_with_regularization(img_mono, prev_neigbhor_max, 0.1, 1, initial_point);
         // std::cout << "Test: " << i << ", " << neighbor_max << std::endl;
         // std::cout << "PrevTest: " << i << ", " << prev_neigbhor_max << std::endl;
         if (neighbor_max == prev_neigbhor_max)

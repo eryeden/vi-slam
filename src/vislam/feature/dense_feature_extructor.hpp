@@ -7,6 +7,8 @@
 #include <opencv2/opencv.hpp>
 #include <eigen3/Eigen/Dense>
 
+#include "feature_in_frame.hpp"
+
 namespace dense_feature
 {
 
@@ -54,32 +56,6 @@ void non_maxima_suppression(const cv::Mat &image, cv::Mat &mask, bool remove_pla
 cv::Mat visualize_curvature_image(const cv::Mat &input_curvature_image);
 
 } // namespace utils
-
-/**
- * @brief フレームふ含まれる特徴点を保存しておく。
- * @details
- * ## 特徴点の保存について
- * 特徴点にはIDが付与される。これが、別のstd::vectorに入れられていて、同インデックスのFeatureとIDが対応している。
- * 
- * 
- * 
- */
-class feature_in_frame
-{
-public:
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
-    feature_in_frame(const uint64_t frame_id,
-                     const std::vector<uint64_t> &input_feature_ids,
-                     const std::vector<Eigen::Vector2i, Eigen::aligned_allocator<Eigen::Vector2i>> &input_features);
-    feature_in_frame();
-
-    std::vector<Eigen::Vector2i, Eigen::aligned_allocator<Eigen::Vector2i>> features;
-    std::vector<uint64_t> featureIDs;
-    uint64_t frameID;
-
-private:
-};
 
 /**
  * @brief VETAMIN-E baseの密な特徴点抽出とトラッキングを行う
