@@ -2,8 +2,12 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/calib3d.hpp>
 #include <opencv2/viz.hpp>
-// #include "dense_feature_extructor_proto.hpp"
+
+#include <eigen3/Eigen/Core>
+#include <opencv2/core/eigen.hpp>
+
 #include "dense_feature_extructor.hpp"
+#include "initializer.hpp"
 
 #include "log_util.h"
 
@@ -87,9 +91,9 @@ int main()
     // std::string path_to_log_dir = "/home/ery/Devel/tmp/assets/20191219_1/20191219_3";
 
     // /e/subspace/tmp/tmp/V1_01_easy/mav0/cam0
-    // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
+    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V2_01_easy/mav0/cam0", 0.001);
-    LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
+    // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/MH_01_easy/mav0/cam0", 0.001);
 
     int64_t ref_size = 30;
@@ -104,6 +108,9 @@ int main()
     intrinsic_matrix_d = (cv::Mat_<double>(3, 3) << 458.654, 0.0000000000000000e+00, 367.215,
                           0.0000000000000000e+00, 457.296, 248.375,
                           0.0000000000000000e+00, 0.0000000000000000e+00, 1.0000000000000000e+00);
+    Eigen::Matrix3d intrinsic_eigen;
+    cv::cv2eigen(intrinsic_matrix_d, intrinsic_eigen);
+
     cv::Mat distortion_coeffs(5, 1, CV_32FC1);
     distortion_coeffs = (cv::Mat_<float>(5, 1) << -0.28340811, 0.07395907, 0.00019359, 1.76187114e-05);
 
@@ -183,9 +190,23 @@ int main()
 
         cv::Mat E, R, t, mask;
         cv::Mat R1, R2, trans;
-        std::vector<cv::Point2f> prev_points(0), current_points(0), current_points_device(0), prev_points_normalized(0), current_points_normalized(0);
+        std::vector<cv::Point2f> prev_points(0), current_points(0), current_points_device(0), prev_points_normalized(0), current_points_normalized(0), prev_points_device(0);
         if (dfe.features.size() >= 2)
         {
+
+            dense_feature::feature_in_frame ref_frame, current_frame;
+            ref_frame = dfe.features[dfe.features.size() - 2];
+            current_frame = dfe.features[dfe.features.size() - 1];
+            ref_frame.imageSizeWH = Eigen::Vector2i(img_color.size().width, img_color.size().height);
+            ref_frame.intrinsic = intrinsic_eigen;
+            current_frame.imageSizeWH = Eigen::Vector2i(img_color.size().width, img_color.size().height);
+            current_frame.intrinsic = intrinsic_eigen;
+            // for (const auto &p : current_frame.features)
+            // {
+            //     std::cout << "@[" << p << "]@" << std::endl;
+            // }
+            // dense_feature::feature_in_frame init_fame = initializer::utils::initialize_feature_points(ref_frame, current_frame);
+
             // 前フレームと今のフレームの特徴点ペアを生成する
             int32_t num_ref_frames = 30;
             for (const auto &[id, p] : feature_lists)
@@ -201,16 +222,16 @@ int main()
                     p_tmp = Kinv * (cv::Mat_<double>(3, 1, CV_64FC1) << p[num_ref_frames - 1].x, p[num_ref_frames - 1].y, 1.0);
                     prev_points_normalized.emplace_back(cv::Point2f(p_tmp.at<double>(0), p_tmp.at<double>(1)));
                     prev_points.emplace_back(cv::Point2f(p[num_ref_frames - 1].x, p[num_ref_frames - 1].y));
+                    prev_points_device.emplace_back(p[num_ref_frames - 1]);
                 }
             }
 
             if (current_points.size() >= num_ref_frames)
             {
                 E = cv::findEssentialMat(prev_points, current_points, focal, pp, cv::RANSAC, 0.999, 0.99, mask);
-                // E = cv::findEssentialMat(prev_points, current_points, focal, pp, cv::LMEDS, 0.999, 0.99, mask);
-                // cv::decomposeEssentialMat(E, R1, R2, trans);
-
                 cv::recoverPose(E, prev_points, current_points, R, t, focal, pp, mask);
+                // E = cv::findEssentialMat(current_points, prev_points, focal, pp, cv::RANSAC, 0.999, 0.99, mask);
+                // cv::recoverPose(E, current_points, prev_points, R, t, focal, pp, mask);
                 std::cout << R << std::endl;
                 std::cout << t << std::endl;
 
@@ -263,8 +284,20 @@ int main()
                     }
                     cv::Mat pnts3D(4, cam0pnts.size(), CV_64F);
                     cv::triangulatePoints(prjMat1, prjMat2, cam0pnts, cam1pnts, pnts3D);
-                    std::vector<cv::Point3d> pointCloud;
 
+                    /**
+                     * @brief この時点での座標系について
+                     * @details
+                     * この時点では、prjMat1が原点位置（リファレンスのカメラ位置）、prjMat2がEの分解で計算したカメラ位置(現在のカメラ位置)になる。
+                     * cv::triangulatePointsはprjMatの座標系で点の位置を出力する。そのため、このときの点の座標系はリファレンスカメラの位置・姿勢を原点とする座標系で出力されている。
+                     * 現在のカメラ座標系に変換するためにには、cv::Mat pos_mod = R * (cv::Mat_<double>(3, 1) << pos.x, pos.y, pos.z) + t;といった変換が必要になる。
+                     * 
+                     */
+
+                    // cv::triangulatePoints(prjMat2, prjMat1, cam0pnts, cam1pnts, pnts3D);
+                    // cv::triangulatePoints(prjMat2, prjMat1, cam1pnts, cam0pnts, pnts3D);
+                    std::vector<cv::Point3d> pointCloud;
+                    double max_dist = 0;
                     for (int ii = 0; ii < pnts3D.cols; ++ii)
                     {
                         pointCloud.emplace_back(cv::Point3d(pnts3D.at<double>(0, ii),
@@ -272,6 +305,47 @@ int main()
                                                             pnts3D.at<double>(2, ii)) /
                                                 pnts3D.at<double>(3, ii));
                         double pix_color = img.at<uint8_t>(current_points_device[point_indices[ii]].y, current_points_device[point_indices[ii]].x);
+
+                        double dist = cv::norm(cv::Point3d(pnts3D.at<double>(0, ii),
+                                                           pnts3D.at<double>(1, ii),
+                                                           pnts3D.at<double>(2, ii)) /
+                                               pnts3D.at<double>(3, ii));
+                        if (max_dist < dist)
+                        {
+                            max_dist = dist;
+                        }
+                    }
+
+                    for (int ii = 0; ii < pnts3D.cols; ++ii)
+                    {
+                        cv::Point3d pos = cv::Point3d(pnts3D.at<double>(0, ii),
+                                                      pnts3D.at<double>(1, ii),
+                                                      pnts3D.at<double>(2, ii)) /
+                                          pnts3D.at<double>(3, ii);
+
+                        cv::Mat pos_mod = R * (cv::Mat_<double>(3, 1) << pos.x, pos.y, pos.z) + t;
+                        cv::Point3d pos_point_mod(pos_mod.at<double>(0), pos_mod.at<double>(1), pos_mod.at<double>(2));
+                        cv::Point3d pos_homo = cv::Point3d(pnts3D.at<double>(0, ii),
+                                                           pnts3D.at<double>(1, ii),
+                                                           pnts3D.at<double>(2, ii));
+
+                        double dist = cv::norm(pos_point_mod);
+                        cv::Scalar color_pt;
+                        // if (std::abs(pos.x) < 1 && std::abs(pos.y) < 1)
+                        if (std::abs(pos_point_mod.x) < 0.5 && std::abs(pos_point_mod.y) < 0.5)
+                        // if (std::abs(pos_homo.x) < 0.1 && std::abs(pos_homo.y) < 0.1)
+
+                        {
+                            color_pt = cv::Scalar(255, 0, 0);
+                            cv::circle(img_color, cv::Point(current_points_device[point_indices[ii]].x, current_points_device[point_indices[ii]].y), 3,
+                                       color_pt);
+                        }
+                        else
+                        {
+                            color_pt = HSVtoRGB(dist / max_dist * 360.0, 1, 1);
+                            cv::circle(img_color, cv::Point(current_points_device[point_indices[ii]].x, current_points_device[point_indices[ii]].y), 2,
+                                       color_pt);
+                        }
                     }
 
                     // 点群の描画
@@ -283,21 +357,37 @@ int main()
                     cv::Affine3d current_cam_pose(current_attitude.t(), cv::Vec3f(current_position) * -1.0);
                     myWindow.showWidget("1", wcamera2, initial_cam_pose);
                     myWindow.showWidget("2", wcamera, current_cam_pose);
+                    // myWindow.setViewerPose(current_cam_pose);
+
+                    // 対応した特徴点の描画
+                    // for (size_t j = 0; j < current_points_device.size(); j++)
+                    // {
+                    //     if (mask.at<int32_t>(j, 0))
+                    //     {
+                    //     }
+                    //     // {
+                    //     //     cv::circle(img_color, current_points_device[j], 2, cv::Scalar(255, 0, 255));
+                    //     // }
+                    //     else
+                    //     {
+                    //         cv::circle(img_color, current_points_device[j], 2, cv::Scalar(0, 0, 255));
+                    //     }
+                    // }
                 }
             }
 
-            // 対応した特徴点の描画
-            for (size_t j = 0; j < current_points_device.size(); j++)
-            {
-                if (mask.at<int32_t>(j, 0))
-                {
-                    cv::circle(img_color, current_points_device[j], 2, cv::Scalar(255, 0, 255));
-                }
-                else
-                {
-                    cv::circle(img_color, prev_points[j], 2, cv::Scalar(0, 0, 255));
-                }
-            }
+            // // 対応した特徴点の描画
+            // for (size_t j = 0; j < current_points_device.size(); j++)
+            // {
+            //     if (mask.at<int32_t>(j, 0))
+            //     {
+            //         cv::circle(img_color, current_points_device[j], 2, cv::Scalar(255, 0, 255));
+            //     }
+            //     else
+            //     {
+            //         cv::circle(img_color, current_points_device[j], 2, cv::Scalar(0, 0, 255));
+            //     }
+            // }
         }
 
         // /**
