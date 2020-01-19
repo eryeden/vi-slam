@@ -1,4 +1,6 @@
 #include <iostream>
+#include <algorithm>
+
 #include <opencv2/opencv.hpp>
 #include <opencv2/calib3d.hpp>
 #include <opencv2/viz.hpp>
@@ -74,23 +76,8 @@ int main()
         colors[i] = HSVtoRGB(h, 1, 1);
     }
 
-    // LogPlayer_extended lpe("/home/ery/Devel/tmp/assets/20191219_2/20191219_24", 0);
-
-    // dense_feature_extructor dfe;
     dense_feature::dense_feature_extructor dfe(0.1, 0.1);
 
-    // dfe.run_extruction("/home/ery/assets/20191219_2/20191219_31");
-    // dfe.run_extruction("/home/ery/assets/20191219_1/20191219_2");
-    // dfe.run_extruction("/home/ery/assets/20191115/20191115_40_2m_track");
-
-    // dfe.run_extruction("/home/ery/Devel/tmp/assets/20191219_2/20191219_31");
-    // dfe.run_extruction_cam("/dev/video0", 1.0);
-    // dfe.run_extruction_cam("/home/ery/Devel/tmp/assets/IMG_5144.MOV", 1.0 / 2.0);
-
-    // std::string path_to_log_dir = "/home/ery/assets/20191115/20191115_40_2m_track";
-    // std::string path_to_log_dir = "/home/ery/Devel/tmp/assets/20191219_1/20191219_3";
-
-    // /e/subspace/tmp/tmp/V1_01_easy/mav0/cam0
     LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V2_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
@@ -118,7 +105,15 @@ int main()
     cv::Affine3f cam_pose(cv::Mat::eye(3, 3, CV_32FC1), cv::Vec3f(0, 0, 1));
     // カメラパラメータ
     cv::Matx33d K(intrinsic_matrix);
-    cv::Matx33d Kinv = K.inv();
+
+    /**
+     * @brief 初期化関係
+     * 
+     */
+    bool is_initialized = false;
+    double match_rate_threshold = 0.3;
+    dense_feature::feature_in_frame initialized_frame;
+    cv::Mat rvec(3, 1, CV_64FC1), tvec(3, 1, CV_64FC1);
 
 #define SHOW_RESULTS
 #ifdef SHOW_RESULTS
@@ -136,10 +131,6 @@ int main()
     cv::viz::WCameraPosition wcamera_cand3(K, 1.0, cv::viz::Color::yellow());
     cv::viz::WCameraPosition wcamera_cand4(K, 1.0, cv::viz::Color::yellow());
 #endif
-
-    cv::Mat current_position, current_attitude;
-    current_position = (cv::Mat_<double>(3, 1) << 0, 0, 0);
-    current_attitude = (cv::Mat_<double>(3, 3) << 1, 0, 0, 0, 1, 0, 0, 0, 1);
 
 #ifdef REC
     cv::Mat tmp;
@@ -167,56 +158,105 @@ int main()
          * @brief 特徴点位置の初期化を行う
          * 
          */
-        int32_t ref_size = 5;
-        if (dfe.features.size() > ref_size)
+        if (!is_initialized)
         {
-            dense_feature::feature_in_frame ref_frame, current_frame;
-            // ref_frame = dfe.features[dfe.features.size() - ref_size - 1];
-            ref_frame = dfe.features[1];
-            current_frame = dfe.features[dfe.features.size() - 1];
-            ref_frame.imageSizeWH = Eigen::Vector2i(img_color.size().width, img_color.size().height);
-            ref_frame.intrinsic = intrinsic_eigen;
-            current_frame.imageSizeWH = Eigen::Vector2i(img_color.size().width, img_color.size().height);
-            current_frame.intrinsic = intrinsic_eigen;
-
-            dense_feature::feature_in_frame init_frame;
-            double match_rate = initializer::utils::initialize_feature_points(ref_frame, current_frame, init_frame);
-            std::cout << "Match rate: " << match_rate << std::endl;
-
-            /**
-             * @brief 特徴点の描画
-             * 
-             */
-            double max_dist = 0;
-            for (size_t idx = 0; idx < init_frame.features.size(); idx++)
+            if (dfe.features.size() > 2)
             {
-                if (init_frame.featureMasks[idx] > 0)
+                dense_feature::feature_in_frame ref_frame, current_frame;
+                // ref_frame = dfe.features[dfe.features.size() - ref_size - 1];
+                ref_frame = dfe.features[1];
+                current_frame = dfe.features[dfe.features.size() - 1];
+                ref_frame.imageSizeWH = Eigen::Vector2i(img_color.size().width, img_color.size().height);
+                ref_frame.intrinsic = intrinsic_eigen;
+                current_frame.imageSizeWH = Eigen::Vector2i(img_color.size().width, img_color.size().height);
+                current_frame.intrinsic = intrinsic_eigen;
+
+                double match_rate = initializer::utils::initialize_feature_points(ref_frame, current_frame, initialized_frame);
+                std::cout << "Match rate: " << match_rate << std::endl;
+
+                if (match_rate > match_rate_threshold)
                 {
-                    double dist = (init_frame.featuresIn3d[idx]).norm();
-                    if (max_dist < dist)
+                    is_initialized = true;
+                    std::cout << "Initialized. Match rate : " << match_rate << std::endl;
+
+                    // 特徴点位置を描画
+                    std::vector<cv::Point3d> pointCloud;
+                    for (size_t idx = 0; idx < initialized_frame.featuresIn3d.size(); idx++)
                     {
-                        max_dist = dist;
+                        if (initialized_frame.featureMasks[idx])
+                        {
+                            pointCloud.emplace_back(
+                                cv::Point3d(initialized_frame.featuresIn3d[idx][0],
+                                            initialized_frame.featuresIn3d[idx][1],
+                                            initialized_frame.featuresIn3d[idx][2]));
+                        }
                     }
+                    // 点群の描画
+                    cv::viz::WCloud cloud(pointCloud);
+                    myWindow.showWidget("CLOUD", cloud);
+
+                    // カメラ移動量の描画
+                    cv::Affine3d initial_cam_pose(cv::Mat::eye(3, 3, CV_64FC1), cv::Vec3f(0, 0, 0));
+                    myWindow.showWidget("1", wcamera, initial_cam_pose);
                 }
             }
-            for (size_t idx = 0; idx < init_frame.features.size(); idx++)
-            {
-                if (init_frame.featureMasks[idx] > 0)
-                {
-                    double dist = (init_frame.featuresIn3d[idx]).norm();
+        }
+        else
+        {
+            auto &current_frame = dfe.features[dfe.features.size() - 1];
 
-                    if (std::abs(init_frame.featuresIn3d[idx][0]) < 0.5 && std::abs(init_frame.featuresIn3d[idx][1]) < 0.5)
+            // 3Dポイントと画像中の画素の対応点を作る
+            std::vector<cv::Point3d> points_in_3d(0);
+            std::vector<cv::Point2d> points_in_2d(0);
+            std::set<uint64_t> points_in_3d_indices(initialized_frame.featureIDs.begin(), initialized_frame.featureIDs.end());
+            std::set<uint64_t> points_in_2d_indices(current_frame.featureIDs.begin(), current_frame.featureIDs.end());
+            std::set<uint64_t> indices_intersection;
+            std::set_intersection(points_in_3d_indices.begin(), points_in_3d_indices.end(),
+                                  points_in_2d_indices.begin(), points_in_2d_indices.end(),
+                                  std::inserter(indices_intersection, indices_intersection.end()));
+            for (size_t idx = 0; idx < initialized_frame.featuresIn3d.size(); idx++)
+            {
+                uint64_t feature_index = initialized_frame.featureIDs[idx];
+                if (initialized_frame.featureMasks[idx])
+                {
+                    if (indices_intersection.count(feature_index) == 1)
                     {
-                        cv::Scalar col = cv::Scalar(255, 0, 0);
-                        cv::circle(img_color, cv::Point(init_frame.features[idx][0], init_frame.features[idx][1]), 2, col);
-                    }
-                    else
-                    {
-                        cv::Scalar col = HSVtoRGB(dist / max_dist * 360.0, 1, 1);
-                        cv::circle(img_color, cv::Point(init_frame.features[idx][0], init_frame.features[idx][1]), 2, col);
+                        points_in_3d.emplace_back(
+                            cv::Point3d(initialized_frame.featuresIn3d[idx][0],
+                                        initialized_frame.featuresIn3d[idx][1],
+                                        initialized_frame.featuresIn3d[idx][2]));
                     }
                 }
+                else
+                {
+                    indices_intersection.erase(feature_index);
+                }
             }
+            for (size_t idx = 0; idx < current_frame.features.size(); idx++)
+            {
+                uint64_t feature_index = current_frame.featureIDs[idx];
+                if (indices_intersection.count(feature_index) == 1)
+                {
+                    points_in_2d.emplace_back(
+                        cv::Point2i(current_frame.features[idx][0],
+                                    current_frame.features[idx][1]));
+                }
+            }
+
+            // PNPを解く
+            // cv::Mat rvec, tvec;
+            cv::Mat out_points;
+            cv::solvePnPRansac(points_in_3d, points_in_2d, K, {}, rvec, tvec, true, 1000, 8.0F, 0.9999, out_points, cv::SOLVEPNP_ITERATIVE);
+
+            cv::Mat rotation_mat;
+            cv::Rodrigues(rvec, rotation_mat); // 回転行列として復元
+
+            // カメラ移動量の描画
+            cv::Mat rot_draw, t_draw;
+            rot_draw = rotation_mat.t();
+            t_draw = tvec * -1.0;
+            cv::Affine3d cam_pose(rot_draw, t_draw);
+            myWindow.showWidget("2", wcamera2, cam_pose);
         }
 
 #ifdef SHOW_RESULTS
