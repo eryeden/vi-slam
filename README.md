@@ -8,6 +8,7 @@ Try to make Visual Inertial SLAM
 - [Feature detection and tracking](docs/feature_extructor.md)
 - [Initialization](docs/initialization.md)
 - [Dataset](docs/dataset.md)
+- [Fig](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Fvislam.drawio)
 
 ## Policy
 1. Keep a license of this repo as non-GPL.
