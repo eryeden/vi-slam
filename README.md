@@ -7,6 +7,7 @@ Try to make Visual Inertial SLAM
 - [Coordinate setup](docs/coordinate_setup.md)
 - [Feature detection and tracking](docs/feature_extructor.md)
 - [Initialization](docs/initialization.md)
+- [Bundle adjustment](docs/ba.md)
 - [Dataset](docs/dataset.md)
 - [Fig](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Fvislam.drawio)
 
