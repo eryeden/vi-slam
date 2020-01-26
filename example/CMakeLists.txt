@@ -10,6 +10,9 @@ add_executable(sample2_initialize sample2_initialize.cpp)
 list(APPEND EXECUTABLE_TARGETS sample2_initialize)
 add_executable(sample2_pnp sample2_pnp.cpp)
 list(APPEND EXECUTABLE_TARGETS sample2_pnp)
+add_executable(sample2_reprojection sample2_reprojection.cpp)
+list(APPEND EXECUTABLE_TARGETS sample2_reprojection)
+
 
 add_executable(sample_viz sample_viz.cpp)
 list(APPEND EXECUTABLE_TARGETS sample_viz)
