@@ -1,82 +1,6 @@
-<mxfile host="www.draw.io" modified="2020-01-29T00:54:29.611Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36" etag="kUvb2Q85DjHbB0lVLE-x" version="12.5.8" type="github" pages="4">
-  <diagram id="_37ZfE2wD_X3_YTgAkfA" name="Top">
-    <mxGraphModel dx="839" dy="529" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
-      <root>
-        <mxCell id="0"/>
-        <mxCell id="1" parent="0"/>
-      </root>
-    </mxGraphModel>
-  </diagram>
-  <diagram id="psCmlDZE3tVd538Jrg62" name="FeatureExtructor">
-    <mxGraphModel dx="1666" dy="529" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
-      <root>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-0"/>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-1" parent="KRiQTR37dp_EB_8YDpK1-0"/>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-2" value="Input @ timestamp = t" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
-          <mxGeometry x="30" y="65" width="130" height="20" as="geometry"/>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-3" value="Image" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
-          <mxGeometry x="170" y="30" width="130" height="40" as="geometry"/>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-4" value="" style="endArrow=none;dashed=1;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="20" y="90" as="sourcePoint"/>
-            <mxPoint x="620" y="90" as="targetPoint"/>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-5" value="Calculate a crvature" style="rounded=1;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
-          <mxGeometry x="120" y="130" width="230" height="30" as="geometry"/>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-6" value="Resize image" style="rounded=1;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
-          <mxGeometry x="880" y="124" width="230" height="30" as="geometry"/>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-7" value="Extruct belif feature points" style="rounded=1;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
-          <mxGeometry x="880" y="184" width="230" height="30" as="geometry"/>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-8" value="Extruct belif feature points" style="rounded=1;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
-          <mxGeometry x="880" y="244" width="230" height="30" as="geometry"/>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-9" value="Detect local extrima on curvature image" style="rounded=1;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
-          <mxGeometry x="84" y="339" width="230" height="30" as="geometry"/>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-10" value="Initialie?" style="text;html=1;resizable=0;points=[];autosize=1;align=left;verticalAlign=top;spacingTop=-4;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
-          <mxGeometry x="11" y="274" width="60" height="20" as="geometry"/>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-11" value="Get the dominant flow between &lt;br&gt;image_{t-1} and image_{t}" style="rounded=1;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
-          <mxGeometry x="570" y="300" width="230" height="30" as="geometry"/>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-13" value="Estimate feature points of image_{t}&lt;br&gt;and use as initial values of feature point tracking" style="rounded=1;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
-          <mxGeometry x="410" y="390" width="350" height="30" as="geometry"/>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-14" value="Track local extrema" style="rounded=1;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
-          <mxGeometry x="413" y="490" width="350" height="30" as="geometry"/>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-15" value="" style="endArrow=none;dashed=1;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" edge="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="20" y="600" as="sourcePoint"/>
-            <mxPoint x="620" y="600" as="targetPoint"/>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-18" value="Output" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
-          <mxGeometry x="21" y="620" width="40" height="20" as="geometry"/>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-19" value="&lt;span style=&quot;white-space: normal&quot;&gt;feature points from image_{t-1}&lt;/span&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
-          <mxGeometry x="360" y="30" width="270" height="40" as="geometry"/>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-21" value="&lt;span style=&quot;white-space: normal&quot;&gt;feature points from image_{t}&lt;/span&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
-          <mxGeometry x="278" y="670" width="270" height="40" as="geometry"/>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-26" value="&lt;span style=&quot;white-space: normal&quot;&gt;？？&lt;br&gt;トラッキングしている途中で、特徴点のない領域が生じてくると思うが、そこに特徴点を見つけるためにはどうしたらよいか？&lt;br&gt;&lt;br&gt;OrbSLAMのような画像を領域に分割して、均等に特徴点が存在するように検出し直す方法など必要か？&lt;br&gt;&lt;br&gt;トラッキングに失敗する可能性もあるので、&lt;br&gt;特徴点密度をカンガル筆王あり・&lt;br&gt;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
-          <mxGeometry x="960" y="374" width="295" height="120" as="geometry"/>
-        </mxCell>
-        <mxCell id="KRiQTR37dp_EB_8YDpK1-31" value="&lt;span style=&quot;white-space: normal&quot;&gt;？？&lt;br&gt;曲率画像の画像の極値探索に利用する初期値は&lt;br&gt;どうやって決めるのか？&lt;br&gt;- ランダムサンプル？&lt;br&gt;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
-          <mxGeometry x="-320.1666259765625" y="280" width="295" height="60" as="geometry"/>
-        </mxCell>
-      </root>
-    </mxGraphModel>
-  </diagram>
+<mxfile host="www.draw.io" modified="2020-01-29T00:55:02.190Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36" etag="bvnxSc0vsRh2ZGDr5qR6" version="12.5.8" type="github" pages="4">
   <diagram id="H0uU_kFGj13HSg9YGo_l" name="Coordinats">
-    <mxGraphModel dx="2098" dy="1323" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="2397" dy="1511" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="0IS2U3QtcljcEeAQ51mi-0"/>
         <mxCell id="0IS2U3QtcljcEeAQ51mi-1" parent="0IS2U3QtcljcEeAQ51mi-0"/>
@@ -162,7 +86,7 @@
           <mxGeometry x="39.99999999999999" y="650" width="1040" height="20" as="geometry"/>
         </mxCell>
         <mxCell id="8hChCW3FszteUkoNeu8G-30" value="" style="group" parent="0IS2U3QtcljcEeAQ51mi-1" vertex="1" connectable="0">
-          <mxGeometry x="395.9" y="260" width="488.19000000000005" height="120" as="geometry"/>
+          <mxGeometry x="320" y="250" width="488.19000000000005" height="120" as="geometry"/>
         </mxCell>
         <mxCell id="8hChCW3FszteUkoNeu8G-24" value="" style="group" parent="8hChCW3FszteUkoNeu8G-30" vertex="1" connectable="0">
           <mxGeometry x="163.19000000000005" width="325" height="120" as="geometry"/>
@@ -460,6 +384,82 @@
         </mxCell>
         <mxCell id="p3lKdHECGygR9ucCXaFz-1" value="もろもろ調べると、とりあえずヘシアンとグラディエントが求まればOKぽい。&lt;br&gt;この計算はライブラリでもできるのかな。&lt;br&gt;計算できたら部分的にアップデートを行うといい感じの値に収束するらしい。&lt;br&gt;また、ヘシアンは最適化する特徴点とカメラの個数の二乗分、要素が存在するのでサイズが極でかくなるらしい。&lt;br&gt;疎行列で扱う必要がでてきているらしい。このあたりの扱いがポイントぽい。&lt;br&gt;&lt;br&gt;なにかでヘシアンが楽に計算できればうれぴい。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="KwsuU6XtCkrVDZlp-KHl-1" vertex="1">
           <mxGeometry x="950" y="810" width="630" height="100" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="_37ZfE2wD_X3_YTgAkfA" name="Top">
+    <mxGraphModel dx="839" dy="529" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="psCmlDZE3tVd538Jrg62" name="FeatureExtructor">
+    <mxGraphModel dx="1666" dy="529" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-0"/>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-1" parent="KRiQTR37dp_EB_8YDpK1-0"/>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-2" value="Input @ timestamp = t" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
+          <mxGeometry x="30" y="65" width="130" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-3" value="Image" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
+          <mxGeometry x="170" y="30" width="130" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-4" value="" style="endArrow=none;dashed=1;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="20" y="90" as="sourcePoint"/>
+            <mxPoint x="620" y="90" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-5" value="Calculate a crvature" style="rounded=1;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
+          <mxGeometry x="120" y="130" width="230" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-6" value="Resize image" style="rounded=1;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
+          <mxGeometry x="880" y="124" width="230" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-7" value="Extruct belif feature points" style="rounded=1;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
+          <mxGeometry x="880" y="184" width="230" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-8" value="Extruct belif feature points" style="rounded=1;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
+          <mxGeometry x="880" y="244" width="230" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-9" value="Detect local extrima on curvature image" style="rounded=1;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
+          <mxGeometry x="84" y="339" width="230" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-10" value="Initialie?" style="text;html=1;resizable=0;points=[];autosize=1;align=left;verticalAlign=top;spacingTop=-4;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
+          <mxGeometry x="11" y="274" width="60" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-11" value="Get the dominant flow between &lt;br&gt;image_{t-1} and image_{t}" style="rounded=1;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
+          <mxGeometry x="570" y="300" width="230" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-13" value="Estimate feature points of image_{t}&lt;br&gt;and use as initial values of feature point tracking" style="rounded=1;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
+          <mxGeometry x="410" y="390" width="350" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-14" value="Track local extrema" style="rounded=1;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
+          <mxGeometry x="413" y="490" width="350" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-15" value="" style="endArrow=none;dashed=1;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="20" y="600" as="sourcePoint"/>
+            <mxPoint x="620" y="600" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-18" value="Output" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
+          <mxGeometry x="21" y="620" width="40" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-19" value="&lt;span style=&quot;white-space: normal&quot;&gt;feature points from image_{t-1}&lt;/span&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
+          <mxGeometry x="360" y="30" width="270" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-21" value="&lt;span style=&quot;white-space: normal&quot;&gt;feature points from image_{t}&lt;/span&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
+          <mxGeometry x="278" y="670" width="270" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-26" value="&lt;span style=&quot;white-space: normal&quot;&gt;？？&lt;br&gt;トラッキングしている途中で、特徴点のない領域が生じてくると思うが、そこに特徴点を見つけるためにはどうしたらよいか？&lt;br&gt;&lt;br&gt;OrbSLAMのような画像を領域に分割して、均等に特徴点が存在するように検出し直す方法など必要か？&lt;br&gt;&lt;br&gt;トラッキングに失敗する可能性もあるので、&lt;br&gt;特徴点密度をカンガル筆王あり・&lt;br&gt;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
+          <mxGeometry x="960" y="374" width="295" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="KRiQTR37dp_EB_8YDpK1-31" value="&lt;span style=&quot;white-space: normal&quot;&gt;？？&lt;br&gt;曲率画像の画像の極値探索に利用する初期値は&lt;br&gt;どうやって決めるのか？&lt;br&gt;- ランダムサンプル？&lt;br&gt;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="KRiQTR37dp_EB_8YDpK1-1" vertex="1">
+          <mxGeometry x="-320.1666259765625" y="280" width="295" height="60" as="geometry"/>
         </mxCell>
       </root>
     </mxGraphModel>
