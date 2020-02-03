@@ -12,3 +12,15 @@
 ### BAメモ
 一番ベーシックなBA（再投影誤差のみ）でのヤコビアンの計算までは道筋がたった。
 しかし、M推定と併用する場合でのGauss-Newton法のやり方が不明。特にロバスト推定用のカーネル関数がBAの再投影コスト関数にかかった場合、どんなヤコビアンを計算すればよいか不明。Ceres-Solverの出力するヤコビアンを利用できれば一番いいだろうが、やり方は不明。M推定を利用するときのGauss-Newton法の解き方については要検討だろう。
+
+### M推定併用のGauss-newtonについて
+Ceres-solverのページに方法がのっていた。とりあえず、ヤコビアンさえ求まればM推定カーネルと再投影誤差ベクトルから求まるスケーリング定数をかけるだけでOKぽい。
+- [詳細リンク](http://ceres-solver.org/nnls_modeling.html#theory)
+- [Ceres-solverの参照先論文](https://hal.inria.fr/inria-00548290/document)
+
+### 逆行列の扱いについて
+ヘシアンの逆行列について。基本ヘシアンはJ^T Jで求めるので対象行列になる。部分部分で見た場合は、中心部分の行列は対象になっている。
+なので、それらが出現する連立方程式を解く場合はコレスキー分解を利用した方法が使える。Eigenで簡単に計算できるポイので、実装してみる。
+Subspace-gauss-newtonを利用するとDenseな話に落とすことができるので、ライセンスの観点からも結構いいかも。BAが収束するまでの全体の計算時間が本法に短くなるのか？がポイントになる？
+- [Eigen連立方程式ソルバへのリンク](http://eigen.tuxfamily.org/dox/group__TutorialLinearAlgebra.html)
+- [参考サイト](https://ssuzumura.github.io/dev_tips/LeastSquares/solve_LS.html)
