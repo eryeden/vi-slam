@@ -1,7 +1,6 @@
 # vi-slam
 Try to make Visual Inertial SLAM
 
-Idea padはかす。
 
 ## Docs
 - [__Setup__](docs/setup.md)
