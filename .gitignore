@@ -37,3 +37,7 @@ build
 
 # vscode
 .vscode
+
+# clion
+cmake-build-debug
+.idea
