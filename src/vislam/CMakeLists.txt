@@ -1,7 +1,9 @@
 # ----- Create vislam library -----
 
 add_library(${PROJECT_NAME}
-            SHARED)
+            SHARED
+            ${CMAKE_CURRENT_SOURCE_DIR}/type_defines.hpp
+            )
 
 # OpenMP
 set(USE_OPENMP ON CACHE BOOL "Use OpenMP")
@@ -32,6 +34,7 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
                     PUBLIC
                     utils
+                    Eigen3::Eigen
                     yaml-cpp
                     opencv_core
                     opencv_highgui
@@ -39,6 +42,8 @@ target_link_libraries(${PROJECT_NAME}
                     opencv_features2d
                     opencv_xfeatures2d
                     opencv_calib3d)
+
+
 
 add_subdirectory(data)
 add_subdirectory(feature)

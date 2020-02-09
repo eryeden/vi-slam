@@ -5,8 +5,9 @@
 #include <map>
 #include <random>
 #include <opencv2/opencv.hpp>
-#include <eigen3/Eigen/Dense>
+#include <Eigen/Dense>
 
+#include "type_defines.hpp"
 #include "feature_in_frame.hpp"
 
 namespace dense_feature

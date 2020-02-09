@@ -1,4 +1,5 @@
 #include "feature_in_frame.hpp"
+#include "type_defines.hpp"
 
 using namespace dense_feature;
 

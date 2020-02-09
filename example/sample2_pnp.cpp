@@ -5,7 +5,7 @@
 #include <opencv2/calib3d.hpp>
 #include <opencv2/viz.hpp>
 
-#include <eigen3/Eigen/Core>
+#include <Eigen/Core>
 #include <opencv2/core/eigen.hpp>
 
 #include "dense_feature_extructor.hpp"
