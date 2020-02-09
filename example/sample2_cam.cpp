@@ -80,7 +80,8 @@ int main()
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5151.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5156.MOV");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/IMG_5162.MOV");
-    cv::VideoCapture cap("/home/ery/Devel/tmp/assets/test_fukuroi_ryou303.mp4");
+    // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/test_fukuroi_ryou303.mp4");
+    cv::VideoCapture cap("/home/ery/tmp/test.mp4");
     // cv::VideoCapture cap("/home/ery/Devel/tmp/assets/imgs_jetson/frame%d.jpg");
 
     int64_t ref_size = 5;

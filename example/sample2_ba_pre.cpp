@@ -214,6 +214,20 @@ int main()
         /**
          * @brief 抽出した特徴点からdata::frameを生成する
          */
+        vislam::data::frame frame_current;
+        /**
+         * @brief 今回のフレームで抽出・トラックできた特徴点を挿入する。
+         */
+        auto feature_points_current = dfe.features[dfe.features.size()-1];
+        for(size_t index_current_feature = 0; index_current_feature < feature_points_current.featureIDs.size(); index_current_feature++){
+            uint64_t current_feature_id = feature_points_current.featureIDs[index_current_feature];
+            Eigen::Vector2i  current_feature_position_in_device = feature_points_current.features[index_current_feature];
+            frame_current.observingFeaturePointInDevice[current_feature_id] ={current_feature_position_in_device[0], current_feature_position_in_device[1]};
+            frame_current.observingFeatureId.emplace(current_feature_id);
+        }
+
+
+
 
 
         /**
