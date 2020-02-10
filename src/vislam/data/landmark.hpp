@@ -9,6 +9,7 @@ class landmark
 {
 
 public:
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
 
         landmark(uint64_t id,

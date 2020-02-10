@@ -147,3 +147,19 @@ double utils::initialize_feature_points(const dense_feature::feature_in_frame &f
         return 0;
     }
 }
+
+double
+utils::initialize_feature_points(const vislam::data::frame &frame_reference,
+                                 const vislam::data::frame &frame_current,
+                                 std::vector<vislam::data::landmark> &initialized_landmarks) {
+
+    // カメラ関係パラメータ初期化
+    cv::Mat intrinsic(3, 3, CV_64FC1);
+    cv::eigen2cv(frame_current.cameraIntrinsicParameter, intrinsic);
+    double fovx, fovy, focal, pasp;
+    cv::Point2d pp;
+    cv::calibrationMatrixValues(intrinsic, cv::Size(features_current.imageSizeWH[0], features_current.imageSizeWH[1]), 0.0, 0.0, fovx, fovy, focal, pp, pasp);
+
+
+    return 0;
+}

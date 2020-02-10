@@ -10,6 +10,7 @@
 
 #include "frame.hpp"
 #include "landmark.hpp"
+#include "camera.hpp"
 
 #include "dense_feature_extructor.hpp"
 #include "initializer.hpp"
@@ -109,9 +110,9 @@ int main()
 
     dense_feature::dense_feature_extructor dfe(0.1, 0.1);
 
-    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
+//    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V2_01_easy/mav0/cam0", 0.001);
-    // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
+     LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/MH_01_easy/mav0/cam0", 0.001);
 
     // // カメラ画像を補正するようにする
@@ -220,15 +221,40 @@ int main()
          */
         auto feature_points_current = dfe.features[dfe.features.size()-1];
         for(size_t index_current_feature = 0; index_current_feature < feature_points_current.featureIDs.size(); index_current_feature++){
+
+            /**
+             * @brief Frame中に検出した特徴点を記録する
+             */
             uint64_t current_feature_id = feature_points_current.featureIDs[index_current_feature];
             Eigen::Vector2i  current_feature_position_in_device = feature_points_current.features[index_current_feature];
             frame_current.observingFeaturePointInDevice[current_feature_id] ={current_feature_position_in_device[0], current_feature_position_in_device[1]};
             frame_current.observingFeatureId.emplace(current_feature_id);
+
+            /**
+             * @brief 特徴点データベースに登録する
+             */
+            if(database_landmark.count(current_feature_id) !=0){ // databaseに登録済みの場合
+                database_landmark[current_feature_id].isTracking = true;
+                database_landmark[current_feature_id].observedFrameId.emplace(i);
+            }else{ // databaseに登録なしの場合
+                database_landmark[current_feature_id] = vislam::data::landmark(current_feature_id,
+                        {i},
+                        {0,0,0},
+                        false,
+                        true);
+            }
         }
 
+        /**
+         * @brief カメラパラメータ関係の初期化を行う
+         */
+        frame_current.cameraIntrinsicParameter = intrinsic_eigen;
 
-
-
+        /**
+         * @brief Frameのデータベースに登録する
+         */
+        database_frame[i] = frame_current;
+        //std::cout << "Num frames: " << database_frame.size() << std::endl; // フレーム数はunordered_mapのsizeで得られるぽい
 
         /**
          * @brief 特徴点位置の初期化を行う
