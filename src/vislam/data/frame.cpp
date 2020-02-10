@@ -12,7 +12,21 @@ frame::frame(uint64_t id_, const std::unordered_set<uint64_t> &observing_feature
     observingFeaturePointInDevice = observing_feature_point_in_device;
     cameraPosition = camera_position;
     cameraAttitude = camera_attitude;
-    cameraIntrinsicParameter = camera_intrinsic_parameter;
+
+    cameraParameter.set_camera_intrinsic_parameter((camera_intrinsic_parameter));
+}
+
+frame::frame(uint64_t id,
+const std::unordered_set<uint64_t > & observing_feature_id,
+const eigen_allocated_unordered_map<uint64_t , Vec2_t> &observing_feature_point_in_device,
+const Vec3_t & camera_position,
+const Quat_t & camera_attitude)
+:frame(id, observing_feature_id, observing_feature_point_in_device,
+        camera_position,
+        camera_attitude,
+       Eigen::MatrixXd::Identity(3,3))
+{
+
 }
 
 frame::frame(uint64_t id)
