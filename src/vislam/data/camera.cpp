@@ -37,12 +37,12 @@ vislam::data::camera::camera()
 }
 
 
-vislam::Mat33_t vislam::data::camera::get_intrinsic_matrix(){
+vislam::Mat33_t vislam::data::camera::get_intrinsic_matrix()const {
     Mat33_t out;
     out   << fx, 0, cx, 0, fy, cy, 0,0,1.0;
     return out;
 }
-std::vector<double> vislam::data::camera::get_distortion_parameters(){
+std::vector<double> vislam::data::camera::get_distortion_parameters() const {
     return {k1, k2, p1, p2, k3};
 }
 

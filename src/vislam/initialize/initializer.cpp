@@ -5,6 +5,8 @@
 #include <eigen3/Eigen/Core>
 #include <opencv2/core/eigen.hpp>
 
+//#include <chrono>
+
 using namespace initializer;
 
 /**
@@ -154,12 +156,145 @@ utils::initialize_feature_points(const vislam::data::frame &frame_reference,
                                  std::vector<vislam::data::landmark> &initialized_landmarks) {
 
     // カメラ関係パラメータ初期化
+    const auto &camera_param = frame_current.cameraParameter;
     cv::Mat intrinsic(3, 3, CV_64FC1);
-    cv::eigen2cv(frame_current.cameraIntrinsicParameter, intrinsic);
+    cv::eigen2cv(camera_param.get_intrinsic_matrix(), intrinsic);
     double fovx, fovy, focal, pasp;
     cv::Point2d pp;
-    cv::calibrationMatrixValues(intrinsic, cv::Size(features_current.imageSizeWH[0], features_current.imageSizeWH[1]), 0.0, 0.0, fovx, fovy, focal, pp, pasp);
+    cv::calibrationMatrixValues(intrinsic, cv::Size(camera_param.width, camera_param.height), 0.0, 0.0, fovx, fovy, focal, pp, pasp);
 
 
-    return 0;
+
+    /**
+     * @brief ReferenceとCurrent同時に観測しているFeature IDを抽出する
+     * @details
+     * std::unordered_setを活用することで、高速な探索を実現する。
+     */
+    const auto & reference_feature_ids = frame_reference.observingFeatureId;
+    std::vector<uint64_t> ref_feature_ids_vector(reference_feature_ids.begin(), reference_feature_ids.end());
+    const auto & current_feature_ids = frame_current.observingFeatureId;
+    std::vector<uint64_t >curt_feature_ids_vector(current_feature_ids.begin(), current_feature_ids.end());
+
+//    for(const auto idx : reference_feature_ids){
+//        std::cout << "Reference feature ID " << idx << std::endl;
+//    }
+//
+//    for(const auto idx : current_feature_ids){
+//        std::cout << "Current feature ID " << idx << std::endl;
+//    }
+
+//    std::unordered_set<uint64_t > intersection_feature_ids;
+    std::vector<uint64_t > intersection_feature_ids;
+
+//    std::chrono::system_clock::time_point start, end;
+//    start = std::chrono::system_clock::now();
+//    std::set_intersection(reference_feature_ids.begin(), reference_feature_ids.end(),
+//            current_feature_ids.begin(), current_feature_ids.end(),
+//            std::inserter(intersection_feature_ids, intersection_feature_ids.end()));
+    std::set_intersection(ref_feature_ids_vector.begin(), ref_feature_ids_vector.end(),
+                          curt_feature_ids_vector.begin(), curt_feature_ids_vector.end(),
+                          std::inserter(intersection_feature_ids, intersection_feature_ids.end()));
+//    end = std::chrono::system_clock::now();
+//    double time = static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() / 1000.0);
+//    printf("time %lf[ms]\n", time);
+
+    /**
+     * @brief 積集合の要素を集める。
+     */
+    std::vector<cv::Point2d> feature_points_reference(0), feature_points_current(0);
+    std::vector<uint64_t> feature_points_ids(0);
+    feature_points_current.reserve(intersection_feature_ids.size());
+    feature_points_reference.reserve(intersection_feature_ids.size());
+    feature_points_ids.reserve(intersection_feature_ids.size());
+    for(const auto idx : intersection_feature_ids){
+        feature_points_current.emplace_back(
+                cv::Point2d(frame_current.observingFeaturePointInDevice.at(idx)[0],
+                        frame_current.observingFeaturePointInDevice.at(idx)[1]));
+        feature_points_reference.emplace_back(
+                cv::Point2d(frame_reference.observingFeaturePointInDevice.at(idx)[0],
+                            frame_reference.observingFeaturePointInDevice.at(idx)[1]));
+        feature_points_ids.emplace_back(idx);
+
+//        std::cout << "Intersection: " << idx << std::endl;
+    }
+
+
+
+
+    /**
+     * @brief 5点法でカメラ位置を推定、特徴点位置を計算する
+     *
+     */
+    cv::Mat E, R, t, mask;                //! 推定したカメラの移動量がここに入る
+    std::vector<vislam::data::landmark> output_landmarks; //! Currentカメラ座標系において位置推定された特徴点が入る
+    if (intersection_feature_ids.size() >= 5) // マッチ対象の特徴点が５点以上の場合
+    {
+        // std::cout << "input features: " << features_current.features.size() << std::endl;
+
+        // 5点法でEssentialMatrixを推定する
+        E = cv::findEssentialMat(feature_points_reference, feature_points_current, focal, pp, cv::RANSAC, 0.999, 0.99,
+                                 mask);
+        // double matching_rate = static_cast<double>(cv::countNonZero(mask)) / feature_points_reference.size();
+        cv::recoverPose(E, feature_points_reference, feature_points_current, R, t, focal, pp, mask);
+
+        // //正規化座標系で計算しているのでProjection matrix=Extrinsic
+        cv::Mat prjMat1(3, 4, CV_64FC1), prjMat2(3, 4, CV_64FC1);
+        prjMat1 = cv::Mat::eye(3, 4, CV_64FC1); //片方は回転、並進ともに0
+        for (int ii = 0; ii < 3; ++ii) {
+            for (int j = 0; j < 3; ++j) {
+                prjMat2.at<double>(ii, j) = R.at<double>(ii, j);
+            }
+        }
+        prjMat1 = intrinsic * prjMat1;
+
+        prjMat2.at<double>(0, 3) = t.at<double>(0);
+        prjMat2.at<double>(1, 3) = t.at<double>(1);
+        prjMat2.at<double>(2, 3) = t.at<double>(2);
+        prjMat2 = intrinsic * prjMat2;
+
+        // // 三角測量による三次元位置の推定
+        std::vector<cv::Point2d> cam0pnts(feature_points_reference.size(), cv::Point2d(0, 0));
+        std::vector<cv::Point2d> cam1pnts(feature_points_reference.size(), cv::Point2d(0, 0));
+        std::vector<uint64_t> inlier_feature_ids(0); //! inlierの特徴点IDが入る
+        for (size_t idx = 0; idx < feature_points_reference.size(); idx++) {
+            cam0pnts[idx] = cv::Point2d(feature_points_reference[idx].x, feature_points_reference[idx].y);
+            cam1pnts[idx] = cv::Point2d(feature_points_current[idx].x, feature_points_current[idx].y);
+            if (mask.at<unsigned char>(idx)) { inlier_feature_ids.emplace_back(feature_points_ids[idx]); }
+
+        }
+        cv::Mat pnts3D(4, cam0pnts.size(), CV_64F);
+        /**
+         * @brief 三角測量で特徴点位置を計算する
+         * @details
+         * このときの特徴点位置座標系はreferenceフレームのカメラ位置を原点/直交基底としている。
+         * そのため、currentフレームのカメラ位置を原点とした座標系に変換して出力する必要がある。
+         *
+         */
+        cv::triangulatePoints(prjMat1, prjMat2, cam0pnts, cam1pnts, pnts3D);
+
+        // 特徴点位置の座標系をCurrentFrameのカメラ位置を原点/直交基底にしたものとして変換する
+        output_landmarks.reserve(pnts3D.cols);
+        for (int ii = 0; ii < pnts3D.cols; ++ii) {
+            cv::Point3d pos = cv::Point3d(pnts3D.at<double>(0, ii),
+                                          pnts3D.at<double>(1, ii),
+                                          pnts3D.at<double>(2, ii)) /
+                              pnts3D.at<double>(3, ii);
+            //! Currentカメラ座標系における特徴点位置を
+            cv::Mat pos_mod = R * (cv::Mat_<double>(3, 1) << pos.x, pos.y, pos.z) + t;
+
+            bool is_outliear = mask.at<unsigned char>(ii) == 0;
+            vislam::data::landmark current_landmark(feature_points_ids[ii],
+                    {},
+                    vislam::Vec3_t (pos_mod.at<double>(0), pos_mod.at<double>(1), pos_mod.at<double>(2))
+                    , is_outliear, true);
+            output_landmarks.emplace_back(current_landmark);
+        }
+
+        initialized_landmarks = output_landmarks;
+        double matching_rate = static_cast<double>(cv::countNonZero(mask)) / feature_points_current.size();
+        return matching_rate;
+    }else{
+        return 0;
+    }
+
 }

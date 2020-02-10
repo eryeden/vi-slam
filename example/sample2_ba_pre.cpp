@@ -110,9 +110,9 @@ int main()
 
     dense_feature::dense_feature_extructor dfe(0.1, 0.1);
 
-//    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
+    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V2_01_easy/mav0/cam0", 0.001);
-     LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
+//     LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/MH_01_easy/mav0/cam0", 0.001);
 
     // // カメラ画像を補正するようにする
@@ -130,6 +130,7 @@ int main()
 
     cv::Mat distortion_coeffs(5, 1, CV_32FC1);
     distortion_coeffs = (cv::Mat_<float>(5, 1) << -0.28340811, 0.07395907, 0.00019359, 1.76187114e-05);
+    std::vector<double> distortion_coeffs_array = { -0.28340811, 0.07395907, 0.00019359, 1.76187114e-05};
 
     cv::Vec3f cam_pos(3.0f, 3.0f, 3.0f), cam_focal_point(3.0f, 3.0f, 2.0f), cam_y_dir(-1.0f, 0.0f, 0.0f);
 
@@ -137,6 +138,22 @@ int main()
     cv::Affine3f cam_pose(cv::Mat::eye(3, 3, CV_32FC1), cv::Vec3f(0, 0, 1));
     // カメラパラメータ
     cv::Matx33d K(intrinsic_matrix);
+
+    //! カメラパラメータをまとめて初期化する
+    cv::Mat dummy_image;
+    double dummy_timestamp;
+    lp_mav.get_frame_by_index(dummy_image, dummy_timestamp, 0);
+//    vislam::data::camera camera_pram(0,
+//                                     dummy_image.size().width, dummy_image.size().height,
+//                                     30,
+//                                     intrinsic_eigen(0,0), intrinsic_eigen(1,1), intrinsic_eigen(2,0), intrinsic_eigen(2,1),
+//                                     distortion_coeffs_array[0], distortion_coeffs_array[1], distortion_coeffs_array[2], distortion_coeffs_array[3], distortion_coeffs_array[4]);
+
+    vislam::data::camera camera_pram(0,
+                                     dummy_image.size().width, dummy_image.size().height,
+                                     30,
+                                     458.654, 457.296, 367.215, 248.375, //! eigenのmatからだとうまいこといかなかった
+                                     distortion_coeffs_array[0], distortion_coeffs_array[1], distortion_coeffs_array[2], distortion_coeffs_array[3], distortion_coeffs_array[4]);
 
     /**
      * @brief 初期化関係
@@ -248,49 +265,59 @@ int main()
         /**
          * @brief カメラパラメータ関係の初期化を行う
          */
-        frame_current.cameraIntrinsicParameter = intrinsic_eigen;
+        frame_current.cameraParameter = camera_pram;
 
         /**
          * @brief Frameのデータベースに登録する
          */
         database_frame[i] = frame_current;
-        //std::cout << "Num frames: " << database_frame.size() << std::endl; // フレーム数はunordered_mapのsizeで得られるぽい
+//        std::cout << "Num frames: " << database_frame.size() << std::endl; // フレーム数はunordered_mapのsizeで得られるぽい
 
         /**
          * @brief 特徴点位置の初期化を行う
          * 
          */
-        if (!is_initialized)
-        {
-            if (dfe.features.size() > 2)
-            {
-                dense_feature::feature_in_frame ref_frame, current_frame;
-                // ref_frame = dfe.features[dfe.features.size() - ref_size - 1];
-                ref_frame = dfe.features[1];
-                current_frame = dfe.features[dfe.features.size() - 1];
-                ref_frame.imageSizeWH = Eigen::Vector2i(img_color.size().width, img_color.size().height);
-                ref_frame.intrinsic = intrinsic_eigen;
-                current_frame.imageSizeWH = Eigen::Vector2i(img_color.size().width, img_color.size().height);
-                current_frame.intrinsic = intrinsic_eigen;
+        if(!is_initialized){
+            if(database_frame.size()> 2){
 
-                double match_rate = initializer::utils::initialize_feature_points(ref_frame, current_frame, initialized_frame);
+                /**
+                 * @brief 特徴点位置の初期化を試みる
+                 */
+                const auto & reference_frame = database_frame[1];
+                const auto & current_frame = database_frame[i];
+                std::vector<vislam::data::landmark> localized_landmarks;
+                double match_rate = initializer::utils::initialize_feature_points(reference_frame, current_frame, localized_landmarks);
                 std::cout << "Match rate: " << match_rate << std::endl;
 
-                if (match_rate > match_rate_threshold)
-                {
+                if(match_rate > match_rate_threshold){
+
+                    /**
+                     * @brief 特徴点位置の初期化を完了して特徴点データベースの更新を行う
+                     */
                     is_initialized = true;
                     std::cout << "Initialized. Match rate : " << match_rate << std::endl;
 
+                    /**
+                     * @brief 特徴点の観測情報を更新する
+                     */
+                     for(const auto & lm :  localized_landmarks){
+                         auto & related_landmark = database_landmark[lm.id];
+                         related_landmark.isTracking = lm.isTracking;
+                         related_landmark.isOutlier = lm.isOutlier;
+                         related_landmark.positionInWorld = lm.positionInWorld;
+                         related_landmark.id = lm.id;
+                     }
+
                     // 特徴点位置を描画
                     std::vector<cv::Point3d> pointCloud;
-                    for (size_t idx = 0; idx < initialized_frame.featuresIn3d.size(); idx++)
+                    for (auto & localized_landmark : localized_landmarks)
                     {
-                        if (initialized_frame.featureMasks[idx])
+                        if (!localized_landmark.isOutlier)
                         {
                             pointCloud.emplace_back(
-                                cv::Point3d(initialized_frame.featuresIn3d[idx][0],
-                                            initialized_frame.featuresIn3d[idx][1],
-                                            initialized_frame.featuresIn3d[idx][2]));
+                                    cv::Point3d(localized_landmark.positionInWorld[0],
+                                                localized_landmark.positionInWorld[1],
+                                                localized_landmark.positionInWorld[2]));
                         }
                     }
                     // 点群の描画
@@ -301,102 +328,148 @@ int main()
                     cv::Affine3d initial_cam_pose(cv::Mat::eye(3, 3, CV_64FC1), cv::Vec3f(0, 0, 0));
                     myWindow.showWidget("1", wcamera, initial_cam_pose);
                 }
+
             }
         }
-        else
-        {
-            auto &current_frame = dfe.features[dfe.features.size() - 1];
 
-            // 3Dポイントと画像中の画素の対応点を作る
-            std::vector<cv::Point3d> points_in_3d(0);
-            std::vector<cv::Point2d> points_in_2d(0);
-            std::set<uint64_t> points_in_3d_indices(initialized_frame.featureIDs.begin(), initialized_frame.featureIDs.end());
-            std::set<uint64_t> points_in_2d_indices(current_frame.featureIDs.begin(), current_frame.featureIDs.end());
-            std::set<uint64_t> indices_intersection;
-            std::set_intersection(points_in_3d_indices.begin(), points_in_3d_indices.end(),
-                                  points_in_2d_indices.begin(), points_in_2d_indices.end(),
-                                  std::inserter(indices_intersection, indices_intersection.end()));
-            for (size_t idx = 0; idx < initialized_frame.featuresIn3d.size(); idx++)
-            {
-                uint64_t feature_index = initialized_frame.featureIDs[idx];
-                if (initialized_frame.featureMasks[idx])
-                {
-                    if (indices_intersection.count(feature_index) == 1)
-                    {
-                        points_in_3d.emplace_back(
-                            cv::Point3d(initialized_frame.featuresIn3d[idx][0],
-                                        initialized_frame.featuresIn3d[idx][1],
-                                        initialized_frame.featuresIn3d[idx][2]));
-                    }
-                }
-                else
-                {
-                    indices_intersection.erase(feature_index);
-                }
-            }
-            for (size_t idx = 0; idx < current_frame.features.size(); idx++)
-            {
-                uint64_t feature_index = current_frame.featureIDs[idx];
-                if (indices_intersection.count(feature_index) == 1)
-                {
-                    points_in_2d.emplace_back(
-                        cv::Point2i(current_frame.features[idx][0],
-                                    current_frame.features[idx][1]));
-                }
-            }
 
-            // PNPを解く
-            // cv::Mat rvec, tvec;
-            cv::Mat out_points;
-            cv::solvePnPRansac(points_in_3d, points_in_2d, K, {}, rvec, tvec, true, 1000, 16.0F, 0.9999, out_points, cv::SOLVEPNP_ITERATIVE);
-
-            cv::Mat rotation_mat;
-            cv::Rodrigues(rvec, rotation_mat); // 回転行列として復元
-
-            // カメラ移動量の描画
-            cv::Mat rot_draw, t_draw;
-            rot_draw = rotation_mat.t();
-            t_draw = tvec * -1.0;
-            cv::Affine3d cam_pose(rot_draw, t_draw);
-            myWindow.showWidget("2", wcamera2, cam_pose);
-
-            /**
-             * @brief 現在のカメラ位置に点群位置を再投影する
-             * @details
-             * - 入力データ
-             * カメラ姿勢: rotation_mat, tvec
-             * カメラの内部パラメータ: K
-             */
-            Eigen::Matrix3d cam_rotaion_mat;
-            Eigen::Vector3d cam_translation_mat;
-            cv::cv2eigen(rotation_mat.t(), cam_rotaion_mat);
-            cv::cv2eigen(-tvec, cam_translation_mat);
-            std::vector<cv::Point2d> reporojected_points;
-            // 現在のカメラ位置から見た視点で特徴点位置を再投影する
-            for (const auto &point_word_frame : points_in_3d)
-            {
-                Eigen::Vector2d point_device_frame = reproject_point(cam_rotaion_mat, cam_translation_mat,
-                                                                     intrinsic_eigen,
-                                                                     Eigen::Vector3d(point_word_frame.x, point_word_frame.y, point_word_frame.z));
-                reporojected_points.emplace_back(cv::Point2d(point_device_frame[0], point_device_frame[1]));
-            }
-            for (size_t idx = 0; idx < reporojected_points.size(); idx++)
-            {
-                auto img_rect = cv::Rect(cv::Point(0, 0), img_color.size());
-                if (img_rect.contains(reporojected_points[idx]))
-                {
-                    cv::line(img_color, points_in_2d[idx], reporojected_points[idx], cv::Scalar(255, 255, 255), 1);
-                    cv::circle(img_color, reporojected_points[idx], 3, cv::Scalar(0, 255, 0), 1);
-                }
-
-                cv::circle(img_color, points_in_2d[idx], 3, cv::Scalar(255, 0, 0), 1);
-            }
-        }
+//        if (!is_initialized)
+//        {
+//            if (dfe.features.size() > 2)
+//            {
+//                dense_feature::feature_in_frame ref_frame, current_frame;
+//                // ref_frame = dfe.features[dfe.features.size() - ref_size - 1];
+//                ref_frame = dfe.features[1];
+//                current_frame = dfe.features[dfe.features.size() - 1];
+//                ref_frame.imageSizeWH = Eigen::Vector2i(img_color.size().width, img_color.size().height);
+//                ref_frame.intrinsic = intrinsic_eigen;
+//                current_frame.imageSizeWH = Eigen::Vector2i(img_color.size().width, img_color.size().height);
+//                current_frame.intrinsic = intrinsic_eigen;
+//
+//                double match_rate = initializer::utils::initialize_feature_points(ref_frame, current_frame, initialized_frame);
+//                std::cout << "Match rate: " << match_rate << std::endl;
+//
+//                if (match_rate > match_rate_threshold)
+//                {
+//                    is_initialized = true;
+//                    std::cout << "Initialized. Match rate : " << match_rate << std::endl;
+//
+//                    // 特徴点位置を描画
+//                    std::vector<cv::Point3d> pointCloud;
+//                    for (size_t idx = 0; idx < initialized_frame.featuresIn3d.size(); idx++)
+//                    {
+//                        if (initialized_frame.featureMasks[idx])
+//                        {
+//                            pointCloud.emplace_back(
+//                                cv::Point3d(initialized_frame.featuresIn3d[idx][0],
+//                                            initialized_frame.featuresIn3d[idx][1],
+//                                            initialized_frame.featuresIn3d[idx][2]));
+//                        }
+//                    }
+//                    // 点群の描画
+//                    cv::viz::WCloud cloud(pointCloud);
+//                    myWindow.showWidget("CLOUD", cloud);
+//
+//                    // カメラ移動量の描画
+//                    cv::Affine3d initial_cam_pose(cv::Mat::eye(3, 3, CV_64FC1), cv::Vec3f(0, 0, 0));
+//                    myWindow.showWidget("1", wcamera, initial_cam_pose);
+//                }
+//            }
+//        }
+//        else
+//        {
+//            auto &current_frame = dfe.features[dfe.features.size() - 1];
+//
+//            // 3Dポイントと画像中の画素の対応点を作る
+//            std::vector<cv::Point3d> points_in_3d(0);
+//            std::vector<cv::Point2d> points_in_2d(0);
+//            std::set<uint64_t> points_in_3d_indices(initialized_frame.featureIDs.begin(), initialized_frame.featureIDs.end());
+//            std::set<uint64_t> points_in_2d_indices(current_frame.featureIDs.begin(), current_frame.featureIDs.end());
+//            std::set<uint64_t> indices_intersection;
+//            std::set_intersection(points_in_3d_indices.begin(), points_in_3d_indices.end(),
+//                                  points_in_2d_indices.begin(), points_in_2d_indices.end(),
+//                                  std::inserter(indices_intersection, indices_intersection.end()));
+//            for (size_t idx = 0; idx < initialized_frame.featuresIn3d.size(); idx++)
+//            {
+//                uint64_t feature_index = initialized_frame.featureIDs[idx];
+//                if (initialized_frame.featureMasks[idx])
+//                {
+//                    if (indices_intersection.count(feature_index) == 1)
+//                    {
+//                        points_in_3d.emplace_back(
+//                            cv::Point3d(initialized_frame.featuresIn3d[idx][0],
+//                                        initialized_frame.featuresIn3d[idx][1],
+//                                        initialized_frame.featuresIn3d[idx][2]));
+//                    }
+//                }
+//                else
+//                {
+//                    indices_intersection.erase(feature_index);
+//                }
+//            }
+//            for (size_t idx = 0; idx < current_frame.features.size(); idx++)
+//            {
+//                uint64_t feature_index = current_frame.featureIDs[idx];
+//                if (indices_intersection.count(feature_index) == 1)
+//                {
+//                    points_in_2d.emplace_back(
+//                        cv::Point2i(current_frame.features[idx][0],
+//                                    current_frame.features[idx][1]));
+//                }
+//            }
+//
+//            // PNPを解く
+//            // cv::Mat rvec, tvec;
+//            cv::Mat out_points;
+//            cv::solvePnPRansac(points_in_3d, points_in_2d, K, {}, rvec, tvec, true, 1000, 16.0F, 0.9999, out_points, cv::SOLVEPNP_ITERATIVE);
+//
+//            cv::Mat rotation_mat;
+//            cv::Rodrigues(rvec, rotation_mat); // 回転行列として復元
+//
+//            // カメラ移動量の描画
+//            cv::Mat rot_draw, t_draw;
+//            rot_draw = rotation_mat.t();
+//            t_draw = tvec * -1.0;
+//            cv::Affine3d cam_pose(rot_draw, t_draw);
+//            myWindow.showWidget("2", wcamera2, cam_pose);
+//
+//            /**
+//             * @brief 現在のカメラ位置に点群位置を再投影する
+//             * @details
+//             * - 入力データ
+//             * カメラ姿勢: rotation_mat, tvec
+//             * カメラの内部パラメータ: K
+//             */
+//            Eigen::Matrix3d cam_rotaion_mat;
+//            Eigen::Vector3d cam_translation_mat;
+//            cv::cv2eigen(rotation_mat.t(), cam_rotaion_mat);
+//            cv::cv2eigen(-tvec, cam_translation_mat);
+//            std::vector<cv::Point2d> reporojected_points;
+//            // 現在のカメラ位置から見た視点で特徴点位置を再投影する
+//            for (const auto &point_word_frame : points_in_3d)
+//            {
+//                Eigen::Vector2d point_device_frame = reproject_point(cam_rotaion_mat, cam_translation_mat,
+//                                                                     intrinsic_eigen,
+//                                                                     Eigen::Vector3d(point_word_frame.x, point_word_frame.y, point_word_frame.z));
+//                reporojected_points.emplace_back(cv::Point2d(point_device_frame[0], point_device_frame[1]));
+//            }
+//            for (size_t idx = 0; idx < reporojected_points.size(); idx++)
+//            {
+//                auto img_rect = cv::Rect(cv::Point(0, 0), img_color.size());
+//                if (img_rect.contains(reporojected_points[idx]))
+//                {
+//                    cv::line(img_color, points_in_2d[idx], reporojected_points[idx], cv::Scalar(255, 255, 255), 1);
+//                    cv::circle(img_color, reporojected_points[idx], 3, cv::Scalar(0, 255, 0), 1);
+//                }
+//
+//                cv::circle(img_color, points_in_2d[idx], 3, cv::Scalar(255, 0, 0), 1);
+//            }
+//        }
 
 #ifdef SHOW_RESULTS
         cv::imshow("feature", img_color);
         cv::waitKey(1);
-
+//
         myWindow.spinOnce(1);
 #endif
 

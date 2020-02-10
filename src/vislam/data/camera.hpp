@@ -16,8 +16,8 @@ namespace vislam::data {
                double k1,double k2,double p1, double p2,double k3);
         camera();
 
-        Mat33_t get_intrinsic_matrix();
-        std::vector<double> get_distortion_parameters();
+        Mat33_t get_intrinsic_matrix() const;
+        std::vector<double> get_distortion_parameters() const ;
 
         void set_camera_intrinsic_parameter(const Mat33_t & intrinsic);
         void set_camera_distortion_parameter(const std::vector<double> & distortion_parameter);

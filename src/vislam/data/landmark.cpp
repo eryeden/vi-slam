@@ -5,10 +5,11 @@ using namespace vislam::data;
 
 
 landmark::landmark(uint64_t id_,
-        const std::unordered_set<uint64_t> & observed_frame_id,
-        const Vec3_t &position_in_world,
-        bool is_outlier,
-        bool is_tracking){
+//        const std::unordered_set<uint64_t> & observed_frame_id,
+                   const std::set<uint64_t> & observed_frame_id,
+                   const Vec3_t &position_in_world,
+                   bool is_outlier,
+                   bool is_tracking){
     id = id_;
 
     observedFrameId = observed_frame_id;
