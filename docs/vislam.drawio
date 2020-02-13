@@ -1,4 +1,4 @@
-<mxfile host="www.draw.io" modified="2020-02-13T14:29:25.889Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Safari/537.36" etag="l1VdTc10q1ZYIZL3hulV" version="12.7.0" type="github" pages="5">
+<mxfile host="www.draw.io" modified="2020-02-13T15:20:15.425Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.87 Safari/537.36" etag="qK5d_5ZyGRulpnjJuRhH" version="12.7.0" type="github" pages="5">
   <diagram id="H0uU_kFGj13HSg9YGo_l" name="Coordinats">
     <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
@@ -140,7 +140,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="DPrh5EcJE---_pXr7yhz" name="SLAM Process">
-    <mxGraphModel dx="937" dy="1017" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="544" dy="758" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="KwsuU6XtCkrVDZlp-KHl-0"/>
         <mxCell id="KwsuU6XtCkrVDZlp-KHl-1" parent="KwsuU6XtCkrVDZlp-KHl-0"/>
@@ -576,7 +576,7 @@
           <mxGeometry x="3100" y="410" width="420" height="20" as="geometry"/>
         </mxCell>
         <mxCell id="vlCFLXshb1_ScDB-UOqO-2" value="&lt;div&gt;BAの変数設定&lt;/div&gt;&lt;div&gt;最適化対象のパラメータ : Inlierの特徴点位置と今回のフレームのカメラ位置&lt;/div&gt;&lt;div&gt;\(\boldsymbol{t}_r^W, R_r \), {\(\boldsymbol{p}_i^W\)}, \(i \in P_{inlier}\)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;観測値:特徴点の観測位置&lt;/div&gt;&lt;div&gt;Frame 1 : {\(\boldsymbol{p}_{i1}^D\)}, \(i \in P_{inlier}\)&lt;/div&gt;&lt;div&gt;Frame r : {\(\boldsymbol{p}_{ir}^D\)}, \(i \in P_{inlier}\)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;とすると、再投影誤差は次の並びで考える&lt;/div&gt;&lt;div&gt;\( \boldsymbol{F_{\alpha \kappa}} =&amp;nbsp; &amp;nbsp;\boldsymbol{p}_{\alpha \kappa}^D - \tilde{\boldsymbol{p}}_{\&lt;span&gt;BAの変数設定&lt;/span&gt;&lt;/div&gt;&lt;div&gt;最適化対象のパラメータ : Inlierの特徴点位置と今回のフレームのカメラ位置&lt;/div&gt;&lt;div&gt;\(\boldsymbol{t}_r^W, R_r \), {\(\boldsymbol{p}_i^W\)}, \(i \in P_{inlier}\)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;観測値:特徴点の観測位置&lt;/div&gt;&lt;div&gt;Frame 1 : {\(\boldsymbol{p}_{i1}^D\)}, \(i \in P_{inlier}\)&lt;/div&gt;&lt;div&gt;Frame r : {\(\boldsymbol{p}_{ir}^D\)}, \(i \in P_{inlier}\)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;とすると、再投影誤差は次の並びで考える&lt;/div&gt;&lt;div&gt;再投影誤差ベクトル(フレームκで特徴点αの場合)：\( \boldsymbol{F_{\alpha \kappa}} = \boldsymbol{p}_{\alpha \kappa}^D-\tilde{\boldsymbol{p}}_{\alpha \kappa}^D&amp;nbsp;\)&lt;/div&gt;&lt;div&gt;再投影誤差ベクトル(フレーム1, rと特徴点\(i \in P_{inlier}\)の場合)：&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
-          <mxGeometry x="3590" y="400" width="890" height="290" as="geometry"/>
+          <mxGeometry x="3750" y="370" width="890" height="290" as="geometry"/>
         </mxCell>
         <mxCell id="vlCFLXshb1_ScDB-UOqO-3" value="&lt;div style=&quot;text-align: left&quot;&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
           <mxGeometry x="3710" y="865" width="20" height="20" as="geometry"/>
@@ -585,10 +585,22 @@
           <mxGeometry x="3661" y="752" width="20" height="20" as="geometry"/>
         </mxCell>
         <mxCell id="vlCFLXshb1_ScDB-UOqO-8" value="$$&lt;br&gt;\boldsymbol{F} =&amp;nbsp;&lt;br&gt;\left(&amp;nbsp; &lt;br&gt;\begin{array}{c}&lt;br&gt;\boldsymbol{F}_{11} \\&lt;br&gt;\boldsymbol{F}_{12} \\&lt;br&gt;\vdots \\&lt;br&gt;\boldsymbol{F}_{1n} \\&lt;br&gt;\boldsymbol{F}_{r1} \\&lt;br&gt;\boldsymbol{F}_{r2} \\&lt;br&gt;\vdots \\&lt;br&gt;\boldsymbol{F}_{rn} \\&lt;br&gt;\end{array}&lt;br&gt;\right)&lt;br&gt;$$" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
-          <mxGeometry x="3620" y="690" width="130" height="220" as="geometry"/>
+          <mxGeometry x="3860" y="680" width="130" height="220" as="geometry"/>
         </mxCell>
         <mxCell id="vlCFLXshb1_ScDB-UOqO-9" value="ここで、1~nの特徴点は&lt;br&gt;Frame 1とFrame rでともに観測されていて&lt;br&gt;かつ5点法のInlierになっているもの" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
-          <mxGeometry x="3760" y="770" width="250" height="50" as="geometry"/>
+          <mxGeometry x="4010" y="765" width="250" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="vlCFLXshb1_ScDB-UOqO-10" value="この再投影誤差ベクトル\(\boldsymbol{F}\)に対して、次の変数で偏微分をかけてヤコビアンを計算する&lt;br&gt;ここでヤコビアンを作る変数は最適化対象のパラメータで、次のように配置する" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="3750" y="887.5" width="560" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="vlCFLXshb1_ScDB-UOqO-11" value="\( \boldsymbol{x} = \left( R_1, \boldsymbol{t}_1^W, R_r, \boldsymbol{t}_r^W, \boldsymbol{p}_1^W, \boldsymbol{p}_2^W, ... , \boldsymbol{p}_n^W&lt;br&gt;&amp;nbsp; \right) \)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="3750" y="912.5" width="780" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="vlCFLXshb1_ScDB-UOqO-12" value="しかし、実際に回転行列\(R_{\kappa} \)の偏微分は種々の問題が発生するので、姿勢ではなく角速度で偏微分する&lt;br&gt;したがって、次の並びに設定した変数\( \boldsymbol{\xi} \)で\( \boldsymbol{F} \)のヤコビアンを作る&lt;br&gt;\( \boldsymbol{\xi} = \left( \boldsymbol{\omega}_1, \boldsymbol{t}_1^W, \boldsymbol{\omega}_r&lt;br&gt;, \boldsymbol{t}_r^W, \boldsymbol{p}_1^W, \boldsymbol{p}_2^W, ... , \boldsymbol{p}_n^W&lt;br&gt;&amp;nbsp; \right) \)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="3750" y="960" width="620" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="vlCFLXshb1_ScDB-UOqO-13" value="$$ J=&lt;br&gt;\frac{\partial \boldsymbol{F}}{\partial \boldsymbol{\xi}} =&amp;nbsp;&lt;br&gt;\left(&amp;nbsp; &lt;br&gt;\begin{array}{c}&lt;br&gt;\frac{\partial \boldsymbol{F}_{11}}{\partial \boldsymbol{\omega}_1} \frac{\partial \boldsymbol{F}_{11}}{\partial \boldsymbol{t}_1^W} \boldsymbol{O} \boldsymbol{O} \&amp;nbsp; \frac{\partial \boldsymbol{F}_{11}}{\partial \boldsymbol{p}_1^W} \boldsymbol{O} ... \boldsymbol{O}\\&lt;br&gt;\frac{\partial \boldsymbol{F}_{12}}{\partial \boldsymbol{\omega}_1} \frac{\partial \boldsymbol{F}_{12}}{\partial \boldsymbol{t}_1^W} \boldsymbol{O} \boldsymbol{O} \&amp;nbsp; \boldsymbol{O} \frac{\partial \boldsymbol{F}_{12}}{\partial \boldsymbol{p}_2^W}&amp;nbsp; ... \boldsymbol{O}\\&lt;br&gt;\vdots \\&lt;br&gt;\frac{\partial \boldsymbol{F}_{1n}}{\partial \boldsymbol{\omega}_1} \frac{\partial \boldsymbol{F}_{1n}}{\partial \boldsymbol{t}_1^W} \boldsymbol{O} \boldsymbol{O} \&amp;nbsp; \boldsymbol{O} \boldsymbol{O} ... \frac{\partial \boldsymbol{F}_{1n}}{\partial \boldsymbol{p}_n^W} \\&lt;br&gt;----- \\&lt;br&gt;&amp;nbsp;\boldsymbol{O} \boldsymbol{O} \frac{\partial \boldsymbol{F}_{r1}}{\partial \boldsymbol{\omega}_r} \frac{\partial \boldsymbol{F}_{r1}}{\partial \boldsymbol{t}_r^W} \&amp;nbsp; \frac{\partial \boldsymbol{F}_{r1}}{\partial \boldsymbol{p}_1^W} \boldsymbol{O} ... \boldsymbol{O}\\&lt;br&gt;&amp;nbsp;\boldsymbol{O} \boldsymbol{O} \frac{\partial \boldsymbol{F}_{r2}}{\partial \boldsymbol{\omega}_r} \frac{\partial \boldsymbol{F}_{r2}}{\partial \boldsymbol{t}_r^W} \&amp;nbsp; \boldsymbol{O} \frac{\partial \boldsymbol{F}_{r2}}{\partial \boldsymbol{p}_2^W}&amp;nbsp; ... \boldsymbol{O}\\&lt;br&gt;\vdots \\&lt;br&gt;&amp;nbsp;\boldsymbol{O} \boldsymbol{O} \frac{\partial \boldsymbol{F}_{rn}}{\partial \boldsymbol{\omega}_r} \frac{\partial \boldsymbol{F}_{rn}}{\partial \boldsymbol{t}_r^W}&amp;nbsp; \&amp;nbsp; \boldsymbol{O} \boldsymbol{O} ... \frac{\partial \boldsymbol{F}_{rn}}{\partial \boldsymbol{p}_n^W} \\&lt;br&gt;&lt;br&gt;\end{array}&lt;br&gt;\right)&lt;br&gt;$$" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="3750" y="1060" width="1410" height="240" as="geometry"/>
         </mxCell>
       </root>
     </mxGraphModel>
