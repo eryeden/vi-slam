@@ -1,6 +1,6 @@
-<mxfile host="www.draw.io" modified="2020-02-14T03:24:09.260Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36" etag="pH55jkfYLKHPnU1N5HAZ" version="12.7.0" type="github" pages="5">
+<mxfile host="www.draw.io" modified="2020-02-15T15:27:50.817Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.106 Safari/537.36" etag="utM_p3xVNZQULqAC2LO-" version="12.7.0" type="github" pages="5">
   <diagram id="H0uU_kFGj13HSg9YGo_l" name="Coordinats">
-    <mxGraphModel dx="1595" dy="806" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="1359" dy="801" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="0IS2U3QtcljcEeAQ51mi-0"/>
         <mxCell id="0IS2U3QtcljcEeAQ51mi-1" parent="0IS2U3QtcljcEeAQ51mi-0"/>
@@ -140,7 +140,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="DPrh5EcJE---_pXr7yhz" name="SLAM Process">
-    <mxGraphModel dx="1595" dy="1206" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="937" dy="1017" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="KwsuU6XtCkrVDZlp-KHl-0"/>
         <mxCell id="KwsuU6XtCkrVDZlp-KHl-1" parent="KwsuU6XtCkrVDZlp-KHl-0"/>
@@ -602,11 +602,23 @@
         <mxCell id="vlCFLXshb1_ScDB-UOqO-13" value="$$ J=&lt;br&gt;\frac{\partial \boldsymbol{F}}{\partial \boldsymbol{\xi}} =&amp;nbsp;&lt;br&gt;\left(&amp;nbsp; &lt;br&gt;\begin{array}{c}&lt;br&gt;\frac{\partial \boldsymbol{F}_{11}}{\partial \boldsymbol{\omega}_1} \frac{\partial \boldsymbol{F}_{11}}{\partial \boldsymbol{t}_1^W} \boldsymbol{O} \boldsymbol{O} \&amp;nbsp; \frac{\partial \boldsymbol{F}_{11}}{\partial \boldsymbol{p}_1^W} \boldsymbol{O} ... \boldsymbol{O}\\&lt;br&gt;\frac{\partial \boldsymbol{F}_{21}}{\partial \boldsymbol{\omega}_1} \frac{\partial \boldsymbol{F}_{21}}{\partial \boldsymbol{t}_1^W} \boldsymbol{O} \boldsymbol{O} \&amp;nbsp; \boldsymbol{O} \frac{\partial \boldsymbol{F}_{21}}{\partial \boldsymbol{p}_2^W}&amp;nbsp; ... \boldsymbol{O}\\&lt;br&gt;\vdots \\&lt;br&gt;\frac{\partial \boldsymbol{F}_{n1}}{\partial \boldsymbol{\omega}_1} \frac{\partial \boldsymbol{F}_{n1}}{\partial \boldsymbol{t}_1^W} \boldsymbol{O} \boldsymbol{O} \&amp;nbsp; \boldsymbol{O} \boldsymbol{O} ... \frac{\partial \boldsymbol{F}_{n1}}{\partial \boldsymbol{p}_n^W} \\&lt;br&gt;----- \\&lt;br&gt;&amp;nbsp;\boldsymbol{O} \boldsymbol{O} \frac{\partial \boldsymbol{F}_{1r}}{\partial \boldsymbol{\omega}_r} \frac{\partial \boldsymbol{F}_{1r}}{\partial \boldsymbol{t}_r^W} \&amp;nbsp; \frac{\partial \boldsymbol{F}_{1r}}{\partial \boldsymbol{p}_1^W} \boldsymbol{O} ... \boldsymbol{O}\\&lt;br&gt;&amp;nbsp;\boldsymbol{O} \boldsymbol{O} \frac{\partial \boldsymbol{F}_{2r}}{\partial \boldsymbol{\omega}_r} \frac{\partial \boldsymbol{F}_{2r}}{\partial \boldsymbol{t}_r^W} \&amp;nbsp; \boldsymbol{O} \frac{\partial \boldsymbol{F}_{2r}}{\partial \boldsymbol{p}_2^W}&amp;nbsp; ... \boldsymbol{O}\\&lt;br&gt;\vdots \\&lt;br&gt;&amp;nbsp;\boldsymbol{O} \boldsymbol{O} \frac{\partial \boldsymbol{F}_{nr}}{\partial \boldsymbol{\omega}_r} \frac{\partial \boldsymbol{F}_{nr}}{\partial \boldsymbol{t}_r^W}&amp;nbsp; \&amp;nbsp; \boldsymbol{O} \boldsymbol{O} ... \frac{\partial \boldsymbol{F}_{nr}}{\partial \boldsymbol{p}_n^W} \\&lt;br&gt;&lt;br&gt;\end{array}&lt;br&gt;\right)&lt;br&gt;$$" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="KwsuU6XtCkrVDZlp-KHl-1" vertex="1">
           <mxGeometry x="3750" y="1060" width="1410" height="240" as="geometry"/>
         </mxCell>
+        <mxCell id="eZ4jdKK26XBbdCGx_0Eh-0" value="BAプロセスまとめ&lt;br&gt;前提：フレームPoseと新たに観測された特徴点（２フレーム観測があったもの？）の初期値設定は終わっているものとする？&lt;br&gt;やること、&lt;br&gt;１．BA対象のフレームを選ぶ&lt;br&gt;２．BA対象の特徴点を選ぶ&lt;br&gt;３．BAプロセスを回す&lt;br&gt;　３．１．再投影誤差を計算&lt;br&gt;　３．２．ヤコビアンを計算&lt;br&gt;　３．３．ヘシアン計算？&lt;br&gt;　３．４．補正量を計算&lt;br&gt;　３．５．再投影誤差がまだ大きいなら３．１に戻る&lt;br&gt;４．BAの最適化が終わったら、うまいこと最適化ができなかったものをアウトライアとして登録するようにする？" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="3715" y="1415" width="690" height="170" as="geometry"/>
+        </mxCell>
+        <mxCell id="eZ4jdKK26XBbdCGx_0Eh-1" value="１．BA対象のフレームを選ぶ&lt;br&gt;基本、全フレームを選択。&lt;br&gt;Sliding windowなどいろいろあると思うので後々実装するようにする&lt;br&gt;ここでBA対象のFrame IDを出力する&lt;br&gt;&lt;br&gt;２．BA対象の特徴点を選ぶ&lt;br&gt;選択したフレームで少なくとも２フレーム以上観測されている特徴点選択&lt;br&gt;Inlier判定されているものを選ぶかは、試してみる&lt;br&gt;　要調査&lt;br&gt;要は、ここでBA対象の特徴点IDを出力する&lt;br&gt;&lt;br&gt;３．BAプロセス" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="3720" y="1620" width="410" height="170" as="geometry"/>
+        </mxCell>
+        <mxCell id="IhYaWaMYUhriAald85H_-1" value="&lt;span&gt;３．１．再投影誤差の計算&lt;/span&gt;&lt;br&gt;&lt;span&gt;再投影誤差ベクトル\( \boldsymbol{F} \)は{Frame1の観測値}, {Frame2の観測値}, ...といったようにFrameごとの並びで計算する&lt;/span&gt;&lt;br&gt;&lt;div&gt;&lt;span&gt;例&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;\( \boldsymbol{F} = \left[ \{\alpha=1\}, \{\alpha=2 \}, ...,\{ {\boldsymbol{F}_{\alpha \kappa}}^T \}, ...\right]^T \)&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="3720" y="1800" width="690" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="IhYaWaMYUhriAald85H_-2" value="&lt;span&gt;３．２．ヤコビアンの計算&lt;/span&gt;&lt;br&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="KwsuU6XtCkrVDZlp-KHl-1">
+          <mxGeometry x="3720" y="1900" width="160" height="20" as="geometry"/>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram name="SLAM Process backup" id="RhS8FHXKm610hFU0v6Pr">
-    <mxGraphModel dx="1595" dy="1206" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="1359" dy="1294" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="YZ6kccoQMkNoKxn6EByI-0"/>
         <mxCell id="YZ6kccoQMkNoKxn6EByI-1" parent="YZ6kccoQMkNoKxn6EByI-0"/>
@@ -882,13 +894,13 @@
     </mxGraphModel>
   </diagram>
   <diagram id="_37ZfE2wD_X3_YTgAkfA" name="Top">
-        <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
-            <root>
-                <mxCell id="0"/>
-                <mxCell id="1" parent="0"/>
-              </root>
-          </mxGraphModel>
-      </diagram>
+    <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+      </root>
+    </mxGraphModel>
+  </diagram>
   <diagram id="psCmlDZE3tVd538Jrg62" name="FeatureExtructor">
         <mxGraphModel dx="2186" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
