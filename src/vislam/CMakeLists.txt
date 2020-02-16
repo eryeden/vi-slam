@@ -48,3 +48,4 @@ target_link_libraries(${PROJECT_NAME}
 add_subdirectory(data)
 add_subdirectory(feature)
 add_subdirectory(initialize)
+add_subdirectory(bundle_adjustment)
