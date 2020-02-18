@@ -51,7 +51,7 @@ namespace vislam::ba {
     class ba_pre {
 
         /**
-         *
+         * @brief 今の所特になし
          */
         ba_pre();
 
@@ -67,10 +67,11 @@ namespace vislam::ba {
          * @param output_observation_database
          * @param output_landmark_id_database
          */
-        static void initialize(
+        static void select_frames_and_landmarks(
                 const std::unordered_map<uint64_t, data::frame> &input_frame_database,
                 const std::unordered_map<uint64_t, data::landmark> &input_landmark_database,
                 uint64_t window_size,
+                uint64_t latest_frame_id,
                 std::vector<ba_observation> &selected_frame_database,
                 std::vector<uint64_t> &selected_landmark_database
         );

@@ -22,6 +22,9 @@ public:
 
     uint64_t id;
 //        std::unordered_set<uint64_t> observedFrameId;
+    /**
+     * @brief std::unordered_setはstd::set_intersectionがうまく行かないので、std::setにしている。
+     */
     std::set<uint64_t> observedFrameId;
     Vec3_t positionInWorld;
     bool isOutlier;

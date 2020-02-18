@@ -30,6 +30,10 @@ public:
 
     uint64_t id;
 //    std::unordered_set<uint64_t > observingFeatureId;
+
+    /**
+     * @brief std::unordered_setはstd::set_intersectionがうまく行かないので、std::setにしている。
+     */
     std::set<uint64_t > observingFeatureId;
     eigen_allocated_unordered_map<uint64_t , Vec2_t> observingFeaturePointInDevice;
 

@@ -252,6 +252,10 @@ int main()
              */
             if(database_landmark.count(current_feature_id) !=0){ // databaseに登録済みの場合
                 database_landmark[current_feature_id].isTracking = true;
+                /**
+                 * @brief std::setへの要素追加が発生している。ここでの処理コストが大きい場合はstd::vectorへの置き換えが必要かもしれない。
+                 * 結局、カメラIDは増加しかしないため、std::vectorで追加しつつ、std::set_intersectionを行っても同じなのかもしれない。
+                 */
                 database_landmark[current_feature_id].observedFrameId.emplace(i);
             }else{ // databaseに登録なしの場合
                 database_landmark[current_feature_id] = vislam::data::landmark(current_feature_id,
@@ -283,7 +287,7 @@ int main()
                 /**
                  * @brief 特徴点位置の初期化を試みる
                  */
-                const auto & reference_frame = database_frame[1];
+                const auto & reference_frame = database_frame[1]; // index:0のframeは何も入っていなかったの注意
                 const auto & current_frame = database_frame[i];
                 std::vector<vislam::data::landmark> localized_landmarks;
                 double match_rate = initializer::utils::initialize_feature_points(reference_frame, current_frame, localized_landmarks);
