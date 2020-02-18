@@ -8,6 +8,8 @@
 #include "frame.hpp"
 #include "landmark.hpp"
 
+#include "Eigen/Sparse"
+
 namespace vislam::ba {
 
     /**
@@ -69,9 +71,29 @@ namespace vislam::ba {
                 const std::unordered_map<uint64_t, data::frame> &input_frame_database,
                 const std::unordered_map<uint64_t, data::landmark> &input_landmark_database,
                 uint64_t window_size,
-                std::vector<ba_observation> &output_observation_database,
-                std::vector<uint64_t> &output_landmark_id_database
+                std::vector<ba_observation> &selected_frame_database,
+                std::vector<uint64_t> &selected_landmark_database
         );
+
+        /**
+         * @brief 偏微分を計算、結果をselected_frame_databaseに保存する
+         * @param input_frame_database
+         * @param input_landmark_database
+         * @param selected_frame_database
+         */
+        static void fill_derivatives(const std::unordered_map<uint64_t, data::frame> &input_frame_database,
+                                     const std::unordered_map<uint64_t, data::landmark> &input_landmark_database,
+                                     std::vector<ba_observation> &selected_frame_database
+        );
+
+        /**
+         * @brief 偏微分の計算結果からJacobianを生成する
+         * @param selected_frame_database
+         * @param selected_landmark_database
+         * @return
+         */
+        static Eigen::SparseMatrix<double> generate_jacobian(const std::vector<ba_observation> &selected_frame_database,
+                                                             const std::vector<uint64_t> &selected_landmark_database);
 
     };
 
