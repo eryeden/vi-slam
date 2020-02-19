@@ -3,6 +3,7 @@
 //
 
 #include "ba_pre.hpp"
+#include "geometry.hpp"
 
 vislam::ba::ba_observation::ba_observation() {
 ;
@@ -102,18 +103,84 @@ void vislam::ba::ba_pre::select_frames_and_landmarks(const std::unordered_map<ui
     selected_frame_database = selected_frame;
 }
 
+/**
+ * @brief ba_observationに各Frameに写ったLandmarkの偏微分を詰めていく（der_omega, der_t, der_p）
+ * @param input_frame_database
+ * @param input_landmark_database
+ * @param selected_frame_database
+ */
 void vislam::ba::ba_pre::fill_derivatives(const std::unordered_map<uint64_t, data::frame> &input_frame_database,
                                           const std::unordered_map<uint64_t, data::landmark> &input_landmark_database,
                                           std::vector<ba_observation> &selected_frame_database) {
 
+    for(auto & ba_obs : selected_frame_database){
+        uint64_t frame_id = ba_obs.frame_id;
+        Vec3_t frame_position = input_frame_database.at(frame_id).cameraPosition;
+        Mat33_t frame_attitude = input_frame_database.at(frame_id).cameraAttitude.normalized().toRotationMatrix();
+        Mat33_t camera_intrinsic = input_frame_database.at(frame_id).cameraParameter.get_intrinsic_matrix();
 
+        for(const auto landmark_id : ba_obs.landmark_id){
+            Vec2_t landmark_position_in_device = input_frame_database.at(frame_id).observingFeaturePointInDevice.at(landmark_id);
+            Vec3_t landmark_position_in_world = input_landmark_database.at(landmark_id).positionInWorld;
 
-
+            ba_obs.reprojection_error[landmark_id] = geometry::utility::get_reprojection_error(
+                    landmark_position_in_device,
+                    landmark_position_in_world,
+                    frame_attitude,
+                    frame_position,
+                    camera_intrinsic);
+            ba_obs.der_f_der_omega[landmark_id] = geometry::utility::get_der_F_der_omega(
+                    landmark_position_in_world,
+                    frame_attitude,
+                    frame_position,
+                    camera_intrinsic);
+            ba_obs.der_f_der_t[landmark_id] = geometry::utility::get_der_F_der_t(
+                    landmark_position_in_world,
+                    frame_attitude,
+                    frame_position,
+                    camera_intrinsic);
+            ba_obs.der_f_der_p[landmark_id] = geometry::utility::get_der_F_der_p(
+                    landmark_position_in_world,
+                    frame_attitude,
+                    frame_position,
+                    camera_intrinsic);
+        }
+    }
 }
 
-Eigen::SparseMatrix<double>
-vislam::ba::ba_pre::generate_jacobian(const std::vector<ba_observation> &selected_frame_database,
-                                      const std::vector<uint64_t> &selected_landmark_database) {
+/**
+ * @brief 選択したFrameとLandmarkの偏微分関係が全て計算されているはずなので配置していく
+ * @param selected_frame_database
+ * @param selected_landmark_database
+ * @return
+ */
+Eigen::SparseMatrix<double> vislam::ba::ba_pre::generate_jacobian(
+        const std::vector<ba_observation> &selected_frame_database,
+        const std::vector<uint64_t> &selected_landmark_database) {
+
+    /**
+     * @brief jacobianのサイズを計算する
+     */
+    int64_t num_raw_jacobian=0, num_col_jacobian=0;
+    //! 縦サイズ：全フレームの観測ランドマーク数の合計
+    for(const auto& ba_obs: selected_frame_database){
+        num_raw_jacobian+= ba_obs.landmark_id.size();
+    }
+    num_col_jacobian = selected_frame_database.size() + selected_landmark_database.size(); //! 横サイズ：BA対象Frame数＋BA対象Landmark数
+
+    /**
+     * @brief 粗行列としてJacobianを生成する
+     */
+    Eigen::SparseMatrix<double> jacobian(num_raw_jacobian, num_col_jacobian);
+
+    for(size_t frame_index = 0; frame_index < selected_frame_database.size(); frame_index++){
+        for(size_t landmark_index = 0; landmark_index < selected_landmark_database.size(); landmark_index++){
+
+
+
+        }
+    }
+
     return Eigen::SparseMatrix<double>();
 }
 

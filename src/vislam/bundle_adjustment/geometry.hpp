@@ -37,13 +37,53 @@ namespace vislam::geometry {
                 const Vec3_t &landmark_position_in_world,
                 const Mat33_t &camera_attitude_in_world,
                 const Vec3_t &camera_position_in_world,
-                const Mat33_t &camera_intrinsic_parameter);
+                const Mat33_t &camera_intrinsic_parameter
+                );
 
-        static MatRC_t<2, 3> get_der_F_der_omega();
+        /**
+         * @brief 再投影誤差のFrame角速度ベクトルでの全微分を計算
+         * @param landmark_position_in_world
+         * @param camera_attitude_in_world
+         * @param camera_position_in_world
+         * @param camera_intrinsic_parameter
+         * @return
+         */
+        static MatRC_t<2, 3> get_der_F_der_omega(
+                const Vec3_t &landmark_position_in_world,
+                const Mat33_t &camera_attitude_in_world,
+                const Vec3_t &camera_position_in_world,
+                const Mat33_t &camera_intrinsic_parameter
+                );
 
-        static MatRC_t<2, 3> get_der_F_der_t();
+        /**
+         * @brief 再投影誤差のFrame位置ベクトルでの全微分を計算
+         * @param landmark_position_in_world
+         * @param camera_attitude_in_world
+         * @param camera_position_in_world
+         * @param camera_intrinsic_parameter
+         * @return
+         */
+        static MatRC_t<2, 3> get_der_F_der_t(
+                const Vec3_t &landmark_position_in_world,
+                const Mat33_t &camera_attitude_in_world,
+                const Vec3_t &camera_position_in_world,
+                const Mat33_t &camera_intrinsic_parameter
+                );
 
-        static MatRC_t<2, 3> get_der_F_der_p();
+        /**
+         * @brief 再投影誤差のLandmark位置ベクトルの全微分を計算
+         * @param landmark_position_in_world
+         * @param camera_attitude_in_world
+         * @param camera_position_in_world
+         * @param camera_intrinsic_parameter
+         * @return
+         */
+        static MatRC_t<2, 3> get_der_F_der_p(
+                const Vec3_t &landmark_position_in_world,
+                const Mat33_t &camera_attitude_in_world,
+                const Vec3_t &camera_position_in_world,
+                const Mat33_t &camera_intrinsic_parameter
+                );
 
 
     };
