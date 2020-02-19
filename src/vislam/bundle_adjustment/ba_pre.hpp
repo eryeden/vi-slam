@@ -50,6 +50,8 @@ namespace vislam::ba {
      */
     class ba_pre {
 
+    public:
+
         /**
          * @brief 今の所特になし
          */
