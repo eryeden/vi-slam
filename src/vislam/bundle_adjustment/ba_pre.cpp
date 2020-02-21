@@ -176,6 +176,15 @@ Eigen::SparseMatrix<double> vislam::ba::ba_pre::generate_jacobian(
     int64_t raw_index = 0;
     for(size_t frame_index = 0; frame_index < selected_frame_database.size(); frame_index++){
         for(size_t landmark_index = 0; landmark_index < selected_landmark_database.size(); landmark_index++){
+            int64_t col_index = 0;
+            /**
+             * @brief insert der_F_der_omega
+             */
+
+
+            /**
+             * @brief insert der_F_der_t
+             */
 
 
             raw_index++;
