@@ -17,9 +17,6 @@ namespace vislam::ba {
      */
     struct ba_observation {
 
-        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
-
         /**
          *
          */

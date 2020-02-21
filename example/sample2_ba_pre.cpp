@@ -12,6 +12,8 @@
 #include "landmark.hpp"
 #include "camera.hpp"
 
+#include "ba_pre.hpp"
+
 #include "dense_feature_extructor.hpp"
 #include "initializer.hpp"
 
