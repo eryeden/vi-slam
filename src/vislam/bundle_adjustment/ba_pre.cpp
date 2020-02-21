@@ -164,9 +164,17 @@ Eigen::SparseMatrix<double> vislam::ba::ba_pre::generate_jacobian(
     int64_t num_raw_jacobian=0, num_col_jacobian=0;
     //! 縦サイズ：全フレームの観測ランドマーク数の合計
     for(const auto& ba_obs: selected_frame_database){
-        num_raw_jacobian+= ba_obs.landmark_id.size();
+        num_raw_jacobian+= ba_obs.landmark_id.size()*2;
     }
-    num_col_jacobian = selected_frame_database.size() + selected_landmark_database.size(); //! 横サイズ：BA対象Frame数＋BA対象Landmark数
+    num_col_jacobian = selected_frame_database.size()*6 + selected_landmark_database.size()*3; //! 横サイズ：BA対象Frame数＋BA対象Landmark数
+
+    /**
+     * BAに利用するLandmark idとそれが配置される順番（std::vectorでのインデックス）が必要になるので予め作成しておく
+     */
+     std::unordered_map<uint64_t , uint64_t> landmark_id_to_array_index_map;
+     for(size_t landmark_array_index =0; landmark_array_index< selected_landmark_database.size(); landmark_array_index++){
+         landmark_id_to_array_index_map[selected_landmark_database[landmark_array_index]] = landmark_array_index;
+     }
 
     /**
      * @brief 粗行列としてJacobianを生成する
@@ -175,22 +183,48 @@ Eigen::SparseMatrix<double> vislam::ba::ba_pre::generate_jacobian(
 
     int64_t raw_index = 0;
     for(size_t frame_index = 0; frame_index < selected_frame_database.size(); frame_index++){
-        for(size_t landmark_index = 0; landmark_index < selected_landmark_database.size(); landmark_index++){
+        for(size_t inframe_landmark_index = 0; inframe_landmark_index < selected_frame_database[frame_index].landmark_id.size(); inframe_landmark_index++){
             int64_t col_index = 0;
             /**
              * @brief insert der_F_der_omega
              */
-
+            col_index = inframe_landmark_index*6;
+            jacobian.insert(raw_index, col_index) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(0,0);
+            jacobian.insert(raw_index, col_index+1) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(0,1);
+            jacobian.insert(raw_index, col_index+2) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(0,2);
+            jacobian.insert(raw_index+1, col_index) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(1,0);
+            jacobian.insert(raw_index+1, col_index+1) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(1,1);
+            jacobian.insert(raw_index+1, col_index+2) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(1,2);
 
             /**
              * @brief insert der_F_der_t
              */
+            col_index = inframe_landmark_index*6+3;
+            jacobian.insert(raw_index, col_index) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(0,0);
+            jacobian.insert(raw_index, col_index+1) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(0,1);
+            jacobian.insert(raw_index, col_index+2) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(0,2);
+            jacobian.insert(raw_index+1, col_index) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(1,0);
+            jacobian.insert(raw_index+1, col_index+1) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(1,1);
+            jacobian.insert(raw_index+1, col_index+2) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(1,2);
 
+            /**
+             * @brief insert der_F_der_p
+             */
+            col_index = (selected_frame_database[frame_index].landmark_id.size()-1)*6+3 + 1
+                    + 3*landmark_id_to_array_index_map[selected_frame_database[frame_index].landmark_id[inframe_landmark_index]]; // p_alpha^Wの並び順Indexを取得する
+            jacobian.insert(raw_index, col_index) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(0,0);
+            jacobian.insert(raw_index, col_index+1) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(0,1);
+            jacobian.insert(raw_index, col_index+2) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(0,2);
+            jacobian.insert(raw_index+1, col_index) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(1,0);
+            jacobian.insert(raw_index+1, col_index+1) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(1,1);
+            jacobian.insert(raw_index+1, col_index+2) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(1,2);
 
-            raw_index++;
+            raw_index+=2; //! F_alpha_kappaの要素数は２なので、２個シフトする
         }
     }
 
-    return Eigen::SparseMatrix<double>();
+    jacobian.finalize();
+
+    return jacobian;
 }
 
