@@ -169,7 +169,7 @@ Eigen::SparseMatrix<double> vislam::ba::ba_pre::generate_jacobian(
     num_col_jacobian = selected_frame_database.size()*6 + selected_landmark_database.size()*3; //! 横サイズ：BA対象Frame数＋BA対象Landmark数
 
     /**
-     * BAに利用するLandmark idとそれが配置される順番（std::vectorでのインデックス）が必要になるので予め作成しておく
+     * @brief BAに利用するLandmark idとそれが配置される順番（std::vectorでのインデックス）が必要になるので予め作成しておく
      */
      std::unordered_map<uint64_t , uint64_t> landmark_id_to_array_index_map;
      for(size_t landmark_array_index =0; landmark_array_index< selected_landmark_database.size(); landmark_array_index++){
