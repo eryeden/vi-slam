@@ -24,11 +24,12 @@ endif()
 # Include directories
 # ここでInclude diretoryを追加しておけば、target_link_librariesやったときに参照されるようになる
 target_include_directories(${PROJECT_NAME}
-                           PUBLIC
-                           $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/>
-                           $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/feature>
-                           $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/data>
-                           $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/initialize>)
+        PUBLIC
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/feature>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/data>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/initialize>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/bundle_adjustment>)
 
 # Link to required libraries
 target_link_libraries(${PROJECT_NAME}

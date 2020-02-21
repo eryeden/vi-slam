@@ -88,11 +88,11 @@ Eigen::Vector2d reproject_point(const Eigen::Matrix3d &cam_rotation_mat,
 
 
 /**
- * @brief BAを行うために必要なFrameの観測データと特徴点の対応付けを行うデータ構造を実装する
+ * @brief BA処理の前段として、各フレームのPose、特徴点位置の初期化、Jacobian、Hessianの計算までを実装する
  * @details
  * ## 実装内容
- * - data::frameとdata::landmarkを利用して観測関係のネットワークを生成する
- * - feature extructorからの出力をdata::frameとして記録、一回のdata::frameの観測から、data::landmarkを更新、もしくは追加する
+ * - 全フレーム対象のFrame Poseと特徴点位置の初期化
+ * - Jacobian, Hessianの生成と、非Zero要素を画像として表示する
  */
 int main()
 {
@@ -123,12 +123,8 @@ int main()
     intrinsic_matrix = (cv::Mat_<float>(3, 3) << 458.654, 0.0000000000000000e+00, 367.215,
                         0.0000000000000000e+00, 457.296, 248.375,
                         0.0000000000000000e+00, 0.0000000000000000e+00, 1.0000000000000000e+00);
-    cv::Mat intrinsic_matrix_d(3, 3, CV_64FC1);
-    intrinsic_matrix_d = (cv::Mat_<double>(3, 3) << 458.654, 0.0000000000000000e+00, 367.215,
-                          0.0000000000000000e+00, 457.296, 248.375,
-                          0.0000000000000000e+00, 0.0000000000000000e+00, 1.0000000000000000e+00);
     Eigen::Matrix3d intrinsic_eigen;
-    cv::cv2eigen(intrinsic_matrix_d, intrinsic_eigen);
+    cv::cv2eigen(intrinsic_matrix, intrinsic_eigen);
 
     cv::Mat distortion_coeffs(5, 1, CV_32FC1);
     distortion_coeffs = (cv::Mat_<float>(5, 1) << -0.28340811, 0.07395907, 0.00019359, 1.76187114e-05);
@@ -334,6 +330,8 @@ int main()
                     cv::Affine3d initial_cam_pose(cv::Mat::eye(3, 3, CV_64FC1), cv::Vec3f(0, 0, 0));
                     myWindow.showWidget("1", wcamera, initial_cam_pose);
                 }
+
+
 
             }
         }
