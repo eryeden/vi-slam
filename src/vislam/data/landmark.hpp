@@ -15,7 +15,7 @@ public:
     landmark(uint64_t id,
 //             const std::unordered_set<uint64_t> & observed_frame_id,
              const std::set<uint64_t> & observed_frame_id,
-             const Vec3_t &position_in_world, bool is_outlier, bool is_tracking);
+             const Vec3_t &position_in_world, bool is_outlier, bool is_tracking, bool is_initialized);
     explicit landmark(uint64_t id);
     landmark();
 
@@ -27,6 +27,8 @@ public:
      */
     std::set<uint64_t> observedFrameId;
     Vec3_t positionInWorld;
+
+    bool isInitialized;
     bool isOutlier;
     bool isTracking;
 
