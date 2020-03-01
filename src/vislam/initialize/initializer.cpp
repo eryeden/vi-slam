@@ -268,10 +268,14 @@ utils::initialize_feature_points(const vislam::data::frame &frame_reference,
             cv::Mat pos_mod = (cv::Mat_<double>(3, 1) << pos.x, pos.y, pos.z);
 
             bool is_outliear = mask.at<unsigned char>(ii) == 0;
+
+            //! ここでは初期化済みの特徴点情報を生成しているのでis_initialized=trueになっている
             vislam::data::landmark current_landmark(feature_points_ids[ii],
                                                     {},
-                                                    vislam::Vec3_t (pos_mod.at<double>(0), pos_mod.at<double>(1), pos_mod.at<double>(2))
-                    , is_outliear, true);
+                                                    vislam::Vec3_t (pos_mod.at<double>(0), pos_mod.at<double>(1), pos_mod.at<double>(2)),
+                                                    is_outliear,
+                                                    true,
+                                                    true);
             output_landmarks.emplace_back(current_landmark);
         }
 
