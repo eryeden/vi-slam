@@ -53,6 +53,15 @@ namespace initializer {
                                          std::vector<vislam::data::landmark> &initialized_landmarks);
 
 
+        /**
+         * @brief PnPによるカメラPose推定
+         */
+        double estimate_frame_pose_pnp(const vislam::data::frame & frame_current,
+                                       const std::unordered_map<uint64_t, vislam::data::landmark> & database_landmark,
+                                       vislam::Vec3_t &current_frame_position_in_world,
+                                       vislam::Quat_t &current_frame_attitude_in_world);
+
+
     } // namespace utils
 
     class initializer {
