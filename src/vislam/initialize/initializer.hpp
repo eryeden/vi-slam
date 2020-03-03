@@ -61,6 +61,20 @@ namespace initializer {
                                        vislam::Vec3_t &current_frame_position_in_world,
                                        vislam::Quat_t &current_frame_attitude_in_world);
 
+        /**
+         * @brief Current frameで観測されたLandmarkから初期化可能なIDを出力する
+         */
+         std::vector<uint64_t> extract_initializable_landmark_id(
+                const vislam::data::frame & frame_current,
+                const std::unordered_map<uint64_t, vislam::data::landmark> & database_landmark);
+
+        /**
+         * @brief 指定したIDのLandmarkを初期化する
+         */
+         std::vector<vislam::Vec3_t> triangulate_landmark_position(const std::vector<uint64_t> & initializable_landmark_id,
+                                                                   const std::unordered_map<uint64_t, vislam::data::landmark> & database_landmark);
+
+
 
     } // namespace utils
 

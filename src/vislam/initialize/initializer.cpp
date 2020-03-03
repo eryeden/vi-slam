@@ -361,4 +361,18 @@ double utils::estimate_frame_pose_pnp(const vislam::data::frame &frame_current,
     return 0;
 }
 
+std::vector<uint64_t> utils::extract_initializable_landmark_id(const vislam::data::frame &frame_current,
+                                                               const std::unordered_map<uint64_t, vislam::data::landmark> &database_landmark) {
+
+
+    return std::vector<uint64_t>();
+}
+
+std::vector<vislam::Vec3_t> utils::triangulate_landmark_position(const std::vector<uint64_t> &initializable_landmark_id,
+                                                                 const std::unordered_map<uint64_t, vislam::data::landmark> &database_landmark) {
+
+
+    return std::vector<vislam::Vec3_t>();
+}
+
 

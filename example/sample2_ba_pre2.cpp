@@ -174,6 +174,8 @@ int main()
     cv::viz::WCameraPosition wcamera_cand2(K, 1.0, cv::viz::Color::yellow());
     cv::viz::WCameraPosition wcamera_cand3(K, 1.0, cv::viz::Color::yellow());
     cv::viz::WCameraPosition wcamera_cand4(K, 1.0, cv::viz::Color::yellow());
+
+    cv::viz::WCameraPosition wcamera_current_pnp(K, 1.0, cv::viz::Color::green());
 #endif
 
 
@@ -370,7 +372,7 @@ int main()
 
 
             /**
-             * @brief current frameの位置、姿勢を初期化
+             * @brief 1. current frameの位置、姿勢を初期化
              */
             vislam::Vec3_t  position_current_frame;
             vislam::Quat_t attitude_current_frame;
@@ -383,7 +385,20 @@ int main()
             cv::Mat current_camera_attitude;
             cv::eigen2cv(database_frame[i].cameraAttitude.toRotationMatrix(), current_camera_attitude);
             cv::Affine3d current_cam_pose(current_camera_attitude, cv::Vec3f(database_frame[i].cameraPosition[0], database_frame[i].cameraPosition[1], database_frame[i].cameraPosition[2]));
-            myWindow.showWidget("estacam", wcamera_cand2, current_cam_pose);
+            myWindow.showWidget("estacam", wcamera_current_pnp, current_cam_pose);
+
+            /**
+             * @brief 2. Landmark位置の初期化を実施する
+             * @details
+             * 基本、初期化（２視点から観測されている特徴点位置を三角測量で求める）は次の条件の特徴点に対して実施する。
+             * - 初期化されていない
+             * - 2 Frame以上観測されている
+             * - 観測されているフレームの最大視差が、ある値以上になっている
+             * - 今回のフレームで観測されている
+             */
+
+
+
 
         }
 
