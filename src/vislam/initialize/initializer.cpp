@@ -337,20 +337,26 @@ double utils::estimate_frame_pose_pnp(const vislam::data::frame &frame_current,
     }
 
     // PNPを解く
-    // cv::Mat rvec, tvec;
+    cv::Mat rvec, tvec;
     cv::Mat out_points;
+    cv::Mat K;
+    cv::eigen2cv(frame_current.cameraParameter.get_intrinsic_matrix(), K);
     cv::solvePnPRansac(points_in_3d, points_in_2d, K, {}, rvec, tvec, true, 1000, 8.0F, 0.9999, out_points, cv::SOLVEPNP_ITERATIVE);
 
     cv::Mat rotation_mat;
     cv::Rodrigues(rvec, rotation_mat); // 回転行列として復元
 
-    // カメラ移動量の描画
-    cv::Mat rot_draw, t_draw;
-    rot_draw = rotation_mat.t();
-    t_draw = tvec * -1.0;
+    cv::Mat rot_inv, t_inv;
+    rot_inv = rotation_mat.t();
+    t_inv = tvec * -1.0;
 
-
-
+    /**
+     * @brief 出力する
+     */
+    vislam::Mat33_t eigen_rotation_mat;
+    cv::cv2eigen(rot_inv, eigen_rotation_mat);
+    current_frame_attitude_in_world = vislam::Quat_t(eigen_rotation_mat);
+    current_frame_position_in_world << t_inv.at<double>(0), t_inv.at<double>(1),t_inv.at<double>(2);
 
     return 0;
 }

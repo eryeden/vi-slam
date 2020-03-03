@@ -368,6 +368,23 @@ int main()
          */
         if(is_initialized){
 
+
+            /**
+             * @brief current frameの位置、姿勢を初期化
+             */
+            vislam::Vec3_t  position_current_frame;
+            vislam::Quat_t attitude_current_frame;
+            initializer::utils::estimate_frame_pose_pnp(frame_current, database_landmark, position_current_frame, attitude_current_frame);
+            //! p3pで計算した現在フレームの位置をDataBaseに登録する
+            database_frame[i].cameraPosition = position_current_frame;
+            database_frame[i].cameraAttitude = attitude_current_frame;
+
+            //! 推定カメラ位置の描画
+            cv::Mat current_camera_attitude;
+            cv::eigen2cv(database_frame[i].cameraAttitude.toRotationMatrix(), current_camera_attitude);
+            cv::Affine3d current_cam_pose(current_camera_attitude, cv::Vec3f(database_frame[i].cameraPosition[0], database_frame[i].cameraPosition[1], database_frame[i].cameraPosition[2]));
+            myWindow.showWidget("estacam", wcamera_cand2, current_cam_pose);
+
         }
 
 
