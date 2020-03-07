@@ -17,6 +17,8 @@ Try to make Visual Inertial SLAM
 2. Try to use GTSAM. <= Optimization時に計算が不安定になることがあるらしい。
 3. Implement the VETAMIN-E feature.
 
+## Roadmap
+![roadmap_march](docs/figs/vislam_development_roadmap.png)
 
 ## Plan
 1. Feature tracker
