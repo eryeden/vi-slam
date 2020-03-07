@@ -1,17 +1,68 @@
-<mxfile host="www.draw.io" modified="2020-03-07T08:49:15.599Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="EbIPBxdCNsj_NJQJxdIQ" version="12.8.1" type="github" pages="6">
+<mxfile host="www.draw.io" modified="2020-03-07T10:03:28.081Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="96pVvEYZi1agyaIymWki" version="12.8.1" type="github" pages="6">
   <diagram id="C0SdsD_nAt9h8TD434q8" name="Overview">
     <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="Z6NOpVzWMivuuzvYCPRy-0" />
         <mxCell id="Z6NOpVzWMivuuzvYCPRy-1" parent="Z6NOpVzWMivuuzvYCPRy-0" />
-        <mxCell id="Z6NOpVzWMivuuzvYCPRy-2" value="&lt;h1&gt;VI-SLAM全体&lt;/h1&gt;&lt;div&gt;開発をするに当たって、処理モジュール個々の開発と、モジュールレベルの開発方針をパット見でわかるようにしておきたい。&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
-          <mxGeometry x="10" y="10" width="710" height="70" as="geometry" />
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-2" value="&lt;h1&gt;VI-SLAM全体&lt;/h1&gt;&lt;div&gt;&lt;span&gt;・軽量VI-SLAMの開発が目標（TrackingとSemiくらいDenseのMappingまで実装したい）&lt;br&gt;・手法ベースとしては、現状VITAMIN-E＋IMUがやりたいこと&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;・開発をするに当たって、処理モジュール個々の開発と、モジュールレベルの開発方針をパット見でわかるようにしておきたい。&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="10" y="10" width="710" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="Z6NOpVzWMivuuzvYCPRy-3" value="Bundle ajustment" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
-          <mxGeometry x="40" y="370" width="150" height="20" as="geometry" />
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-3" value="Bundle adjustment" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="20" y="720" width="150" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Z6NOpVzWMivuuzvYCPRy-4" value="&lt;h1&gt;&lt;font style=&quot;font-size: 20px&quot;&gt;モジュールレベルの開発方針&lt;/font&gt;&lt;/h1&gt;&lt;p&gt;優先はBA処理を一通り実装すること。FrameとLandmarkのマネジメント部分はBA処理ができるレベルになっていればOK&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
-          <mxGeometry x="10" y="110" width="720" height="120" as="geometry" />
+          <mxGeometry x="10" y="120" width="720" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-5" value="Landmark detection &amp;amp; tracking" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="20" y="230" width="190" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-6" value="System initialization" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="20" y="340" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-7" value="Landmark &amp;amp; Frame manegemant" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="20" y="450" width="210" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-8" value="・Dense curvature extrema tracking" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="90" y="270" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-9" value="・Essential行列ベースのFrame PoseとLandmark positionの初期化&lt;br&gt;・この時点で初期化できたLandmarkと観測されたFrameからBAを実施" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="90" y="370" width="400" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-10" value="・実装なし&lt;br&gt;・Frameは全部利用&lt;br&gt;・Landmarkは初期化できたものは利用する&lt;br&gt;・OrbSLAMでのKeyFrame managemantなどがここの部分に相当する" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="90" y="480" width="400" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-11" value="Landmark &amp;amp; Frame initialization" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="20" y="585" width="190" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-12" value="・Frame poseの初期化はp3pを利用&lt;br&gt;・Landmark positionの初期化は、視差を確保できているものに限って実施" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="90" y="630" width="440" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-13" value="・Sub space gause-nwton法を使ったBAの実装が当面の目標&lt;br&gt;・Step1として、Schur complementをつかったBAを実装&lt;br&gt;　　・これが性能のベンチマークになる&lt;br&gt;　　・厳しいようなら、G２OかCeres-solverを使って実装&lt;br&gt;　　・RobustLoss関数も利用したい" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="90" y="760" width="400" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-17" value="理屈わからん" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#e51400;strokeColor=#B20000;fontColor=#ffffff;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="290" y="820" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-19" value="OK" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#7EDE1E;strokeColor=#2D7600;fontColor=#1C1C1C;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="490" y="370" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-20" value="ToDo" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#ffcc99;strokeColor=#36393d;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="490" y="390" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-23" value="OK" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#7EDE1E;strokeColor=#2D7600;fontColor=#1C1C1C;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="360" y="275" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-25" value="ToDo(いまは不要)" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#ffcc99;strokeColor=#36393d;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="240" y="450" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-26" value="OK" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#7EDE1E;strokeColor=#2D7600;fontColor=#1C1C1C;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="290" y="630" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-28" value="InProgress" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#cce5ff;strokeColor=#36393d;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="400" y="780" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Z6NOpVzWMivuuzvYCPRy-29" value="InProgress" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#cce5ff;strokeColor=#36393d;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="490" y="650" width="70" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
