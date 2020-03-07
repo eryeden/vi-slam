@@ -361,9 +361,45 @@ double utils::estimate_frame_pose_pnp(const vislam::data::frame &frame_current,
     return 0;
 }
 
-std::vector<uint64_t> utils::extract_initializable_landmark_id(const vislam::data::frame &frame_current,
-                                                               const std::unordered_map<uint64_t, vislam::data::landmark> &database_landmark) {
+/**
+ * @brief Current frameで観測されたLandmarkから初期化可能なLandmark IDを出力する
+ * @param current_frame_id
+ * @param database_frame
+ * @param database_landmark
+ * @return
+ *
+ * @details
+ * やることは、三角測量できそうなLandmarkのペアを発掘すること。
+ * 単純に、２枚以上新たに観測されたLandmarkを選ぶと視差不足で三角測量の誤差が大きくなる可能性がある。
+ * なので、ここではある程度視差のあるLandmarkを選ぶようにする。
+ *
+ */
+std::vector<uint64_t> utils::extract_initializable_landmark_id_by_parallax(
+        double parallax_threshold_rad,
+        uint64_t current_frame_id,
+        const std::unordered_map<uint64_t , vislam::data::frame> & database_frame,
+        const std::unordered_map<uint64_t, vislam::data::landmark> & database_landmark) {
 
+    std::vector<uint64_t> selected_landmark_id(0);
+    const auto & current_frame = database_frame.at(current_frame_id);
+    for(const auto observed_landmark_id : current_frame.observingFeatureId){
+        const auto & observed_landmark = database_landmark.at(observed_landmark_id);
+        if(!observed_landmark.isInitialized){ //! 初期化されていなく,
+            if(observed_landmark.observedFrameId.size() > 2){ //! 2フレーム以上で観測されていて,
+                //! 最大視差を計算する, IDの最も小さいFrameを選ぶ
+                const auto min_id = *(observed_landmark.observedFrameId.begin());
+                vislam::Vec3_t t_ref = database_frame.at(min_id).cameraPosition;
+                vislam::Quat_t q_ref =database_frame.at(min_id).cameraAttitude;
+                vislam::Vec3_t t_current = current_frame.cameraPosition;
+                vislam::Quat_t q_current = current_frame.cameraAttitude;
+
+                //視線方向のベクトルを生成する。
+
+
+
+            }
+        }
+    }
 
     return std::vector<uint64_t>();
 }
