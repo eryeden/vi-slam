@@ -1,9 +1,12 @@
-<mxfile host="www.draw.io" modified="2020-03-07T14:02:51.739Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="OxEVwa3QqVP3aPxNtHXZ" version="12.8.1" type="github" pages="6">
+<mxfile host="www.draw.io" modified="2020-03-07T14:03:56.488Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="cDDGlqsJIih8d2CMrCpH" version="12.8.1" type="github" pages="6">
   <diagram id="C0SdsD_nAt9h8TD434q8" name="Overview">
     <mxGraphModel dx="1164" dy="654" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="Z6NOpVzWMivuuzvYCPRy-0" />
         <mxCell id="Z6NOpVzWMivuuzvYCPRy-1" parent="Z6NOpVzWMivuuzvYCPRy-0" />
+        <mxCell id="FfZRokaTNSsOa_7S9S_X-16" value="" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="810" y="130" width="630" height="100" as="geometry" />
+        </mxCell>
         <mxCell id="Z6NOpVzWMivuuzvYCPRy-2" value="&lt;h1&gt;VI-SLAM全体&lt;/h1&gt;&lt;div&gt;&lt;span&gt;・軽量VI-SLAMの開発が目標（TrackingとSemiくらいDenseのMappingまで実装したい）&lt;br&gt;・手法ベースとしては、現状VITAMIN-E＋IMUがやりたいこと&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;・開発をするに当たって、処理モジュール個々の開発と、モジュールレベルの開発方針をパット見でわかるようにしておきたい。&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="Z6NOpVzWMivuuzvYCPRy-1" vertex="1">
           <mxGeometry x="10" y="10" width="710" height="100" as="geometry" />
         </mxCell>
@@ -126,6 +129,9 @@
         </mxCell>
         <mxCell id="FfZRokaTNSsOa_7S9S_X-13" value="ToDo" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#ffcc99;strokeColor=#36393d;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
           <mxGeometry x="374" y="1080" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="FfZRokaTNSsOa_7S9S_X-17" value="イマココ" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="1450" y="170" width="60" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
