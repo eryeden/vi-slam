@@ -374,13 +374,15 @@ double utils::estimate_frame_pose_pnp(const vislam::data::frame &frame_current,
  * なので、ここではある程度視差のあるLandmarkを選ぶようにする。
  *
  */
-std::vector<uint64_t> utils::extract_initializable_landmark_id_by_parallax(
+std::unordered_map<uint64_t, vislam::data::landmark> utils::extract_and_triangulate_initializable_landmark(
         double parallax_threshold_rad,
         uint64_t current_frame_id,
         const std::unordered_map<uint64_t , vislam::data::frame> & database_frame,
         const std::unordered_map<uint64_t, vislam::data::landmark> & database_landmark) {
 
-    std::vector<uint64_t> selected_landmark_id(0);
+    //! 出力Landmarkデータ
+    std::unordered_map<uint64_t, vislam::data::landmark>  output_landmark;
+
     const auto & current_frame = database_frame.at(current_frame_id);
     for(const auto observed_landmark_id : current_frame.observingFeatureId){
         const auto & observed_landmark = database_landmark.at(observed_landmark_id);
@@ -394,14 +396,59 @@ std::vector<uint64_t> utils::extract_initializable_landmark_id_by_parallax(
                 vislam::Quat_t q_current = current_frame.cameraAttitude;
 
                 //! 実際にここで3角測量する、そして視差角度を計算して初期化できたかどうかを判断する
+                //! ref、currentそれぞれのカメラでのProjectionMatrixを生成する
+                vislam::Mat34_t projection_ref, projection_current, tmp_ref, tmp_current;
+                // ref projection
+                tmp_ref << vislam::Mat33_t::Identity(), -t_ref;
+                projection_ref = database_frame.at(min_id).cameraParameter.get_intrinsic_matrix() * q_ref.toRotationMatrix().transpose()* tmp_ref;
+//                tmp_ref << vislam::Mat33_t::Identity(), t_ref;
+//                projection_ref = database_frame.at(min_id).cameraParameter.get_intrinsic_matrix() * q_ref.toRotationMatrix()* tmp_ref;
+                // current projection
+                tmp_current << vislam::Mat33_t::Identity(), -t_current;
+                projection_current = current_frame.cameraParameter.get_intrinsic_matrix() *q_current.toRotationMatrix().transpose()* tmp_current;
+//                tmp_current << vislam::Mat33_t::Identity(), t_current;
+//                projection_current = current_frame.cameraParameter.get_intrinsic_matrix() *q_current.toRotationMatrix()* tmp_current;
 
+                //! 三角測量による三次元位置の推定
+                std::vector<cv::Point2d> cv_ref_point_in_device = {cv::Point2d(
+                        database_frame.at(min_id).observingFeaturePointInDevice.at(observed_landmark_id)[0],
+                        database_frame.at(min_id).observingFeaturePointInDevice.at(observed_landmark_id)[1])};
+                std::vector<cv::Point2d> cv_current_point_in_device = {cv::Point2d(
+                        current_frame.observingFeaturePointInDevice.at(observed_landmark_id)[0],
+                        current_frame.observingFeaturePointInDevice.at(observed_landmark_id)[1])};
+                cv::Mat cv_estimated_position_in_world(4, 1, CV_64F);
+                cv::Mat cv_projection_ref, cv_projection_current;
+                cv::eigen2cv(projection_ref, cv_projection_ref);
+                cv::eigen2cv(projection_current, cv_projection_current);
+                cv::triangulatePoints(cv_projection_ref, cv_projection_current, cv_ref_point_in_device, cv_current_point_in_device, cv_estimated_position_in_world);
+                //! 位置の出力
+                vislam::Vec3_t estimated_position_in_world(
+                        cv_estimated_position_in_world.at<double>(0,0) / cv_estimated_position_in_world.at<double>(3,0),
+                        cv_estimated_position_in_world.at<double>(1,0) / cv_estimated_position_in_world.at<double>(3,0),
+                        cv_estimated_position_in_world.at<double>(2,0) / cv_estimated_position_in_world.at<double>(3,0));
 
+                /**
+                 * @brief 推定したLandmark位置をベースに使うかどうかを決める
+                 */
+                 //! 視差の計算
+                 vislam::Vec3_t gaze_vec_current, gaze_vec_ref;
+                 gaze_vec_current = estimated_position_in_world - t_current;
+                 gaze_vec_ref = estimated_position_in_world - t_ref;
+                 double dot_of_gaze = gaze_vec_current.dot(gaze_vec_ref) / (gaze_vec_ref.norm() * gaze_vec_ref.norm() + 1e-5);
+                 if(dot_of_gaze < std::cos(parallax_threshold_rad)){
+                     //! とりあえず、視差が一定以上あれば、初期化成功とする
+                     auto output = observed_landmark;
+                     output.isInitialized = true;
+                     output.isOutlier = false;
+                     output.positionInWorld = estimated_position_in_world;
+                     output_landmark[observed_landmark_id] = output;
+                 }
 
             }
         }
     }
 
-    return std::vector<uint64_t>();
+    return output_landmark;
 }
 
 std::vector<vislam::Vec3_t> utils::triangulate_landmark_position(const std::vector<uint64_t> &initializable_landmark_id,

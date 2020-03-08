@@ -64,7 +64,7 @@ namespace initializer {
         /**
          * @brief Current frameで観測されたLandmarkから初期化可能なIDを出力する
          */
-         std::vector<uint64_t> extract_initializable_landmark_id_by_parallax(
+        std::unordered_map<uint64_t, vislam::data::landmark> extract_and_triangulate_initializable_landmark(
                 double parallax_threshold_rad,
                 uint64_t current_frame_id,
                 const std::unordered_map<uint64_t , vislam::data::frame> & database_frame,
@@ -79,10 +79,5 @@ namespace initializer {
 
 
     } // namespace utils
-
-    class initializer {
-    public:
-    private:
-    };
 
 } // namespace initializer

@@ -108,11 +108,11 @@ int main()
 
     dense_feature::dense_feature_extructor dfe(0.1, 0.1);
 
-//    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
+    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V2_01_easy/mav0/cam0", 0.001);
 //     LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/MH_01_easy/mav0/cam0", 0.001);
-    LogPlayer_euroc_mav lp_mav("/home/ery/assets/V1_01_easy/mav0/cam0", 0.001);
+//    LogPlayer_euroc_mav lp_mav("/home/ery/assets/V1_01_easy/mav0/cam0", 0.001);
 
     // // カメラ画像を補正するようにする
     // // カメラの歪み補正 パラメータ FIXME 外用Econカメラの4:3画像サイズの補正用パラメータなので、カメラでパラメータを変更できるようにしなければならない
@@ -121,7 +121,7 @@ int main()
 //                        0.0000000000000000e+00, 457.296, 248.375,
 //                        0.0000000000000000e+00, 0.0000000000000000e+00, 1.0000000000000000e+00);
     cv::Mat intrinsic_matrix(3, 3, CV_64FC1);
-    intrinsic_matrix = (cv::Mat_<float>(3, 3) << 458.654, 0.0000000000000000e+00, 367.215,
+    intrinsic_matrix = (cv::Mat_<double>(3, 3) << 458.654, 0.0000000000000000e+00, 367.215,
             0.0000000000000000e+00, 457.296, 248.375,
             0.0000000000000000e+00, 0.0000000000000000e+00, 1.0000000000000000e+00);
     Eigen::Matrix3d intrinsic_eigen;
@@ -408,7 +408,6 @@ int main()
          */
         if(is_initialized){
 
-
             /**
              * @brief 1. current frameの位置、姿勢を初期化
              */
@@ -434,9 +433,26 @@ int main()
              * - 観測されているフレームの最大視差が、ある値以上になっている
              * - 今回のフレームで観測されている
              */
+             auto initialized_landmark = initializer::utils::extract_and_triangulate_initializable_landmark(10.0 * M_PI/180.0, i, database_frame, database_landmark);
+             for(const auto & [landmark_id, landmark_data] : initialized_landmark){
+                 database_landmark[landmark_id] = landmark_data; //! データベースに初期化済みLandmarkを登録
+             }
 
+            // 特徴点位置を描画
+            std::vector<cv::Point3d> pointCloud;
+            for (auto & [landmark_id, landmark_data] : database_landmark)
+            {
+                if(landmark_data.isInitialized && (!landmark_data.isOutlier)){
+                    pointCloud.emplace_back(
+                            cv::Point3d(landmark_data.positionInWorld[0],
+                                        landmark_data.positionInWorld[1],
+                                        landmark_data.positionInWorld[2]));
 
-
+                }
+            }
+            // 点群の描画
+            cv::viz::WCloud cloud(pointCloud);
+            myWindow.showWidget("CLOUD", cloud);
 
         }
 
