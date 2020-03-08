@@ -108,18 +108,22 @@ int main()
 
     dense_feature::dense_feature_extructor dfe(0.1, 0.1);
 
-    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
+//    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V2_01_easy/mav0/cam0", 0.001);
 //     LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/MH_01_easy/mav0/cam0", 0.001);
-//    LogPlayer_euroc_mav lp_mav("/home/ery/assets/V1_01_easy/mav0/cam0", 0.001);
+    LogPlayer_euroc_mav lp_mav("/home/ery/assets/V1_01_easy/mav0/cam0", 0.001);
 
     // // カメラ画像を補正するようにする
     // // カメラの歪み補正 パラメータ FIXME 外用Econカメラの4:3画像サイズの補正用パラメータなので、カメラでパラメータを変更できるようにしなければならない
-    cv::Mat intrinsic_matrix(3, 3, CV_32FC1);
+//    cv::Mat intrinsic_matrix(3, 3, CV_32FC1);
+//    intrinsic_matrix = (cv::Mat_<float>(3, 3) << 458.654, 0.0000000000000000e+00, 367.215,
+//                        0.0000000000000000e+00, 457.296, 248.375,
+//                        0.0000000000000000e+00, 0.0000000000000000e+00, 1.0000000000000000e+00);
+    cv::Mat intrinsic_matrix(3, 3, CV_64FC1);
     intrinsic_matrix = (cv::Mat_<float>(3, 3) << 458.654, 0.0000000000000000e+00, 367.215,
-                        0.0000000000000000e+00, 457.296, 248.375,
-                        0.0000000000000000e+00, 0.0000000000000000e+00, 1.0000000000000000e+00);
+            0.0000000000000000e+00, 457.296, 248.375,
+            0.0000000000000000e+00, 0.0000000000000000e+00, 1.0000000000000000e+00);
     Eigen::Matrix3d intrinsic_eigen;
     cv::cv2eigen(intrinsic_matrix, intrinsic_eigen);
 
@@ -176,6 +180,7 @@ int main()
     cv::viz::WCameraPosition wcamera_cand4(K, 1.0, cv::viz::Color::yellow());
 
     cv::viz::WCameraPosition wcamera_current_pnp(K, 1.0, cv::viz::Color::green());
+    cv::viz::WCameraPosition wcamera_init_pnp(K, 1.0, cv::viz::Color::magenta());
 #endif
 
 
@@ -188,6 +193,11 @@ int main()
      * @brief 観測した特徴点（Feature point, landmark）の保存場所
      */
     std::unordered_map<uint64_t, vislam::data::landmark> database_landmark;
+
+    /**
+     * @brief System initに成功したFrameID
+     */
+     uint64_t system_init_frame_id = 1;
 
 
 #ifdef REC
@@ -306,6 +316,7 @@ int main()
                      * @brief 特徴点位置の初期化を完了して特徴点データベースの更新を行う
                      */
                     is_initialized = true;
+                    system_init_frame_id = i;
                     std::cout << "Initialized. Match rate : " << match_rate << std::endl;
 
                     /**
@@ -329,6 +340,24 @@ int main()
                     auto & ref_current_frame = database_frame[i];
                     ref_current_frame.cameraPosition = initialized_position_current_frame;
                     ref_current_frame.cameraAttitude = initialized_attitude_current_frame;
+
+                    /**
+                     * いままでのFramePoseを初期化する。初期化できたLandmark位置からPNPでPoseを求める
+                     */
+                     for(size_t initializing_frame_index = 2; initializing_frame_index < i; initializing_frame_index++){
+                         auto& tmp_frame = database_frame[initializing_frame_index];
+                         vislam::Vec3_t tmp_translation;
+                         vislam::Quat_t tmp_rotation;
+                         initializer::utils::estimate_frame_pose_pnp(tmp_frame, database_landmark,
+                                 tmp_translation, tmp_rotation);
+                         tmp_frame.cameraPosition = tmp_translation;
+                         tmp_frame.cameraAttitude = tmp_rotation;
+                     }
+
+
+                    /**
+                     * @brif 描画関係処理
+                     */
 
                     // 特徴点位置を描画
                     std::vector<cv::Point3d> pointCloud;
@@ -354,6 +383,15 @@ int main()
                     cv::eigen2cv(ref_current_frame.cameraAttitude.toRotationMatrix(), current_camera_attitude);
                     cv::Affine3d current_cam_pose(current_camera_attitude, cv::Vec3f(ref_current_frame.cameraPosition[0], ref_current_frame.cameraPosition[1], ref_current_frame.cameraPosition[2]));
                     myWindow.showWidget("2", wcamera_cand1, current_cam_pose);
+                    // 初期化後、前フレームカメラ位置の描画
+                    for(size_t initializing_frame_index = 2; initializing_frame_index < system_init_frame_id; initializing_frame_index++){
+                        const auto & tmp_frame = database_frame[initializing_frame_index];
+                        cv::viz::WCameraPosition tmp_wcamera(K, 1.0, cv::viz::Color::magenta());
+                        cv::Mat tmp_camera_attitude;
+                        cv::eigen2cv(tmp_frame.cameraAttitude.toRotationMatrix(), tmp_camera_attitude);
+                        cv::Affine3d tmp_cam_pose(tmp_camera_attitude, cv::Vec3f(tmp_frame.cameraPosition[0], tmp_frame.cameraPosition[1], tmp_frame.cameraPosition[2]));
+                        myWindow.showWidget(std::to_string(initializing_frame_index), tmp_wcamera, tmp_cam_pose);
+                    }
                 }
             }
         }

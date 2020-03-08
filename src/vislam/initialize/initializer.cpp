@@ -393,7 +393,7 @@ std::vector<uint64_t> utils::extract_initializable_landmark_id_by_parallax(
                 vislam::Vec3_t t_current = current_frame.cameraPosition;
                 vislam::Quat_t q_current = current_frame.cameraAttitude;
 
-                //視線方向のベクトルを生成する。
+                //! 実際にここで3角測量する、そして視差角度を計算して初期化できたかどうかを判断する
 
 
 
