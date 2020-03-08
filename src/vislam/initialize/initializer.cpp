@@ -437,11 +437,29 @@ std::unordered_map<uint64_t, vislam::data::landmark> utils::extract_and_triangul
                  double dot_of_gaze = gaze_vec_current.dot(gaze_vec_ref) / (gaze_vec_ref.norm() * gaze_vec_ref.norm() + 1e-5);
                  if(dot_of_gaze < std::cos(parallax_threshold_rad)){
                      //! とりあえず、視差が一定以上あれば、初期化成功とする
-                     auto output = observed_landmark;
-                     output.isInitialized = true;
-                     output.isOutlier = false;
-                     output.positionInWorld = estimated_position_in_world;
-                     output_landmark[observed_landmark_id] = output;
+                     /**
+                      * @brief 視差を第一の条件として初期化成功の判断を行う
+                      * @details
+                      * ## 判断プランについて
+                      * - Plan1:判断に視差角度のみを利用する。＝＞初期化できている特徴点はあるが、画像端？にアウトライアが多いように感じる。
+                      * - Plan2:視差の角度と画像中のLandmark位置を使って初期化成功判断お行う => たしかにOutlierの数は少なくなったが、そもそも、対象とするLandmarkが少なくなっているだけの可能性がある。
+                      *
+                      */
+                     //! 画像端のLandmarkは利用しない
+                     double roi_rate = 0.9;
+                     double margin_width = current_frame.cameraParameter.width * (1.0 - roi_rate)*0.5;
+                     double margin_height = current_frame.cameraParameter.height * (1.0 - roi_rate)*0.5;
+                     cv::Rect2d roi(cv::Point2d(margin_width, margin_height),
+                             cv::Size2d(current_frame.cameraParameter.width * roi_rate,current_frame.cameraParameter.height * roi_rate));
+                     if(roi.contains(cv_ref_point_in_device[0]) && roi.contains(cv_current_point_in_device[0])){
+                         auto output = observed_landmark;
+                         output.isInitialized = true;
+                         output.isOutlier = false;
+                         output.positionInWorld = estimated_position_in_world;
+                         output_landmark[observed_landmark_id] = output;
+
+                     }
+
                  }
 
             }
