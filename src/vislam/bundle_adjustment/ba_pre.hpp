@@ -71,7 +71,7 @@ namespace vislam::ba {
                 const std::unordered_map<uint64_t, data::landmark> &input_landmark_database,
                 uint64_t window_size,
                 uint64_t latest_frame_id,
-                std::vector<ba_observation> &selected_frame_database,
+                std::vector<ba_observation> &selected_observation_database,
                 std::vector<uint64_t> &selected_landmark_database
         );
 

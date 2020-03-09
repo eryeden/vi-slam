@@ -31,6 +31,7 @@ vislam::ba::ba_pre::ba_pre() {
  * 普通に考えると次の案がある？
  * 案１：最低n frameにまたがって観測されたらBA対象にする
  * 案２：観測したときの視差がある値以上になったらBA対象にする（ラフに推定したカメラ位置が、ある程度離れていたらBA対象の特徴点にする）
+ * 案３：単に初期化に成功しており、Outlier判定されていないLandmarkをBA対象とする
  * OrbSLAMのやり方など調査する必要あり
  *
  * ## LandmarkのBA対象からの外し方
@@ -44,12 +45,13 @@ vislam::ba::ba_pre::ba_pre() {
  * また、OrbSLAMで使っているCo-visibility graphなど利用したほうが簡単に実装できるかもしれない。
  *
  */
-void vislam::ba::ba_pre::select_frames_and_landmarks(const std::unordered_map<uint64_t, data::frame> &input_frame_database,
-                                                     const std::unordered_map<uint64_t, data::landmark> &input_landmark_database,
-                                                     uint64_t window_size,
-                                                     uint64_t latest_frame_id,
-                                                     std::vector<ba_observation> &selected_frame_database,
-                                                     std::vector<uint64_t> &selected_landmark_database) {
+void vislam::ba::ba_pre::select_frames_and_landmarks(
+        const std::unordered_map<uint64_t, data::frame> &input_frame_database,
+        const std::unordered_map<uint64_t, data::landmark> &input_landmark_database,
+        uint64_t window_size,
+        uint64_t latest_frame_id,
+        std::vector<ba_observation> &selected_observation_database,
+        std::vector<uint64_t> &selected_landmark_database) {
 
     /**
      * @brief BA対象Landmarkの選び方：
@@ -100,7 +102,7 @@ void vislam::ba::ba_pre::select_frames_and_landmarks(const std::unordered_map<ui
         selected_frame.emplace_back(current_ba_observation);
     }
     //! BA対象の特徴点IDを詰め込んだFrameDatabaseを出力する
-    selected_frame_database = selected_frame;
+    selected_observation_database = selected_frame;
 }
 
 /**

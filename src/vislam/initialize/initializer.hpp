@@ -62,7 +62,7 @@ namespace initializer {
                                        vislam::Quat_t &current_frame_attitude_in_world);
 
         /**
-         * @brief Current frameで観測されたLandmarkから初期化可能なIDを出力する
+         * @brief Current frameで観測されたLandmarkから初期化可能なIDを抽出、三角測量する
          */
         std::unordered_map<uint64_t, vislam::data::landmark> extract_and_triangulate_initializable_landmark(
                 double parallax_threshold_rad,
