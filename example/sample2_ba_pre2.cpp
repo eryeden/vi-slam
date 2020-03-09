@@ -108,11 +108,11 @@ int main()
 
     dense_feature::dense_feature_extructor dfe(0.1, 0.1);
 
-//    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
+    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V2_01_easy/mav0/cam0", 0.001);
 //     LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/MH_01_easy/mav0/cam0", 0.001);
-    LogPlayer_euroc_mav lp_mav("/home/ery/assets/V1_01_easy/mav0/cam0", 0.001);
+//    LogPlayer_euroc_mav lp_mav("/home/ery/assets/V1_01_easy/mav0/cam0", 0.001);
 
     // // カメラ画像を補正するようにする
     // // カメラの歪み補正 パラメータ FIXME 外用Econカメラの4:3画像サイズの補正用パラメータなので、カメラでパラメータを変更できるようにしなければならない
@@ -240,6 +240,7 @@ int main()
          * @brief 抽出した特徴点からdata::frameを生成する
          */
         vislam::data::frame frame_current;
+        frame_current.id = i;
         /**
          * @brief 今回のフレームで抽出・トラックできた特徴点を挿入する。
          */
@@ -354,6 +355,53 @@ int main()
                          tmp_frame.cameraAttitude = tmp_rotation;
                      }
 
+                     /**
+                      * @brief ここまでのFrameと初期化できたLandmarkでBAを実施する
+                      */
+                    std::unordered_map<uint64_t , vislam::data::frame> ba_database_frame;
+                    ba_database_frame[1] = database_frame[1];
+                    ba_database_frame[i-2] = database_frame[i-2];
+                    ba_database_frame[i-1] = database_frame[i-1];
+                    ba_database_frame[i] = database_frame[i];
+                    std::vector<vislam::ba::ba_observation> selected_observation_database;
+                    std::vector<uint64_t> selected_landmark_id;
+                    //! BA対象のLandmarkを選択、BA情報をまとめるba_observationを生成する
+                    vislam::ba::ba_pre::select_frames_and_landmarks(
+                            ba_database_frame,
+//                            database_frame,
+                            database_landmark,
+                            10,
+                            i,
+                            selected_observation_database,
+                            selected_landmark_id);
+                    //! 各Frameに観測されいているLandmarkの偏微分計算を実施、変数に偏微分結果を満たす
+                    vislam::ba::ba_pre::fill_derivatives(
+                            database_frame,
+                            database_landmark,
+                            selected_observation_database);
+                    //! Jacobianを計算する。満たした偏微分結果をSparseMatrixに代入する
+                    Eigen::SparseMatrix<double> j = vislam::ba::ba_pre::generate_jacobian(
+                            selected_observation_database,
+                            selected_landmark_id);
+                    //! ヘシアンに近似する
+                    Eigen::SparseMatrix<double> h = j.transpose() * j;
+
+                    //! 表示する
+                    cv::Mat cv_h, cv_j;
+                    Eigen::MatrixXd dense_h(h), dense_j(j);
+                    cv::eigen2cv(dense_h, cv_h);
+                    cv::eigen2cv(dense_j, cv_j);
+                    cv::threshold(cv_h, cv_h, 0, 255, CV_THRESH_BINARY);
+                    cv::threshold(cv_j, cv_j, 0, 255, CV_THRESH_BINARY);
+//                    cv::resize(cv_h, cv_h, cv::Size(), 0.4, 0.4, CV_INTER_NN);
+//                    cv::resize(cv_j, cv_j, cv::Size(), 0.4, 0.4, CV_INTER_NN);
+
+
+//                    cv::imshow("H", cv_h);
+//                    cv::imshow("J", cv_j);
+//                    cv::imwrite("/home/ery/H.png", cv_h);
+//                    cv::imwrite("/home/ery/J.png", cv_j);
+//                    cv::waitKey(0);
 
                     /**
                      * @brif 描画関係処理

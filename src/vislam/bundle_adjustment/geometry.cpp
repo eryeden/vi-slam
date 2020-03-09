@@ -70,7 +70,8 @@ MatRC_t<2, 3> geometry::utility::get_der_F_der_omega(const vislam::Vec3_t &landm
     lower_der_f_der_omega = 1.0 / (r * r + epsilon) * (r * der_q_der_omega - q * der_r_der_omega);
     //! ここで上としたを合体する
     MatRC_t<2, 3> der_f_der_omega;
-    der_f_der_omega << upper_der_f_der_omega, lower_der_f_der_omega;
+//    der_f_der_omega << upper_der_f_der_omega, lower_der_f_der_omega;
+    der_f_der_omega << upper_der_f_der_omega.transpose(), lower_der_f_der_omega.transpose();
 
     return der_f_der_omega;
 }
@@ -120,7 +121,8 @@ MatRC_t<2, 3> geometry::utility::get_der_F_der_t(const vislam::Vec3_t &landmark_
     lower_der_f_der_t = 1.0 / (r * r + epsilon) * (r * der_q_der_t - q * der_r_der_t);
     //! ここで上としたを合体する
     MatRC_t<2, 3> der_f_der_t;
-    der_f_der_t << upper_der_f_der_t, lower_der_f_der_t;
+//    der_f_der_t << upper_der_f_der_t, lower_der_f_der_t;
+    der_f_der_t << upper_der_f_der_t.transpose(), lower_der_f_der_t.transpose();
 
     return der_f_der_t;
 }
@@ -158,7 +160,8 @@ MatRC_t<2, 3> geometry::utility::get_der_F_der_p(const vislam::Vec3_t &landmark_
     lower_der_f_der_p = 1.0 / (r * r + epsilon) * (r * der_q_der_p - q * der_r_der_p);
     //! ここで上としたを合体する
     MatRC_t<2, 3> der_f_der_p;
-    der_f_der_p << upper_der_f_der_p, lower_der_f_der_p;
+//    der_f_der_p << upper_der_f_der_p, lower_der_f_der_p;
+    der_f_der_p << upper_der_f_der_p.transpose(), lower_der_f_der_p.transpose();
 
     return der_f_der_p;
 }

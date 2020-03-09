@@ -2,6 +2,7 @@
 // Created by ery on 2020/02/17.
 //
 
+#include <iostream>
 #include "ba_pre.hpp"
 #include "geometry.hpp"
 
@@ -31,7 +32,7 @@ vislam::ba::ba_pre::ba_pre() {
  * 普通に考えると次の案がある？
  * 案１：最低n frameにまたがって観測されたらBA対象にする
  * 案２：観測したときの視差がある値以上になったらBA対象にする（ラフに推定したカメラ位置が、ある程度離れていたらBA対象の特徴点にする）
- * 案３：単に初期化に成功しており、Outlier判定されていないLandmarkをBA対象とする
+ * 案３：単に初期化に成功しており、Outlier判定されていないLandmarkをBA対象とする <=ここではコレを実装！！！
  * OrbSLAMのやり方など調査する必要あり
  *
  * ## LandmarkのBA対象からの外し方
@@ -53,29 +54,47 @@ void vislam::ba::ba_pre::select_frames_and_landmarks(
         std::vector<ba_observation> &selected_observation_database,
         std::vector<uint64_t> &selected_landmark_database) {
 
-    /**
-     * @brief BA対象Landmarkの選び方：
-     * @detals
-     * 観測回数でフィルタすることにする。実装としては、観測回数とLandmarkIDを紐付けたMapを用意して、ここで一旦観測回数をカウントしたあとに、
-     * 観測回数によるフィルタを行うとする。
-     * 本当は、結果をキャッシュして、新たに観測されたフレームと、最も最後に観測されているフレームのみから更新する事ができるはず。
-     */
-     const uint64_t observation_counter_threshold = 3;
-     std::unordered_map<uint64_t , uint64_t > landmark_observing_counter;
+//    /**
+//     * @brief BA対象Landmarkの選び方：
+//     * @detals
+//     * 観測回数でフィルタすることにする。実装としては、観測回数とLandmarkIDを紐付けたMapを用意して、ここで一旦観測回数をカウントしたあとに、
+//     * 観測回数によるフィルタを行うとする。
+//     * 本当は、結果をキャッシュして、新たに観測されたフレームと、最も最後に観測されているフレームのみから更新する事ができるはず。
+//     */
+//     const uint64_t observation_counter_threshold = 3;
+//     std::unordered_map<uint64_t , uint64_t > landmark_observing_counter;
+//     for(const auto &[frame_id, frm]: input_frame_database){
+//         for(const auto landmark_id: frm.observingFeatureId){
+//             if(landmark_observing_counter.count(landmark_id) == 0){
+//                 landmark_observing_counter[landmark_id] = 1;
+//             }else{
+//                 landmark_observing_counter[landmark_id]++;
+//             }
+//         }
+//     }
+//     std::vector<uint64_t > selected_landmark_id(0); // ここに今回のBAで対象となるLandmarkのIDが入る。
+//     selected_landmark_id.reserve(landmark_observing_counter.size());
+//     for(const auto&[landmark_id, observation_counter]: landmark_observing_counter){
+//         if(observation_counter >= observation_counter_threshold){
+//             selected_landmark_id.emplace_back(landmark_id);
+//         }
+//     }
+
+     /**
+      * @brief BA対象のLandmarkを選択する
+      * @details
+      * ここでは、以下の条件のLandmarkを選択するとした。
+      * - Outlierではない
+      * - 初期化に成功している
+      * - BA対象のFrameに観測されている
+      */
+    std::vector<uint64_t > selected_landmark_id(0); // ここに今回のBAで対象となるLandmarkのIDが入る。
      for(const auto &[frame_id, frm]: input_frame_database){
          for(const auto landmark_id: frm.observingFeatureId){
-             if(landmark_observing_counter.count(landmark_id) == 0){
-                 landmark_observing_counter[landmark_id] = 1;
-             }else{
-                 landmark_observing_counter[landmark_id]++;
+             const auto & current_landmark = input_landmark_database.at(landmark_id);
+             if((!current_landmark.isOutlier) && current_landmark.isInitialized){
+                 selected_landmark_id.emplace_back(landmark_id);
              }
-         }
-     }
-     std::vector<uint64_t > selected_landmark_id(0); // ここに今回のBAで対象となるLandmarkのIDが入る。
-     selected_landmark_id.reserve(landmark_observing_counter.size());
-     for(const auto&[landmark_id, observation_counter]: landmark_observing_counter){
-         if(observation_counter >= observation_counter_threshold){
-             selected_landmark_id.emplace_back(landmark_id);
          }
      }
     //! このあと、対象フレームでの観測ランドマークIDとBA対象ランドマークIDの積集合をとるために、std::set_intersectionを実行するが、そのためにSortしておく。
@@ -185,41 +204,71 @@ Eigen::SparseMatrix<double> vislam::ba::ba_pre::generate_jacobian(
 
     int64_t raw_index = 0;
     for(size_t frame_index = 0; frame_index < selected_frame_database.size(); frame_index++){
+//        std::cout << frame_index << "/" << selected_frame_database.size() << std::endl;
+
         for(size_t inframe_landmark_index = 0; inframe_landmark_index < selected_frame_database[frame_index].landmark_id.size(); inframe_landmark_index++){
+
+//            std::cout << inframe_landmark_index << "/" << selected_frame_database[frame_index].landmark_id.size() << std::endl;
+
+
             int64_t col_index = 0;
+            const auto current_landmark_id  = selected_frame_database[frame_index].landmark_id[inframe_landmark_index];
             /**
              * @brief insert der_F_der_omega
              */
-            col_index = inframe_landmark_index*6;
-            jacobian.insert(raw_index, col_index) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(0,0);
-            jacobian.insert(raw_index, col_index+1) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(0,1);
-            jacobian.insert(raw_index, col_index+2) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(0,2);
-            jacobian.insert(raw_index+1, col_index) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(1,0);
-            jacobian.insert(raw_index+1, col_index+1) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(1,1);
-            jacobian.insert(raw_index+1, col_index+2) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(1,2);
+//            col_index = inframe_landmark_index*6;
+            col_index = frame_index*6;
+            jacobian.insert(raw_index, col_index) =  selected_frame_database[frame_index].der_f_der_omega.at(current_landmark_id)(0,0);
+            jacobian.insert(raw_index, col_index+1) =  selected_frame_database[frame_index].der_f_der_omega.at(current_landmark_id)(0,1);
+            jacobian.insert(raw_index, col_index+2) =  selected_frame_database[frame_index].der_f_der_omega.at(current_landmark_id)(0,2);
+            jacobian.insert(raw_index+1, col_index) =  selected_frame_database[frame_index].der_f_der_omega.at(current_landmark_id)(1,0);
+            jacobian.insert(raw_index+1, col_index+1) =  selected_frame_database[frame_index].der_f_der_omega.at(current_landmark_id)(1,1);
+            jacobian.insert(raw_index+1, col_index+2) =  selected_frame_database[frame_index].der_f_der_omega.at(current_landmark_id)(1,2);
+//            jacobian.insert(raw_index, col_index) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(0,0);
+//            jacobian.insert(raw_index, col_index+1) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(0,1);
+//            jacobian.insert(raw_index, col_index+2) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(0,2);
+//            jacobian.insert(raw_index+1, col_index) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(1,0);
+//            jacobian.insert(raw_index+1, col_index+1) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(1,1);
+//            jacobian.insert(raw_index+1, col_index+2) =  selected_frame_database[frame_index].der_f_der_omega.at(inframe_landmark_index)(1,2);
 
             /**
              * @brief insert der_F_der_t
              */
-            col_index = inframe_landmark_index*6+3;
-            jacobian.insert(raw_index, col_index) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(0,0);
-            jacobian.insert(raw_index, col_index+1) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(0,1);
-            jacobian.insert(raw_index, col_index+2) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(0,2);
-            jacobian.insert(raw_index+1, col_index) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(1,0);
-            jacobian.insert(raw_index+1, col_index+1) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(1,1);
-            jacobian.insert(raw_index+1, col_index+2) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(1,2);
+//            col_index = inframe_landmark_index*6+3;
+            col_index = frame_index*6+3;
+//            jacobian.insert(raw_index, col_index) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(0,0);
+//            jacobian.insert(raw_index, col_index+1) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(0,1);
+//            jacobian.insert(raw_index, col_index+2) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(0,2);
+//            jacobian.insert(raw_index+1, col_index) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(1,0);
+//            jacobian.insert(raw_index+1, col_index+1) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(1,1);
+//            jacobian.insert(raw_index+1, col_index+2) =  selected_frame_database[frame_index].der_f_der_t.at(inframe_landmark_index)(1,2);
+            jacobian.insert(raw_index, col_index) =  selected_frame_database[frame_index].der_f_der_t.at(current_landmark_id)(0,0);
+            jacobian.insert(raw_index, col_index+1) =  selected_frame_database[frame_index].der_f_der_t.at(current_landmark_id)(0,1);
+            jacobian.insert(raw_index, col_index+2) =  selected_frame_database[frame_index].der_f_der_t.at(current_landmark_id)(0,2);
+            jacobian.insert(raw_index+1, col_index) =  selected_frame_database[frame_index].der_f_der_t.at(current_landmark_id)(1,0);
+            jacobian.insert(raw_index+1, col_index+1) =  selected_frame_database[frame_index].der_f_der_t.at(current_landmark_id)(1,1);
+            jacobian.insert(raw_index+1, col_index+2) =  selected_frame_database[frame_index].der_f_der_t.at(current_landmark_id)(1,2);
 
             /**
              * @brief insert der_F_der_p
              */
-            col_index = (selected_frame_database[frame_index].landmark_id.size()-1)*6+3 + 1
-                    + 3*landmark_id_to_array_index_map[selected_frame_database[frame_index].landmark_id[inframe_landmark_index]]; // p_alpha^Wの並び順Indexを取得する
-            jacobian.insert(raw_index, col_index) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(0,0);
-            jacobian.insert(raw_index, col_index+1) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(0,1);
-            jacobian.insert(raw_index, col_index+2) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(0,2);
-            jacobian.insert(raw_index+1, col_index) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(1,0);
-            jacobian.insert(raw_index+1, col_index+1) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(1,1);
-            jacobian.insert(raw_index+1, col_index+2) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(1,2);
+//            col_index = (selected_frame_database[frame_index].landmark_id.size()-1)*6+3 + 1
+//                    + 3*landmark_id_to_array_index_map[selected_frame_database[frame_index].landmark_id[inframe_landmark_index]]; // p_alpha^Wの並び順Indexを取得する
+            col_index = selected_frame_database.size()*6 + 3*landmark_id_to_array_index_map[current_landmark_id]; // p_alpha^Wの並び順Indexを取得する
+
+//            jacobian.insert(raw_index, col_index) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(0,0);
+//            jacobian.insert(raw_index, col_index+1) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(0,1);
+//            jacobian.insert(raw_index, col_index+2) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(0,2);
+//            jacobian.insert(raw_index+1, col_index) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(1,0);
+//            jacobian.insert(raw_index+1, col_index+1) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(1,1);
+//            jacobian.insert(raw_index+1, col_index+2) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(1,2);
+
+            jacobian.insert(raw_index, col_index) =  selected_frame_database[frame_index].der_f_der_p.at(current_landmark_id)(0,0);
+            jacobian.insert(raw_index, col_index+1) =  selected_frame_database[frame_index].der_f_der_p.at(current_landmark_id)(0,1);
+            jacobian.insert(raw_index, col_index+2) =  selected_frame_database[frame_index].der_f_der_p.at(current_landmark_id)(0,2);
+            jacobian.insert(raw_index+1, col_index) =  selected_frame_database[frame_index].der_f_der_p.at(current_landmark_id)(1,0);
+            jacobian.insert(raw_index+1, col_index+1) =  selected_frame_database[frame_index].der_f_der_p.at(current_landmark_id)(1,1);
+            jacobian.insert(raw_index+1, col_index+2) =  selected_frame_database[frame_index].der_f_der_p.at(current_landmark_id)(1,2);
 
             raw_index+=2; //! F_alpha_kappaの要素数は２なので、２個シフトする
         }
