@@ -365,6 +365,7 @@ int main()
                     ba_database_frame[i] = database_frame[i];
                     std::vector<vislam::ba::ba_observation> selected_observation_database;
                     std::vector<uint64_t> selected_landmark_id;
+
                     //! BA対象のLandmarkを選択、BA情報をまとめるba_observationを生成する
                     vislam::ba::ba_pre::select_frames_and_landmarks(
                             ba_database_frame,
@@ -374,17 +375,23 @@ int main()
                             i,
                             selected_observation_database,
                             selected_landmark_id);
+
                     //! 各Frameに観測されいているLandmarkの偏微分計算を実施、変数に偏微分結果を満たす
                     vislam::ba::ba_pre::fill_derivatives(
                             database_frame,
                             database_landmark,
                             selected_observation_database);
+
                     //! Jacobianを計算する。満たした偏微分結果をSparseMatrixに代入する
                     Eigen::SparseMatrix<double> j = vislam::ba::ba_pre::generate_jacobian(
                             selected_observation_database,
                             selected_landmark_id);
+
                     //! ヘシアンに近似する
                     Eigen::SparseMatrix<double> h = j.transpose() * j;
+
+                    //! gradientを計算する
+                    Eigen::VectorXd g = vislam::ba::ba_pre::generate_gradient(selected_observation_database, j);
 
                     //! 表示する
                     cv::Mat cv_h, cv_j;

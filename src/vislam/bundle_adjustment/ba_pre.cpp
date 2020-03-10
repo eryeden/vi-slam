@@ -199,6 +199,8 @@ Eigen::SparseMatrix<double> vislam::ba::ba_pre::generate_jacobian(
 
     /**
      * @brief 粗行列としてJacobianを生成する
+     * @note
+     * インデックスの計算が結構間違っていたので注意しようね
      */
     Eigen::SparseMatrix<double> jacobian(num_raw_jacobian, num_col_jacobian);
 
@@ -277,5 +279,21 @@ Eigen::SparseMatrix<double> vislam::ba::ba_pre::generate_jacobian(
     jacobian.finalize();
 
     return jacobian;
+}
+
+Eigen::VectorXd vislam::ba::ba_pre::generate_gradient(const std::vector<ba_observation> &ba_observation_database,
+                                                      const Eigen::SparseMatrix<double> &jacobian) {
+    Eigen::VectorXd residuals(jacobian.rows());
+
+    int64_t raw_index = 0;
+    for(size_t frame_index = 0; frame_index < ba_observation_database.size(); frame_index++){
+        for(size_t inframe_landmark_index = 0; inframe_landmark_index < ba_observation_database[frame_index].landmark_id.size(); inframe_landmark_index++){
+            const auto current_landmark_id  = ba_observation_database[frame_index].landmark_id[inframe_landmark_index];
+            residuals(raw_index,0) = ba_observation_database[frame_index].reprojection_error.at(current_landmark_id)[0];
+            residuals(raw_index+1,0) = ba_observation_database[frame_index].reprojection_error.at(current_landmark_id)[1];
+            raw_index+=2;
+        }
+    }
+    return jacobian.transpose() * residuals;
 }
 

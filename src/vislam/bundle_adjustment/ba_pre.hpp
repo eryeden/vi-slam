@@ -95,6 +95,15 @@ namespace vislam::ba {
         static Eigen::SparseMatrix<double> generate_jacobian(const std::vector<ba_observation> &selected_frame_database,
                                                              const std::vector<uint64_t> &selected_landmark_database);
 
+        /**
+         * @brief gradientの計算を行う : J^t e を計算する
+         * @param ba_observation_database
+         * @param jacobian
+         * @return
+         */
+        static Eigen::VectorXd generate_gradient(const std::vector<ba_observation> &ba_observation_database,
+                                                 const Eigen::SparseMatrix<double> & jacobian);
+
     };
 
 }
