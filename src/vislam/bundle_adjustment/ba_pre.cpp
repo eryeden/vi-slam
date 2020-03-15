@@ -99,7 +99,10 @@ void vislam::ba::ba_pre::select_frames_and_landmarks(
      }
     //! このあと、対象フレームでの観測ランドマークIDとBA対象ランドマークIDの積集合をとるために、std::set_intersectionを実行するが、そのためにSortしておく。
     std::sort(selected_landmark_id.begin(), selected_landmark_id.end());
+     //! 重複IDを削除する
+    selected_landmark_id.erase( std::unique( selected_landmark_id.begin(), selected_landmark_id.end() ), selected_landmark_id.end() );
     //! 結果の出力
+
     selected_landmark_database = selected_landmark_id;
 
     /**
@@ -192,8 +195,10 @@ Eigen::SparseMatrix<double> vislam::ba::ba_pre::generate_jacobian(
     /**
      * @brief BAに利用するLandmark idとそれが配置される順番（std::vectorでのインデックス）が必要になるので予め作成しておく
      */
+     std::cout <<"Landmark Index: " << std::endl;
      std::unordered_map<uint64_t , uint64_t> landmark_id_to_array_index_map;
      for(size_t landmark_array_index =0; landmark_array_index< selected_landmark_database.size(); landmark_array_index++){
+         std::cout << landmark_array_index << ", " << selected_landmark_database[landmark_array_index] << std::endl;
          landmark_id_to_array_index_map[selected_landmark_database[landmark_array_index]] = landmark_array_index;
      }
 
@@ -257,6 +262,8 @@ Eigen::SparseMatrix<double> vislam::ba::ba_pre::generate_jacobian(
 //            col_index = (selected_frame_database[frame_index].landmark_id.size()-1)*6+3 + 1
 //                    + 3*landmark_id_to_array_index_map[selected_frame_database[frame_index].landmark_id[inframe_landmark_index]]; // p_alpha^Wの並び順Indexを取得する
             col_index = selected_frame_database.size()*6 + 3*landmark_id_to_array_index_map[current_landmark_id]; // p_alpha^Wの並び順Indexを取得する
+
+//            col_index = selected_frame_database.size()*6 + landmark_id_to_array_index_map[current_landmark_id]; // p_alpha^Wの並び順Indexを取得する
 
 //            jacobian.insert(raw_index, col_index) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(0,0);
 //            jacobian.insert(raw_index, col_index+1) =  selected_frame_database[frame_index].der_f_der_p.at(inframe_landmark_index)(0,1);

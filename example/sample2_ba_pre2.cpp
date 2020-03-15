@@ -406,8 +406,8 @@ int main()
 
 //                    cv::imshow("H", cv_h);
 //                    cv::imshow("J", cv_j);
-//                    cv::imwrite("/home/ery/H.png", cv_h);
-//                    cv::imwrite("/home/ery/J.png", cv_j);
+                    cv::imwrite("/home/ery/H.png", cv_h);
+                    cv::imwrite("/home/ery/J.png", cv_j);
 //                    cv::waitKey(0);
 
                     /**
