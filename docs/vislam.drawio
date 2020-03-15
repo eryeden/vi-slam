@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-03-15T16:54:10.274Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="97hgAVTyt04qqKi9-k2B" version="12.8.5" type="github" pages="7">
+<mxfile host="app.diagrams.net" modified="2020-03-15T16:57:17.924Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="T_rj10ToVeFgpuHL0DmZ" version="12.8.5" type="github" pages="7">
   <diagram id="C0SdsD_nAt9h8TD434q8" name="Overview">
     <mxGraphModel dx="1382" dy="1003" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
@@ -915,7 +915,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="WbhI3AJH1KAt5A10Ys4O" name="Bundle adjustment">
-    <mxGraphModel dx="4607" dy="4512" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="2764" dy="3175" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="i7gi1kNFavTPtPF4Zb5O-0" />
         <mxCell id="i7gi1kNFavTPtPF4Zb5O-1" parent="i7gi1kNFavTPtPF4Zb5O-0" />
@@ -1188,6 +1188,14 @@
         </mxCell>
         <mxCell id="3S34tUZKMhYlLlFdAdYw-76" value="Landmark positionの更新&lt;br&gt;Outlier判定の更新" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=20;fillColor=#fff2cc;strokeColor=#d6b656;comic=0;rounded=1;glass=0;shadow=0;" vertex="1" parent="i7gi1kNFavTPtPF4Zb5O-1">
           <mxGeometry x="3400" y="1790" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="3S34tUZKMhYlLlFdAdYw-78" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#080808;fontSize=39;" edge="1" parent="i7gi1kNFavTPtPF4Zb5O-1" source="3S34tUZKMhYlLlFdAdYw-77">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1310" y="1410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="3S34tUZKMhYlLlFdAdYw-77" value="Issueです！！" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=39;" vertex="1" parent="i7gi1kNFavTPtPF4Zb5O-1">
+          <mxGeometry x="1180" y="1510" width="260" height="50" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
