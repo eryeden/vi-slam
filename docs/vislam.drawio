@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-03-15T09:09:22.495Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="3nZ8RSMO8Bx2QtPWFQCp" version="12.8.5" type="github" pages="7">
+<mxfile host="app.diagrams.net" modified="2020-03-15T11:20:37.326Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="xGRt-bKrcCROmwdaTSjt" version="12.8.5" type="github" pages="7">
   <diagram id="C0SdsD_nAt9h8TD434q8" name="Overview">
     <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
@@ -915,7 +915,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="WbhI3AJH1KAt5A10Ys4O" name="Bundle adjustment">
-    <mxGraphModel dx="2265" dy="1615" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="1782" dy="1254" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="i7gi1kNFavTPtPF4Zb5O-0" />
         <mxCell id="i7gi1kNFavTPtPF4Zb5O-1" parent="i7gi1kNFavTPtPF4Zb5O-0" />
@@ -933,9 +933,6 @@
         </mxCell>
         <mxCell id="i7gi1kNFavTPtPF4Zb5O-16" value="\(P^T P \)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;" parent="i7gi1kNFavTPtPF4Zb5O-1" vertex="1">
           <mxGeometry x="600" y="585" width="70" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="i7gi1kNFavTPtPF4Zb5O-19" value="二番目にでかい" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="i7gi1kNFavTPtPF4Zb5O-1" vertex="1">
-          <mxGeometry x="600" y="170" width="100" height="20" as="geometry" />
         </mxCell>
         <mxCell id="QPiljp-ULBh1MrAadN00-0" value="この構造を前提としてSchur complementを利用したGauss-newton法を考えてみる" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="i7gi1kNFavTPtPF4Zb5O-1">
           <mxGeometry x="40" y="660" width="460" height="20" as="geometry" />
