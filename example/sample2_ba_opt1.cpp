@@ -2,6 +2,21 @@
 // Created by ery on 2020/03/15.
 //
 
+/**
+ * @file sample2_ba_otp1.cpp
+ * @brief BAの初期化までの実装する
+ * @details
+ * ## 新規実装内容
+ * - BA最適化計算部分。
+ *
+ * ## 修正内容
+ * - ヘシアン生成部分を、一回作った構造をできるだけ活用して最適化の回数を回せるように修正。
+ *
+ * ## BA最適化込での処理の流れについて
+ *
+ *
+ */
+
 #include <iostream>
 #include <algorithm>
 
@@ -10,6 +25,9 @@
 #include <opencv2/viz.hpp>
 
 #include <Eigen/Core>
+#include <Eigen/SparseCholesky>
+#include <Eigen/SparseQR>
+
 #include <opencv2/core/eigen.hpp>
 
 #include "frame.hpp"
@@ -346,8 +364,8 @@ int main()
                      */
                     std::unordered_map<uint64_t , vislam::data::frame> ba_database_frame;
                     ba_database_frame[1] = database_frame[1];
-                    ba_database_frame[i-2] = database_frame[i-2];
-                    ba_database_frame[i-1] = database_frame[i-1];
+//                    ba_database_frame[i-2] = database_frame[i-2];
+//                    ba_database_frame[i-1] = database_frame[i-1];
                     ba_database_frame[i] = database_frame[i];
                     std::vector<vislam::ba::ba_observation> selected_observation_database;
                     std::vector<uint64_t> selected_landmark_id;
@@ -378,6 +396,20 @@ int main()
 
                     //! gradientを計算する
                     Eigen::VectorXd g = vislam::ba::ba_pre::generate_gradient(selected_observation_database, j);
+                    Eigen::VectorXd delta;
+
+                    Eigen::SimplicialLLT<Eigen::SparseMatrix<double>> solver;
+                    solver.compute(h).solve(-g);
+
+                    if(solver.info()!=Eigen::Success){
+                        std::cout << "Decomposition failed" << std::endl;
+                    } else{
+                        delta = solver.solve(-g);
+                        if(solver.info()!=Eigen::Success){
+                            std::cout << "Solver failed" << std::endl;
+                        }
+                    }
+
 
                     //! 表示する
                     cv::Mat cv_h, cv_j;
