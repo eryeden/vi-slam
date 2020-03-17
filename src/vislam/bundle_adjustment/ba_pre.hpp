@@ -55,6 +55,23 @@ namespace vislam::ba {
         ba_pre();
 
         /**
+         * @brief BAを実施、最適化済みのFrame Pose, Landmark Positionを出力する
+         * @details
+         * 対象Frameは、入力されたframe_database全て。
+         * 対象Landmarkは、入力Frameで共通して観測されており、かつPositionの初期化に成功、Outlierではないもの。
+         * @param input_frame_database
+         * @param input_landmark_database
+         * @param output_frame_database
+         * @param output_landmark_database
+         */
+        static void do_the_ba(
+                const std::unordered_map<uint64_t, data::frame> &input_frame_database,
+                const std::unordered_map<uint64_t, data::landmark> &input_landmark_database,
+                std::unordered_map<uint64_t, data::frame> &output_frame_database,
+                std::unordered_map<uint64_t, data::landmark> &output_landmark_database);
+
+
+        /**
          * @brief BAで利用するFrameとLandmarkを、Databaseから選ぶ
          * @details
          * 抽出はDatabaseのIDベースで行って、データの内容にアクセスしたい場合はDatabaseにIDアクセスを行う。

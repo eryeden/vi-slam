@@ -370,63 +370,16 @@ int main()
                     std::vector<vislam::ba::ba_observation> selected_observation_database;
                     std::vector<uint64_t> selected_landmark_id;
 
-                    //! BA対象のLandmarkを選択、BA情報をまとめるba_observationを生成する
-                    vislam::ba::ba_pre::select_frames_and_landmarks(
+                    //! Do the BA
+                    std::unordered_map<uint64_t , vislam::data::frame> opt_database_frame;
+                    std::unordered_map<uint64_t , vislam::data::landmark> opt_database_landmark;
+                    vislam::ba::ba_pre::do_the_ba(
                             ba_database_frame,
 //                            database_frame,
                             database_landmark,
-                            10,
-                            i,
-                            selected_observation_database,
-                            selected_landmark_id);
+                            opt_database_frame,
+                            opt_database_landmark);
 
-                    //! 各Frameに観測されいているLandmarkの偏微分計算を実施、変数に偏微分結果を満たす
-                    vislam::ba::ba_pre::fill_derivatives(
-                            database_frame,
-                            database_landmark,
-                            selected_observation_database);
-
-                    //! Jacobianを計算する。満たした偏微分結果をSparseMatrixに代入する
-                    Eigen::SparseMatrix<double> j = vislam::ba::ba_pre::generate_jacobian(
-                            selected_observation_database,
-                            selected_landmark_id);
-
-                    //! ヘシアンに近似する
-                    Eigen::SparseMatrix<double> h = j.transpose() * j;
-
-                    //! gradientを計算する
-                    Eigen::VectorXd g = vislam::ba::ba_pre::generate_gradient(selected_observation_database, j);
-                    Eigen::VectorXd delta;
-
-                    Eigen::SimplicialLLT<Eigen::SparseMatrix<double>> solver;
-                    solver.compute(h).solve(-g);
-
-                    if(solver.info()!=Eigen::Success){
-                        std::cout << "Decomposition failed" << std::endl;
-                    } else{
-                        delta = solver.solve(-g);
-                        if(solver.info()!=Eigen::Success){
-                            std::cout << "Solver failed" << std::endl;
-                        }
-                    }
-
-
-                    //! 表示する
-                    cv::Mat cv_h, cv_j;
-                    Eigen::MatrixXd dense_h(h), dense_j(j);
-                    cv::eigen2cv(dense_h, cv_h);
-                    cv::eigen2cv(dense_j, cv_j);
-                    cv::threshold(cv_h, cv_h, 0, 255, CV_THRESH_BINARY);
-                    cv::threshold(cv_j, cv_j, 0, 255, CV_THRESH_BINARY);
-//                    cv::resize(cv_h, cv_h, cv::Size(), 0.4, 0.4, CV_INTER_NN);
-//                    cv::resize(cv_j, cv_j, cv::Size(), 0.4, 0.4, CV_INTER_NN);
-
-
-//                    cv::imshow("H", cv_h);
-//                    cv::imshow("J", cv_j);
-                    cv::imwrite("/home/ery/H.png", cv_h);
-                    cv::imwrite("/home/ery/J.png", cv_j);
-//                    cv::waitKey(0);
 
                     /**
                      * @brif 描画関係処理
