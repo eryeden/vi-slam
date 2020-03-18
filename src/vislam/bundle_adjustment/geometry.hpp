@@ -24,6 +24,22 @@ namespace vislam::geometry {
         utility();
 
         /**
+         * @brief 再投影位置を計算する
+         * @param landmark_position_in_device
+         * @param landmark_position_in_world
+         * @param camera_attitude_in_world
+         * @param camera_position_in_world
+         * @param camera_intrinsic_parameter
+         * @return
+         */
+        static Vec2_t get_reprojected_point(
+            const Vec3_t &landmark_position_in_world,
+            const Mat33_t &camera_attitude_in_world,
+            const Vec3_t &camera_position_in_world,
+            const Mat33_t &camera_intrinsic_parameter
+            );
+
+        /**
          * @brief 再投影誤差を計算する。カメラモデルはピンホールのみサポート。
          * @param landmark_position_in_device
          * @param landmark_position_in_world
@@ -39,6 +55,8 @@ namespace vislam::geometry {
                 const Vec3_t &camera_position_in_world,
                 const Mat33_t &camera_intrinsic_parameter
                 );
+
+
 
         /**
          * @brief 再投影誤差のFrame角速度ベクトルでの全微分を計算

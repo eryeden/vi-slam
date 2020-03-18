@@ -146,12 +146,17 @@ void vislam::ba::ba_pre::select_frames_and_landmarks(
 void vislam::ba::ba_pre::fill_derivatives(const std::unordered_map<uint64_t, data::frame> &input_frame_database,
                                           const std::unordered_map<uint64_t, data::landmark> &input_landmark_database,
                                           std::vector<ba_observation> &selected_frame_database) {
-
+//    std::cout << "#######################" << std::endl;
     for (auto &ba_obs : selected_frame_database) {
         uint64_t frame_id = ba_obs.frame_id;
         Vec3_t frame_position = input_frame_database.at(frame_id).cameraPosition;
         Mat33_t frame_attitude = input_frame_database.at(frame_id).cameraAttitude.normalized().toRotationMatrix();
         Mat33_t camera_intrinsic = input_frame_database.at(frame_id).cameraParameter.get_intrinsic_matrix();
+
+//        std::cout << "Frame ID: " << frame_id << std::endl;
+//        std::cout << "Frame Position: " << frame_position << std::endl;
+//        std::cout << "Frame Attitude: " << frame_attitude << std::endl;
+
 
         for (const auto landmark_id : ba_obs.landmark_id) {
             Vec2_t landmark_position_in_device = input_frame_database.at(frame_id).observingFeaturePointInDevice.at(
@@ -377,12 +382,26 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
     /**
      * @brief Do the BA. ひとまず、１００回くらい計算してみる
      */
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 4; i++) {
         //! 各Frameに観測されいているLandmarkの偏微分計算を実施、変数に偏微分結果を満たす
         vislam::ba::ba_pre::fill_derivatives(
                 opt_frame_database,
                 opt_landmark_database,
                 observation_database);
+
+        //! 平均の再投影誤差を計算する
+        double mean_reprojection_error = 0;
+        double number_of_obervation = 0;
+        for(const auto &observation : observation_database){
+            for(const auto &[id, f]:observation.reprojection_error){
+                mean_reprojection_error += f.norm();
+//                mean_reprojection_error += f[1]*f[1];
+                number_of_obervation += 1;
+//                std::cout << "Idx : " << number_of_obervation << ", " << f.norm() << std::endl;
+            }
+        }
+        mean_reprojection_error = mean_reprojection_error / number_of_obervation;
+        std::cout << "Idx : " << i << ", " << mean_reprojection_error << std::endl;
 
         //! Jacobianを計算する。満たした偏微分結果をSparseMatrixに代入する
         Eigen::SparseMatrix<double> j = vislam::ba::ba_pre::generate_jacobian(
@@ -447,6 +466,9 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
 
         Eigen::VectorXd delta_c, delta_p;
         //! S delta_c = -g_c + hcp inv_hpp g_pを計算する
+//        Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
+//        solver.compute(S);
+//        delta_c = solver.solve(z);
         delta_c = dense_s.inverse() * z;
         //! delta_p = inv_hpp * (-gp - hcp^T delta_c)を計算する
         delta_p = inverse_hpp * (-gp - hcp.transpose() * delta_c);
@@ -468,13 +490,20 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
 
             //! 補正の実行
             //! 並行移動
-            frame.cameraPosition += delta_translation;
+            if(in_ba_frame_index==1){
+                frame.cameraPosition[1] += delta_translation[1];
+            } else{
+                frame.cameraPosition += delta_translation;
+            }
+//            frame.cameraPosition += delta_translation;
             //! 回転の補正
             vislam::Mat33_t frame_rotation = frame.cameraAttitude.toRotationMatrix();
             vislam::Mat33_t delta_rotation = Eigen::AngleAxisd(delta_omega.norm(),
                                                                delta_omega.normalized()).toRotationMatrix();
             frame.cameraAttitude = vislam::Quat_t(delta_rotation * frame_rotation);
         }
+
+
 
 
         //! Landmark位置の補正

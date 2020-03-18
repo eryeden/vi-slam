@@ -8,16 +8,34 @@ using namespace vislam;
 
 geometry::utility::utility() = default;
 
+
+ Vec2_t geometry::utility::get_reprojected_point(
+    const Vec3_t &landmark_position_in_world,
+    const Mat33_t &camera_attitude_in_world,
+    const Vec3_t &camera_position_in_world,
+    const Mat33_t &camera_intrinsic_parameter
+){
+   Mat34_t translate_matrix_I_t;
+   translate_matrix_I_t << Mat33_t::Identity(), -camera_position_in_world; //! (I | t)を生成している
+   Vec4_t extended_landmark_position_in_world;
+   extended_landmark_position_in_world << landmark_position_in_world, 1.0;
+   Mat34_t projection_matrix = camera_intrinsic_parameter * camera_attitude_in_world.transpose() * translate_matrix_I_t;
+   Vec3_t reprojected_vec = projection_matrix * extended_landmark_position_in_world;
+   Vec2_t reprojected_position(reprojected_vec[0] / reprojected_vec[2], reprojected_vec[1] / reprojected_vec[2]);
+
+   return reprojected_position;
+ }
+
 Vec2_t geometry::utility::get_reprojection_error(const vislam::Vec2_t &landmark_position_in_device,
                                                  const Vec3_t &landmark_position_in_world,
                                                  const Mat33_t &camera_attitude_in_world,
                                                  const Vec3_t &camera_position_in_world,
                                                  const Mat33_t &camera_intrinsic_parameter) {
     Mat34_t translate_matrix_I_t;
-    translate_matrix_I_t << Mat33_t::Identity(), camera_position_in_world; //! (I | t)を生成している
+    translate_matrix_I_t << Mat33_t::Identity(), -camera_position_in_world; //! (I | t)を生成している
     Vec4_t extended_landmark_position_in_world;
     extended_landmark_position_in_world << landmark_position_in_world, 1.0;
-    Mat34_t projection_matrix = camera_intrinsic_parameter * camera_attitude_in_world * translate_matrix_I_t;
+    Mat34_t projection_matrix = camera_intrinsic_parameter * camera_attitude_in_world.transpose() * translate_matrix_I_t;
     Vec3_t reprojected_vec = projection_matrix * extended_landmark_position_in_world;
     Vec2_t reprojected_position(reprojected_vec[0] / reprojected_vec[2], reprojected_vec[1] / reprojected_vec[2]);
     Vec2_t reprojection_error = reprojected_position - landmark_position_in_device;
@@ -34,10 +52,10 @@ MatRC_t<2, 3> geometry::utility::get_der_F_der_omega(const vislam::Vec3_t &landm
      * @brief 再投影位置を計算する。(p/r, q/r)
      */
     Mat34_t translate_matrix_I_t;
-    translate_matrix_I_t << Mat33_t::Identity(), camera_position_in_world; //! (I | t)を生成している
+    translate_matrix_I_t << Mat33_t::Identity(), -camera_position_in_world; //! (I | t)を生成している
     Vec4_t extended_landmark_position_in_world;
     extended_landmark_position_in_world << landmark_position_in_world, 1.0;
-    Mat34_t projection_matrix = camera_intrinsic_parameter * camera_attitude_in_world * translate_matrix_I_t;
+    Mat34_t projection_matrix = camera_intrinsic_parameter * camera_attitude_in_world.transpose() * translate_matrix_I_t;
     Vec3_t reprojected_vec = projection_matrix * extended_landmark_position_in_world;
     double p = reprojected_vec[0], q = reprojected_vec[1], r = reprojected_vec[2]; //! 式の表記に合わせる。
 
@@ -85,10 +103,10 @@ MatRC_t<2, 3> geometry::utility::get_der_F_der_t(const vislam::Vec3_t &landmark_
      * @brief 再投影位置を計算する。(p/r, q/r)
      */
     Mat34_t translate_matrix_I_t;
-    translate_matrix_I_t << Mat33_t::Identity(), camera_position_in_world; //! (I | t)を生成している
+    translate_matrix_I_t << Mat33_t::Identity(), -camera_position_in_world; //! (I | t)を生成している
     Vec4_t extended_landmark_position_in_world;
     extended_landmark_position_in_world << landmark_position_in_world, 1.0;
-    Mat34_t projection_matrix = camera_intrinsic_parameter * camera_attitude_in_world * translate_matrix_I_t;
+    Mat34_t projection_matrix = camera_intrinsic_parameter * camera_attitude_in_world.transpose() * translate_matrix_I_t;
     Vec3_t reprojected_vec = projection_matrix * extended_landmark_position_in_world;
     double p = reprojected_vec[0], q = reprojected_vec[1], r = reprojected_vec[2]; //! 式の表記に合わせる。
 
@@ -136,10 +154,10 @@ MatRC_t<2, 3> geometry::utility::get_der_F_der_p(const vislam::Vec3_t &landmark_
      * @brief 再投影位置を計算する。(p/r, q/r)
      */
     Mat34_t translate_matrix_I_t;
-    translate_matrix_I_t << Mat33_t::Identity(), camera_position_in_world; //! (I | t)を生成している
+    translate_matrix_I_t << Mat33_t::Identity(), -camera_position_in_world; //! (I | t)を生成している
     Vec4_t extended_landmark_position_in_world;
     extended_landmark_position_in_world << landmark_position_in_world, 1.0;
-    Mat34_t projection_matrix = camera_intrinsic_parameter * camera_attitude_in_world * translate_matrix_I_t;
+    Mat34_t projection_matrix = camera_intrinsic_parameter * camera_attitude_in_world.transpose() * translate_matrix_I_t;
     Vec3_t reprojected_vec = projection_matrix * extended_landmark_position_in_world;
     double p = reprojected_vec[0], q = reprojected_vec[1], r = reprojected_vec[2]; //! 式の表記に合わせる。
 

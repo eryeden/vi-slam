@@ -41,45 +41,33 @@
 
 #include "log_util.h"
 
-cv::Scalar HSVtoRGB(double H, double S, double V)
-{
+cv::Scalar HSVtoRGB(double H, double S, double V) {
     double C = S * V;
     double X = C * (1 - abs(fmod(H / 60.0, 2) - 1));
     double m = V - C;
     double Rs, Gs, Bs;
 
-    if (H >= 0 && H < 60)
-    {
+    if (H >= 0 && H < 60) {
         Rs = C;
         Gs = X;
         Bs = 0;
-    }
-    else if (H >= 60 && H < 120)
-    {
+    } else if (H >= 60 && H < 120) {
         Rs = X;
         Gs = C;
         Bs = 0;
-    }
-    else if (H >= 120 && H < 180)
-    {
+    } else if (H >= 120 && H < 180) {
         Rs = 0;
         Gs = C;
         Bs = X;
-    }
-    else if (H >= 180 && H < 240)
-    {
+    } else if (H >= 180 && H < 240) {
         Rs = 0;
         Gs = X;
         Bs = C;
-    }
-    else if (H >= 240 && H < 300)
-    {
+    } else if (H >= 240 && H < 300) {
         Rs = X;
         Gs = 0;
         Bs = C;
-    }
-    else
-    {
+    } else {
         Rs = C;
         Gs = 0;
         Bs = X;
@@ -88,23 +76,17 @@ cv::Scalar HSVtoRGB(double H, double S, double V)
     return cv::Scalar((Rs + m) * 255, (Gs + m) * 255, (Bs + m) * 255);
 }
 
-
-
-
-
 /**
  * @brief BAの初期化までの実装する
  * @details
  * ## 実装内容
  * - System initialization時のBAまで実装する
  */
-int main()
-{
+int main() {
 
     uint32_t num_colors = 1000;
     std::vector<cv::Scalar> colors(num_colors);
-    for (size_t i = 0; i < colors.size(); i++)
-    {
+    for (size_t i = 0; i < colors.size(); i++) {
         double h, s, v;
         h = static_cast<double>(i) / static_cast<double>(num_colors) * 360.0;
         colors[i] = HSVtoRGB(h, 1, 1);
@@ -112,9 +94,9 @@ int main()
 
     dense_feature::dense_feature_extructor dfe(0.1, 0.1);
 
-//    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
+    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V2_01_easy/mav0/cam0", 0.001);
-    LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
+//    LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/MH_01_easy/mav0/cam0", 0.001);
 //    LogPlayer_euroc_mav lp_mav("/home/ery/assets/V1_01_easy/mav0/cam0", 0.001);
 
@@ -133,7 +115,7 @@ int main()
 
     cv::Mat distortion_coeffs(5, 1, CV_32FC1);
     distortion_coeffs = (cv::Mat_<float>(5, 1) << -0.28340811, 0.07395907, 0.00019359, 1.76187114e-05);
-    std::vector<double> distortion_coeffs_array = { -0.28340811, 0.07395907, 0.00019359, 1.76187114e-05};
+    std::vector<double> distortion_coeffs_array = {-0.28340811, 0.07395907, 0.00019359, 1.76187114e-05};
 
     cv::Vec3f cam_pos(3.0f, 3.0f, 3.0f), cam_focal_point(3.0f, 3.0f, 2.0f), cam_y_dir(-1.0f, 0.0f, 0.0f);
 
@@ -156,7 +138,8 @@ int main()
                                      dummy_image.size().width, dummy_image.size().height,
                                      30,
                                      458.654, 457.296, 367.215, 248.375, //! eigenのmatからだとうまいこといかなかった
-                                     distortion_coeffs_array[0], distortion_coeffs_array[1], distortion_coeffs_array[2], distortion_coeffs_array[3], distortion_coeffs_array[4]);
+                                     distortion_coeffs_array[0], distortion_coeffs_array[1], distortion_coeffs_array[2],
+                                     distortion_coeffs_array[3], distortion_coeffs_array[4]);
 
     /**
      * @brief 初期化関係
@@ -191,7 +174,7 @@ int main()
     /**
      * @brief 観測したフレームの保存場所
      */
-    std::unordered_map<uint64_t , vislam::data::frame> database_frame;
+    std::unordered_map<uint64_t, vislam::data::frame> database_frame;
 
     /**
      * @brief 観測した特徴点（Feature point, landmark）の保存場所
@@ -202,7 +185,6 @@ int main()
      * @brief System initに成功したFrameID
      */
     uint64_t system_init_frame_id = 1;
-
 
 #ifdef REC
     cv::Mat tmp;
@@ -248,31 +230,33 @@ int main()
         /**
          * @brief 今回のフレームで抽出・トラックできた特徴点を挿入する。
          */
-        auto feature_points_current = dfe.features[dfe.features.size()-1];
-        for(size_t index_current_feature = 0; index_current_feature < feature_points_current.featureIDs.size(); index_current_feature++){
+        auto feature_points_current = dfe.features[dfe.features.size() - 1];
+        for (size_t index_current_feature = 0;
+             index_current_feature < feature_points_current.featureIDs.size(); index_current_feature++) {
 
             /**
              * @brief Frame中に検出した特徴点を記録する
              */
             uint64_t current_feature_id = feature_points_current.featureIDs[index_current_feature];
-            Eigen::Vector2i  current_feature_position_in_device = feature_points_current.features[index_current_feature];
-            frame_current.observingFeaturePointInDevice[current_feature_id] ={current_feature_position_in_device[0], current_feature_position_in_device[1]};
+            Eigen::Vector2i current_feature_position_in_device = feature_points_current.features[index_current_feature];
+            frame_current.observingFeaturePointInDevice[current_feature_id] = {current_feature_position_in_device[0],
+                                                                               current_feature_position_in_device[1]};
             frame_current.observingFeatureId.emplace(current_feature_id);
 
             /**
              * @brief 特徴点データベースに登録する
              */
-            if(database_landmark.count(current_feature_id) !=0){ // databaseに登録済みの場合
+            if (database_landmark.count(current_feature_id) != 0) { // databaseに登録済みの場合
                 database_landmark[current_feature_id].isTracking = true;
                 /**
                  * @brief std::setへの要素追加が発生している。ここでの処理コストが大きい場合はstd::vectorへの置き換えが必要かもしれない。
                  * 結局、カメラIDは増加しかしないため、std::vectorで追加しつつ、std::set_intersectionを行っても同じなのかもしれない。
                  */
                 database_landmark[current_feature_id].observedFrameId.emplace(i);
-            }else{ // databaseに登録なしの場合
+            } else { // databaseに登録なしの場合
                 database_landmark[current_feature_id] = vislam::data::landmark(current_feature_id,
                                                                                {i},
-                                                                               {0,0,0},
+                                                                               {0, 0, 0},
                                                                                false,
                                                                                true,
                                                                                false
@@ -295,27 +279,28 @@ int main()
          * @brief 特徴点位置の初期化を行う
          *
          */
-        if(!is_initialized){
-            if(database_frame.size()> 2){
+        if (!is_initialized) {
+            if (database_frame.size() > 2) {
 
                 /**
                  * @brief 特徴点位置の初期化を試みる
                  */
-                const auto & reference_frame = database_frame[1]; // index:0のframeは何も入っていなかったの注意
-                const auto & current_frame = database_frame[i];
+                const auto &reference_frame = database_frame[1]; // index:0のframeは何も入っていなかったの注意
+                const auto &current_frame = database_frame[i];
                 std::vector<vislam::data::landmark> localized_landmarks;
 
                 vislam::Vec3_t initialized_position_current_frame;
                 vislam::Quat_t initialized_attitude_current_frame;
 
 //                double match_rate = initializer::utils::initialize_feature_points(reference_frame, current_frame, localized_landmarks);
-                double match_rate = initializer::utils::initialize_feature_points(reference_frame, current_frame, localized_landmarks,
+                double match_rate = initializer::utils::initialize_feature_points(reference_frame, current_frame,
+                                                                                  localized_landmarks,
                                                                                   initialized_position_current_frame,
                                                                                   initialized_attitude_current_frame);
 
                 std::cout << "Match rate: " << match_rate << std::endl;
 
-                if(match_rate > match_rate_threshold){
+                if (match_rate > match_rate_threshold) {
 
                     /**
                      * @brief 特徴点位置の初期化を完了して特徴点データベースの更新を行う
@@ -330,8 +315,8 @@ int main()
                      * ここではLandmark databaseの位置情報、初期化情報などを更新している。
                      * なので、次からはLandmarkDatabaseを参照することで初期化結果を利用できる
                      */
-                    for(const auto & lm :  localized_landmarks){
-                        auto & related_landmark = database_landmark[lm.id];
+                    for (const auto &lm :  localized_landmarks) {
+                        auto &related_landmark = database_landmark[lm.id];
                         related_landmark.isTracking = lm.isTracking;
                         related_landmark.isOutlier = lm.isOutlier;
                         related_landmark.isInitialized = lm.isInitialized;
@@ -342,15 +327,19 @@ int main()
                     /**
                      * @brief 今回の初期化フレームの位置を設定する
                      */
-                    auto & ref_current_frame = database_frame[i];
+                    auto &ref_ref_frame = database_frame[1];
+                    ref_ref_frame.cameraPosition = vislam::Vec3_t(0,0,0);
+                    ref_ref_frame.cameraAttitude = vislam::Quat_t(vislam::Mat33_t::Identity());
+                    auto &ref_current_frame = database_frame[i];
                     ref_current_frame.cameraPosition = initialized_position_current_frame;
                     ref_current_frame.cameraAttitude = initialized_attitude_current_frame;
 
                     /**
                      * いままでのFramePoseを初期化する。初期化できたLandmark位置からPNPでPoseを求める
                      */
-                    for(size_t initializing_frame_index = 2; initializing_frame_index < i; initializing_frame_index++){
-                        auto& tmp_frame = database_frame[initializing_frame_index];
+                    for (size_t initializing_frame_index = 2;
+                         initializing_frame_index < i; initializing_frame_index++) {
+                        auto &tmp_frame = database_frame[initializing_frame_index];
                         vislam::Vec3_t tmp_translation;
                         vislam::Quat_t tmp_rotation;
                         initializer::utils::estimate_frame_pose_pnp(tmp_frame, database_landmark,
@@ -362,10 +351,10 @@ int main()
                     /**
                      * @brief ここまでのFrameと初期化できたLandmarkでBAを実施する
                      */
-                    std::unordered_map<uint64_t , vislam::data::frame> ba_database_frame;
+                    std::unordered_map<uint64_t, vislam::data::frame> ba_database_frame;
                     ba_database_frame[1] = database_frame[1];
-//                    ba_database_frame[i-2] = database_frame[i-2];
-//                    ba_database_frame[i-1] = database_frame[i-1];
+                    ba_database_frame[i-2] = database_frame[i-2];
+                    ba_database_frame[i-1] = database_frame[i-1];
                     ba_database_frame[i] = database_frame[i];
                     std::vector<vislam::ba::ba_observation> selected_observation_database;
                     std::vector<uint64_t> selected_landmark_id;
@@ -374,8 +363,8 @@ int main()
                     std::unordered_map<uint64_t, vislam::data::frame> opt_database_frame;
                     std::unordered_map<uint64_t, vislam::data::landmark> opt_database_landmark;
                     vislam::ba::ba_pre::do_the_ba(
-//                            ba_database_frame,
-                            database_frame,
+                            ba_database_frame,
+//                            database_frame,
                             database_landmark,
                             opt_database_frame,
                             opt_database_landmark);
@@ -395,8 +384,7 @@ int main()
                     // 特徴点位置を描画
                     std::vector<cv::Point3d> pointCloud;
                     for (auto &localized_landmark : localized_landmarks) {
-                        if (!localized_landmark.isOutlier)
-                        {
+                        if (!localized_landmark.isOutlier) {
                             pointCloud.emplace_back(
                                     cv::Point3d(localized_landmark.positionInWorld[0],
                                                 localized_landmark.positionInWorld[1],
@@ -413,15 +401,21 @@ int main()
                     // 初期化カメラ位置の描画
                     cv::Mat current_camera_attitude;
                     cv::eigen2cv(ref_current_frame.cameraAttitude.toRotationMatrix(), current_camera_attitude);
-                    cv::Affine3d current_cam_pose(current_camera_attitude, cv::Vec3f(ref_current_frame.cameraPosition[0], ref_current_frame.cameraPosition[1], ref_current_frame.cameraPosition[2]));
+                    cv::Affine3d current_cam_pose(current_camera_attitude,
+                                                  cv::Vec3f(ref_current_frame.cameraPosition[0],
+                                                            ref_current_frame.cameraPosition[1],
+                                                            ref_current_frame.cameraPosition[2]));
                     myWindow.showWidget("2", wcamera_cand1, current_cam_pose);
                     // 初期化後、前フレームカメラ位置の描画
-                    for(size_t initializing_frame_index = 2; initializing_frame_index < system_init_frame_id; initializing_frame_index++){
-                        const auto & tmp_frame = database_frame[initializing_frame_index];
+                    for (size_t initializing_frame_index = 2;
+                         initializing_frame_index < system_init_frame_id; initializing_frame_index++) {
+                        const auto &tmp_frame = database_frame[initializing_frame_index];
                         cv::viz::WCameraPosition tmp_wcamera(K, 1.0, cv::viz::Color::magenta());
                         cv::Mat tmp_camera_attitude;
                         cv::eigen2cv(tmp_frame.cameraAttitude.toRotationMatrix(), tmp_camera_attitude);
-                        cv::Affine3d tmp_cam_pose(tmp_camera_attitude, cv::Vec3f(tmp_frame.cameraPosition[0], tmp_frame.cameraPosition[1], tmp_frame.cameraPosition[2]));
+                        cv::Affine3d tmp_cam_pose(tmp_camera_attitude,
+                                                  cv::Vec3f(tmp_frame.cameraPosition[0], tmp_frame.cameraPosition[1],
+                                                            tmp_frame.cameraPosition[2]));
                         myWindow.showWidget(std::to_string(initializing_frame_index), tmp_wcamera, tmp_cam_pose);
                     }
                 }
@@ -438,14 +432,15 @@ int main()
          * 4. BA実施
          * 5. アウトライアの除去を実施
          */
-        if(is_initialized){
+        if (is_initialized) {
 
             /**
              * @brief 1. current frameの位置、姿勢を初期化
              */
-            vislam::Vec3_t  position_current_frame;
+            vislam::Vec3_t position_current_frame;
             vislam::Quat_t attitude_current_frame;
-            initializer::utils::estimate_frame_pose_pnp(frame_current, database_landmark, position_current_frame, attitude_current_frame);
+            initializer::utils::estimate_frame_pose_pnp(frame_current, database_landmark, position_current_frame,
+                                                        attitude_current_frame);
             //! p3pで計算した現在フレームの位置をDataBaseに登録する
             database_frame[i].cameraPosition = position_current_frame;
             database_frame[i].cameraAttitude = attitude_current_frame;
@@ -453,7 +448,9 @@ int main()
             //! 推定カメラ位置の描画
             cv::Mat current_camera_attitude;
             cv::eigen2cv(database_frame[i].cameraAttitude.toRotationMatrix(), current_camera_attitude);
-            cv::Affine3d current_cam_pose(current_camera_attitude, cv::Vec3f(database_frame[i].cameraPosition[0], database_frame[i].cameraPosition[1], database_frame[i].cameraPosition[2]));
+            cv::Affine3d current_cam_pose(current_camera_attitude, cv::Vec3f(database_frame[i].cameraPosition[0],
+                                                                             database_frame[i].cameraPosition[1],
+                                                                             database_frame[i].cameraPosition[2]));
             myWindow.showWidget("estacam", wcamera_current_pnp, current_cam_pose);
 
             /**
@@ -465,16 +462,16 @@ int main()
              * - 観測されているフレームの最大視差が、ある値以上になっている
              * - 今回のフレームで観測されている
              */
-            auto initialized_landmark = initializer::utils::extract_and_triangulate_initializable_landmark(10.0 * M_PI/180.0, i, database_frame, database_landmark);
-            for(const auto & [landmark_id, landmark_data] : initialized_landmark){
+            auto initialized_landmark = initializer::utils::extract_and_triangulate_initializable_landmark(
+                    10.0 * M_PI / 180.0, i, database_frame, database_landmark);
+            for (const auto &[landmark_id, landmark_data] : initialized_landmark) {
                 database_landmark[landmark_id] = landmark_data; //! データベースに初期化済みLandmarkを登録
             }
 
             // 特徴点位置を描画
             std::vector<cv::Point3d> pointCloud;
-            for (auto & [landmark_id, landmark_data] : database_landmark)
-            {
-                if(landmark_data.isInitialized && (!landmark_data.isOutlier)){
+            for (auto &[landmark_id, landmark_data] : database_landmark) {
+                if (landmark_data.isInitialized && (!landmark_data.isOutlier)) {
                     pointCloud.emplace_back(
                             cv::Point3d(landmark_data.positionInWorld[0],
                                         landmark_data.positionInWorld[1],
@@ -487,8 +484,6 @@ int main()
             myWindow.showWidget("CLOUD", cloud);
 
         }
-
-
 
 #ifdef SHOW_RESULTS
         cv::imshow("feature", img_color);
