@@ -112,9 +112,9 @@ int main()
 
     dense_feature::dense_feature_extructor dfe(0.1, 0.1);
 
-    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
+//    LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/home/ery/Downloads/V2_01_easy/mav0/cam0", 0.001);
-//     LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
+    LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0", 0.001);
     // LogPlayer_euroc_mav lp_mav("/e/subspace/tmp/tmp/MH_01_easy/mav0/cam0", 0.001);
 //    LogPlayer_euroc_mav lp_mav("/home/ery/assets/V1_01_easy/mav0/cam0", 0.001);
 
@@ -371,14 +371,21 @@ int main()
                     std::vector<uint64_t> selected_landmark_id;
 
                     //! Do the BA
-                    std::unordered_map<uint64_t , vislam::data::frame> opt_database_frame;
-                    std::unordered_map<uint64_t , vislam::data::landmark> opt_database_landmark;
+                    std::unordered_map<uint64_t, vislam::data::frame> opt_database_frame;
+                    std::unordered_map<uint64_t, vislam::data::landmark> opt_database_landmark;
                     vislam::ba::ba_pre::do_the_ba(
-                            ba_database_frame,
-//                            database_frame,
+//                            ba_database_frame,
+                            database_frame,
                             database_landmark,
                             opt_database_frame,
                             opt_database_landmark);
+
+                    for (const auto&[id, f]:opt_database_frame) {
+                        database_frame[id] = f;
+                    }
+                    for (const auto&[id, l]:opt_database_landmark) {
+                        database_landmark[id] = l;
+                    }
 
 
                     /**
@@ -387,8 +394,7 @@ int main()
 
                     // 特徴点位置を描画
                     std::vector<cv::Point3d> pointCloud;
-                    for (auto & localized_landmark : localized_landmarks)
-                    {
+                    for (auto &localized_landmark : localized_landmarks) {
                         if (!localized_landmark.isOutlier)
                         {
                             pointCloud.emplace_back(

@@ -456,7 +456,9 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
          * @brief 変数の補正を行う
          */
         //! Frame関係の位置、姿勢の補正
-        for (size_t in_ba_frame_index = 0; in_ba_frame_index < observation_database.size(); in_ba_frame_index++) {
+        //! 最初のFrameの位置を基準にするため、その位置は動かさない。
+        //! なので in_ba_frame_indexは1から始まる
+        for (size_t in_ba_frame_index = 1; in_ba_frame_index < observation_database.size(); in_ba_frame_index++) {
             uint64_t frame_id = observation_database[in_ba_frame_index].frame_id;
             auto &frame = opt_frame_database[frame_id];
 
@@ -476,27 +478,38 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
 
 
         //! Landmark位置の補正
+        for (size_t in_ba_landmark_index = 0;
+             in_ba_landmark_index < selected_landmark_id.size(); in_ba_landmark_index++) {
+            uint64_t landmark_id = selected_landmark_id[in_ba_landmark_index];
+            auto &landmark = opt_landmark_database[landmark_id];
+
+            //! 補正量の取得
+            vislam::Vec3_t delta_landmark_translation = delta_p.segment(in_ba_landmark_index * 3, 3);
+
+            //! 補正の実行
+            landmark.positionInWorld += delta_landmark_translation;
+        }
 
 
 
 
 
 //        //! 表示する
-//        cv::Mat cv_hcc, cv_hcp, cv_hpp, cv_s;
-//        Eigen::MatrixXd dense_hcc(hcc), dense_hcp(hcp), dense_hpp(hpp);//, dense_s(S);
-//        cv::eigen2cv(dense_hcc, cv_hcc);
-//        cv::eigen2cv(dense_hcp, cv_hcp);
-//        cv::eigen2cv(dense_hpp, cv_hpp);
-//        cv::eigen2cv(dense_s, cv_s);
-//        cv::threshold(cv_hcc, cv_hcc, 0, 255, CV_THRESH_BINARY);
-//        cv::threshold(cv_hcp, cv_hcp, 0, 255, CV_THRESH_BINARY);
-//        cv::threshold(cv_hpp, cv_hpp, 0, 255, CV_THRESH_BINARY);
-//        cv::threshold(cv_s, cv_s, 0, 255, CV_THRESH_BINARY);
+        cv::Mat cv_hcc, cv_hcp, cv_hpp, cv_s;
+        Eigen::MatrixXd dense_hcc(hcc), dense_hcp(hcp), dense_hpp(hpp);//, dense_s(S);
+        cv::eigen2cv(dense_hcc, cv_hcc);
+        cv::eigen2cv(dense_hcp, cv_hcp);
+        cv::eigen2cv(dense_hpp, cv_hpp);
+        cv::eigen2cv(dense_s, cv_s);
+        cv::threshold(cv_hcc, cv_hcc, 0, 255, CV_THRESH_BINARY);
+        cv::threshold(cv_hcp, cv_hcp, 0, 255, CV_THRESH_BINARY);
+        cv::threshold(cv_hpp, cv_hpp, 0, 255, CV_THRESH_BINARY);
+        cv::threshold(cv_s, cv_s, 0, 255, CV_THRESH_BINARY);
 //
-//        cv::imshow("Hcc", cv_hcc);
-//        cv::imshow("Hcp", cv_hcp);
-//        cv::imshow("Hpp", cv_hpp);
-//        cv::imshow("S", cv_s);
+        cv::imshow("Hcc", cv_hcc);
+        cv::imshow("Hcp", cv_hcp);
+        cv::imshow("Hpp", cv_hpp);
+        cv::imshow("S", cv_s);
 //
 //
 //        cv::imwrite("/home/ery/hcc.png", cv_hcc);
@@ -504,9 +517,12 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
 //        cv::imwrite("/home/ery/hpp.png", cv_hpp);
 //        cv::imwrite("/home/ery/S.png", cv_s);
 //
-//        cv::waitKey(0);
+        cv::waitKey(0);
 
     }
+
+    output_frame_database = opt_frame_database;
+    output_landmark_database = opt_landmark_database;
 
 
 }
