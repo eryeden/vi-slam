@@ -8,6 +8,7 @@
 
 #include <Eigen/SparseCholesky>
 #include <Eigen/SparseQR>
+#include <Eigen/Geometry>
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/eigen.hpp>
@@ -454,6 +455,28 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
         /**
          * @brief 変数の補正を行う
          */
+        //! Frame関係の位置、姿勢の補正
+        for (size_t in_ba_frame_index = 0; in_ba_frame_index < observation_database.size(); in_ba_frame_index++) {
+            uint64_t frame_id = observation_database[in_ba_frame_index].frame_id;
+            auto &frame = opt_frame_database[frame_id];
+
+            //! 補正量の取得
+            vislam::Vec3_t delta_omega = delta_c.segment(in_ba_frame_index * 6, 3);
+            vislam::Vec3_t delta_translation = delta_c.segment(in_ba_frame_index * 6 + 3, 3);
+
+            //! 補正の実行
+            //! 並行移動
+            frame.cameraPosition += delta_translation;
+            //! 回転の補正
+            vislam::Mat33_t frame_rotation = frame.cameraAttitude.toRotationMatrix();
+            vislam::Mat33_t delta_rotation = Eigen::AngleAxisd(delta_omega.norm(),
+                                                               delta_omega.normalized()).toRotationMatrix();
+            frame.cameraAttitude = vislam::Quat_t(delta_rotation * frame_rotation);
+        }
+
+
+        //! Landmark位置の補正
+
 
 
 
