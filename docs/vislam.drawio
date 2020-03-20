@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-03-20T03:21:50.875Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36" etag="ttRdFKnKJ1c3t9u3YR9o" version="12.8.8" type="github" pages="7">
+<mxfile host="app.diagrams.net" modified="2020-03-20T03:32:48.190Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36" etag="0hclYefB0KaYm3b5CZJb" version="12.8.8" type="github" pages="7">
   <diagram id="C0SdsD_nAt9h8TD434q8" name="Overview">
     <mxGraphModel dx="774" dy="461" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
@@ -133,8 +133,8 @@
         <mxCell id="FfZRokaTNSsOa_7S9S_X-17" value="イマココ" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="Z6NOpVzWMivuuzvYCPRy-1" vertex="1">
           <mxGeometry x="1450" y="170" width="60" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="bDo8n21ecWqytJqypdnO-0" value="・現状&lt;br&gt;1. BAが行けそうなときもあれば、だめなときもある&lt;br&gt;&amp;nbsp; - Frame数が少ないときかつ、どのカメラ位置・姿勢も固定しない状況でうまく行く&lt;br&gt;&amp;nbsp; - 固定なしでは、5Frameくらいまでは収束する場合あり&lt;br&gt;&amp;nbsp; - 固定ありでは、2Frameでも発散する&lt;br&gt;&lt;br&gt;2. 考えられる原因&lt;br&gt;&amp;nbsp; - BAの計算に問題あり&lt;br&gt;&amp;nbsp; - 入力データのOutlierが多すぎる&lt;br&gt;&amp;nbsp; - BAがOutlierを扱えていない&lt;br&gt;&amp;nbsp; - BAの基準位置など、扱いがよくわからない&lt;br&gt;&amp;nbsp; &amp;nbsp; - cam0の位置のみ固定、cam1のX座標のみ固定でいいの？" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
-          <mxGeometry x="510" y="745" width="470" height="170" as="geometry" />
+        <mxCell id="bDo8n21ecWqytJqypdnO-0" value="・現状&lt;br&gt;1. BAが行けそうなときもあれば、だめなときもある&lt;br&gt;&amp;nbsp; - Frame数が少ないときかつ、どのカメラ位置・姿勢も固定しない状況でうまく行く&lt;br&gt;&amp;nbsp; - 固定なしでは、5Frameくらいまでは収束する場合あり&lt;br&gt;&amp;nbsp; - 固定ありでは、2Frameでも発散する&lt;br&gt;&lt;br&gt;2. 考えられる原因&lt;br&gt;&amp;nbsp; - BAの計算に問題あり&lt;br&gt;&amp;nbsp; - 入力データのOutlierが多すぎる&lt;br&gt;&amp;nbsp; - BAがOutlierを扱えていない&lt;br&gt;&amp;nbsp; - BAの基準位置など、扱いがよくわからない&lt;br&gt;&amp;nbsp; &amp;nbsp; - cam0の位置のみ固定、cam1のX座標のみ固定でいいの？&lt;br&gt;&lt;br&gt;3. アクションアイテム&lt;br&gt;&amp;nbsp; - Outlierが少ない or ばらつき度を調整できるデータセットを利用して現状のBA実装が正しいか確認する&lt;br&gt;&amp;nbsp; &amp;nbsp; - BA実装の正しさ検討&lt;br&gt;&amp;nbsp; - Ceres-solverなど利用して、現状のアルゴリズムを自分の特徴点に適用してどこまでBAできるか確認する&lt;br&gt;&amp;nbsp; &amp;nbsp; - 特徴点クオリティの検証&lt;br&gt;&amp;nbsp; - もう一回、BAの処理、特にどのカメラのどのパラメータを固定するのか？を調べてみる" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="510" y="740" width="590" height="270" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
