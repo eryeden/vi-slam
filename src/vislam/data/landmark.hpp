@@ -2,41 +2,33 @@
 
 #include "type_defines.hpp"
 
-namespace vislam::data
-{
+namespace vislam::data {
 
-class landmark
-{
+class landmark {
 
-public:
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+ public:
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-
-    landmark(uint64_t id,
+  landmark(uint64_t id,
 //             const std::unordered_set<uint64_t> & observed_frame_id,
-             const std::set<uint64_t> & observed_frame_id,
-             const Vec3_t &position_in_world, bool is_outlier, bool is_tracking, bool is_initialized);
-    explicit landmark(uint64_t id);
-    landmark();
+           const std::set<uint64_t> &observed_frame_id,
+           const Vec3_t &position_in_world, bool is_outlier, bool is_tracking, bool is_initialized);
+  explicit landmark(uint64_t id);
+  landmark();
 
-
-    uint64_t id;
+  uint64_t id;
 //        std::unordered_set<uint64_t> observedFrameId;
-    /**
-     * @brief std::unordered_setはstd::set_intersectionがうまく行かないので、std::setにしている。
-     */
-    std::set<uint64_t> observedFrameId;
-    Vec3_t positionInWorld;
+  /**
+   * @brief std::unordered_setはstd::set_intersectionがうまく行かないので、std::setにしている。
+   */
+  std::set<uint64_t> observedFrameId;
+  Vec3_t positionInWorld;
 
-    bool isInitialized;
-    bool isOutlier;
-    bool isTracking;
+  bool isInitialized;
+  bool isOutlier;
+  bool isTracking;
 
-
-
-
-private:
-
+ private:
 
 };
 

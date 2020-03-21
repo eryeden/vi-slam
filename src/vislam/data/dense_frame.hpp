@@ -6,12 +6,10 @@
 #include <random>
 #include <opencv2/opencv.hpp>
 
-namespace dense_feature
-{
-class frame
-{
+namespace dense_feature {
+class frame {
 
-public:
-private:
+ public:
+ private:
 };
 } // namespace dense_feature

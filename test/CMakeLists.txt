@@ -13,7 +13,7 @@
 # バージョン、アーキテクチャ固定になるので注意
 # だがオフラインでも利用できるので便利
 # set(INSTALL_GTEST OFF CACHE BOOL "Install google-test" FORCE)
-set (GTEST_ROOT ${CMAKE_SOURCE_DIR}/3rd/gtest)
+set(GTEST_ROOT ${CMAKE_SOURCE_DIR}/3rd/gtest)
 find_package(GTest REQUIRED)
 include(GoogleTest)
 
@@ -32,7 +32,7 @@ list(APPEND SOURCE_PATHS ${TEST_VISLAM_SOURCE_PATHS})
 # 2. add_executableする。シンボル名はTEST_MODULDE_NAME。このときTestに利用するサンプルデータのパスをTEST_DATA_DIRとしてDefinitionに与えるようになっている
 # 3. Include dirの設定。Project本体のインクルードパスとGoogleTestのInclude pathが設定されている
 # 4. Linkの設定。必要なライブラリに加えてGoogleTest関係とみられるgtest_mainも追加されている
-foreach(SOURCE_PATH ${SOURCE_PATHS})
+foreach (SOURCE_PATH ${SOURCE_PATHS})
     # Get relative path from ./test/
     file(RELATIVE_PATH SOURCE_REL_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${SOURCE_PATH})
     # Test module name: test_foo_bar
@@ -46,11 +46,11 @@ foreach(SOURCE_PATH ${SOURCE_PATHS})
     add_executable(${TEST_EXECUTABLE_NAME} ${SOURCE_PATH})
     target_compile_definitions(${TEST_EXECUTABLE_NAME} PRIVATE TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data/")
     target_include_directories(${TEST_EXECUTABLE_NAME} SYSTEM
-                               PRIVATE
-                               ${PROJECT_SOURCE_DIR}/src
-                               # ${googletest_SOURCE_DIR}/googletest/include
-                               ${GTEST_INCLUDE_DIRS}
-                               )
+            PRIVATE
+            ${PROJECT_SOURCE_DIR}/src
+            # ${googletest_SOURCE_DIR}/googletest/include
+            ${GTEST_INCLUDE_DIRS}
+            )
     # target_link_libraries(${TEST_EXECUTABLE_NAME}
     #                       PRIVATE
     #                       ${PROJECT_NAME}
@@ -58,18 +58,18 @@ foreach(SOURCE_PATH ${SOURCE_PATHS})
     #                       opencv_imgcodecs
     #                       opencv_highgui)
     target_link_libraries(${TEST_EXECUTABLE_NAME}
-                          PRIVATE
-                          ${PROJECT_NAME}
-                          GTest::GTest
-                          GTest::Main
-                          opencv_imgcodecs
-                          opencv_highgui)
-    
+            PRIVATE
+            ${PROJECT_NAME}
+            GTest::GTest
+            GTest::Main
+            opencv_imgcodecs
+            opencv_highgui)
+
     set_target_properties(${TEST_EXECUTABLE_NAME} PROPERTIES
-                          RUNTIME_OUTPUT_DIRECTORY_DEBUG ${PROJECT_BINARY_DIR}/test
-                          RUNTIME_OUTPUT_DIRECTORY_RELEASE ${PROJECT_BINARY_DIR}/test
-                          RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${PROJECT_BINARY_DIR}/test
-                          RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${PROJECT_BINARY_DIR}/test)
+            RUNTIME_OUTPUT_DIRECTORY_DEBUG ${PROJECT_BINARY_DIR}/test
+            RUNTIME_OUTPUT_DIRECTORY_RELEASE ${PROJECT_BINARY_DIR}/test
+            RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${PROJECT_BINARY_DIR}/test
+            RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${PROJECT_BINARY_DIR}/test)
 
     # Add test
     # テストの実行ファイルを追加する。ここで追加したテストはctestか、make testコマンドで自動実行されるようになる。
@@ -78,10 +78,10 @@ foreach(SOURCE_PATH ${SOURCE_PATHS})
     # 実行バイナリ一つの登録であるadd_testを、実行バイナリ内の複数テストケース分実装するようにしたのが、gtest_add_test?
     # しかしながら、本CMakeLists.txtではなぜか、gtest_add_testがうまくいかない（cmake ..怒られてしまう。）
     # かわりにgtest_discover_testsでtraget symbolを登録するとうまく行ったので、これを利用するようにする。
-    
+
 
     gtest_discover_tests(${TEST_EXECUTABLE_NAME}) # << テストバイナリ内での全テストケースについて成否を出力できるので便利。
     # gtest_add_tests(TARGET ${TEST_EXECUTABLE_NAME}) # << うまくいかない。何が行けないかは不明なので要調査。
     # add_test(${TEST_MODULE_NAME} ${PROJECT_BINARY_DIR}/test/${TEST_EXECUTABLE_NAME}) # << うまく行くが、登録したテストバイナリ全体での成否しかわからずちょっと不便。
 
-endforeach()
+endforeach ()

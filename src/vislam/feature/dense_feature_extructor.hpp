@@ -10,11 +10,9 @@
 #include "type_defines.hpp"
 #include "feature_in_frame.hpp"
 
-namespace dense_feature
-{
+namespace dense_feature {
 
-namespace utils
-{
+namespace utils {
 // 曲率画像を生成する
 cv::Mat generate_curvature_image(const cv::Mat &input_mono);
 
@@ -64,67 +62,66 @@ cv::Mat visualize_curvature_image(const cv::Mat &input_curvature_image);
  * 
  * 
  */
-class dense_feature_extructor
-{
+class dense_feature_extructor {
 
-public:
-    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-    dense_feature_extructor(const double lambda_,
-                            const double sigma_,
-                            const double dominant_flow_scale_ = 1.0 / 2.0);
+ public:
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+  dense_feature_extructor(const double lambda_,
+                          const double sigma_,
+                          const double dominant_flow_scale_ = 1.0 / 2.0);
 
-    /**
-     * @brief 特徴点の検出とトラッキングをする
-     * 
-     * @param input_color 
-     */
-    void detect_and_track(const cv::Mat &input, bool is_color = true);
+  /**
+   * @brief 特徴点の検出とトラッキングをする
+   *
+   * @param input_color
+   */
+  void detect_and_track(const cv::Mat &input, bool is_color = true);
 
-    /**
-     * @brief 検出した特徴点をフレームごとに保存する
-     * 
-     */
-    std::vector<feature_in_frame>
-        features;
-    std::vector<uint64_t> frameIDs;
+  /**
+   * @brief 検出した特徴点をフレームごとに保存する
+   *
+   */
+  std::vector<feature_in_frame>
+      features;
+  std::vector<uint64_t> frameIDs;
 
-private:
-    /**
-     * @brief 初期化するか？
-     * 
-     */
-    bool is_initialize;
+ private:
+  /**
+   * @brief 初期化するか？
+   *
+   */
+  bool is_initialize;
 
-    /**
-     * @brief トラッキングパラメータ
-     * 
-     */
-    double lambda;
-    double sigma;
-    double dominant_flow_scale;
+  /**
+   * @brief トラッキングパラメータ
+   *
+   */
+  double lambda;
+  double sigma;
+  double dominant_flow_scale;
 
-    // 大域的な画像のフローを求める
-    cv::Mat get_dominant_flow(const cv::Mat &img_mono);
-    // フロー計算用
-    cv::Mat prev_descriptor;
-    std::vector<cv::KeyPoint> prev_keypoints;
-    bool is_initialize_dominant_flow;
-    cv::Mat prev_img;
+  // 大域的な画像のフローを求める
+  cv::Mat get_dominant_flow(const cv::Mat &img_mono);
+  // フロー計算用
+  cv::Mat prev_descriptor;
+  std::vector<cv::KeyPoint> prev_keypoints;
+  bool is_initialize_dominant_flow;
+  cv::Mat prev_img;
 
-    /**
-     * @brief 特徴点の初期化を行う
-     * 
-     * @param img_curvature 
-     * @param previouse_frame 
-     * @param num_points 
-     * @return feature_in_frame 
-     */
-    feature_in_frame initialize_features(
-        const cv::Mat &img_curvature,
-        const feature_in_frame &previous_frame,
-        const int32_t num_grids_x = 5,
-        const int32_t num_grids_y = 5,
-        const int32_t num_points = 1000);
+  /**
+   * @brief 特徴点の初期化を行う
+   *
+   * @param img_curvature
+   * @param previouse_frame
+   * @param num_points
+   * @return feature_in_frame
+   */
+  feature_in_frame initialize_features(
+      const cv::Mat &img_curvature,
+      const feature_in_frame &previous_frame,
+      const int32_t num_grids_x = 5,
+      const int32_t num_grids_y = 5,
+      const int32_t num_points = 1000);
 };
 
 } // namespace dense_feature

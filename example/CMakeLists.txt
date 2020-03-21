@@ -23,14 +23,14 @@ add_executable(sample_viz sample_viz.cpp)
 list(APPEND EXECUTABLE_TARGETS sample_viz)
 
 
-foreach(EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
+foreach (EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
 
     target_link_libraries(${EXECUTABLE_TARGET}
-        ${PROJECT_NAME}
-        Eigen3::Eigen
-        opencv_imgcodecs
-        opencv_videoio
-        opencv_viz
-        opencv_calib3d)
+            ${PROJECT_NAME}
+            Eigen3::Eigen
+            opencv_imgcodecs
+            opencv_videoio
+            opencv_viz
+            opencv_calib3d)
 
-endforeach(EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
+endforeach (EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)

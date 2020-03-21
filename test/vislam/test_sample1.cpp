@@ -21,15 +21,15 @@ class FooTest : public ::testing::Test {
   // コンストラクタとデストラクタでは不十分な場合．
   // 以下のメソッドを定義することができます：
 
-virtual void SetUp() {
-  // このコードは，コンストラクタの直後（各テストの直前）
-  // に呼び出されます．
-}
+  virtual void SetUp() {
+    // このコードは，コンストラクタの直後（各テストの直前）
+    // に呼び出されます．
+  }
 
-virtual void TearDown() {
-  // このコードは，各テストの直後（デストラクタの直前）
-  // に呼び出されます．
-}
+  virtual void TearDown() {
+    // このコードは，各テストの直後（デストラクタの直前）
+    // に呼び出されます．
+  }
 
 // ここで宣言されるオブジェクトは，テストケース内の全てのテストで利用できます．
 };
@@ -41,7 +41,7 @@ TEST_F(FooTest, viSlamMethodBarDoesAbc) {
 
 // Xyz を行う Foo をテストします．
 TEST_F(FooTest, viSlamDoesXyz) {
-    EXPECT_EQ(0, 1);
+  EXPECT_EQ(0, 1);
 }
 
 }  // namespace

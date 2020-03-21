@@ -11,11 +11,9 @@ feature_in_frame::feature_in_frame(
       features(input_features),
       featureIDs(input_feature_ids),
       featureMasks(0),
-      featuresIn3d(0)
-{
+      featuresIn3d(0) {
 }
 
 feature_in_frame::feature_in_frame()
-    : feature_in_frame(0, {}, {})
-{
+    : feature_in_frame(0, {}, {}) {
 }
