@@ -135,6 +135,9 @@ private:
     uint64_t lastIndex;
 };
 
+/**
+ * @brief EUROC MAV datasetからの読み込み用
+ */
 class LogPlayer_euroc_mav
 {
 public:
@@ -222,4 +225,53 @@ private:
 
     uint64_t loggerClock;
     uint64_t lastIndex;
+};
+
+/**
+ * @brief vio-dataset-generatorから生成されたKeyframeを読み込む
+ * @details
+ * ## datasetについて→参照: https://github.com/eryeden/vio_data_simulation
+ * ## 生成する読み込んだデータについて
+ * 基本的にFeyFrameを読み込むことになる。KeyFrameには以下の情報が含まれている
+ * - keyFrameのPose（Noiseあり、Noiseなし）
+ * - keyFrameないに含まれるランドマーク位置、ランドマークID（実質行番号）、ランドマーク位置
+ * ## 本クラスの入出力
+ * - 入力: dataset directoryまでのパス
+ * - 出力: KeyFrame database, Landmark database
+ * ## detasetのポリシーについて
+ * - 基本、Ground truthが書かれていると想定する
+ * - 必要に応じて雑音を印加して使う
+ * ## 実装関係のメモ
+ * ### 読み込むファイル
+ * - all_points.txt : 登場するランドマークの座標について
+ * - cam_pose.txt : シミュレートしたFrameのPoseについて, timestampとともに
+ * - keyframe/all_points_*.txt : Frameごとの観測したLandmark位置（Device座標系）
+ *
+ * ### 処理の流れ
+ * 1. all_points.txtからLandmark情報を抽出、Landmark databaseを生成する。ここでLandmrk idの付与も行う。
+ * 2. cam_pose.txtから、FrameのPoseを抽出、Frame databaseを生成する。ここで、Frame idの付与も行う。
+ * 3. keyframe/all_points_*.txtから次のことをする
+ *   1. 対応するFrameに、観測Landmark位置とIDを設定する。
+ *   2. Frameごと観測したLandmarkに対して、被観測Frame idを登録する。
+ * 4. ここまでの処理を行うと、vio-simulatorで生成した観測情報はすべて登録されることになる。
+ * 5. お好みで、Frame pose、Landmark positoin、Feature positonに雑音を印加する。 <= こればこのクラスでは行わない。
+ */
+class LogPlayer_vio_dataset{
+ public:
+
+  LogPlayer_vio_dataset(const std::string &path_to_log_dir);
+
+
+
+
+ private:
+  const std::string pathToLogDir;
+
+  const std::string filenameLandmarkPositon;
+  const std::string filenameFramePosition;
+  const std::string prefixKeyFrame;
+  const std::string postfixKeyFrame;
+
+
+
 };
