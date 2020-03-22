@@ -56,7 +56,7 @@ void LogPlayer_vio_dataset::generate_database_form_file(LogPlayer_vio_dataset::f
 
 LogPlayer_vio_dataset::frame_database_t LogPlayer_vio_dataset::make_frame_database(const std::string &path_to_frame_position) {
   frame_database_t frame_database;
-  io::CSVReader<14> in_csv(path_to_frame_position);
+  io::CSVReader<14, io::trim_chars<>, io::no_quote_escape<' '>> in_csv(path_to_frame_position);
   in_csv.set_header("time", "qw", "qx", "qy", "qz", "tx", "ty", "tz", "gx", "gy", "gz", "ax", "ay", "az");
 
   frame_info tmp_frame{};
