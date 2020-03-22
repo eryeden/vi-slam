@@ -271,34 +271,34 @@ class LogPlayer_vio_dataset {
  private:
   /**
    * @brief
-   * @param path_to_frame_positon
+   * @param path_to_frame_position
    * @return
    */
-  frame_database_t make_frame_database(const std::string &path_to_frame_positon);
+  static frame_database_t make_frame_database(const std::string &path_to_frame_position);
   /**
    * @brief
-   * @param path_to_frame_positon
+   * @param path_to_landmark_position
    * @return
    */
-  landmark_database_t make_landmakr_database(const std::string &path_to_frame_positon);
+  static landmark_database_t make_landmark_database(const std::string &path_to_landmark_position);
   /**
    * @brief
-   * @param pathToKeyframeFile
+   * @param path_to_keyframe_file
    * @param frame_id
    * @param frame_database
    * @param landmark_database
    */
-  void add_landmark_observaton(const std::string &pathToKeyframeFile,
-                               uint64_t frame_id,
-                               frame_database_t &frame_database,
-                               landmark_database_t &landmark_database);
+  static void add_landmark_observation(const std::string &path_to_keyframe_file,
+                                       uint64_t frame_id,
+                                       frame_database_t &frame_database,
+                                       landmark_database_t &landmark_database);
 
   /**
    * @brief constants.
    */
   //@{
   const std::string pathToLogDir;
-  const std::string filenameLandmarkPositon;
+  const std::string filenameLandmarkPosition;
   const std::string filenameFramePosition;
   const std::string prefixKeyFrame;
   const std::string postfixKeyFrame;
