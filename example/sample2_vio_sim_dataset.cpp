@@ -45,6 +45,31 @@ int main() {
   //! data baseの構築
   logplayer.generate_database_form_file(frame_database, landmark_database);
 
+  //show detected landmarks
+  cv::Mat out(480, 640, CV_8UC3);
+  out = 0;
+
+  for (const auto &[frame_id, frame] : frame_database) {
+    out = 0;
+
+    // draw points
+    for (const auto &[landmark_id, p] : frame.observingFeaturePointInDevice) {
+      cv::circle(out, cv::Point(p(0), p(1)), 1.0, cv::Scalar(255, 0, 0), 1);
+      cv::putText(out,
+                  std::to_string(landmark_id),
+                  cv::Point(p(0), p(1)),
+                  CV_FONT_HERSHEY_PLAIN,
+                  1,
+                  cv::Scalar(0, 0, 255),
+                  1,
+                  CV_AA);
+    }
+
+    cv::imshow("Features", out);
+    cv::waitKey(30);
+
+  }
+
   return 0;
 }
 

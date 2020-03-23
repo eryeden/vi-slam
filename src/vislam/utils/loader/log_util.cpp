@@ -57,6 +57,7 @@ void LogPlayer_vio_dataset::generate_database_form_file(LogPlayer_vio_dataset::f
 LogPlayer_vio_dataset::frame_database_t LogPlayer_vio_dataset::make_frame_database(const std::string &path_to_frame_position) {
   frame_database_t frame_database;
   io::CSVReader<14, io::trim_chars<>, io::no_quote_escape<' '>> in_csv(path_to_frame_position);
+//  io::CSVReader<14, io::no_quote_escape<' '>> in_csv(path_to_frame_position);
   in_csv.set_header("time", "qw", "qx", "qy", "qz", "tx", "ty", "tz", "gx", "gy", "gz", "ax", "ay", "az");
 
   frame_info tmp_frame{};
@@ -79,7 +80,7 @@ LogPlayer_vio_dataset::frame_database_t LogPlayer_vio_dataset::make_frame_databa
 }
 LogPlayer_vio_dataset::landmark_database_t LogPlayer_vio_dataset::make_landmark_database(const std::string &path_to_landmark_position) {
   landmark_database_t landmark_database;
-  io::CSVReader<4> in_csv(path_to_landmark_position);
+  io::CSVReader<4, io::trim_chars<>, io::no_quote_escape<' '>> in_csv(path_to_landmark_position);
   in_csv.set_header("x", "y", "z", "dummy");
 
   landmark_info tmp_landmark = {};
@@ -101,7 +102,7 @@ void LogPlayer_vio_dataset::add_landmark_observation(const std::string &path_to_
                                                      LogPlayer_vio_dataset::frame_database_t &frame_database,
                                                      LogPlayer_vio_dataset::landmark_database_t &landmark_database) {
 
-  io::CSVReader<6> in_csv(path_to_keyframe_file);
+  io::CSVReader<6, io::trim_chars<>, io::no_quote_escape<' '>> in_csv(path_to_keyframe_file);
   in_csv.set_header("lx", "ly", "lz", "dummy", "fx", "fy");
 
   frame_observation_info frame_observation = {};
