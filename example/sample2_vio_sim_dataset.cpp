@@ -38,6 +38,7 @@ int main() {
 
   //! vio_data_simulationで生成したデータ群のトップディレクトリを書いておく
   std::string path_to_log = "/home/ery/Works/Devel/tmp/vio_data_simulation/bin";
+//  std::string path_to_log = "/home/anudev/devel/vio_data_simulation/bin/";
 
   //! LogPlayerの生成
   LogPlayer_vio_dataset logplayer(path_to_log);
@@ -45,7 +46,17 @@ int main() {
   //! data baseの構築
   logplayer.generate_database_form_file(frame_database, landmark_database);
 
-  //show detected landmarks
+  //! カメラパラメータの登録
+  vislam::data::camera camera_pram(0,
+                                   640, 480,
+                                   30,
+                                   458.654, 457.296, 367.215, 248.375, //! eigenのmatからだとうまいこといかなかった
+                                   0, 0, 0, 0, 0);
+  for (auto &[frame_id, frame]: frame_database) {
+    frame.cameraParameter = camera_pram;
+  }
+
+  //! show detected landmarks
   cv::Mat out(480, 640, CV_8UC3);
   out = 0;
 
