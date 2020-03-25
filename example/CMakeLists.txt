@@ -18,8 +18,12 @@ add_executable(sample2_ba_pre2 sample2_ba_pre2.cpp)
 list(APPEND EXECUTABLE_TARGETS sample2_ba_pre2)
 add_executable(sample2_ba_opt1 sample2_ba_opt1.cpp)
 list(APPEND EXECUTABLE_TARGETS sample2_ba_opt1)
-add_executable(sample2_vio_sim_dataset sample2_vio_sim_dataset.cpp)
-list(APPEND EXECUTABLE_TARGETS sample2_vio_sim_dataset)
+
+add_executable(ba_test1_vio_sim_dataset ba_test1_vio_sim_dataset.cpp)
+list(APPEND EXECUTABLE_TARGETS ba_test1_vio_sim_dataset)
+add_executable(ba_test2_vio_sim_dataset ba_test2_vio_sim_dataset.cpp)
+list(APPEND EXECUTABLE_TARGETS ba_test2_vio_sim_dataset)
+
 
 add_executable(sample_viz sample_viz.cpp)
 list(APPEND EXECUTABLE_TARGETS sample_viz)

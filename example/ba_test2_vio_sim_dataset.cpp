@@ -33,18 +33,17 @@
 
 int main() {
 
-  LogPlayer_vio_dataset::frame_database_t frame_database;
-  LogPlayer_vio_dataset::landmark_database_t landmark_database;
-
+  LogPlayer_vio_dataset::frame_database_t load_frame_database;
+  LogPlayer_vio_dataset::landmark_database_t load_landmark_database;
   //! vio_data_simulationで生成したデータ群のトップディレクトリを書いておく
-  std::string path_to_log = "/home/ery/Works/Devel/tmp/vio_data_simulation/bin";
-//  std::string path_to_log = "/home/anudev/devel/vio_data_simulation/bin/";
+//  std::string path_to_log = "/home/ery/Works/Devel/tmp/vio_data_simulation/bin";
+  std::string path_to_log = "/home/anudev/devel/vio_data_simulation/bin/";
 
   //! LogPlayerの生成
   LogPlayer_vio_dataset logplayer(path_to_log);
 
   //! data baseの構築
-  logplayer.generate_database_form_file(frame_database, landmark_database);
+  logplayer.generate_database_form_file(load_frame_database, load_landmark_database);
 
   //! カメラパラメータの登録
   vislam::data::camera camera_pram(0,
@@ -52,7 +51,7 @@ int main() {
                                    30,
                                    458.654, 457.296, 367.215, 248.375, //! eigenのmatからだとうまいこといかなかった
                                    0, 0, 0, 0, 0);
-  for (auto &[frame_id, frame]: frame_database) {
+  for (auto &[frame_id, frame]: load_frame_database) {
     frame.cameraParameter = camera_pram;
   }
 
@@ -60,10 +59,11 @@ int main() {
   cv::Mat out(480, 640, CV_8UC3);
   out = 0;
 
-//  for (const auto &[frame_id, frame] : frame_database) {
-  for (size_t frame_id = 0; frame_id < frame_database.size(); frame_id++) {
-    const auto &frame = frame_database[frame_id];
+  for (size_t frame_id = 0; frame_id < load_frame_database.size(); frame_id++) {
+    const auto &frame = load_frame_database[frame_id];
     out = 0;
+
+
 
     // draw points
     for (const auto &[landmark_id, p] : frame.observingFeaturePointInDevice) {
@@ -87,7 +87,6 @@ int main() {
                 CV_AA);
     cv::imshow("Features", out);
     cv::waitKey(30);
-
   }
 
   return 0;
