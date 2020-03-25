@@ -365,6 +365,19 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
                                    std::unordered_map<uint64_t, data::frame> &output_frame_database,
                                    std::unordered_map<uint64_t, data::landmark> &output_landmark_database) {
 
+  /**
+   * @brief 描画用の準備
+   */
+  //@{
+  cv::Matx33d K;
+  K << 458.654, 0.0000000000000000e+00, 367.215,
+      0.0000000000000000e+00, 457.296, 248.375,
+      0.0000000000000000e+00, 0.0000000000000000e+00, 1.0000000000000000e+00;
+  cv::viz::Viz3d myWindow("Coordinate Frame");
+  myWindow.showWidget("Coordinate Widget", cv::viz::WCoordinateSystem());
+  //@}
+
+
   //! Landmarkの観測関係、Jacobianの元になる偏微分値など入れておく
   std::vector<vislam::ba::ba_observation> observation_database;
   //! 初期化対象のLandmark IDを入れておく
@@ -396,7 +409,7 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
   /**
    * @brief Do the BA. ひとまず、１００回くらい計算してみる
    */
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 100; i++) {
     //! 各Frameに観測されいているLandmarkの偏微分計算を実施、変数に偏微分結果を満たす
     vislam::ba::ba_pre::fill_derivatives(
         opt_frame_database,
@@ -411,7 +424,7 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
         mean_reprojection_error += f.norm();
 //                mean_reprojection_error += f[1]*f[1];
         number_of_obervation += 1;
-//                std::cout << "Idx : " << number_of_obervation << ", " << f.norm() << std::endl;
+//        std::cout << "Idx : " << number_of_obervation << ", " << f.norm() << std::endl;
       }
     }
     mean_reprojection_error = mean_reprojection_error / number_of_obervation;
@@ -473,6 +486,14 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
     hcc = jc.transpose() * jc;
     hcp = jc.transpose() * jp;
     hpp = jp.transpose() * jp;
+
+    for (int64_t si = 0; si < hcc.rows(); si++) {
+      hcc.coeffRef(si, si) = hcc.coeffRef(si, si) + 1000;
+    }
+    for (int64_t si = 0; si < hpp.rows(); si++) {
+      hpp.coeffRef(si, si) = hpp.coeffRef(si, si) + 1000;
+    }
+
     //@}
 
 
@@ -534,7 +555,7 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
     //! Frame関係の位置、姿勢の補正
     //! 最初のFrameの位置を基準にするため、その位置は動かさない。
     //! なので in_ba_frame_indexは1から始まる
-    for (size_t in_ba_frame_index = 4; in_ba_frame_index < observation_database.size(); in_ba_frame_index++) {
+    for (size_t in_ba_frame_index = 1; in_ba_frame_index < observation_database.size(); in_ba_frame_index++) {
       uint64_t frame_id = observation_database[in_ba_frame_index].frame_id;
       auto &frame = opt_frame_database[frame_id];
 
@@ -553,16 +574,16 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
       vislam::Mat33_t delta_rotation = Eigen::AngleAxisd(delta_omega.norm(),
                                                          delta_omega.normalized()).toRotationMatrix();
 
-      if (in_ba_frame_index <= 3) {
-//        frame.cameraPosition[1] += delta_translation[1];
+      if (in_ba_frame_index <= 1) {
+        frame.cameraPosition[0] += delta_translation[0];
+        frame.cameraAttitude = vislam::Quat_t((delta_rotation * frame_rotation));
       } else {
-//        frame.cameraPosition += delta_translation;
-//        frame.cameraAttitude = vislam::Quat_t((delta_rotation * frame_rotation));
+        frame.cameraPosition += delta_translation;
+        frame.cameraAttitude = vislam::Quat_t((delta_rotation * frame_rotation));
 //        frame.cameraAttitude = vislam::Quat_t(frame_rotation*delta_rotation);
-
       }
-      frame.cameraPosition += delta_translation;
-      frame.cameraAttitude = vislam::Quat_t(delta_rotation * frame_rotation);
+//      frame.cameraPosition += delta_translation;
+//      frame.cameraAttitude = vislam::Quat_t(delta_rotation * frame_rotation);
     }
 
 
@@ -597,10 +618,10 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
     cv::threshold(cv_hpp, cv_hpp, 0, 255, CV_THRESH_BINARY);
     cv::threshold(cv_s, cv_s, 0, 255, CV_THRESH_BINARY);
 //
-    cv::imshow("Hcc", cv_hcc);
-    cv::imshow("Hcp", cv_hcp);
-    cv::imshow("Hpp", cv_hpp);
-    cv::imshow("S", cv_s);
+//    cv::imshow("Hcc", cv_hcc);
+//    cv::imshow("Hcp", cv_hcp);
+//    cv::imshow("Hpp", cv_hpp);
+//    cv::imshow("S", cv_s);
 //
 //
 //        cv::imwrite("/home/ery/hcc.png", cv_hcc);
@@ -608,7 +629,35 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
 //        cv::imwrite("/home/ery/hpp.png", cv_hpp);
 //        cv::imwrite("/home/ery/S.png", cv_s);
 //
-    cv::waitKey(1);
+
+
+    /**
+     * @brief カメラ位置、Landmark位置を描画
+     */
+    // 特徴点位置を描画
+    std::vector<cv::Point3d> pointCloud;
+    for (auto &[landmark_id, localized_landmark] : opt_landmark_database) {
+      pointCloud.emplace_back(
+          cv::Point3d(localized_landmark.positionInWorld[0],
+                      localized_landmark.positionInWorld[1],
+                      localized_landmark.positionInWorld[2]));
+    }
+    cv::viz::WCloud cloud(pointCloud);
+    myWindow.showWidget("CLOUD", cloud);
+
+    for (const auto&[frame_id, frame] : opt_frame_database) {
+      cv::viz::WCameraPosition tmp_wcamera(K, 1.0, cv::viz::Color::magenta());
+      cv::Mat tmp_camera_attitude;
+      cv::eigen2cv(frame.cameraAttitude.toRotationMatrix(), tmp_camera_attitude);
+      cv::Affine3d tmp_cam_pose(tmp_camera_attitude,
+                                cv::Vec3f(frame.cameraPosition[0], frame.cameraPosition[1], frame.cameraPosition[2]));
+      myWindow.showWidget(std::to_string(frame_id), tmp_wcamera, tmp_cam_pose);
+    }
+
+//    myWindow.spin();
+    myWindow.spinOnce(100);
+//    cv::waitKey(0);
+
 
   }
 
