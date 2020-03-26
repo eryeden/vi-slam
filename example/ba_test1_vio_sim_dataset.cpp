@@ -70,28 +70,43 @@ int main() {
   // 乱数生成器
   std::random_device seed_gen;
   std::default_random_engine engine(seed_gen());
-  // 平均0.0、標準偏差1.0で分布させる
-  std::normal_distribution<> dist(0.0, 1.0);
+  // 標準偏差の設定
+  double stddev_camera_position = 2.0;
+  double stddev_camera_rotation_angle = 10.0 * M_PI / 180.0;
+  double stddev_photo_metric = 0.0;
+//  double stddev_camera_position = 0;
+//  double stddev_camera_rotation_angle = 0;
+  // 分布の設定
+  std::normal_distribution<> dist(0.0, stddev_camera_position);
+  std::normal_distribution<> photo_metric_dist(0.0, stddev_photo_metric);
   std::uniform_real_distribution<> uniform_dist(-1, 1);
-  std::normal_distribution<> rotation_angle_dist(0.0, 10.0 * M_PI / 180.0);
+  std::normal_distribution<> rotation_angle_dist(0.0, stddev_camera_rotation_angle);
 
-  int32_t frame_skip_size = 10;
+  int32_t frame_skip_size = 2;
+  int32_t fcount = 0;
   for (const auto&[frame_id, frame] : input_frame_database) {
-    if ((frame_id % frame_skip_size == 0) && (frame_id < 300)) {
+    if ((frame_id % frame_skip_size == 0) && (frame_id <= 50)) {
       noised_frame_database[frame_id] = frame;
 
-      //! add random noise
-      noised_frame_database[frame_id].cameraPosition(0) += dist(engine);
-      noised_frame_database[frame_id].cameraPosition(1) += dist(engine);
-      noised_frame_database[frame_id].cameraPosition(2) += dist(engine);
+      if (frame_id != 0 && frame_id != frame_skip_size) {
+        //! add random noise
+        noised_frame_database[frame_id].cameraPosition(0) += dist(engine);
+        noised_frame_database[frame_id].cameraPosition(1) += dist(engine);
+        noised_frame_database[frame_id].cameraPosition(2) += dist(engine);
 
-      //! add random rotation
-      vislam::Vec3_t random_direction_vector{uniform_dist(engine), uniform_dist(engine), uniform_dist(engine)};
-      random_direction_vector.normalize();
-      Eigen::AngleAxisd angle_axisd(rotation_angle_dist(engine), random_direction_vector);
-      vislam::Mat33_t random_rotation_matrix = angle_axisd.toRotationMatrix();
-      vislam::Mat33_t noised_orientation = random_rotation_matrix * frame.cameraAttitude.toRotationMatrix();
-      noised_frame_database[frame_id].cameraAttitude = vislam::Quat_t(noised_orientation);
+        //! add random rotation
+        vislam::Vec3_t random_direction_vector{uniform_dist(engine), uniform_dist(engine), uniform_dist(engine)};
+        random_direction_vector.normalize();
+        Eigen::AngleAxisd angle_axisd(rotation_angle_dist(engine), random_direction_vector);
+        vislam::Mat33_t random_rotation_matrix = angle_axisd.toRotationMatrix();
+        vislam::Mat33_t noised_orientation = random_rotation_matrix * frame.cameraAttitude.toRotationMatrix();
+        noised_frame_database[frame_id].cameraAttitude = vislam::Quat_t(noised_orientation);
+
+        //! random photo metric error
+        for (auto &[landmark_id, landmark_position] : noised_frame_database[frame_id].observingFeaturePointInDevice) {
+          landmark_position += vislam::Vec2_t{photo_metric_dist(engine), photo_metric_dist(engine)};
+        }
+      }
 
       for (const auto &[landmark_id, landmark_position] : frame.observingFeaturePointInDevice) {
         if (noised_landmark_database.count(landmark_id) != 0) { // databaseに登録済みの場合

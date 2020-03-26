@@ -116,7 +116,14 @@ void vislam::ba::ba_pre::select_frames_and_landmarks(
    */
   std::vector<ba_observation> selected_frame;
   selected_frame.reserve(input_frame_database.size());
-  for (const auto &[frame_id, frm]: input_frame_database) {
+
+  std::vector<uint64_t> sorted_frame_ids;
+  for (const auto &[frame_id, frame]:input_frame_database) {
+    sorted_frame_ids.emplace_back(frame_id);
+  }
+  std::sort(sorted_frame_ids.begin(), sorted_frame_ids.end());
+  for (const auto frame_id : sorted_frame_ids) {
+    const auto &frm = input_frame_database.at(frame_id);
     std::vector<uint64_t> landmark_id_observed_by_this_frame(frm.observingFeatureId.begin(),
                                                              frm.observingFeatureId.end());
     std::vector<uint64_t> ba_landmark_id_observed_by_this_frame(0);
@@ -130,6 +137,21 @@ void vislam::ba::ba_pre::select_frames_and_landmarks(
 
     selected_frame.emplace_back(current_ba_observation);
   }
+//! Range based forでunordered_mapのLoopを回すと順番はめちゃくちゃになるので …
+//  for (const auto &[frame_id, frm]: input_frame_database) {
+//    std::vector<uint64_t> landmark_id_observed_by_this_frame(frm.observingFeatureId.begin(),
+//                                                             frm.observingFeatureId.end());
+//    std::vector<uint64_t> ba_landmark_id_observed_by_this_frame(0);
+//    std::set_intersection(selected_landmark_id.begin(), selected_landmark_id.end(),
+//                          landmark_id_observed_by_this_frame.begin(), landmark_id_observed_by_this_frame.end(),
+//                          std::back_inserter(ba_landmark_id_observed_by_this_frame));
+//
+//    ba_observation current_ba_observation;
+//    current_ba_observation.frame_id = frm.id;
+//    current_ba_observation.landmark_id = ba_landmark_id_observed_by_this_frame;
+//
+//    selected_frame.emplace_back(current_ba_observation);
+//  }
   //! BA対象の特徴点IDを詰め込んだFrameDatabaseを出力する
   selected_observation_database = selected_frame;
 }
@@ -442,31 +464,53 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
     Eigen::SparseMatrix<double> jc = j.block(0, 0, j.rows(), input_frame_database.size() * 6);
 //    jc.coeffRef()
     //カメラのマスク
-//    int32_t num_mask_camera =2;
-//    uint64_t mask_row_index = 0;
-//    for(int32_t mask_camera_index = 0; mask_camera_index < num_mask_camera; mask_camera_index++){
-//      const auto& mask_observation = observation_database[mask_camera_index];
-//      for(int32_t mask_landmark_index=0; mask_landmark_index<mask_observation.landmark_id.size(); mask_landmark_index++ ){
-//        int32_t mask_col_index = mask_camera_index*6;
-//        jc.coeffRef(mask_row_index, mask_col_index) = 0;
+    int32_t num_mask_camera = 1;
+    uint64_t mask_row_index = 0;
+    for (int32_t mask_camera_index = 0; mask_camera_index < num_mask_camera; mask_camera_index++) {
+      const auto &mask_observation = observation_database[mask_camera_index];
+      for (int32_t mask_landmark_index = 0; mask_landmark_index < mask_observation.landmark_id.size();
+           mask_landmark_index++) {
+        int32_t mask_col_index = mask_camera_index * 6;
+        jc.coeffRef(mask_row_index, mask_col_index) = 0;
+        jc.coeffRef(mask_row_index, mask_col_index + 1) = 0;
+        jc.coeffRef(mask_row_index, mask_col_index + 2) = 0;
+        jc.coeffRef(mask_row_index, mask_col_index + 3) = 0;
+        jc.coeffRef(mask_row_index, mask_col_index + 4) = 0;
+        jc.coeffRef(mask_row_index, mask_col_index + 5) = 0;
+
+        jc.coeffRef(mask_row_index + 1, mask_col_index) = 0;
+        jc.coeffRef(mask_row_index + 1, mask_col_index + 1) = 0;
+        jc.coeffRef(mask_row_index + 1, mask_col_index + 2) = 0;
+        jc.coeffRef(mask_row_index + 1, mask_col_index + 3) = 0;
+        jc.coeffRef(mask_row_index + 1, mask_col_index + 4) = 0;
+        jc.coeffRef(mask_row_index + 1, mask_col_index + 5) = 0;
+
+        mask_row_index += 2;
+      }
+    }
+
+    for (int32_t mask_camera_index = 1; mask_camera_index < 2; mask_camera_index++) {
+      const auto &mask_observation = observation_database[mask_camera_index];
+      for (int32_t mask_landmark_index = 0; mask_landmark_index < mask_observation.landmark_id.size();
+           mask_landmark_index++) {
+        int32_t mask_col_index = mask_camera_index * 6;
+        jc.coeffRef(mask_row_index, mask_col_index) = 0;
 //        jc.coeffRef(mask_row_index, mask_col_index+1) = 0;
 //        jc.coeffRef(mask_row_index, mask_col_index+2) = 0;
 //        jc.coeffRef(mask_row_index, mask_col_index+3) = 0;
 //        jc.coeffRef(mask_row_index, mask_col_index+4) = 0;
 //        jc.coeffRef(mask_row_index, mask_col_index+5) = 0;
-//
-//        jc.coeffRef(mask_row_index+1, mask_col_index) = 0;
+
+        jc.coeffRef(mask_row_index + 1, mask_col_index) = 0;
 //        jc.coeffRef(mask_row_index+1, mask_col_index+1) = 0;
 //        jc.coeffRef(mask_row_index+1, mask_col_index+2) = 0;
 //        jc.coeffRef(mask_row_index+1, mask_col_index+3) = 0;
 //        jc.coeffRef(mask_row_index+1, mask_col_index+4) = 0;
 //        jc.coeffRef(mask_row_index+1, mask_col_index+5) = 0;
-//
-//        mask_row_index+=2;
-//      }
-//    }
+        mask_row_index += 2;
+      }
+    }
 //    Eigen::SparseMatrix<double> jc(j.rows(), input_frame_database.size() * 6);
-
     Eigen::SparseMatrix<double> jp = j.block(0, input_frame_database.size() * 6, j.rows(),
                                              selected_landmark_id.size() * 3);
     //@}
@@ -488,10 +532,10 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
     hpp = jp.transpose() * jp;
 
     for (int64_t si = 0; si < hcc.rows(); si++) {
-      hcc.coeffRef(si, si) = hcc.coeffRef(si, si) + 1000;
+      hcc.coeffRef(si, si) = hcc.coeffRef(si, si) + 10;
     }
     for (int64_t si = 0; si < hpp.rows(); si++) {
-      hpp.coeffRef(si, si) = hpp.coeffRef(si, si) + 1000;
+      hpp.coeffRef(si, si) = hpp.coeffRef(si, si) + 10;
     }
 
     //@}
@@ -574,12 +618,16 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
       vislam::Mat33_t delta_rotation = Eigen::AngleAxisd(delta_omega.norm(),
                                                          delta_omega.normalized()).toRotationMatrix();
 
-      if (in_ba_frame_index <= 1) {
-        frame.cameraPosition[0] += delta_translation[0];
-        frame.cameraAttitude = vislam::Quat_t((delta_rotation * frame_rotation));
+      if (in_ba_frame_index == 1) {
+        //frame.cameraPosition[0] = 1;
+        frame.cameraPosition[1] += delta_translation[1];
+        frame.cameraPosition[2] += delta_translation[2];
+
+//        frame.cameraPosition += delta_translation;
+        frame.cameraAttitude = vislam::Quat_t((delta_rotation * frame_rotation)).normalized();
       } else {
         frame.cameraPosition += delta_translation;
-        frame.cameraAttitude = vislam::Quat_t((delta_rotation * frame_rotation));
+        frame.cameraAttitude = vislam::Quat_t((delta_rotation * frame_rotation)).normalized();
 //        frame.cameraAttitude = vislam::Quat_t(frame_rotation*delta_rotation);
       }
 //      frame.cameraPosition += delta_translation;
@@ -607,21 +655,24 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
 
 
 //        //! 表示する
-    cv::Mat cv_hcc, cv_hcp, cv_hpp, cv_s;
-    Eigen::MatrixXd dense_hcc(hcc), dense_hcp(hcp), dense_hpp(hpp);//, dense_s(S);
+    cv::Mat cv_hcc, cv_hcp, cv_hpp, cv_s, cv_j;
+    Eigen::MatrixXd dense_hcc(hcc), dense_hcp(hcp), dense_hpp(hpp), dense_j(j.transpose());//, dense_s(S);
     cv::eigen2cv(dense_hcc, cv_hcc);
     cv::eigen2cv(dense_hcp, cv_hcp);
     cv::eigen2cv(dense_hpp, cv_hpp);
     cv::eigen2cv(dense_s, cv_s);
+    cv::eigen2cv(dense_j, cv_j);
     cv::threshold(cv_hcc, cv_hcc, 0, 255, CV_THRESH_BINARY);
     cv::threshold(cv_hcp, cv_hcp, 0, 255, CV_THRESH_BINARY);
     cv::threshold(cv_hpp, cv_hpp, 0, 255, CV_THRESH_BINARY);
     cv::threshold(cv_s, cv_s, 0, 255, CV_THRESH_BINARY);
 //
-//    cv::imshow("Hcc", cv_hcc);
-//    cv::imshow("Hcp", cv_hcp);
-//    cv::imshow("Hpp", cv_hpp);
-//    cv::imshow("S", cv_s);
+    cv::imshow("Hcc", cv_hcc);
+    cv::imshow("Hcp", cv_hcp);
+    cv::imshow("Hpp", cv_hpp);
+    cv::imshow("S", cv_s);
+    cv::imshow("J", cv_j);
+
 //
 //
 //        cv::imwrite("/home/ery/hcc.png", cv_hcc);
