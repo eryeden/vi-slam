@@ -585,10 +585,12 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
 
     Eigen::VectorXd delta_c, delta_p;
     //! S delta_c = -g_c + hcp inv_hpp g_pを計算する
-//        Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
-//        solver.compute(S);
-//        delta_c = solver.solve(z);
-    delta_c = dense_s.inverse() * z;
+//    Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
+    Eigen::SimplicialLLT<Eigen::SparseMatrix<double>> solver;
+//    Eigen::SimplicialLDLT<Eigen::SparseMatrix<double>> solver;
+    solver.compute(S);
+    delta_c = solver.solve(z);
+//    delta_c = dense_s.inverse() * z;
     //! delta_p = inv_hpp * (-gp - hcp^T delta_c)を計算する
     delta_p = inverse_hpp * (-gp - hcp.transpose() * delta_c);
     //@}
