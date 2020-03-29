@@ -353,10 +353,10 @@ int main() {
            */
           std::unordered_map<uint64_t, vislam::data::frame> ba_database_frame;
           ba_database_frame[1] = database_frame[1];
-          for (size_t window = 0; window <= 3; window++) {
+          for (size_t window = 0; window <= 0; window++) {
             ba_database_frame[i - window] = database_frame[i - window];
           }
-//          ba_database_frame[i - 2] = database_frame[i - 2];
+//          ba_database_frame[i/2] = database_frame[i/2];
 //          ba_database_frame[i - 1] = database_frame[i - 1];
 //          ba_database_frame[i] = database_frame[i];
           std::vector<vislam::ba::ba_observation> selected_observation_database;
@@ -366,8 +366,8 @@ int main() {
           std::unordered_map<uint64_t, vislam::data::frame> opt_database_frame;
           std::unordered_map<uint64_t, vislam::data::landmark> opt_database_landmark;
           vislam::ba::ba_pre::do_the_ba(
-//              ba_database_frame,
-              database_frame,
+              ba_database_frame,
+//              database_frame,
               database_landmark,
               opt_database_frame,
               opt_database_landmark);
