@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-03-29T06:22:05.021Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="gf8p2OiSrcTK5bSqOjMV" version="12.8.5" type="github" pages="8">
+<mxfile host="app.diagrams.net" modified="2020-03-29T15:34:23.703Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="ueDyvvpDqlrAP_-udxQC" version="12.8.5" type="github" pages="8">
   <diagram id="C0SdsD_nAt9h8TD434q8" name="Overview">
-    <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="1941" dy="2446" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="Z6NOpVzWMivuuzvYCPRy-0" />
         <mxCell id="Z6NOpVzWMivuuzvYCPRy-1" parent="Z6NOpVzWMivuuzvYCPRy-0" />
@@ -133,8 +133,14 @@
         <mxCell id="FfZRokaTNSsOa_7S9S_X-17" value="イマココ" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="Z6NOpVzWMivuuzvYCPRy-1" vertex="1">
           <mxGeometry x="1450" y="170" width="60" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="bDo8n21ecWqytJqypdnO-0" value="・現状&lt;br&gt;1. BAが行けそうなときもあれば、だめなときもある&lt;br&gt;&amp;nbsp; - Frame数が少ないときかつ、どのカメラ位置・姿勢も固定しない状況でうまく行く&lt;br&gt;&amp;nbsp; - 固定なしでは、5Frameくらいまでは収束する場合あり&lt;br&gt;&amp;nbsp; - 固定ありでは、2Frameでも発散する&lt;br&gt;&lt;br&gt;2. 考えられる原因&lt;br&gt;&amp;nbsp; - BAの計算に問題あり&lt;br&gt;&amp;nbsp; - 入力データのOutlierが多すぎる&lt;br&gt;&amp;nbsp; - BAがOutlierを扱えていない&lt;br&gt;&amp;nbsp; - BAの基準位置など、扱いがよくわからない&lt;br&gt;&amp;nbsp; &amp;nbsp; - cam0の位置のみ固定、cam1のX座標のみ固定でいいの？&lt;br&gt;&lt;br&gt;3. アクションアイテム&lt;br&gt;&amp;nbsp; - Outlierが少ない or ばらつき度を調整できるデータセットを利用して現状のBA実装が正しいか確認する&lt;br&gt;&amp;nbsp; &amp;nbsp; - BA実装の正しさ検討 =&amp;gt; 今後も使いそう&lt;br&gt;&amp;nbsp; - もう一回、BAの処理、特にどのカメラのどのパラメータを固定するのか？を調べてみる&lt;br&gt;&amp;nbsp; &amp;nbsp; - これは絶対必要かも&lt;br&gt;&amp;nbsp; - Ceres-solverなど利用して、現状のアルゴリズムを自分の特徴点に適用してどこまでBAできるか確認する&lt;br&gt;&amp;nbsp; &amp;nbsp; - 特徴点クオリティの検証 =&amp;gt; ベンチマークは必要なので、これも今後使うでしょう" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="Z6NOpVzWMivuuzvYCPRy-1" vertex="1">
-          <mxGeometry x="580" y="780" width="590" height="290" as="geometry" />
+        <mxCell id="bDo8n21ecWqytJqypdnO-0" value="・現状 2020/03/15 ~&lt;br&gt;1. BAが行けそうなときもあれば、だめなときもある&lt;br&gt;&amp;nbsp; - Frame数が少ないときかつ、どのカメラ位置・姿勢も固定しない状況でうまく行く&lt;br&gt;&amp;nbsp; - 固定なしでは、5Frameくらいまでは収束する場合あり&lt;br&gt;&amp;nbsp; - 固定ありでは、2Frameでも発散する&lt;br&gt;&lt;br&gt;2. 考えられる原因&lt;br&gt;&amp;nbsp; - BAの計算に問題あり&lt;br&gt;&amp;nbsp; - 入力データのOutlierが多すぎる&lt;br&gt;&amp;nbsp; - BAがOutlierを扱えていない&lt;br&gt;&amp;nbsp; - BAの基準位置など、扱いがよくわからない&lt;br&gt;&amp;nbsp; &amp;nbsp; - cam0の位置のみ固定、cam1のX座標のみ固定でいいの？&lt;br&gt;&lt;br&gt;3. アクションアイテム&lt;br&gt;&amp;nbsp; - Outlierが少ない or ばらつき度を調整できるデータセットを利用して現状のBA実装が正しいか確認する&lt;br&gt;&amp;nbsp; &amp;nbsp; - BA実装の正しさ検討 =&amp;gt; 今後も使いそう&lt;br&gt;&amp;nbsp; - もう一回、BAの処理、特にどのカメラのどのパラメータを固定するのか？を調べてみる&lt;br&gt;&amp;nbsp; &amp;nbsp; - これは絶対必要かも&lt;br&gt;&amp;nbsp; - Ceres-solverなど利用して、現状のアルゴリズムを自分の特徴点に適用してどこまでBAできるか確認する&lt;br&gt;&amp;nbsp; &amp;nbsp; - 特徴点クオリティの検証 =&amp;gt; ベンチマークは必要なので、これも今後使うでしょう" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="Z6NOpVzWMivuuzvYCPRy-1" vertex="1">
+          <mxGeometry x="1540" y="-20" width="590" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="Xjn844bMgy6ggwobFmQN-0" value="・現状 2020/03/29 ~&lt;br&gt;&lt;br&gt;- BAのSchur complementを利用した一番基本的な実装は完了&lt;br&gt;&lt;br&gt;&lt;br&gt;問題点&lt;br&gt;&lt;br&gt;- Robust loss functionなし&lt;br&gt;- BAが大規模になると計算が遅い&lt;br&gt;- 逐次的なBAといったことができていない&lt;br&gt;- 第二Frameの固定要素をその場で変更することができない&amp;nbsp;&lt;br&gt;&lt;br&gt;アクションアイテム&lt;br&gt;&lt;br&gt;- Robust loss functionについて調査、実装 &amp;lt;= 安定性&lt;br&gt;- 第二FrameBAの拘束条件について調査、実装 &amp;lt;= 安定性&lt;br&gt;- BA計算のパフォーマンスプロファイル &amp;lt;= パフォーマンス&lt;br&gt;- 逐次的BAの調査と実装 &amp;lt;= パフォーマンス&lt;br&gt;&lt;br&gt;&lt;br&gt;方針として、&lt;br&gt;処理速度系、処理のロバスト性はあとにまわしにする？&lt;br&gt;SLAM処理を一通り実装することを考えてみる？&lt;br&gt;これをまず、シミュレータデータで実行できるようにしてみるか？&lt;br&gt;&lt;br&gt;SLAMを一通り実装するということで、やってみよう。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="2150" y="-70" width="370" height="370" as="geometry" />
+        </mxCell>
+        <mxCell id="Xjn844bMgy6ggwobFmQN-3" value="今月ラストのTODO&lt;br&gt;・SLAM処理の実装&lt;br&gt;&lt;br&gt;１．処理フローの明確化&lt;br&gt;２．アウトライア処理の明確化&lt;br&gt;３．実装" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="2600" y="145" width="180" height="90" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
@@ -1714,7 +1720,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="iIPd8IjxcRB76P1LncRC" name="BA by sim data">
-    <mxGraphModel dx="1359" dy="801" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="1m83kBLZCn7dSd2Zu7lu-0" />
         <mxCell id="1m83kBLZCn7dSd2Zu7lu-1" parent="1m83kBLZCn7dSd2Zu7lu-0" />
@@ -1722,7 +1728,7 @@
           <mxGeometry x="15" y="17" width="270" height="20" as="geometry" />
         </mxCell>
         <mxCell id="qDsqVKfoiEcqwGMa43i2-0" value="結果&lt;br&gt;&lt;br&gt;&lt;div&gt;&amp;nbsp;* ## 結果として&lt;/div&gt;&lt;div&gt;&amp;nbsp;* それなりに安定して収束するようになった。変更点は以下の通り。&lt;/div&gt;&lt;div&gt;&amp;nbsp;* - Quaternionの正規化を導入&lt;/div&gt;&lt;div&gt;&amp;nbsp;*&amp;nbsp; &amp;nbsp;- カメラ位置・姿勢を示すピラミッドの形がおかしくなっていることから、回転行列かQuaternionの、SO3でなくなっていることを疑ったことからの施策。&lt;/div&gt;&lt;div&gt;&amp;nbsp;* - 変数の固定を行うようにした。&lt;/div&gt;&lt;div&gt;&amp;nbsp;*&amp;nbsp; &amp;nbsp;- 固定変数は、第一観測Frameの位置、姿勢、第二観測Frameの位置を示すどれかの要素（現状はX成分）。&lt;/div&gt;&lt;div&gt;&amp;nbsp;* - 固定変数に対応したJacobianの値を0にするようにした。&lt;/div&gt;&lt;div&gt;&amp;nbsp;*&amp;nbsp; &amp;nbsp;- 変数を更新しないだけではだめで、対応したJacobianもきちっと0にしないと計算が安定しないぽい。安定するときもあったので場合による。&lt;/div&gt;&lt;div&gt;&amp;nbsp;* - Hessianの対角成分に定数を足すようにした。&lt;/div&gt;&lt;div&gt;&amp;nbsp;*&amp;nbsp; &amp;nbsp;- 対角成分の大きさで収束速度をコントロールできるらしいので、100を足すようにして収束速度を緩やかにした。&lt;/div&gt;&lt;div&gt;&amp;nbsp;*&amp;nbsp; &amp;nbsp;- LM法を使って、アダプティブに収束速度をコントロールするようにしたほうがいいぽい？計算量が増えるのかな？と思っていたがむしろ減るのかもしれない。&lt;/div&gt;&lt;div&gt;&amp;nbsp;*&lt;/div&gt;&lt;div&gt;&amp;nbsp;* ## 現状の実装の問題点&lt;/div&gt;&lt;div&gt;&amp;nbsp;* - 観測数とランドマーク数を比較して少ない方に対してSchur complementをスイッチするなどの実装になっていない&lt;/div&gt;&lt;div&gt;&amp;nbsp;* - 連立方程式を解くときに逆行列計算を行ってしまっている&lt;/div&gt;&lt;div&gt;&amp;nbsp;*&amp;nbsp; &amp;nbsp;- 今試したら、Eigen::SimplicialLLT(こっちのほうが安定している), Eigen::SimplicialLDLT(収束しない場合あり、ちょっと計算が早い？)双方ともに計算は可能なことがわかった。&lt;/div&gt;&lt;div&gt;&amp;nbsp;*&amp;nbsp; &amp;nbsp;- おそらく、Quaternionがおかしくなることで回転行列が対角化されていなかったことが計算できなかった原因ではないか？&lt;/div&gt;&lt;div&gt;&amp;nbsp;* - Robust loss functionによる実装になっておらずOutlierに弱そう&lt;/div&gt;&lt;div&gt;&amp;nbsp;* - BA対象が大規模になると計算が遅くなる。どの部分がボトルネックかは計測できていない。&lt;/div&gt;&lt;div&gt;&amp;nbsp;* - 静的BAのみを行っており、逐次BAを行うSLAMにはなっていない。&lt;/div&gt;&lt;div&gt;&amp;nbsp;* - 変数固定に対して、第二Frameの固定要素を状況に応じて決められていない。&lt;/div&gt;&lt;div&gt;&amp;nbsp;*&amp;nbsp; &amp;nbsp;- 実際は一番動いてい方向に対して、拘束をかけるべき。だが、現状はX,Y,Zどれかの成分に対して決め打ちでの拘束をかけるのみになっている。&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1m83kBLZCn7dSd2Zu7lu-1">
-          <mxGeometry x="20" y="60" width="980" height="340" as="geometry" />
+          <mxGeometry x="40" y="90" width="980" height="340" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
