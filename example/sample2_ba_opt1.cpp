@@ -366,8 +366,8 @@ int main() {
           std::unordered_map<uint64_t, vislam::data::frame> opt_database_frame;
           std::unordered_map<uint64_t, vislam::data::landmark> opt_database_landmark;
           vislam::ba::ba_pre::do_the_ba(
-              ba_database_frame,
-//                            database_frame,
+//              ba_database_frame,
+              database_frame,
               database_landmark,
               opt_database_frame,
               opt_database_landmark);
