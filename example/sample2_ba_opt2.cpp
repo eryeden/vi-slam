@@ -176,14 +176,33 @@ class load_and_detect_frame_vio_simulation : public frame_loader_base {
 int main() {
 
   load_and_detect_frame_euroc loader("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.1, 0.1);
-  for (size_t frame_index = 0; frame_index < loader.get_frame_number(); frame_index++) {
-    auto frame = loader.get_frame();
 
-    cv::Mat current_frame = loader.get_current_image();
+  LogPlayer_vio_dataset::frame_database_t frame_database;
+  LogPlayer_vio_dataset::landmark_database_t landmark_database;
+
+  for (size_t frame_index = 0; frame_index < loader.get_frame_number(); frame_index++) {
+    auto frame = loader.get_frame();  // 特徴点の検出追跡、読み取りなど
+    cv::Mat current_frame = loader.get_current_image(); // 今回の画像
+    frame_database[frame.id] = frame; // 観測フレームのデータベースに登録する
+
+    // ランドマークデータベースに今回のFrameで検出したものを登録する
+    for (const auto &[landmark_id, landmark_position] : frame.observingFeaturePointInDevice) {
+      if (landmark_database.count(landmark_id) != 0) { // databaseに登録済みの場合
+        landmark_database[landmark_id].isTracking = true;
+        landmark_database[landmark_id].observedFrameId.emplace(frame.id);
+      } else { // databaseに登録なしの場合
+        landmark_database[landmark_id] = vislam::data::landmark(landmark_id,
+                                                                {frame.id},
+                                                                {0, 0, 0},
+                                                                false,
+                                                                true,
+                                                                false);
+      }
+    }
+
     for (const auto&[id, p]: frame.observingFeaturePointInDevice) {
       cv::circle(current_frame, cv::Point(p(0), p(1)), 1, cv::Scalar(0, 255, 255), 1);
     }
-
     cv::imshow("current", current_frame);
     cv::waitKey(30);
   }
