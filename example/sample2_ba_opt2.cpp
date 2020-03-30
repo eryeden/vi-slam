@@ -173,41 +173,253 @@ class load_and_detect_frame_vio_simulation : public frame_loader_base {
   }
 };
 
+/**
+ * @brief LandmarkをFrameの観測情報に従って更新する
+ * @param landmark_database
+ * @param input_frame
+ */
+void update_landmark_database(LogPlayer_vio_dataset::landmark_database_t &landmark_database,
+                              const vislam::data::frame &input_frame) {
+  // ランドマークデータベースに今回のFrameで検出したものを登録する
+  for (const auto &[landmark_id, landmark_position] : input_frame.observingFeaturePointInDevice) {
+    if (landmark_database.count(landmark_id) != 0) { // databaseに登録済みの場合
+      landmark_database[landmark_id].isTracking = true;
+      landmark_database[landmark_id].observedFrameId.emplace(input_frame.id);
+    } else {
+      // databaseに登録なしの場合
+      landmark_database[landmark_id] = vislam::data::landmark(landmark_id,
+                                                              {input_frame.id},
+                                                              {0, 0, 0},
+                                                              false,
+                                                              true,
+                                                              false);
+    }
+  }
+}
+
+bool try_initialize_system(LogPlayer_vio_dataset::frame_database_t &frame_database,
+                           LogPlayer_vio_dataset::landmark_database_t &landmark_database,
+                           uint64_t latest_frame_index,
+                           double match_rate_threshold) {
+  if (frame_database.size() < 2) {
+    return false;
+  }
+  const auto &reference_frame = frame_database[1];
+  const auto &current_frame = frame_database[latest_frame_index];
+  std::vector<vislam::data::landmark> localized_landmarks;
+  vislam::Vec3_t initialized_position_current_frame;
+  vislam::Quat_t initialized_attitude_current_frame;
+  double match_rate = initializer::utils::initialize_feature_points(reference_frame, current_frame,
+                                                                    localized_landmarks,
+                                                                    initialized_position_current_frame,
+                                                                    initialized_attitude_current_frame);
+  std::cout << "Match rate: " << match_rate << std::endl;
+
+  if (match_rate > match_rate_threshold) {
+    std::cout << "Initialized. Match rate : " << match_rate << std::endl;
+
+    /**
+     * @brief 特徴点の観測情報を更新する
+     * @details
+     * ここではLandmark databaseの位置情報、初期化情報などを更新している。
+     * なので、次からはLandmarkDatabaseを参照することで初期化結果を利用できる
+     */
+    for (const auto &lm :  localized_landmarks) {
+      auto &related_landmark = landmark_database[lm.id];
+      related_landmark.isTracking = lm.isTracking;
+      related_landmark.isOutlier = lm.isOutlier;
+      related_landmark.isInitialized = lm.isInitialized;
+      related_landmark.positionInWorld = lm.positionInWorld;
+      related_landmark.id = lm.id;
+    }
+
+    /**
+     * @brief 今回の初期化フレームの位置を設定する
+     */
+    auto &ref_ref_frame = frame_database[1];
+    ref_ref_frame.cameraPosition = vislam::Vec3_t(0, 0, 0);
+    ref_ref_frame.cameraAttitude = vislam::Quat_t(vislam::Mat33_t::Identity());
+    auto &ref_current_frame = frame_database[latest_frame_index];
+    ref_current_frame.cameraPosition = initialized_position_current_frame;
+    ref_current_frame.cameraAttitude = initialized_attitude_current_frame;
+
+    /**
+     * いままでのFramePoseを初期化する。初期化できたLandmark位置からPNPでPoseを求める
+     */
+    for (size_t initializing_frame_index = 2; initializing_frame_index < latest_frame_index;
+         initializing_frame_index++) {
+      auto &tmp_frame = frame_database[initializing_frame_index];
+      vislam::Vec3_t tmp_translation;
+      vislam::Quat_t tmp_rotation;
+      initializer::utils::estimate_frame_pose_pnp(tmp_frame, landmark_database, tmp_translation, tmp_rotation);
+      tmp_frame.cameraPosition = tmp_translation;
+      tmp_frame.cameraAttitude = tmp_rotation;
+    }
+
+    /**
+     * @brief ここまでのFrameと初期化できたLandmarkでBAを実施する
+     */
+    std::unordered_map<uint64_t, vislam::data::frame> ba_database_frame;
+    ba_database_frame[1] = frame_database[1];
+    ba_database_frame[latest_frame_index] = frame_database[latest_frame_index];
+    std::vector<vislam::ba::ba_observation> selected_observation_database;
+    std::vector<uint64_t> selected_landmark_id;
+
+    //! Do the BA
+    std::unordered_map<uint64_t, vislam::data::frame> opt_database_frame;
+    std::unordered_map<uint64_t, vislam::data::landmark> opt_database_landmark;
+    vislam::ba::ba_pre::do_the_ba(
+        ba_database_frame,
+        landmark_database,
+        opt_database_frame,
+        opt_database_landmark);
+    for (const auto&[id, f]:opt_database_frame) {
+      frame_database[id] = f;
+    }
+    for (const auto&[id, l]:opt_database_landmark) {
+      landmark_database[id] = l;
+    }
+    return true;
+  }
+
+  return false;
+}
+
 int main() {
 
-//  std::string path_to_log_dir = "/home/ery/Downloads/V1_01_easy/mav0/cam0";
-  std::string path_to_log_dir = "/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0";
+  std::string path_to_log_dir = "/home/ery/Downloads/V1_01_easy/mav0/cam0";
+//  std::string path_to_log_dir = "/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0";
   load_and_detect_frame_euroc loader(path_to_log_dir, 0.1, 0.1);
 
   LogPlayer_vio_dataset::frame_database_t frame_database;
   LogPlayer_vio_dataset::landmark_database_t landmark_database;
 
+  bool is_initialized = false;
+
+  cv::viz::Viz3d myWindow("Coordinate Frame");
+  myWindow.showWidget("Coordinate Widget", cv::viz::WCoordinateSystem());
+
+  /**
+   * @brief Dummyで一回回す
+   */
+  loader.get_frame();
+
   for (size_t frame_index = 0; frame_index < loader.get_frame_number(); frame_index++) {
+    /**
+     * @brief Landmark検出、トラッキング、データベースのアップデート
+     */
     auto frame = loader.get_frame();  // 特徴点の検出追跡、読み取りなど
     cv::Mat current_frame = loader.get_current_image(); // 今回の画像
     frame_database[frame.id] = frame; // 観測フレームのデータベースに登録する
+    update_landmark_database(landmark_database, frame); // ランドマークデータベースに今回のFrameで検出したものを登録する
 
-    // ランドマークデータベースに今回のFrameで検出したものを登録する
-    for (const auto &[landmark_id, landmark_position] : frame.observingFeaturePointInDevice) {
-      if (landmark_database.count(landmark_id) != 0) { // databaseに登録済みの場合
-        landmark_database[landmark_id].isTracking = true;
-        landmark_database[landmark_id].observedFrameId.emplace(frame.id);
-      } else {
-        // databaseに登録なしの場合
-        landmark_database[landmark_id] = vislam::data::landmark(landmark_id,
-                                                                {frame.id},
-                                                                {0, 0, 0},
-                                                                false,
-                                                                true,
-                                                                false);
+    /**
+     * @brief BAプロセス
+     */
+    if (!is_initialized) {
+      // 最初のフレームを初期化していない場合
+      if (try_initialize_system(frame_database, landmark_database, frame_index, 0.5)) {
+        is_initialized = true;
+      }
+    } else {
+      // 初期化が完了している場合
+      /**
+       * @brief 1. current frameの位置、姿勢を初期化
+       */
+      vislam::Vec3_t position_current_frame;
+      vislam::Quat_t attitude_current_frame;
+      initializer::utils::estimate_frame_pose_pnp(frame,
+                                                  landmark_database,
+                                                  position_current_frame,
+                                                  attitude_current_frame);
+      //! p3pで計算した現在フレームの位置をDataBaseに登録する
+      frame_database[frame_index].cameraPosition = position_current_frame;
+      frame_database[frame_index].cameraAttitude = attitude_current_frame;
+
+      /**
+       * @brief 2. Landmark位置の初期化を実施する
+       * @details
+       * 基本、初期化（２視点から観測されている特徴点位置を三角測量で求める）は次の条件の特徴点に対して実施する。
+       * - 初期化されていない
+       * - 2 Frame以上観測されている
+       * - 観測されているフレームの最大視差が、ある値以上になっている
+       * - 今回のフレームで観測されている
+       */
+      auto initialized_landmark =
+          initializer::utils::extract_and_triangulate_initializable_landmark(10.0 * M_PI / 180.0,
+                                                                             frame_index,
+                                                                             frame_database,
+                                                                             landmark_database);
+      for (const auto &[landmark_id, landmark_data] : initialized_landmark) {
+        landmark_database[landmark_id] = landmark_data; //! データベースに初期化済みLandmarkを登録
+      }
+
+      /**
+       * @brief BAを実施する
+       */
+      if (frame_index % 5 == 0) {
+        std::unordered_map<uint64_t, vislam::data::frame> ba_database_frame;
+        int32_t ba_window_size = 3; // このフレーム数を使ってLocal baを実施する
+        int32_t ba_window_skip = 3;
+        for (int32_t ba_rollback_index = 0; ba_rollback_index < ba_window_size; ba_rollback_index += ba_window_skip) {
+          ba_database_frame[frame_index - ba_rollback_index] = frame_database[frame_index - ba_rollback_index];
+        }
+        ba_database_frame[1] = frame_database[1];
+        std::vector<vislam::ba::ba_observation> selected_observation_database;
+        std::vector<uint64_t> selected_landmark_id;
+        std::unordered_map<uint64_t, vislam::data::frame> opt_database_frame;
+        std::unordered_map<uint64_t, vislam::data::landmark> opt_database_landmark;
+        vislam::ba::ba_pre::do_the_ba(
+            ba_database_frame,
+            landmark_database,
+            opt_database_frame,
+            opt_database_landmark);
+        for (const auto&[id, f]:opt_database_frame) {
+          frame_database[id] = f;
+        }
+        for (const auto&[id, l]:opt_database_landmark) {
+          landmark_database[id] = l;
+        }
       }
     }
 
+
+    /**
+     * @brief カメラ位置、Landmark位置を描画
+     */
+    // 特徴点位置を描画
+    std::vector<cv::Point3d> pointCloud;
+    for (auto &[landmark_id, localized_landmark] : landmark_database) {
+      pointCloud.emplace_back(
+          cv::Point3d(localized_landmark.positionInWorld[0],
+                      localized_landmark.positionInWorld[1],
+                      localized_landmark.positionInWorld[2]));
+    }
+    cv::viz::WCloud cloud(pointCloud);
+    myWindow.showWidget("CLOUD", cloud);
+
+    for (const auto&[frame_id, frame] : frame_database) {
+      cv::Matx33d cv_intrinsic_matrix;
+      cv::eigen2cv(loader.get_camera_parameter().get_intrinsic_matrix(), cv_intrinsic_matrix);
+      cv::viz::WCameraPosition tmp_wcamera(cv_intrinsic_matrix, 1.0, cv::viz::Color::magenta());
+      cv::Mat tmp_camera_attitude;
+      cv::eigen2cv(frame.cameraAttitude.toRotationMatrix(), tmp_camera_attitude);
+      cv::Affine3d tmp_cam_pose(tmp_camera_attitude,
+                                cv::Vec3f(frame.cameraPosition[0], frame.cameraPosition[1], frame.cameraPosition[2]));
+      myWindow.showWidget(std::to_string(frame_id), tmp_wcamera, tmp_cam_pose);
+    }
+
+
+    /**
+     * @brief 特徴点の描画
+     */
     for (const auto&[id, p]: frame.observingFeaturePointInDevice) {
       cv::circle(current_frame, cv::Point(p(0), p(1)), 1, cv::Scalar(0, 255, 255), 1);
     }
     cv::imshow("current", current_frame);
-    cv::waitKey(30);
+
+    myWindow.spinOnce(1);
+    cv::waitKey(1);
   }
 }
 

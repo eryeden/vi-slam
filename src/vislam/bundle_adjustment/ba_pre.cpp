@@ -451,6 +451,7 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
     }
     mean_reprojection_error = mean_reprojection_error / number_of_obervation;
     std::cout << "Idx : " << i << ", " << mean_reprojection_error << std::endl;
+    if (mean_reprojection_error < 1.6) { break; }
 
     //! Jacobianを計算する。満たした偏微分結果をSparseMatrixに代入する
     Eigen::SparseMatrix<double> j = vislam::ba::ba_pre::generate_jacobian(
@@ -532,10 +533,10 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
     hpp = jp.transpose() * jp;
 
     for (int64_t si = 0; si < hcc.rows(); si++) {
-      hcc.coeffRef(si, si) = hcc.coeffRef(si, si) + 10;
+      hcc.coeffRef(si, si) = hcc.coeffRef(si, si) + 1;
     }
     for (int64_t si = 0; si < hpp.rows(); si++) {
-      hpp.coeffRef(si, si) = hpp.coeffRef(si, si) + 10;
+      hpp.coeffRef(si, si) = hpp.coeffRef(si, si) + 1;
     }
 
     //@}
@@ -657,23 +658,23 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
 
 
 //        //! 表示する
-    cv::Mat cv_hcc, cv_hcp, cv_hpp, cv_s, cv_j;
-    Eigen::MatrixXd dense_hcc(hcc), dense_hcp(hcp), dense_hpp(hpp), dense_j(j.transpose());//, dense_s(S);
-    cv::eigen2cv(dense_hcc, cv_hcc);
-    cv::eigen2cv(dense_hcp, cv_hcp);
-    cv::eigen2cv(dense_hpp, cv_hpp);
-    cv::eigen2cv(dense_s, cv_s);
-    cv::eigen2cv(dense_j, cv_j);
-    cv::threshold(cv_hcc, cv_hcc, 0, 255, CV_THRESH_BINARY);
-    cv::threshold(cv_hcp, cv_hcp, 0, 255, CV_THRESH_BINARY);
-    cv::threshold(cv_hpp, cv_hpp, 0, 255, CV_THRESH_BINARY);
-    cv::threshold(cv_s, cv_s, 0, 255, CV_THRESH_BINARY);
+//    cv::Mat cv_hcc, cv_hcp, cv_hpp, cv_s, cv_j;
+//    Eigen::MatrixXd dense_hcc(hcc), dense_hcp(hcp), dense_hpp(hpp), dense_j(j.transpose());//, dense_s(S);
+//    cv::eigen2cv(dense_hcc, cv_hcc);
+//    cv::eigen2cv(dense_hcp, cv_hcp);
+//    cv::eigen2cv(dense_hpp, cv_hpp);
+//    cv::eigen2cv(dense_s, cv_s);
+//    cv::eigen2cv(dense_j, cv_j);
+//    cv::threshold(cv_hcc, cv_hcc, 0, 255, CV_THRESH_BINARY);
+//    cv::threshold(cv_hcp, cv_hcp, 0, 255, CV_THRESH_BINARY);
+//    cv::threshold(cv_hpp, cv_hpp, 0, 255, CV_THRESH_BINARY);
+//    cv::threshold(cv_s, cv_s, 0, 255, CV_THRESH_BINARY);
 //
-    cv::imshow("Hcc", cv_hcc);
-    cv::imshow("Hcp", cv_hcp);
-    cv::imshow("Hpp", cv_hpp);
-    cv::imshow("S", cv_s);
-    cv::imshow("J", cv_j);
+//    cv::imshow("Hcc", cv_hcc);
+//    cv::imshow("Hcp", cv_hcp);
+//    cv::imshow("Hpp", cv_hpp);
+//    cv::imshow("S", cv_s);
+//    cv::imshow("J", cv_j);
 
 //
 //
@@ -688,27 +689,27 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
      * @brief カメラ位置、Landmark位置を描画
      */
     // 特徴点位置を描画
-    std::vector<cv::Point3d> pointCloud;
-    for (auto &[landmark_id, localized_landmark] : opt_landmark_database) {
-      pointCloud.emplace_back(
-          cv::Point3d(localized_landmark.positionInWorld[0],
-                      localized_landmark.positionInWorld[1],
-                      localized_landmark.positionInWorld[2]));
-    }
-    cv::viz::WCloud cloud(pointCloud);
-    myWindow.showWidget("CLOUD", cloud);
-
-    for (const auto&[frame_id, frame] : opt_frame_database) {
-      cv::viz::WCameraPosition tmp_wcamera(K, 1.0, cv::viz::Color::magenta());
-      cv::Mat tmp_camera_attitude;
-      cv::eigen2cv(frame.cameraAttitude.toRotationMatrix(), tmp_camera_attitude);
-      cv::Affine3d tmp_cam_pose(tmp_camera_attitude,
-                                cv::Vec3f(frame.cameraPosition[0], frame.cameraPosition[1], frame.cameraPosition[2]));
-      myWindow.showWidget(std::to_string(frame_id), tmp_wcamera, tmp_cam_pose);
-    }
+//    std::vector<cv::Point3d> pointCloud;
+//    for (auto &[landmark_id, localized_landmark] : opt_landmark_database) {
+//      pointCloud.emplace_back(
+//          cv::Point3d(localized_landmark.positionInWorld[0],
+//                      localized_landmark.positionInWorld[1],
+//                      localized_landmark.positionInWorld[2]));
+//    }
+//    cv::viz::WCloud cloud(pointCloud);
+//    myWindow.showWidget("CLOUD", cloud);
+//
+//    for (const auto&[frame_id, frame] : opt_frame_database) {
+//      cv::viz::WCameraPosition tmp_wcamera(K, 1.0, cv::viz::Color::magenta());
+//      cv::Mat tmp_camera_attitude;
+//      cv::eigen2cv(frame.cameraAttitude.toRotationMatrix(), tmp_camera_attitude);
+//      cv::Affine3d tmp_cam_pose(tmp_camera_attitude,
+//                                cv::Vec3f(frame.cameraPosition[0], frame.cameraPosition[1], frame.cameraPosition[2]));
+//      myWindow.showWidget(std::to_string(frame_id), tmp_wcamera, tmp_cam_pose);
+//    }
 
 //    myWindow.spin();
-    myWindow.spinOnce(100);
+//    myWindow.spinOnce(1);
 //    cv::waitKey(0);
 
 

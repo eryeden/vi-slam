@@ -288,7 +288,6 @@ int main() {
         const auto &reference_frame = database_frame[1]; // index:0のframeは何も入っていなかったの注意
         const auto &current_frame = database_frame[i];
         std::vector<vislam::data::landmark> localized_landmarks;
-
         vislam::Vec3_t initialized_position_current_frame;
         vislam::Quat_t initialized_attitude_current_frame;
 
