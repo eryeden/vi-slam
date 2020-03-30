@@ -175,7 +175,9 @@ class load_and_detect_frame_vio_simulation : public frame_loader_base {
 
 int main() {
 
-  load_and_detect_frame_euroc loader("/home/ery/Downloads/V1_01_easy/mav0/cam0", 0.1, 0.1);
+//  std::string path_to_log_dir = "/home/ery/Downloads/V1_01_easy/mav0/cam0";
+  std::string path_to_log_dir = "/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0";
+  load_and_detect_frame_euroc loader(path_to_log_dir, 0.1, 0.1);
 
   LogPlayer_vio_dataset::frame_database_t frame_database;
   LogPlayer_vio_dataset::landmark_database_t landmark_database;
@@ -190,7 +192,8 @@ int main() {
       if (landmark_database.count(landmark_id) != 0) { // databaseに登録済みの場合
         landmark_database[landmark_id].isTracking = true;
         landmark_database[landmark_id].observedFrameId.emplace(frame.id);
-      } else { // databaseに登録なしの場合
+      } else {
+        // databaseに登録なしの場合
         landmark_database[landmark_id] = vislam::data::landmark(landmark_id,
                                                                 {frame.id},
                                                                 {0, 0, 0},

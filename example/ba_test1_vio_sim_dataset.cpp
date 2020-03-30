@@ -110,7 +110,7 @@ int main() {
   int32_t frame_skip_size = 2;
   int32_t fcount = 0;
   for (const auto&[frame_id, frame] : input_frame_database) {
-    if ((frame_id % frame_skip_size == 0) && (frame_id <= 50)) {
+    if ((frame_id % frame_skip_size == 0) && (frame_id <= 20)) {
       noised_frame_database[frame_id] = frame;
 
       if (frame_id != 0 && frame_id != frame_skip_size) {
