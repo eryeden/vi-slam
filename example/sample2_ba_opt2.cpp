@@ -27,8 +27,12 @@
  *
  * ## 思いついたことをやってみた
  * - Feature tracking時に端っこの特徴点を使わないようにする => ちょっといい？気がするくらいであまり変わらない。
- * - アウトライアぽい点が画像の枠付近に集中していそうなことから発想したが...
- *
+ *   - アウトライアぽい点が画像の枠付近に集中していそうなことから発想したが...
+ * - 再投影誤差をベースにOutlierの排除を行った　＝＞　結構効果は大きく、ある程度きれいなランドマークマップが作れるようになった。垂直上昇は位置推定できるが、回転で破綻する。
+ *   - またすべてのFrameに対してBAをかけるほうが安定して動作する。
+ *   - 三角測量によって求める新規導入ランドマークのOutlier除去がポイントになるか？
+ *   - すべてのランドマークについてOutlier除去を行うとどこかでカメラ位置がずれたときにほとんどの特徴点がOutlier判定されPNPの対応点が取れなくなってしまう。
+ *   - 一方、新規導入ランドマークについてだけOutlier除去を行うと、完全にOutlierが除去できなくなる？？？
  *
  */
 
@@ -53,6 +57,7 @@
 #include "dense_feature_extructor.hpp"
 #include "initializer.hpp"
 #include "log_util.h"
+#include "geometry.hpp"
 
 /**
  * @brief 画像ロード、特徴点追跡、Frameとしての出力まで行うクラス
@@ -142,7 +147,7 @@ class load_and_detect_frame_euroc : public frame_loader_base {
       uint64_t current_feature_id = feature_points_current.featureIDs[index_current_feature];
       Eigen::Vector2i current_feature_position_in_device = feature_points_current.features[index_current_feature];
 
-      double pad_rate = 0.1;
+      double pad_rate = 0.05;
       cv::Point2d pad_size(camera_param.width * pad_rate, camera_param.height * pad_rate);
       cv::Rect2d padded_region
           (pad_size, cv::Size2d(camera_param.width - 2.0 * pad_size.x, camera_param.height - 2.0 * pad_size.y));
@@ -302,6 +307,19 @@ bool try_initialize_system(LogPlayer_vio_dataset::frame_database_t &frame_databa
         landmark_database,
         opt_database_frame,
         opt_database_landmark);
+
+    //! Outlier rejection
+    for (const auto&[landmark_id, landmark_position] : opt_database_frame[latest_frame_index].observingFeaturePointInDevice) {
+      // ランドマークを最新フレームに再投影し、再投影誤差が一定以上であればOutlierとして判定する
+      vislam::Vec2_t rep_error = vislam::geometry::utility::get_reprojection_error(
+          landmark_position,
+          landmark_database[landmark_id].positionInWorld,
+          opt_database_frame[latest_frame_index].cameraAttitude.toRotationMatrix(),
+          opt_database_frame[latest_frame_index].cameraPosition,
+          opt_database_frame[latest_frame_index].cameraParameter.get_intrinsic_matrix());
+      if (rep_error.norm() > 3.0) { opt_database_landmark[landmark_id].isOutlier = true; }
+    }
+
     for (const auto&[id, f]:opt_database_frame) {
       frame_database[id] = f;
     }
@@ -365,7 +383,7 @@ int main() {
       frame_database[frame_index].cameraPosition = position_current_frame;
       frame_database[frame_index].cameraAttitude = attitude_current_frame;
 
-      if (frame_index % 5 == 0) {
+      if (frame_index % 1 == 0) {
 
         /**
          * @brief 2. Landmark位置の初期化を実施する
@@ -377,7 +395,7 @@ int main() {
          * - 今回のフレームで観測されている
          */
         auto initialized_landmark =
-            initializer::utils::extract_and_triangulate_initializable_landmark(20.0 * M_PI / 180.0,
+            initializer::utils::extract_and_triangulate_initializable_landmark(10.0 * M_PI / 180.0,
                                                                                frame_index,
                                                                                frame_database,
                                                                                landmark_database);
@@ -389,8 +407,8 @@ int main() {
          * @brief 3. BAを実施する
          */
         std::unordered_map<uint64_t, vislam::data::frame> ba_database_frame;
-        int32_t ba_window_size = 3; // このフレーム数を使ってLocal baを実施する
-        int32_t ba_window_skip = 3;
+        int32_t ba_window_size = 30; // このフレーム数を使ってLocal baを実施する
+        int32_t ba_window_skip = 1;
         for (int32_t ba_rollback_index = 0; ba_rollback_index < ba_window_size; ba_rollback_index += ba_window_skip) {
           if (frame_index - ba_rollback_index >= 1) {
             ba_database_frame[frame_index - ba_rollback_index] = frame_database[frame_index - ba_rollback_index];
@@ -406,6 +424,22 @@ int main() {
             landmark_database,
             opt_database_frame,
             opt_database_landmark);
+
+        //! Outlier rejection, 新しく追加したLandmarkのみOutlier rejectionの対象にする
+        for (const auto&[landmark_id, landmark_position] : opt_database_frame[frame_index].observingFeaturePointInDevice) {
+          // ランドマークを最新フレームに再投影し、再投影誤差が一定以上であればOutlierとして判定する
+          if (initialized_landmark.count(landmark_id) != 0) {
+            vislam::Vec2_t rep_error = vislam::geometry::utility::get_reprojection_error(
+                landmark_position,
+                landmark_database[landmark_id].positionInWorld,
+                opt_database_frame[frame_index].cameraAttitude.toRotationMatrix(),
+                opt_database_frame[frame_index].cameraPosition,
+                opt_database_frame[frame_index].cameraParameter.get_intrinsic_matrix());
+            if (rep_error.norm() > 3.0) { opt_database_landmark[landmark_id].isOutlier = true; }
+
+          }
+        }
+
         for (const auto&[id, f]:opt_database_frame) {
           frame_database[id] = f;
         }
@@ -422,10 +456,12 @@ int main() {
     // 特徴点位置を描画
     std::vector<cv::Point3d> pointCloud;
     for (auto &[landmark_id, localized_landmark] : landmark_database) {
-      pointCloud.emplace_back(
-          cv::Point3d(localized_landmark.positionInWorld[0],
-                      localized_landmark.positionInWorld[1],
-                      localized_landmark.positionInWorld[2]));
+      if (!localized_landmark.isOutlier) {
+        pointCloud.emplace_back(
+            cv::Point3d(localized_landmark.positionInWorld[0],
+                        localized_landmark.positionInWorld[1],
+                        localized_landmark.positionInWorld[2]));
+      }
     }
     cv::viz::WCloud cloud(pointCloud);
     myWindow.showWidget("CLOUD", cloud);
