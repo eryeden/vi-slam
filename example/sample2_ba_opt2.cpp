@@ -25,6 +25,11 @@
  *   5. カメラのしきい値推定誤差がよりおおきくなることで、BAも収束しなくなる
  * - 初期化の時点で結構、特徴点の位置にOutlierが増えてしまっているので、ここですでに問題が起きている？？
  *
+ * ## 思いついたことをやってみた
+ * - Feature tracking時に端っこの特徴点を使わないようにする => ちょっといい？気がするくらいであまり変わらない。
+ * - アウトライアぽい点が画像の枠付近に集中していそうなことから発想したが...
+ *
+ *
  */
 
 #include <iostream>
@@ -136,9 +141,22 @@ class load_and_detect_frame_euroc : public frame_loader_base {
        */
       uint64_t current_feature_id = feature_points_current.featureIDs[index_current_feature];
       Eigen::Vector2i current_feature_position_in_device = feature_points_current.features[index_current_feature];
-      frame_current.observingFeaturePointInDevice[current_feature_id] = {current_feature_position_in_device[0],
-                                                                         current_feature_position_in_device[1]};
-      frame_current.observingFeatureId.emplace(current_feature_id);
+
+      double pad_rate = 0.1;
+      cv::Point2d pad_size(camera_param.width * pad_rate, camera_param.height * pad_rate);
+      cv::Rect2d padded_region
+          (pad_size, cv::Size2d(camera_param.width - 2.0 * pad_size.x, camera_param.height - 2.0 * pad_size.y));
+
+      /**
+       * @brief 端っこにある特徴点はつかわないようにしてみる？ ちょっといい？結局はあまり変わらないのでFeature trackerにも根本的な問題があるのだろう。
+       */
+      if (padded_region.contains(cv::Point(current_feature_position_in_device[0],
+                                           current_feature_position_in_device[1]))) {
+        frame_current.observingFeaturePointInDevice[current_feature_id] = {current_feature_position_in_device[0],
+                                                                           current_feature_position_in_device[1]};
+        frame_current.observingFeatureId.emplace(current_feature_id);
+      }
+
     }
     frame_current.cameraParameter = camera_param;
 
@@ -298,8 +316,8 @@ bool try_initialize_system(LogPlayer_vio_dataset::frame_database_t &frame_databa
 
 int main() {
 
-  std::string path_to_log_dir = "/home/ery/Downloads/V1_01_easy/mav0/cam0";
-//  std::string path_to_log_dir = "/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0";
+//  std::string path_to_log_dir = "/home/ery/Downloads/V1_01_easy/mav0/cam0";
+  std::string path_to_log_dir = "/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0";
   load_and_detect_frame_euroc loader(path_to_log_dir, 0.1, 0.1);
 
   LogPlayer_vio_dataset::frame_database_t frame_database;
@@ -347,35 +365,38 @@ int main() {
       frame_database[frame_index].cameraPosition = position_current_frame;
       frame_database[frame_index].cameraAttitude = attitude_current_frame;
 
-      /**
-       * @brief 2. Landmark位置の初期化を実施する
-       * @details
-       * 基本、初期化（２視点から観測されている特徴点位置を三角測量で求める）は次の条件の特徴点に対して実施する。
-       * - 初期化されていない
-       * - 2 Frame以上観測されている
-       * - 観測されているフレームの最大視差が、ある値以上になっている
-       * - 今回のフレームで観測されている
-       */
-      auto initialized_landmark =
-          initializer::utils::extract_and_triangulate_initializable_landmark(10.0 * M_PI / 180.0,
-                                                                             frame_index,
-                                                                             frame_database,
-                                                                             landmark_database);
-      for (const auto &[landmark_id, landmark_data] : initialized_landmark) {
-        landmark_database[landmark_id] = landmark_data; //! データベースに初期化済みLandmarkを登録
-      }
-
-      /**
-       * @brief BAを実施する
-       */
       if (frame_index % 5 == 0) {
+
+        /**
+         * @brief 2. Landmark位置の初期化を実施する
+         * @details
+         * 基本、初期化（２視点から観測されている特徴点位置を三角測量で求める）は次の条件の特徴点に対して実施する。
+         * - 初期化されていない
+         * - 2 Frame以上観測されている
+         * - 観測されているフレームの最大視差が、ある値以上になっている
+         * - 今回のフレームで観測されている
+         */
+        auto initialized_landmark =
+            initializer::utils::extract_and_triangulate_initializable_landmark(20.0 * M_PI / 180.0,
+                                                                               frame_index,
+                                                                               frame_database,
+                                                                               landmark_database);
+        for (const auto &[landmark_id, landmark_data] : initialized_landmark) {
+          landmark_database[landmark_id] = landmark_data; //! データベースに初期化済みLandmarkを登録
+        }
+
+        /**
+         * @brief 3. BAを実施する
+         */
         std::unordered_map<uint64_t, vislam::data::frame> ba_database_frame;
         int32_t ba_window_size = 3; // このフレーム数を使ってLocal baを実施する
         int32_t ba_window_skip = 3;
         for (int32_t ba_rollback_index = 0; ba_rollback_index < ba_window_size; ba_rollback_index += ba_window_skip) {
-          ba_database_frame[frame_index - ba_rollback_index] = frame_database[frame_index - ba_rollback_index];
+          if (frame_index - ba_rollback_index >= 1) {
+            ba_database_frame[frame_index - ba_rollback_index] = frame_database[frame_index - ba_rollback_index];
+          }
         }
-        ba_database_frame[1] = frame_database[1];
+//        ba_database_frame[1] = frame_database[1];
         std::vector<vislam::ba::ba_observation> selected_observation_database;
         std::vector<uint64_t> selected_landmark_id;
         std::unordered_map<uint64_t, vislam::data::frame> opt_database_frame;

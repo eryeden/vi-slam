@@ -45,6 +45,7 @@ void dense_feature_extructor::detect_and_track(const cv::Mat &input_color, bool 
     for (size_t i = 0; i < prev_feature.features.size(); i++) {
       cv::Point2f prev_point(prev_feature.features[i][0], prev_feature.features[i][1]);
 
+
       bool is_inside = utils::warp_point(prev_point, dominant_affine, input_color.size(), prev_point);
 
       if (is_inside) {
