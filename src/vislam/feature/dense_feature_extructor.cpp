@@ -61,6 +61,7 @@ void dense_feature_extructor::detect_and_track(const cv::Mat &input_color, bool 
 //    features.emplace_back(initialize_features(outimg, current_feature, 10, 10, 3000));
 //    features.emplace_back(initialize_features(outimg, current_feature, 10, 10, 1000));
     features.emplace_back(initialize_features(outimg, current_feature, 10, 10, 300));
+//    features.emplace_back(initialize_features(outimg, current_feature, 10, 10, 300));
   }
 
   is_initialize = false;

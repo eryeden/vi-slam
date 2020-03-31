@@ -431,6 +431,7 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
   /**
    * @brief Do the BA. ひとまず、１００回くらい計算してみる
    */
+  double previous_reprojection_error = 0;
   for (int i = 0; i < 100; i++) {
     //! 各Frameに観測されいているLandmarkの偏微分計算を実施、変数に偏微分結果を満たす
     vislam::ba::ba_pre::fill_derivatives(
@@ -451,7 +452,9 @@ void vislam::ba::ba_pre::do_the_ba(const std::unordered_map<uint64_t, data::fram
     }
     mean_reprojection_error = mean_reprojection_error / number_of_obervation;
     std::cout << "Idx : " << i << ", " << mean_reprojection_error << std::endl;
-    if (mean_reprojection_error < 1.6) { break; }
+    if (std::abs(previous_reprojection_error - mean_reprojection_error) < 0.1) { break; }
+    previous_reprojection_error = mean_reprojection_error;
+//    if (mean_reprojection_error < 1.6) { break; }
 
     //! Jacobianを計算する。満たした偏微分結果をSparseMatrixに代入する
     Eigen::SparseMatrix<double> j = vislam::ba::ba_pre::generate_jacobian(

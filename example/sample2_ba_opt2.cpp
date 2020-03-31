@@ -334,8 +334,8 @@ bool try_initialize_system(LogPlayer_vio_dataset::frame_database_t &frame_databa
 
 int main() {
 
-//  std::string path_to_log_dir = "/home/ery/Downloads/V1_01_easy/mav0/cam0";
-  std::string path_to_log_dir = "/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0";
+  std::string path_to_log_dir = "/home/ery/Downloads/V1_01_easy/mav0/cam0";
+//  std::string path_to_log_dir = "/e/subspace/tmp/tmp/V1_01_easy/mav0/cam0";
   load_and_detect_frame_euroc loader(path_to_log_dir, 0.1, 0.1);
 
   LogPlayer_vio_dataset::frame_database_t frame_database;
@@ -395,7 +395,7 @@ int main() {
          * - 今回のフレームで観測されている
          */
         auto initialized_landmark =
-            initializer::utils::extract_and_triangulate_initializable_landmark(10.0 * M_PI / 180.0,
+            initializer::utils::extract_and_triangulate_initializable_landmark(20.0 * M_PI / 180.0,
                                                                                frame_index,
                                                                                frame_database,
                                                                                landmark_database);
@@ -407,8 +407,8 @@ int main() {
          * @brief 3. BAを実施する
          */
         std::unordered_map<uint64_t, vislam::data::frame> ba_database_frame;
-        int32_t ba_window_size = 30; // このフレーム数を使ってLocal baを実施する
-        int32_t ba_window_skip = 1;
+        int32_t ba_window_size = 10; // このフレーム数を使ってLocal baを実施する
+        int32_t ba_window_skip = 2;
         for (int32_t ba_rollback_index = 0; ba_rollback_index < ba_window_size; ba_rollback_index += ba_window_skip) {
           if (frame_index - ba_rollback_index >= 1) {
             ba_database_frame[frame_index - ba_rollback_index] = frame_database[frame_index - ba_rollback_index];
@@ -435,7 +435,7 @@ int main() {
                 opt_database_frame[frame_index].cameraAttitude.toRotationMatrix(),
                 opt_database_frame[frame_index].cameraPosition,
                 opt_database_frame[frame_index].cameraParameter.get_intrinsic_matrix());
-            if (rep_error.norm() > 3.0) { opt_database_landmark[landmark_id].isOutlier = true; }
+            if (rep_error.norm() > 2.0) { opt_database_landmark[landmark_id].isOutlier = true; }
 
           }
         }
