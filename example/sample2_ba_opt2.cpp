@@ -54,6 +54,11 @@
  * - BA対象Frame、Landmarkの選択方法
  * - Motion only BAなど導入しているのか
  *
+ * ## SLAM調査について
+ * - PTAMやOrbSLAMなどレジェンドSLAMを調査するのも良いかと思ったが、Kimera-VIOやDSM, VINS-Monoといった新しめのSLAMから見てみるのも良いと思う。
+ * - OrbSLAMなどはかなり複雑なことをしていて、もしかしたらよりシンプルな方法で同等の性能を確保できるかもしれない。
+ * - 新しめのSLAMではそういった観点からの改良があるかもしれないという仮定から、新しめSLAMのチェックを行いたい。
+ *
  */
 
 #include <iostream>
