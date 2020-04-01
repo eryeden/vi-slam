@@ -58,7 +58,7 @@
  * - PTAMやOrbSLAMなどレジェンドSLAMを調査するのも良いかと思ったが、Kimera-VIOやDSM, VINS-Monoといった新しめのSLAMから見てみるのも良いと思う。
  * - OrbSLAMなどはかなり複雑なことをしていて、もしかしたらよりシンプルな方法で同等の性能を確保できるかもしれない。
  * - 新しめのSLAMではそういった観点からの改良があるかもしれないという仮定から、新しめSLAMのチェックを行いたい。
- *
+ * - とくにKimera-VIOではPose graph optimizerに新しめ？のOutlier rejectionをつかっているぽいので、ここはチェックしたい。（論文から引っ張ってきているそうなので、Outlier rejcection業界があるのかもしれない）
  */
 
 #include <iostream>
