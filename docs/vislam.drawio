@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-04-02T14:13:17.178Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="yAHIHOqXSUAq3dfMdFpf" version="12.8.5" type="github" pages="9">
+<mxfile host="app.diagrams.net" modified="2020-04-02T14:19:49.977Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="C8me_YVhB7gv9542siyP" version="12.8.5" type="github" pages="9">
   <diagram id="C0SdsD_nAt9h8TD434q8" name="Overview">
-    <mxGraphModel dx="4530" dy="4149" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="1941" dy="2446" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="Z6NOpVzWMivuuzvYCPRy-0" />
         <mxCell id="Z6NOpVzWMivuuzvYCPRy-1" parent="Z6NOpVzWMivuuzvYCPRy-0" />
@@ -1086,10 +1086,16 @@
     </mxGraphModel>
   </diagram>
   <diagram id="gYt-kNr8TNj3UCJnbCDi" name="SLAM review">
-    <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="772" dy="1052" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="8Ve2FICi1vhbB5q_is0G-0" />
         <mxCell id="8Ve2FICi1vhbB5q_is0G-1" parent="8Ve2FICi1vhbB5q_is0G-0" />
+        <mxCell id="2-03rl0-bNwFNzJhQnTb-0" value="下記要素に大きな課題あり&lt;br&gt;既存手法からこれらについて調査を行う。&lt;br&gt;・Frame、Landmarkの選択&lt;br&gt;・Landmark位置の初期化、新規導入のポリシー&lt;br&gt;・Outlierの除去" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontColor=#001203;" vertex="1" parent="8Ve2FICi1vhbB5q_is0G-1">
+          <mxGeometry x="860" y="20" width="270" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="2-03rl0-bNwFNzJhQnTb-1" value="調査対象のSLAM&lt;br&gt;・Kimera-VIO&lt;br&gt;・" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontColor=#001203;" vertex="1" parent="8Ve2FICi1vhbB5q_is0G-1">
+          <mxGeometry x="860" y="125" width="110" height="50" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
