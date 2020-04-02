@@ -1,11 +1,11 @@
-<mxfile host="app.diagrams.net" modified="2020-04-02T13:38:19.274Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="j3-7cVPqGopJDfL_amSC" version="12.8.5" type="github" pages="8">
+<mxfile host="app.diagrams.net" modified="2020-04-02T14:12:13.817Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="PrJJHIQIvhzadOTjHw8J" version="12.8.5" type="github" pages="8">
   <diagram id="C0SdsD_nAt9h8TD434q8" name="Overview">
-    <mxGraphModel dx="1599" dy="2221" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="937" dy="1786" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="Z6NOpVzWMivuuzvYCPRy-0" />
         <mxCell id="Z6NOpVzWMivuuzvYCPRy-1" parent="Z6NOpVzWMivuuzvYCPRy-0" />
         <mxCell id="FfZRokaTNSsOa_7S9S_X-16" value="" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="Z6NOpVzWMivuuzvYCPRy-1" vertex="1">
-          <mxGeometry x="810" y="130" width="630" height="100" as="geometry" />
+          <mxGeometry x="810" y="233" width="630" height="100" as="geometry" />
         </mxCell>
         <mxCell id="Z6NOpVzWMivuuzvYCPRy-2" value="&lt;h1&gt;VI-SLAM全体&lt;/h1&gt;&lt;div&gt;&lt;span&gt;・軽量VI-SLAMの開発が目標（TrackingとSemiくらいDenseのMappingまで実装したい）&lt;br&gt;・手法ベースとしては、現状VITAMIN-E＋IMUがやりたいこと&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;・開発をするに当たって、処理モジュール個々の開発と、モジュールレベルの開発方針をパット見でわかるようにしておきたい。&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="Z6NOpVzWMivuuzvYCPRy-1" vertex="1">
           <mxGeometry x="10" y="10" width="710" height="100" as="geometry" />
@@ -131,7 +131,7 @@
           <mxGeometry x="374" y="1080" width="40" height="20" as="geometry" />
         </mxCell>
         <mxCell id="FfZRokaTNSsOa_7S9S_X-17" value="イマココ" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="Z6NOpVzWMivuuzvYCPRy-1" vertex="1">
-          <mxGeometry x="1450" y="170" width="60" height="20" as="geometry" />
+          <mxGeometry x="1450" y="270" width="60" height="20" as="geometry" />
         </mxCell>
         <mxCell id="bDo8n21ecWqytJqypdnO-0" value="・現状 2020/03/15 ~&lt;br&gt;1. BAが行けそうなときもあれば、だめなときもある&lt;br&gt;&amp;nbsp; - Frame数が少ないときかつ、どのカメラ位置・姿勢も固定しない状況でうまく行く&lt;br&gt;&amp;nbsp; - 固定なしでは、5Frameくらいまでは収束する場合あり&lt;br&gt;&amp;nbsp; - 固定ありでは、2Frameでも発散する&lt;br&gt;&lt;br&gt;2. 考えられる原因&lt;br&gt;&amp;nbsp; - BAの計算に問題あり&lt;br&gt;&amp;nbsp; - 入力データのOutlierが多すぎる&lt;br&gt;&amp;nbsp; - BAがOutlierを扱えていない&lt;br&gt;&amp;nbsp; - BAの基準位置など、扱いがよくわからない&lt;br&gt;&amp;nbsp; &amp;nbsp; - cam0の位置のみ固定、cam1のX座標のみ固定でいいの？&lt;br&gt;&lt;br&gt;3. アクションアイテム&lt;br&gt;&amp;nbsp; - Outlierが少ない or ばらつき度を調整できるデータセットを利用して現状のBA実装が正しいか確認する&lt;br&gt;&amp;nbsp; &amp;nbsp; - BA実装の正しさ検討 =&amp;gt; 今後も使いそう&lt;br&gt;&amp;nbsp; - もう一回、BAの処理、特にどのカメラのどのパラメータを固定するのか？を調べてみる&lt;br&gt;&amp;nbsp; &amp;nbsp; - これは絶対必要かも&lt;br&gt;&amp;nbsp; - Ceres-solverなど利用して、現状のアルゴリズムを自分の特徴点に適用してどこまでBAできるか確認する&lt;br&gt;&amp;nbsp; &amp;nbsp; - 特徴点クオリティの検証 =&amp;gt; ベンチマークは必要なので、これも今後使うでしょう" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="Z6NOpVzWMivuuzvYCPRy-1" vertex="1">
           <mxGeometry x="1540" y="-20" width="590" height="290" as="geometry" />
@@ -141,6 +141,9 @@
         </mxCell>
         <mxCell id="Xjn844bMgy6ggwobFmQN-3" value="今月ラストのTODO&lt;br&gt;・SLAM処理の実装&lt;br&gt;&lt;br&gt;１．処理フローの明確化 &amp;lt;= まあまあ&lt;br&gt;２．アウトライア処理の明確化 &amp;lt;= 再投影誤差ベースを使ってみた&lt;br&gt;３．実装 &amp;lt;= Outlier rejectionまで実装してみたよ" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="Z6NOpVzWMivuuzvYCPRy-1" vertex="1">
           <mxGeometry x="2650" y="209" width="370" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="-uEGIEk-221ICGybvysZ-1" value="下記要素に大きな課題あり&lt;br&gt;既存手法からこれらについて調査を行う。&lt;br&gt;・Frame、Landmarkの選択&lt;br&gt;・Landmark位置の初期化、新規導入のポリシー&lt;br&gt;・Outlierの除去" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontColor=#006911;" vertex="1" parent="Z6NOpVzWMivuuzvYCPRy-1">
+          <mxGeometry x="1160" y="249" width="270" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
