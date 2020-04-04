@@ -46,4 +46,32 @@
 
 ## `On-Manifold Preintegration for Real-Time Visual-Inertial Odometry`の内容を見てみることにする
 多分ここにいろいろ書いてあると思う。Loop closerなしで結構の精度を出しているので、参考になることは多そう。
+わからないことを注目点としてすすめる。
+
+- 問題意識：時間がたってTrajectoryのが長くなると、Real−timeのoptimizationがすぐにできなくなってしまう。この問題は、IMUの観測レートが高く、最適化対象の変数数が早く増えてしまうことからも大きな問題になってしまっている。
+
+- なので：選択したKeyFrame間のIMU観測値を事前に積分して、一つの相対的なMotion拘束条件に変換することで、「最適化対象の変数急増問題」に対処している。
+
+
+- 論文の売り１：Preintegrationのやり方提案
+  - Rotation群（Lie群）のManifold structureを正しく扱えるらしい
+  - なにをやっているかというと、IMU回転のRotation誤差を含めるような観測値生成モデルについて検討して、事後生起確率？を最大化する状態推定器を導いている。
+  - これによって、解析的にヤコビアンと事後バイアス補正量？の計算ができるようになる。
+- 論文の売り２：このPrinegration IMUモデルが、シームレスにVIOパイプラインに、Factor graphのフレームワークで組み込むことができることを示したこと。
+  - これによって、`incremental-smoothing algorithms`をやれるし、
+  - `structureless model`というもの扱えるようになる；全Feature pointを使う必要はなくなる？
+
+### Intro読んでみて
+IMUをFactor graph構造に組み込む方法が論文のメインになっているように見える。
+IMUはひとまずおいておく、これ以外の部分について重点的に読み込む。
+
+
+### わからないこと
+- IMU系
+  - Lie群？のManihold structureとは？
+  - Incremental smoothing algorithmとは？
+  - Structure less modelとは？
+
+
+
 
