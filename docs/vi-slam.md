@@ -48,6 +48,16 @@
 多分ここにいろいろ書いてあると思う。Loop closerなしで結構の精度を出しているので、参考になることは多そう。
 わからないことを注目点としてすすめる。
 
+```
+C. Forster, L. Carlone, F. Dellaert, and D. Scaramuzza, “On-manifold
+preintegration theory for fast and accurate visual-inertial navigation,”
+IEEE Trans. Robotics, vol. 33, no. 1, pp. 1–21, 2017, arxiv preprint:
+1512.02363, (pdf), technical report GT-IRIM-CP&R-2015-001
+```
+
+
+### Abst
+
 - 問題意識：時間がたってTrajectoryのが長くなると、Real−timeのoptimizationがすぐにできなくなってしまう。この問題は、IMUの観測レートが高く、最適化対象の変数数が早く増えてしまうことからも大きな問題になってしまっている。
 
 - なので：選択したKeyFrame間のIMU観測値を事前に積分して、一つの相対的なMotion拘束条件に変換することで、「最適化対象の変数急増問題」に対処している。
@@ -59,11 +69,72 @@
   - これによって、解析的にヤコビアンと事後バイアス補正量？の計算ができるようになる。
 - 論文の売り２：このPrinegration IMUモデルが、シームレスにVIOパイプラインに、Factor graphのフレームワークで組み込むことができることを示したこと。
   - これによって、`incremental-smoothing algorithms`をやれるし、
-  - `structureless model`というもの扱えるようになる；全Feature pointを使う必要はなくなる？
+  - `structureless model`というもの扱えるようになる；全Feature pointを使う必要はなくなる？し計算時間が短くなる。
 
-### Intro読んでみて
+**Abst読んでみて**
 IMUをFactor graph構造に組み込む方法が論文のメインになっているように見える。
 IMUはひとまずおいておく、これ以外の部分について重点的に読み込む。
+
+### Intro
+いままであった、精度と計算速度のトレードオフを打ち破る！！
+
+- IMUによってMetric を復元できる
+- いままでのVIOには、精度と計算コストのトレードオフがあった
+- ２つの流派がある。
+  - Filtering approache：計算は軽いけど、計算時の非線形性によって性能が悪化する可能性あり。
+  - Full smoothing approache：正確だけど計算コストが大きい。Fixed-lag smoothingを利用することで精度と計算コスト間の調整が可能だが、要求される精度・計算コストを達成できるWindowサイズをどう決めればよいのかは、よくわかっていない。
+- この論文のキモとして、このトレードオフを打ち破ることができたこと、が挙げられる
+  - 高速にIncremantal smoothingをやって、最適なMAPをリアルタイムで推定するらしい
+
+- やったこと
+  - IMUの事前積分について理論を開発
+    - Keyframe間のIMU観測情報を積分して、一つのMotion拘束条件として利用する話は前からあって、これに乗っかる形
+    - SO3の回転群のManifold structureを正しく扱えるPreintegration理論を考えた。
+    - Rotation noiseの扱いが厳密になっている
+    - 回転表現の特異点が回避できている
+    - 必要なすべてのJacobianやNoise propagation、事後バイアス補正についての式が全て書いてある！付録に。
+    - ※2012年くらいの研究からVision + IMUの研究がスタートしている？この論文は2017パブリッシュ。
+  - Factor graph modelにIMU-preintegrationについて導入したこと
+    - これによって、incremental smoothingを使った手法が実装できている：iSAM2
+    - 線形化したときの誤差が累積していく？ことを避けられている
+    - 精度と計算コストをいい感じの方法で調節できる
+    - Visual mesurementにおいて`Struture less model`を導入
+      - Incremental smoothingにおいて、大量の最適化対象変数をなくすことができる
+      - 計算の高速化につながる
+- `Structure less model`
+  - Incremental smoothingというVIOのフレームワークを使っている。
+    - 比較対象は、MSCKF(`Multi-State Constraint Kalman Filter`)らしい。拘束条件を扱えるカルマンフィルタ？
+  - 最適化windowをずらしながら逐次的に最適化をかけていく方法？
+  - ２つのいいところがある
+    - Visual mesurement（特徴点の検出、トラッキングの話？）の処理完了を待たなくて良い
+    - Visual mesurementの再線形化を何度も行うことができる（カルマンフィルタだと過去の状態をすべて保存していないから？）
+
+
+- 実験内容
+  - RealとSimulationのデータセット両方で検証した
+  - いいところが結構あったよ
+    - 論文のアプローチを実装すれば、Full-smoothingを100Hzで実行できる
+    - 競合のVIOと比べて（optimization baseとfiltering base両方とも）いい精度を出せる
+    - この論文は実装するひとにとっても良くて、チュートリアルにもなりうる
+      - 論文では、`Uncertainty representation`について、短くて完結な表現がなされている。
+      - 再現実装するのに必要で、全部知りたい場合は、付録を参照してくれ。↓の内容が乗っているらしい。
+        - Uncertainty representation on manifolds
+        - Examplary derivations for uncertainty propagation（確率的な事象の伝搬？の代表的な導き方）
+        - Jacobian computation
+
+- 論文の内容
+  - まえの論文の拡張らしい
+    - `IMU Preintegration on Manifold for Efficient Visual-Inertial Maximum-a-Posteriori Estimation`
+    - 全体的な手法の導き方など追加があるそうなので、前は追わずにこのまま読み進めたほうがいい気がする
+  - 追加内容
+    - Bias estimationの精度評価実験
+    - この手法のConsistencyのデモ
+    - Full batch estimationとの比（fixed-lag sommtherではなく、データ全体を使った計算との差？）
+  - GTSAM4.0にここでの内容は追加されているよ
+
+
+
+
 
 
 ### わからないこと
@@ -75,3 +146,10 @@ IMUはひとまずおいておく、これ以外の部分について重点的�
 
 
 
+
+
+## 単語
+| 単語      | 意味                                               |
+| --------- | -------------------------------------------------- |
+| tangible  | 実感できる、これええやんって実感できる？           |
+| exemplary | 代表的な、これやっときゃとりあえずOkみたいな感じ？ |
