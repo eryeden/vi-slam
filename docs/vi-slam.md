@@ -145,7 +145,7 @@ IMUはひとまずおいておく、これ以外の部分について重点的�
   - Incremental smoothing algorithmとは？
   - Structure less modelとは？
 - Vision系
-  - この論文のVision frontendはSVOがベースになっている
+  - この論文のVision frontendはSVOがベースになっている。SVOではFeatureの追跡時にDepthを利用することでエピポーラの拘束を満たしたFeatureのみ追跡できるという利点がある。
   - しかし、Kimera-VIOでは特徴点検出がShi-Tomasi corners、トラッキングがLK-tracker
   - ここの違いはどうなっているのか？
 
