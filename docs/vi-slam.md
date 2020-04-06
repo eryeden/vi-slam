@@ -153,7 +153,28 @@ IMUはひとまずおいておく、これ以外の部分について重点的�
    1. StandardなEKFは一回の観測に対して一回の処理しかしない。一つの状態ベクトルと共分散行列に一回の観測が集約されてしまうということ？
    2. Smoothing approachは何回もLiniearizingできる。一つに観測値に対して何回も最適化をかけることができるという話か！？
 
+用語としてはいろいろあるが、背後にあるアルゴリズムは密接に結びついているらしい。
+実際、`Iterated Extended Kalman filter`の式はGauss-Newtonの更新式？と同じになるらしい。
 
+
+以下、３種類の過去情報の扱い方についてまとめる。
+#### A. Filtering approach
+Filtering baseの手法では、推定対象の処理をシステムの状態の最新のものに限定することで、低計算コストな推定を行えている。
+EKFの計算複雑性は、観測Landmark数にたいして２次的に増加する。なので、リアルタイム処理をしたいシステムでは、一般的にトラックする特徴点数は少なくなっている。だいたい２０個くらい。
+
+この問題に対しての回避策として、`structureless`approachがある。Landmark positionというのがEKF?の状態ベクトルからmarginalizeされて消える？？
+＝＞これが噂のMSCKFになる。Structureless approachでは、Stochastic cloningという形で、状態ベクトルの中に前回までのPoseを保存する必要がある。
+
+`Structureless approach`の欠点：
+- 
+
+
+
+
+
+#### B. Fixed-lag Smoothing approach
+
+#### C. Full Smoothing approach
 
 
 
@@ -168,6 +189,7 @@ IMUはひとまずおいておく、これ以外の部分について重点的�
   - この論文のVision frontendはSVOがベースになっている。SVOではFeatureの追跡時にDepthを利用することでエピポーラの拘束を満たしたFeatureのみ追跡できるという利点がある。
   - しかし、Kimera-VIOでは特徴点検出がShi-Tomasi corners、トラッキングがLK-tracker
   - ここの違いはどうなっているのか？
+- カメラPoseの話は結構でてくるが、Feature pointやMapの話はでてくるのか？
 
 
 
