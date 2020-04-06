@@ -132,6 +132,26 @@ IMUはひとまずおいておく、これ以外の部分について重点的�
     - Full batch estimationとの比（fixed-lag sommtherではなく、データ全体を使った計算との差？）
   - GTSAM4.0にここでの内容は追加されているよ
 
+- ちょい目を通したが・・・
+  - この論文はIMU preintegrationをいかに導入するか？という内容が多い
+  - しかし、Strecture less modelというものを利用しているらしく、これは調べてみたい。
+
+
+### Related work
+
+３つの方向性からVIOの研究の方向性を見ることができるらしい。以下の３つ。
+1. カメラPoseの数が増えて、この過去の観測情報をどうやって扱うか？
+   1. Full smootherやBatch nonlinear 最小二乗法では、昔のPoseをすべて推定する
+   2. Fixed-lag smoother（Sliding window）では、Window内の最新Poseのみ推定
+   3. Filtering approachesは、最新のPoseのみを推定する
+   - Fixed-lagとFilteringは基本、最適化しない昔のパラメータはMarginalize
+   - 関係性？？のパラメータはGaussian priorとしてAbsorbするらしい
+2. いかに、観測値や、Gaussian prior（事前分布？？？）の不確実性を表現するか？
+   1. EKF:不確実性は共分散で表現
+   2. 情報Filter、Smootherは、情報行列を利用（共分散行列の逆数）、もしくは情報行列の平方根？を利用
+3. 何回観測モデルを線形化するか？
+   1. StandardなEKFは一回の観測に対して一回の処理しかしない。一つの状態ベクトルと共分散行列に一回の観測が集約されてしまうということ？
+   2. Smoothing approachは何回もLiniearizingできる。一つに観測値に対して何回も最適化をかけることができるという話か！？
 
 
 
