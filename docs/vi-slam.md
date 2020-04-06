@@ -144,6 +144,10 @@ IMUはひとまずおいておく、これ以外の部分について重点的�
   - Lie群？のManihold structureとは？
   - Incremental smoothing algorithmとは？
   - Structure less modelとは？
+- Vision系
+  - この論文のVision frontendはSVOがベースになっている
+  - しかし、Kimera-VIOでは特徴点検出がShi-Tomasi corners、トラッキングがLK-tracker
+  - ここの違いはどうなっているのか？
 
 
 
