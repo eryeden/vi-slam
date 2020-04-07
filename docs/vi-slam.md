@@ -162,11 +162,24 @@ IMUはひとまずおいておく、これ以外の部分について重点的�
 Filtering baseの手法では、推定対象の処理をシステムの状態の最新のものに限定することで、低計算コストな推定を行えている。
 EKFの計算複雑性は、観測Landmark数にたいして２次的に増加する。なので、リアルタイム処理をしたいシステムでは、一般的にトラックする特徴点数は少なくなっている。だいたい２０個くらい。
 
-この問題に対しての回避策として、`structureless`approachがある。Landmark positionというのがEKF?の状態ベクトルからmarginalizeされて消える？？
-＝＞これが噂のMSCKFになる。Structureless approachでは、Stochastic cloningという形で、状態ベクトルの中に前回までのPoseを保存する必要がある。
+この問題に対しての回避策として、`structureless`approachがある。
 
-`Structureless approach`の欠点：
-- 
+*`Structureless`approachとは？*
+Landmark positionというのがEKF?の状態ベクトルからmarginalizeされて消える？
+いままでのFilterベースの方法では、Landmarkの数が増えると二乗で計算コストが増えてしまうのが問題だった。
+StructurelessではLandmark部分がMarginalize outされるので計算コスト増加がカメラPoseが増えることによるものだけになる？これがいいところ？
+
+*`Structureless approach`の欠点*
+- Filteringベースの方法で使うためには、Landmarkをすべて観測？？？するまで、Structurelessの計算を実行できないこと。これが原因で、すべてのVisual informationを利用できないので精度が落ちてしまうことがある。
+- Marginalizationが、線形化誤差とOutlierの観測を固定化？してしまうこと。これも誤差の要因になりうる。
+- 一つのOutlierがFilterを回復不能にしてしまう可能性があるので、怪しい観測値を省くのが重要になるらしい。
+- *Filter inconsistent*
+
+
+*応用例*
+この応用例がMSCKFになる。Structureless approachでは、Stochastic cloningという形で、状態ベクトルの中に前回までのPoseを保存する必要がある。ここでは、structureless approachをFilterベースの手法で使っているけど、Smoothingベースの手法でも使えるぽい。
+
+
 
 
 
