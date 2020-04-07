@@ -173,7 +173,16 @@ StructurelessではLandmark部分がMarginalize outされるので計算コス�
 - Filteringベースの方法で使うためには、Landmarkをすべて観測？？？するまで、Structurelessの計算を実行できないこと。これが原因で、すべてのVisual informationを利用できないので精度が落ちてしまうことがある。
 - Marginalizationが、線形化誤差とOutlierの観測を固定化？してしまうこと。これも誤差の要因になりうる。
 - 一つのOutlierがFilterを回復不能にしてしまう可能性があるので、怪しい観測値を省くのが重要になるらしい。
-- *Filter inconsistent*
+- 線形化誤差：ドリフトとFilterのInconsistentが発生する
+- Inconsistencyの影響：Over-confidentが発生しうる。これによって、最適でないInformation fusionが起きるらしい。どれかの共分散がかなり大きくなってしまってフィルターが発散したりするとか？
+
+*VIOでの直接観測できない情報*
+- 基本４つある
+- 1~3で、global position
+- 4つ目で、重力方向の回転角
+- このうち、間違った推定が起きるときの線形化では、Global positionの値しか推定することができない、という報告もあるので、間違っている線形化では、間違ったYawの情報がGaussian priorに加えられてしまう。これによってFilter inconsistentが起きてしまう。
+- この問題は、`first-estimates jacobian`アプローチで対策が取られている。このアプローチで、Inconsistencyの原因となる間違った線形化を行っている特徴点を使ってFilterの状態が更新されないことを保証できる。
+- 
 
 
 *応用例*
