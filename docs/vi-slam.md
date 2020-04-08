@@ -192,18 +192,38 @@ StructurelessではLandmark部分がMarginalize outされるので計算コス�
 - Structureless approach
   - いいところ：Landmark部分がMarginalizeされるのでカメラPoseの増加分のみ計算コストが増大する？
   - 欠点：計算の遅延、線形化誤差、ハズレ値の観測、可観測でない情報の扱い、これによって生じるFilter inconsistency
-  - 対策：`first-estimates jacobian`、`Observability-constrained EKF`
-
-
-
+  - 対応１：`first-estimates jacobian`
+  - 対応２：`Observability-constrained EKF`
 
 
 
 #### B. Fixed-lag Smoothing approach
+基本、Fixed-lag smootherは、Time window内にある状態を推定して、それ以外の古い状態はMarginalize outする。
+Maximum likehood estimationでは、範囲内の最近の状態における最適化問題に集約している。
+基本、Smoothing aproacheはFilterベースの手法よりも高精度になる。なぜかというと、過去の状態を何回も線形化できるから。
+**いいところ** : Filter baseの手法よりもOutlierに強い。最適化後にOutlierを消すこともできるし、Robust cost functionで影響を軽減することができるため。
+**わるいところ** : 推定Time windowの外にある状態はMarginalizeするのたけど、ここで作られるGaussian priorが粗行列にならない場合がある。これが推定の計算コストを上げてしまう可能性あり。このために、粗行列になるような観測情報を消す方法など提案されている。また、Fixed-lag smootherにおいてもFiltering approachでの問題も存在する。Consistencyや、線形化誤差が溜まっていくことなど。
+
 
 #### C. Full Smoothing approach
+基本、大規模な非線形最適化問題を解くことで、過去全ての状態（カメラの状態と特徴点位置すべて）を推定する。
+精度は一番いいが、Realtime処理はマップやカメラ軌跡が増えるに従って、すぐに困難になる。
+**この対策** : Keyframeを除いて、ほかの情報を捨てる、最適化を別スレッドで走らせるTrackingとMappingを両方やるDual archtectureなど。
 
+**ここでBreakthroughがあった！！！！** : `Incremental smoothing techniques`の登場である。iSAM、iSAM2ではこれを使っているらしい。具体的には、Factor graphを使っている。これを使うことによって、行列Sparsityをキープできる。加えて、新しく観測した情報に影響されうる小規模なサブセットの状態のみ更新することができる。
 
+**Breakthroughがあったが、以前、更新頻度の高いIMUを扱うには高いハードルがある** : 
+(最適化が必要な状態の数がすぐに増えてしまうため？)
+何個か実装の種類がある。
+1. naive implementation : IMUのすべての観測情報をすべて追加する。この実装は実用的でないくらいに遅くなってしまう。
+2. ２フレーム間のIMU観測情報を積分して、２フレーム間の相対的な移動量の拘束条件にする：これにも問題があって、IMUを積分するときの初期状態が一番最初に推定されたFrameの状態によって影響される。しかし、最適化の仮定で、Frameの推定値が変化するとすべてのIMU積分をやり直す必要が生まれてしまう。
+3. IMU preintegration : 2の方法で必要なIMU積分のやり直しは、相対的な動きの拘束条件を`Reparametrization`することで回避できて、計算量を削減できる。これが、IMU preintegrationをと呼ばれるもの。
+
+### この論文でやっていること
+1. IMU preintegrationの厳密な導出：Preintegrationを初めて導入した論文があるのだけど、オイラー角を使っている問題がある。オイラー角を、状態推定、共分散推定のための、AveraginやSmoothing手法に利用すると、Rigid transformationにおいて不変（性質が不変？？）ではない場合がでてくる。あと、オイラー角には特異点もある。この論文えは、回転の観測に厳密な扱いをして最尤推定着の完全な式の導出を行っている。最適化の計算に必要なJacobianの解析的な式も載せている。
+
+### 結果どうだった？
+Rotation manifoldを厳密に扱うことで、基の論文に比べて、高い精度とロバスト性があることが確認できている。
 
 
 
@@ -228,3 +248,4 @@ StructurelessではLandmark部分がMarginalize outされるので計算コス�
 | --------- | -------------------------------------------------- |
 | tangible  | 実感できる、これええやんって実感できる？           |
 | exemplary | 代表的な、これやっときゃとりあえずOkみたいな感じ？ |
+| lead to   | ~になるように導く                                  |
