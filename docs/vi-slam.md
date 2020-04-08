@@ -182,12 +182,17 @@ StructurelessではLandmark部分がMarginalize outされるので計算コス�
 - 4つ目で、重力方向の回転角
 - このうち、間違った推定が起きるときの線形化では、Global positionの値しか推定することができない、という報告もあるので、間違っている線形化では、間違ったYawの情報がGaussian priorに加えられてしまう。これによってFilter inconsistentが起きてしまう。
 - この問題は、`first-estimates jacobian`アプローチで対策が取られている。このアプローチで、Inconsistencyの原因となる間違った線形化を行っている特徴点を使ってFilterの状態が更新されないことを保証できる。
-- 
+- `Observability-constrained EKF`では、可観測の情報のみがフィルタを更新できるようにすることで、直接観測できない状態両の観測を行う。
+- VIOの可観測性についてはいろいろと研究されているらしい。
 
 
-*応用例*
-この応用例がMSCKFになる。Structureless approachでは、Stochastic cloningという形で、状態ベクトルの中に前回までのPoseを保存する必要がある。ここでは、structureless approachをFilterベースの手法で使っているけど、Smoothingベースの手法でも使えるぽい。
-
+**まとめると**
+- 普通のFilter approach
+  - 特徴：Landmark数が増えると計算コストが大きくなってしまうのが問題
+- Structureless approach
+  - いいところ：Landmark部分がMarginalizeされるのでカメラPoseの増加分のみ計算コストが増大する？
+  - 欠点：計算の遅延、線形化誤差、ハズレ値の観測、可観測でない情報の扱い、これによって生じるFilter inconsistency
+  - 対策：`first-estimates jacobian`、`Observability-constrained EKF`
 
 
 
