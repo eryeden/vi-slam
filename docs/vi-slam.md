@@ -226,6 +226,12 @@ Maximum likehood estimationでは、範囲内の最近の状態における最�
 Rotation manifoldを厳密に扱うことで、基の論文に比べて、高い精度とロバスト性があることが確認できている。
 
 
+### `Structureless approach`についてのみ調べてみる
+- iSAMでの実装について
+- `Incremental smoothing techniques`の導入について
+- そもそもVisionだけで`Structure less`を計算できるのか？ 
+
+
 
 ### わからないこと
 - IMU系
@@ -237,6 +243,7 @@ Rotation manifoldを厳密に扱うことで、基の論文に比べて、高い
   - しかし、Kimera-VIOでは特徴点検出がShi-Tomasi corners、トラッキングがLK-tracker
   - ここの違いはどうなっているのか？
 - カメラPoseの話は結構でてくるが、Feature pointやMapの話はでてくるのか？
+
 
 
 
