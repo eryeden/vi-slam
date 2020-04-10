@@ -226,10 +226,13 @@ Maximum likehood estimationでは、範囲内の最近の状態における最�
 Rotation manifoldを厳密に扱うことで、基の論文に比べて、高い精度とロバスト性があることが確認できている。
 
 
-### `Structureless approach`についてのみ調べてみる
+### `Structureless approach`について調べてみる
+**トピック**
 - iSAMでの実装について
 - `Incremental smoothing techniques`の導入について
 - そもそもVisionだけで`Structure less`を計算できるのか？ 
+
+
 
 
 
