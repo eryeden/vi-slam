@@ -231,7 +231,19 @@ Rotation manifoldを厳密に扱うことで、基の論文に比べて、高い
 - iSAMでの実装について
 - `Incremental smoothing techniques`の導入について
 - そもそもVisionだけで`Structure less`を計算できるのか？ 
+- Linear elimination of landmarks : ここが一つのポイントになっているらしい。GNの最適化ステップの各回でランドマーク削除が実行されるらしい。
 
+式５０：Reprojection errorについて。式５０のReprojection errorをそのまま考えると、最適化の計算で全てのLandmarkが必要になって、計算コスト的によくないらしい。
+Structure less approachでは、すべてのLandmarkを使った最適化をしないので、計算量的によいらしい。なので、MAP estimationをリアルタイム？で実行できるようになるらしい。
+
+**わからないこと**
+- どんなLandmark eliminationがあるか？
+- Structureless approachとSchur complicationの違いは？
+
+結局ここまで調べてみて：
+- おもにBackendの工夫について書かれていた？でも、Landmark eliminationについて工夫があるらしい？
+- けっきょく、VIOにおいてもVision front endとBackendが必要
+- いろいろやらないといけないことは多いが、まずはVision-front endについて調べてみようと思う
 
 
 
