@@ -29,7 +29,22 @@ Vision frontendについて調べるが、主に以下の内容について調�
 世にたくさんあるVisual-SLAMで使っているFrontend手法をまとめてみる。
 
 
-### Kimera VIO
-- 特徴点：Shi-tomasi
-- 追跡：    
-- 
+### Kiemra-VIO; 2020
+- Feature detection : Shi-Tomasi corners
+- Feature tracking : Lukas-Kanade tracker
+- Verification
+  - Geometric verification : 5 point RANSAC(Mono), 3 point RANSAC(Stereo)
+  - KeyframeのみGeometric verificationを実行
+
+#### 疑問点
+- Keyframeの選び方は? Keyframeが適切に選べていればGeometric verificationするときの視差などを考える必要はなくなるはず？
+- Monoバージョンが公開されていないが、ここの部分になにか問題はあるのか？
+- Keyframeのみで特徴点のマネジメントを行っているはずだが、どうやっている？
+
+#### ソースコードの解析から…
+
+**KeyFrame判定条件**
+- First frameはKeyFrame
+- max_time_elapsed
+- nr_features_low
+- stereoFrame_k_->isKeyframe() <=なんかでここ以外で、Keyframe判定される場合がある？
