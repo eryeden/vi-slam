@@ -54,3 +54,6 @@ Vision frontendについて調べるが、主に以下の内容について調�
   - Landmark ageがmax feature age以下、feature ageは何回、連続したKeyFrameに観測されたか？という指標
     - なので、Feature trackerの関数ではfeature ageは増えない
 
+**Outlier除去**
+- Front endで実施されるOutlier除去はGeometric verificationと呼ばれている
+- 一応、Trackerの内部でも、LKで追跡に成功したもの、失敗したのもなど検出しており、質の悪いTrackingが発生しないようになっている
