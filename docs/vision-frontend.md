@@ -25,16 +25,17 @@ Vision frontendについて調べるが、主に以下の内容について調�
 - [LSD-SLAM; 2014](https://vision.in.tum.de/research/vslam/lsdslam)
 
 
-## Outlier除去
-世にたくさんあるVisual-SLAMで使っているFrontend手法をまとめてみる。
 
-
-### Kiemra-VIO; 2020
+### [Kiemra-VIO; 2020](https://github.com/MIT-SPARK/Kimera-VIO)
 - Feature detection : Shi-Tomasi corners
 - Feature tracking : Lukas-Kanade tracker
-- Verification
+- Feature Verification(KeyFrameのみで実行する)
   - Geometric verification : 5 point RANSAC(Mono), 3 point RANSAC(Stereo)
   - KeyframeのみGeometric verificationを実行
+- KeyFrame Selection
+  - KeyFrameにする条件:
+    - Trackingできている特徴点数が基準以下になった
+    - まえKeyFrameから一点時間経った
 
 #### 疑問点
 - Keyframeの選び方は? Keyframeが適切に選べていればGeometric verificationするときの視差などを考える必要はなくなるはず？
@@ -69,3 +70,34 @@ Vision frontendについて調べるが、主に以下の内容について調�
     5. Trackingのクオリティチェック。Inlierの数が基準以下ならばStatusとしてFEW_MATCHESを出力。
     6. 視差チェック。全特徴点のDisparityの中央値を計算をして小さいならばLOW_DISPARITYをStatusに追加。
 
+### [VINS-Mono; 2017](https://github.com/HKUST-Aerial-Robotics/VINS-Mono)
+- Feature detection : Shi-Tomasi corners(論文ではGood feature to track)
+  - 特徴点数 : 100 ~ 300をキープ
+  - 分布 : 特徴点感の最低距離を設けて一様に分布させる
+  - カメラモデル？ : 一旦、Undistortした後に単位球面に射影するらしい
+- Feature tracking : Lukas-Kanade tracker(論文ではKLT sparse optical flow algorithm)
+- Verification(対象にするFrameはなに？)
+  - Geometric verification : 5 point RANSAC(Mono)
+- KeyFrame Selection
+  - KeyFrameにする条件:
+    - 前KeyFrameからの平均Parallax : 前回のKeyFrameとの平均Parallaxが基準を超える。Parallaxは平行移動成分と回転成分で計算する。
+      - 回転OnlyのモーションはTriangulationできないので、Gyroの観測値でShort-termの積分をして補正するらしい。
+    - 特徴点Trackingのクオリティ : 追跡できている特徴点の数が基準を下回ったらKeyFrameにする。
+ 
+#### 疑問点
+- Feature detectionのタイミングは？KeyFrameのみの検出か？
+- Geometric verificationのタイミングは？KeyFrame間のみ？
+
+#### ソースコードベースでDiggingしてみる
+
+**Feature detection and tracking**
+- FeatureTracker::readImage
+- 特徴点検出は、指定特徴点数よりも少ないならば毎回実施
+
+**Outlier除去**
+- FeatureTracker::rejectWithF
+- 毎フレーム除去する
+- F RANSACで消している
+- 参照対象のフレームは、一つ前のFrameぽい、本当に１フレーム前のみで適切にOutlierを弾けるかは実験してみないとわからない。
+  
+ 
