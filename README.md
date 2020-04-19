@@ -10,7 +10,7 @@ Try to make Visual Inertial SLAM
 - [Initialization](docs/initialization.md)
 - [Bundle adjustment](docs/ba.md)
 - [Visual-inertial odometry](docs/vi-slam.md)
-- [Vision fontend](docs.docs/vision-frontend.md)
+- [Vision frontend](docs/vision-frontend.md)
 - [Dataset](docs/dataset.md)
 - [Fig](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Fvislam.drawio)
 
