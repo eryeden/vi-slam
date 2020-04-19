@@ -100,4 +100,18 @@ Vision frontendについて調べるが、主に以下の内容について調�
 - F RANSACで消している
 - 参照対象のフレームは、一つ前のFrameぽい、本当に１フレーム前のみで適切にOutlierを弾けるかは実験してみないとわからない。
   
- 
+
+### [OrbSLAM; 2015](https://github.com/raulmur/ORB_SLAM2)
+王道OrbSLAMきたぜ。これは内容が多いから[解説スライド](https://www.slideshare.net/MasayaKaneko/orbslam-84842802)で行くぜ！！
+
+- Feature detection : Shi-Tomasi corners
+- Feature tracking : Lukas-Kanade tracker
+- Feature Verification(KeyFrameのみで実行する)
+  - Geometric verification : 5 point RANSAC(Mono), 3 point RANSAC(Stereo)
+  - KeyframeのみGeometric verificationを実行
+- KeyFrame Selection
+  - KeyFrameにする条件:
+    - Trackingできている特徴点数が基準以下になった
+    - まえKeyFrameから一点時間経った
+
+
