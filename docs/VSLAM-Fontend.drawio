@@ -1,17 +1,16 @@
-<mxfile host="app.diagrams.net" modified="2020-04-19T09:12:35.459Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="mk1AyeXHkNstk788EhSi" version="12.9.6" type="github">
+<mxfile host="app.diagrams.net" modified="2020-04-19T12:42:05.335Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="RTIPGXEvsdD09dZMRD02" version="12.9.6" type="github">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
-    <mxGraphModel dx="5357" dy="2980" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2768" dy="1277" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="CZVS23kr_gq7ErG93lJm-48" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;fontSize=34;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-45" target="CZVS23kr_gq7ErG93lJm-43">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-45" value="MapPoint management" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="440" y="1010" width="880" height="320" as="geometry" />
+        <mxCell id="CZVS23kr_gq7ErG93lJm-48" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;fontSize=34;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-42" target="CZVS23kr_gq7ErG93lJm-43">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1320" y="1170" as="sourcePoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-1" value="&lt;h1&gt;OrbSLAM&lt;/h1&gt;&lt;p&gt;OrbSLAMのFrontendは、すでに生成したMapからのFeedbackもあるため構造が把握しにくいので、フローを描く。&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="-280" y="110" width="240" height="120" as="geometry" />
+          <mxGeometry x="-290" y="70" width="240" height="120" as="geometry" />
         </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-2" value="&lt;h1&gt;Frontend review&lt;/h1&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="-770" y="40" width="260" height="40" as="geometry" />
@@ -70,9 +69,6 @@
         <mxCell id="CZVS23kr_gq7ErG93lJm-21" value="近隣のFrameで観測されたMapPointに基づいたFeature Tracking" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
           <mxGeometry x="940" y="220" width="360" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-22" value="疑問：MapPoint追加はどうやるのか？　＝＞　カメラTracking（Front end?）のスレッドでは追加なし&lt;br&gt;　　　　　　　　　　　　　　　　　　　　　Local Mappingスレッドで追加するかどうか判断し、クリアしたものだけが追加される&lt;br&gt;ここまでで、MapPointとして登録済みの特徴点と現在Frameの特徴点の対応付けにいろいろ工夫があることはわかった。&lt;br&gt;しかし、対応付けができていない特徴点をMapPointに追加しなければ、初期化時に生成したMapPointしか存在できない。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
-          <mxGeometry x="570" y="625" width="730" height="60" as="geometry" />
-        </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=34;jumpStyle=arc;shape=flexArrow;shadow=0;comic=0;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-23" target="CZVS23kr_gq7ErG93lJm-39">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
@@ -96,8 +92,10 @@
         <mxCell id="CZVS23kr_gq7ErG93lJm-38" value="Local mapping thread" style="rounded=0;whiteSpace=wrap;html=1;align=center;rotation=-90;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=34;" vertex="1" parent="1">
           <mxGeometry x="-310" y="1080" width="380" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=34;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-39" target="CZVS23kr_gq7ErG93lJm-45">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="CZVS23kr_gq7ErG93lJm-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=34;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-39" target="CZVS23kr_gq7ErG93lJm-41">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="440" y="1170" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-39" value="KeyFrameの追加&lt;br&gt;&lt;br&gt;・新規追加KeyFrameを使ってCo-visibility graphの更新&lt;br&gt;・一番MapPointを共有するKeyFrameを繋いだSpanning Treeを更新&lt;br&gt;・KeyFrameをBoWに変換" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
           <mxGeometry x="-20" y="1120" width="380" height="100" as="geometry" />
@@ -105,8 +103,24 @@
         <mxCell id="CZVS23kr_gq7ErG93lJm-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=34;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-41" target="CZVS23kr_gq7ErG93lJm-42">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
+        <mxCell id="CZVS23kr_gq7ErG93lJm-56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;shadow=0;fontSize=24;strokeWidth=3;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-41" target="CZVS23kr_gq7ErG93lJm-54">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="645" y="990" />
+              <mxPoint x="1070" y="990" />
+              <mxPoint x="1070" y="770" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-41" value="MapPointの削除&lt;br&gt;&lt;br&gt;・削除判定の対象は最近追加されたMapPpointのみらしい。&lt;br&gt;・以下条件を満たさないものは削除決定。削除タイミングはこのあとにあるLocal BAでのOutlier除去のときに削除する。&lt;br&gt;&lt;br&gt;・削除条件１：見えているはずのKeyFrameの中で、25%以上見れていれば削除なし&lt;br&gt;・削除条件２：MapPointが作成され、その後にKeyFrameが追加された時、そのMapPointが３枚以上のKeyFrameで観測されていれば削除なし（単純に観測枚数が少ないものは消す？２５％判定にでも消されると思われるが、より即効性を持って絶対にOutlierポイMapPointを消すといこと？）&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
           <mxGeometry x="455" y="1060" width="380" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="CZVS23kr_gq7ErG93lJm-55" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;shadow=0;fontSize=24;strokeWidth=3;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-42" target="CZVS23kr_gq7ErG93lJm-54">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1070" y="770" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-42" value="MapPointの追加&lt;br&gt;&lt;br&gt;・Co-visibility graphを使ってTriangulateするらしい&lt;br&gt;・そもそもMapPointとして登録されなければCo-visibility graohは作られないのでは？&lt;br&gt;・追加する特徴点がきまったら、一旦Triangulateして、Trackingのときと同じように更に観測しているKeyFrameの探索を行う&lt;br&gt;・BoWで作成したVocab Treeで対応候補を絞りつつ探索&lt;br&gt;・エピポーラ制約を持たさない対応は破棄する&lt;br&gt;・そもそも個々での処理が走る特徴点の基準はなんなのか？" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
           <mxGeometry x="880" y="1070" width="380" height="200" as="geometry" />
@@ -141,6 +155,41 @@
               <mxPoint x="80" y="710" />
             </Array>
           </mxGeometry>
+        </mxCell>
+        <mxCell id="CZVS23kr_gq7ErG93lJm-53" value="&lt;h1&gt;Kimera-VIO&lt;/h1&gt;&lt;p&gt;MapPointを再投影するなどやっていない&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="-290" y="1530" width="240" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="CZVS23kr_gq7ErG93lJm-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;shadow=0;fontSize=24;strokeWidth=3;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-54" target="CZVS23kr_gq7ErG93lJm-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CZVS23kr_gq7ErG93lJm-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;shadow=0;fontSize=24;strokeWidth=3;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-54" target="CZVS23kr_gq7ErG93lJm-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CZVS23kr_gq7ErG93lJm-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;shadow=0;fontSize=24;strokeWidth=3;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-54" target="CZVS23kr_gq7ErG93lJm-19">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="790" y="770" />
+              <mxPoint x="790" y="600" />
+              <mxPoint x="850" y="600" />
+              <mxPoint x="850" y="497" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CZVS23kr_gq7ErG93lJm-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;shadow=0;strokeWidth=3;fontSize=24;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-54" target="CZVS23kr_gq7ErG93lJm-23">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="790" y="770" />
+              <mxPoint x="790" y="600" />
+              <mxPoint x="1450" y="600" />
+              <mxPoint x="1450" y="454" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CZVS23kr_gq7ErG93lJm-54" value="MapPoint" style="rounded=0;whiteSpace=wrap;html=1;align=center;fontSize=24;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="810" y="740" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CZVS23kr_gq7ErG93lJm-22" value="疑問：MapPoint追加はどうやるのか？　＝＞　カメラTracking（Front end?）のスレッドでは追加なし&lt;br&gt;　　　　　　　　　　　　　　　　　　　　　Local Mappingスレッドで追加するかどうか判断し、クリアしたものだけが追加される&lt;br&gt;ここまでで、MapPointとして登録済みの特徴点と現在Frameの特徴点の対応付けにいろいろ工夫があることはわかった。&lt;br&gt;しかし、対応付けができていない特徴点をMapPointに追加しなければ、初期化時に生成したMapPointしか存在できない。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="550" y="620" width="730" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
