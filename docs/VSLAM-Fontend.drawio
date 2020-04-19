@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-04-19T07:20:49.030Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="4WYImbcWBMetskTmneio" version="12.9.6" type="github">
+<mxfile host="app.diagrams.net" modified="2020-04-19T07:26:58.218Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="4V_kIF1muIJI84HcqXTZ" version="12.9.6" type="github">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
-    <mxGraphModel dx="1941" dy="2446" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2718" dy="2957" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -22,8 +22,17 @@
         <mxCell id="CZVS23kr_gq7ErG93lJm-10" value="Camera Input" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
           <mxGeometry x="40" y="210" width="90" height="20" as="geometry" />
         </mxCell>
+        <mxCell id="CZVS23kr_gq7ErG93lJm-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-11" target="CZVS23kr_gq7ErG93lJm-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CZVS23kr_gq7ErG93lJm-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-11" target="CZVS23kr_gq7ErG93lJm-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-11" value="Feature detection&lt;br&gt;&lt;br&gt;・Fast corner検出&lt;br&gt;・８段階のスケール別に処理&lt;br&gt;・各ScaleごとにGrid分けして最低５個検出する&lt;br&gt;・Orb特徴量はここで検出した特徴点で計算する" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
           <mxGeometry x="200" y="228.75" width="150" height="132.5" as="geometry" />
+        </mxCell>
+        <mxCell id="CZVS23kr_gq7ErG93lJm-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-12" target="CZVS23kr_gq7ErG93lJm-19">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-12" value="Feature tracking&lt;br&gt;&lt;br&gt;・カメラ位置を低速度モーションモデルで推定&lt;br&gt;・前回Frameで観測されているMap Pointを、↑で推定したカメラPoseとして投影、投影結果とFeature detection結果を照らし合わせて対応点を探索&lt;br&gt;・一定以上の対応点が見つからない場合は、より広い範囲で対応点を探索する&lt;br&gt;・この時点で、対応点に基づきMotion only BAでカメラPoseを最適化する" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
           <mxGeometry x="500" y="110" width="250" height="183.75" as="geometry" />
@@ -34,6 +43,9 @@
         <mxCell id="CZVS23kr_gq7ErG93lJm-14" value="疑問：Feature detectionのタイミングは？&lt;br&gt;毎フレーム検出するのか、KeyFrameのみ検出するのか？&lt;br&gt;＝＞毎Frameの特徴点検出が必要&lt;br&gt;KLTなどで画像情報のみの特徴点トラッキングを行っている&lt;br&gt;わけではないので、常に検出する必要がある" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
           <mxGeometry x="130" y="380" width="340" height="80" as="geometry" />
         </mxCell>
+        <mxCell id="CZVS23kr_gq7ErG93lJm-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-16" target="CZVS23kr_gq7ErG93lJm-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-16" value="Feature tracking（トラッキング失敗の場合）&lt;br&gt;・BoWに変換し、Global Relocalizaitonで一番近いFrame？Frameの候補？を探索&lt;br&gt;・Frame候補とORB特徴量の比較で対応点を探索&lt;br&gt;・PnP＋RANSACでカメラPoseを求める&lt;br&gt;・姿勢がそれなりの精度でも止まったら、候補Frameで観測されているMapPointを投影し、より多くの対応点を探索&lt;br&gt;・Motion only BAでカメラPoseを最適化&lt;br&gt;・通常の処理に戻る" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
           <mxGeometry x="500" y="298.12" width="250" height="183.75" as="geometry" />
         </mxCell>
@@ -43,6 +55,9 @@
         <mxCell id="CZVS23kr_gq7ErG93lJm-18" value="ある程度精度が出たカメラPoseを求めるまでやる" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
           <mxGeometry x="485" y="80" width="280" height="20" as="geometry" />
         </mxCell>
+        <mxCell id="CZVS23kr_gq7ErG93lJm-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-19" target="CZVS23kr_gq7ErG93lJm-23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-19" value="Feature tracking　Phase 2&lt;br&gt;&lt;br&gt;・KeyFrameで観測されているMapPointから、さらに現在Frameで観測された特徴点の対応を取る&lt;br&gt;・対象となるKeyFrameは２種類ある&lt;br&gt;・１種類目：現在Frameで観測しているMapPointを共有しているKeyFrame（同じような場所を見ているかもしれない奴ら）&lt;br&gt;・２種類目：CoVisibilityグラフで、１種類目のKeyFrameに隣接しているKeyFrameすべて（ちょっと確率は低いが同じような場所を見ていそうな奴ら）&lt;br&gt;・↑のKeyFrame達で観測されているMapPointと現在のFrameで観測されている特徴点の対応を録っていく。&lt;br&gt;&lt;br&gt;・以下の基準で利用しないマップポイントを排除する。（現在の位置から見えそうにないMapPointや、遠すぎたり近すぎる？MapPointを排除する）&lt;br&gt;・基準１：MapPointに設定されている平均視線と、現在Frameからの視線の角度が60度以上なら、そのMapPointは利用しない。（オクルージョンの考慮か？現在カメラFrameの姿勢が、そのMapPointを観測できない可能性があるので、平均視線というパラメータで、MapPointが見える範囲というものを表現しているのかもしれない）&lt;br&gt;・基準２：MapPointまでの距離が、d_min, d_maxに入っていない場合は、そのMapPointは利用しない&lt;br&gt;&lt;br&gt;・残ったMapPointを現在カメラFrameに投影し、ORB特徴量を使って、現在Frameで検出された特徴点との対応を探索する。" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
           <mxGeometry x="850" y="130" width="500" height="330" as="geometry" />
         </mxCell>
@@ -51,6 +66,9 @@
         </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-22" value="疑問：MapPoint追加はどうやるのか？&lt;br&gt;ここまでで、MapPointとして登録済みの特徴点と現在Frameの特徴点の対応付けにいろいろ工夫があることはわかった。&lt;br&gt;しかし、対応付けができていない特徴点をMapPointに追加しなければ、初期化時に生成したMapPointしか存在できない。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
           <mxGeometry x="550" y="510" width="670" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="CZVS23kr_gq7ErG93lJm-23" value="KeyFrame Selection&lt;br&gt;&lt;br&gt;・Global relocalizaitionを実施して、20 Frame経過&lt;br&gt;・LocalMappinngスレッドが動いていない&lt;br&gt;・最後のKeyFrame追加から20 Frame経過&lt;br&gt;・and で 50点以上のMapPointをTrackingできている&lt;br&gt;・同じMapPointを観測しているKeyFrameのうち、最も多くのMapPointを共有しているKeyFrameの、90%以下のMapPointしかTrackingしていない&lt;br&gt;&lt;br&gt;あとでKeyFrameは登録解除もするらいしいので割と緩めの基準でKeyFrame登録するらしい" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1480" y="225" width="500" height="140" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
