@@ -4,8 +4,10 @@ Visual SLAMの処理を分けるとすると、Vision frontendとBcakend。Visio
 これで、手っ取り早くいまあるSLAMの性能を向上させたい。
 
 ## 調査対象
-Vision frontendについて調べるが、主に以下の内容について調べる。
+Vision frontendについて調べるが、主に以下の内容について調べる。処理内容のデータフローについては下リンク先にまとめる。
+- [Flow Diagram](https://app.diagrams.net/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2FVSLAM-Fontend.drawio)
 
+以下内容について主に注目して調査したい。
 - 特徴点検出でのOutlierの出にくい工夫
 - 特徴点追跡でのOutlierの出にくい工夫
 - Outlierの除去
