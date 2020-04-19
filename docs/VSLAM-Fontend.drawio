@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-04-19T07:26:58.218Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="4V_kIF1muIJI84HcqXTZ" version="12.9.6" type="github">
+<mxfile host="app.diagrams.net" modified="2020-04-19T07:27:30.662Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="ZzoNNLlxDG4ca3t1Xlqy" version="12.9.6" type="github">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
-    <mxGraphModel dx="2718" dy="2957" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1599" dy="2221" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -11,13 +11,13 @@
           <mxGeometry x="20" y="10" width="260" height="40" as="geometry" />
         </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-3" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
-          <mxGeometry x="30" y="240" width="90" height="90" as="geometry" />
+          <mxGeometry x="10" y="240" width="90" height="90" as="geometry" />
         </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-8" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
-          <mxGeometry x="40" y="250" width="90" height="90" as="geometry" />
+          <mxGeometry x="20" y="250" width="90" height="90" as="geometry" />
         </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-9" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
-          <mxGeometry x="50" y="260" width="90" height="90" as="geometry" />
+          <mxGeometry x="30" y="260" width="90" height="90" as="geometry" />
         </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-10" value="Camera Input" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
           <mxGeometry x="40" y="210" width="90" height="20" as="geometry" />
@@ -69,6 +69,12 @@
         </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-23" value="KeyFrame Selection&lt;br&gt;&lt;br&gt;・Global relocalizaitionを実施して、20 Frame経過&lt;br&gt;・LocalMappinngスレッドが動いていない&lt;br&gt;・最後のKeyFrame追加から20 Frame経過&lt;br&gt;・and で 50点以上のMapPointをTrackingできている&lt;br&gt;・同じMapPointを観測しているKeyFrameのうち、最も多くのMapPointを共有しているKeyFrameの、90%以下のMapPointしかTrackingしていない&lt;br&gt;&lt;br&gt;あとでKeyFrameは登録解除もするらいしいので割と緩めの基準でKeyFrame登録するらしい" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
           <mxGeometry x="1480" y="225" width="500" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="CZVS23kr_gq7ErG93lJm-30" value="" style="shape=flexArrow;endArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="140" y="294" as="sourcePoint" />
+            <mxPoint x="190" y="293.75" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
