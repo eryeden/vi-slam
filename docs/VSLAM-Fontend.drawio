@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-04-20T15:22:11.697Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="pXFjr6mj-QyBFAMlS22d" version="12.9.14" type="github">
+<mxfile host="app.diagrams.net" modified="2020-04-20T15:31:45.145Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="_BzyIZZ3rOVnHSQlXnPW" version="12.9.14" type="github">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
-    <mxGraphModel dx="5357" dy="2980" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3092" dy="1490" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -157,7 +157,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-53" value="&lt;h1&gt;Kimera-VIO&lt;/h1&gt;&lt;p&gt;MapPointを再投影するなどやっていない&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="-420" y="1440" width="240" height="80" as="geometry" />
+          <mxGeometry x="-440" y="1440" width="240" height="80" as="geometry" />
         </mxCell>
         <mxCell id="CZVS23kr_gq7ErG93lJm-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;shadow=0;fontSize=24;strokeWidth=3;" parent="1" source="CZVS23kr_gq7ErG93lJm-54" target="CZVS23kr_gq7ErG93lJm-16" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -192,28 +192,31 @@
           <mxGeometry x="550" y="620" width="730" height="60" as="geometry" />
         </mxCell>
         <mxCell id="UyCWRXfSo20qLZG2_h02-1" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
-          <mxGeometry y="1610" width="90" height="90" as="geometry" />
+          <mxGeometry x="-20" y="1586" width="90" height="90" as="geometry" />
         </mxCell>
         <mxCell id="UyCWRXfSo20qLZG2_h02-2" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
-          <mxGeometry x="10" y="1620" width="90" height="90" as="geometry" />
+          <mxGeometry x="-10" y="1596" width="90" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="UyCWRXfSo20qLZG2_h02-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="UyCWRXfSo20qLZG2_h02-9">
+        <mxCell id="UyCWRXfSo20qLZG2_h02-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="UyCWRXfSo20qLZG2_h02-3" target="UyCWRXfSo20qLZG2_h02-9">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1180" y="1490" as="targetPoint" />
             <mxPoint x="130" y="1651" as="sourcePoint" />
             <Array as="points">
-              <mxPoint x="260" y="1651" />
-              <mxPoint x="260" y="1520" />
+              <mxPoint x="190" y="1651" />
+              <mxPoint x="190" y="1520" />
               <mxPoint x="1450" y="1520" />
-              <mxPoint x="1450" y="1651" />
+              <mxPoint x="1450" y="1631" />
             </Array>
           </mxGeometry>
         </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="UyCWRXfSo20qLZG2_h02-3" target="UyCWRXfSo20qLZG2_h02-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="UyCWRXfSo20qLZG2_h02-3" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
-          <mxGeometry x="20" y="1630" width="90" height="90" as="geometry" />
+          <mxGeometry y="1606" width="90" height="90" as="geometry" />
         </mxCell>
         <mxCell id="UyCWRXfSo20qLZG2_h02-4" value="Camera Input" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
-          <mxGeometry x="30" y="1580" width="90" height="20" as="geometry" />
+          <mxGeometry x="10" y="1556" width="90" height="20" as="geometry" />
         </mxCell>
         <mxCell id="UyCWRXfSo20qLZG2_h02-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="UyCWRXfSo20qLZG2_h02-5" target="UyCWRXfSo20qLZG2_h02-6">
           <mxGeometry relative="1" as="geometry" />
@@ -229,11 +232,11 @@
         </mxCell>
         <mxCell id="UyCWRXfSo20qLZG2_h02-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="UyCWRXfSo20qLZG2_h02-9">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="70" y="1730" as="targetPoint" />
+            <mxPoint x="370" y="1710" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="1950" y="1651" />
-              <mxPoint x="1950" y="1770" />
-              <mxPoint x="70" y="1770" />
+              <mxPoint x="1790" y="1651" />
+              <mxPoint x="1790" y="1770" />
+              <mxPoint x="370" y="1770" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -246,17 +249,65 @@
         <mxCell id="UyCWRXfSo20qLZG2_h02-10" value="Verificaiton&lt;br&gt;&lt;br&gt;・１Frame目はKeyFrame&lt;br&gt;・単眼カメラの場合は５点法＋RANSACで特徴点を選別&lt;br&gt;・Landmark ageが一定値以上の場合は排除（何回KeyFrameに観測されたか？をカウントする。）&lt;br&gt;・同時にLandmark視差の中央値、トラッキングしている特徴点数のチェックを行う。" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
           <mxGeometry x="1060" y="1581.25" width="330" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="UyCWRXfSo20qLZG2_h02-11" value="" style="shape=flexArrow;endArrow=classic;html=1;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="120" y="1665.1599999999999" as="sourcePoint" />
-            <mxPoint x="230" y="1664.5" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
         <mxCell id="UyCWRXfSo20qLZG2_h02-18" value="１Frame目はトラッキングできない&lt;br&gt;のでKeyFrameとして、特徴点検出を行う" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
           <mxGeometry x="261" y="1480" width="240" height="30" as="geometry" />
         </mxCell>
         <mxCell id="UyCWRXfSo20qLZG2_h02-19" value="Tracking thread" style="rounded=0;whiteSpace=wrap;html=1;align=center;rotation=-90;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=34;" vertex="1" parent="1">
           <mxGeometry x="-280" y="1600" width="380" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-21" value="&lt;h1&gt;VINS-Mono&lt;/h1&gt;&lt;p&gt;こちらも、MapPointを再投影するなどやっていない&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="-430" y="1940" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-22" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
+          <mxGeometry x="-10" y="2030" width="90" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-23" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
+          <mxGeometry y="2040" width="90" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="UyCWRXfSo20qLZG2_h02-24" target="UyCWRXfSo20qLZG2_h02-32">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="199.99999999999977" y="2095" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-24" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
+          <mxGeometry x="10" y="2050" width="90" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-25" value="Camera Input" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="2000" width="90" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-26" value="Tracking thread" style="rounded=0;whiteSpace=wrap;html=1;align=center;rotation=-90;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=34;" vertex="1" parent="1">
+          <mxGeometry x="-280" y="2070" width="380" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-35" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="UyCWRXfSo20qLZG2_h02-28" target="UyCWRXfSo20qLZG2_h02-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-28" value="Feature detection&lt;br&gt;&lt;br&gt;・Shi-Tomasi cornersで特徴点検出&lt;br&gt;・指定した検出件数になるように毎Frame実施&lt;br&gt;・トラッキングできている特徴点に数を加える感じ" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="510" y="2033.6599999999999" width="240" height="122.69" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-37" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="UyCWRXfSo20qLZG2_h02-29" target="UyCWRXfSo20qLZG2_h02-31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-29" value="Verifucation&lt;br&gt;&lt;br&gt;・５点法＋RANSACで特徴点を選別&lt;br&gt;・毎フレームVerificaitonを実施する&lt;br&gt;・比較Frameは一つまえのFrame" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="781.5" y="2051.3199999999997" width="300" height="87.36999999999989" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-39" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="UyCWRXfSo20qLZG2_h02-31">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="350" y="2150" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1540" y="2095" />
+              <mxPoint x="1540" y="2230" />
+              <mxPoint x="350" y="2230" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-31" value="KeyFrame Selection&lt;br&gt;&lt;br&gt;・以下の基準を満たせばKeyFrameとして選択する&lt;br&gt;・基準１：前回KeyFrameからの平均視差が基準を超えている&lt;br&gt;・基準２：Trackingできている特徴点が一定以下になっている" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1121.5" y="2053.7549999999997" width="360" height="82.5" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-34" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="UyCWRXfSo20qLZG2_h02-32" target="UyCWRXfSo20qLZG2_h02-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-32" value="Feature tracking&lt;br&gt;&lt;br&gt;・Lukas-Kanade trackerで特徴点を追跡" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="240" y="2053.7549999999997" width="221" height="82.5" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
