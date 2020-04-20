@@ -1,75 +1,75 @@
-<mxfile host="app.diagrams.net" modified="2020-04-19T12:42:05.335Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="RTIPGXEvsdD09dZMRD02" version="12.9.6" type="github">
+<mxfile host="app.diagrams.net" modified="2020-04-20T15:22:11.697Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="pXFjr6mj-QyBFAMlS22d" version="12.9.14" type="github">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
-    <mxGraphModel dx="2768" dy="1277" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="5357" dy="2980" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="CZVS23kr_gq7ErG93lJm-48" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;fontSize=34;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-42" target="CZVS23kr_gq7ErG93lJm-43">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-48" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;fontSize=34;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="CZVS23kr_gq7ErG93lJm-42" target="CZVS23kr_gq7ErG93lJm-43" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1320" y="1170" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-1" value="&lt;h1&gt;OrbSLAM&lt;/h1&gt;&lt;p&gt;OrbSLAMのFrontendは、すでに生成したMapからのFeedbackもあるため構造が把握しにくいので、フローを描く。&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="-290" y="70" width="240" height="120" as="geometry" />
+        <mxCell id="CZVS23kr_gq7ErG93lJm-1" value="&lt;h1&gt;OrbSLAM&lt;/h1&gt;&lt;p&gt;OrbSLAMのFrontendは、すでに生成したMapからのFeedbackもあるため構造が把握しにくいので、フローを描く。&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="-430" y="100" width="240" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-2" value="&lt;h1&gt;Frontend review&lt;/h1&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-2" value="&lt;h1&gt;Frontend review&lt;/h1&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="-770" y="40" width="260" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-3" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-3" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" parent="1" vertex="1">
           <mxGeometry x="30" y="360" width="90" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-8" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-8" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" parent="1" vertex="1">
           <mxGeometry x="40" y="370" width="90" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-9" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-9" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" parent="1" vertex="1">
           <mxGeometry x="50" y="380" width="90" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-10" value="Camera Input" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-10" value="Camera Input" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="1" vertex="1">
           <mxGeometry x="60" y="330" width="90" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-11" target="CZVS23kr_gq7ErG93lJm-12">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="CZVS23kr_gq7ErG93lJm-11" target="CZVS23kr_gq7ErG93lJm-12" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-11" target="CZVS23kr_gq7ErG93lJm-16">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="CZVS23kr_gq7ErG93lJm-11" target="CZVS23kr_gq7ErG93lJm-16" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-11" value="Feature detection&lt;br&gt;&lt;br&gt;・Fast corner検出&lt;br&gt;・８段階のスケール別に処理&lt;br&gt;・各ScaleごとにGrid分けして最低５個検出する&lt;br&gt;・Orb特徴量はここで検出した特徴点で計算する" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-11" value="Feature detection&lt;br&gt;&lt;br&gt;・Fast corner検出&lt;br&gt;・８段階のスケール別に処理&lt;br&gt;・各ScaleごとにGrid分けして最低５個検出する&lt;br&gt;・Orb特徴量はここで検出した特徴点で計算する" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="220" y="348.75" width="150" height="132.5" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-12" target="CZVS23kr_gq7ErG93lJm-19">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="CZVS23kr_gq7ErG93lJm-12" target="CZVS23kr_gq7ErG93lJm-19" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-12" value="Feature tracking Phase 1&lt;br&gt;&lt;br&gt;・カメラ位置を低速度モーションモデルで推定&lt;br&gt;・前回Frameで観測されているMap Pointを、↑で推定したカメラPoseとして投影、投影結果とFeature detection結果を照らし合わせて対応点を探索&lt;br&gt;・一定以上の対応点が見つからない場合は、より広い範囲で対応点を探索する&lt;br&gt;・この時点で、対応点に基づきMotion only BAでカメラPoseを最適化する" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-12" value="Feature tracking Phase 1&lt;br&gt;&lt;br&gt;・カメラ位置を低速度モーションモデルで推定&lt;br&gt;・前回Frameで観測されているMap Pointを、↑で推定したカメラPoseとして投影、投影結果とFeature detection結果を照らし合わせて対応点を探索&lt;br&gt;・一定以上の対応点が見つからない場合は、より広い範囲で対応点を探索する&lt;br&gt;・この時点で、対応点に基づきMotion only BAでカメラPoseを最適化する" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="520" y="230" width="250" height="183.75" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-13" value="Feature verification&lt;br&gt;&lt;br&gt;OrbSLAMでは、Feature trackingがVerificationを兼ねる？&lt;br&gt;基本MapPointに存在する点との対応を取るので、幾何的におかしい&lt;br&gt;Feature trackingが発生することはないはず" style="rounded=0;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-13" value="Feature verification&lt;br&gt;&lt;br&gt;OrbSLAMでは、Feature trackingがVerificationを兼ねる？&lt;br&gt;基本MapPointに存在する点との対応を取るので、幾何的におかしい&lt;br&gt;Feature trackingが発生することはないはず" style="rounded=0;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
           <mxGeometry x="505" y="80" width="880" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-14" value="疑問：Feature detectionのタイミングは？&lt;br&gt;毎フレーム検出するのか、KeyFrameのみ検出するのか？&lt;br&gt;＝＞毎Frameの特徴点検出が必要&lt;br&gt;KLTなどで画像情報のみの特徴点トラッキングを行っている&lt;br&gt;わけではないので、常に検出する必要がある" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-14" value="疑問：Feature detectionのタイミングは？&lt;br&gt;毎フレーム検出するのか、KeyFrameのみ検出するのか？&lt;br&gt;＝＞毎Frameの特徴点検出が必要&lt;br&gt;KLTなどで画像情報のみの特徴点トラッキングを行っている&lt;br&gt;わけではないので、常に検出する必要がある" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="1" vertex="1">
           <mxGeometry x="150" y="500" width="340" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-16" target="CZVS23kr_gq7ErG93lJm-19">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="CZVS23kr_gq7ErG93lJm-16" target="CZVS23kr_gq7ErG93lJm-19" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-16" value="Feature tracking（トラッキング失敗の場合）&lt;br&gt;・BoWに変換し、Global Relocalizaitonで一番近いFrame？Frameの候補？を探索&lt;br&gt;・Frame候補とORB特徴量の比較で対応点を探索&lt;br&gt;・PnP＋RANSACでカメラPoseを求める&lt;br&gt;・姿勢がそれなりの精度でも止まったら、候補Frameで観測されているMapPointを投影し、より多くの対応点を探索&lt;br&gt;・Motion only BAでカメラPoseを最適化&lt;br&gt;・通常の処理に戻る" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-16" value="Feature tracking（トラッキング失敗の場合）&lt;br&gt;・BoWに変換し、Global Relocalizaitonで一番近いFrame？Frameの候補？を探索&lt;br&gt;・Frame候補とORB特徴量の比較で対応点を探索&lt;br&gt;・PnP＋RANSACでカメラPoseを求める&lt;br&gt;・姿勢がそれなりの精度でも止まったら、候補Frameで観測されているMapPointを投影し、より多くの対応点を探索&lt;br&gt;・Motion only BAでカメラPoseを最適化&lt;br&gt;・通常の処理に戻る" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="520" y="418.12" width="250" height="183.75" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-17" value="前Frameに基づいたFeature tracking" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-17" value="前Frameに基づいたFeature tracking" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="1" vertex="1">
           <mxGeometry x="540" y="180" width="210" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-18" value="ある程度精度が出たカメラPoseを求めるまでやる" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-18" value="ある程度精度が出たカメラPoseを求めるまでやる" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="1" vertex="1">
           <mxGeometry x="505" y="200" width="280" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-19" target="CZVS23kr_gq7ErG93lJm-23">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="CZVS23kr_gq7ErG93lJm-19" target="CZVS23kr_gq7ErG93lJm-23" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-19" value="Feature tracking　Phase 2&lt;br&gt;&lt;br&gt;・KeyFrameで観測されているMapPointから、さらに現在Frameで観測された特徴点の対応を取る&lt;br&gt;・対象となるKeyFrameは２種類ある&lt;br&gt;・１種類目：現在Frameで観測しているMapPointを共有しているKeyFrame（同じような場所を見ているかもしれない奴ら）&lt;br&gt;・２種類目：CoVisibilityグラフで、１種類目のKeyFrameに隣接しているKeyFrameすべて（ちょっと確率は低いが同じような場所を見ていそうな奴ら）&lt;br&gt;・↑のKeyFrame達で観測されているMapPointと現在のFrameで観測されている特徴点の対応を録っていく。&lt;br&gt;&lt;br&gt;・以下の基準で利用しないマップポイントを排除する。（現在の位置から見えそうにないMapPointや、遠すぎたり近すぎる？MapPointを排除する）&lt;br&gt;・基準１：MapPointに設定されている平均視線と、現在Frameからの視線の角度が60度以上なら、そのMapPointは利用しない。（オクルージョンの考慮か？現在カメラFrameの姿勢が、そのMapPointを観測できない可能性があるので、平均視線というパラメータで、MapPointが見える範囲というものを表現しているのかもしれない）&lt;br&gt;・基準２：MapPointまでの距離が、d_min, d_maxに入っていない場合は、そのMapPointは利用しない&lt;br&gt;&lt;br&gt;・残ったMapPointを現在カメラFrameに投影し、ORB特徴量を使って、現在Frameで検出された特徴点との対応を探索する。" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-19" value="Feature tracking　Phase 2&lt;br&gt;&lt;br&gt;・KeyFrameで観測されているMapPointから、さらに現在Frameで観測された特徴点の対応を取る&lt;br&gt;・対象となるKeyFrameは２種類ある&lt;br&gt;・１種類目：現在Frameで観測しているMapPointを共有しているKeyFrame（同じような場所を見ているかもしれない奴ら）&lt;br&gt;・２種類目：CoVisibilityグラフで、１種類目のKeyFrameに隣接しているKeyFrameすべて（ちょっと確率は低いが同じような場所を見ていそうな奴ら）&lt;br&gt;・↑のKeyFrame達で観測されているMapPointと現在のFrameで観測されている特徴点の対応を録っていく。&lt;br&gt;&lt;br&gt;・以下の基準で利用しないマップポイントを排除する。（現在の位置から見えそうにないMapPointや、遠すぎたり近すぎる？MapPointを排除する）&lt;br&gt;・基準１：MapPointに設定されている平均視線と、現在Frameからの視線の角度が60度以上なら、そのMapPointは利用しない。（オクルージョンの考慮か？現在カメラFrameの姿勢が、そのMapPointを観測できない可能性があるので、平均視線というパラメータで、MapPointが見える範囲というものを表現しているのかもしれない）&lt;br&gt;・基準２：MapPointまでの距離が、d_min, d_maxに入っていない場合は、そのMapPointは利用しない&lt;br&gt;&lt;br&gt;・残ったMapPointを現在カメラFrameに投影し、ORB特徴量を使って、現在Frameで検出された特徴点との対応を探索する。" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="870" y="250" width="500" height="330" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-21" value="近隣のFrameで観測されたMapPointに基づいたFeature Tracking" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-21" value="近隣のFrameで観測されたMapPointに基づいたFeature Tracking" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="1" vertex="1">
           <mxGeometry x="940" y="220" width="360" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=34;jumpStyle=arc;shape=flexArrow;shadow=0;comic=0;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-23" target="CZVS23kr_gq7ErG93lJm-39">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=34;jumpStyle=arc;shape=flexArrow;shadow=0;comic=0;" parent="1" source="CZVS23kr_gq7ErG93lJm-23" target="CZVS23kr_gq7ErG93lJm-39" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1755" y="830" />
@@ -77,33 +77,33 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-23" value="KeyFrame Selection&lt;br&gt;&lt;br&gt;・Global relocalizaitionを実施して、20 Frame経過&lt;br&gt;・LocalMappinngスレッドが動いていない&lt;br&gt;・最後のKeyFrame追加から20 Frame経過&lt;br&gt;・and で 50点以上のMapPointをTrackingできている&lt;br&gt;・同じMapPointを観測しているKeyFrameのうち、最も多くのMapPointを共有しているKeyFrameの、90%以下のMapPointしかTrackingしていない&lt;br&gt;&lt;br&gt;あとでKeyFrameは登録解除もするらいしいので割と緩めの基準でKeyFrame登録するらしい" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-23" value="KeyFrame Selection&lt;br&gt;&lt;br&gt;・Global relocalizaitionを実施して、20 Frame経過&lt;br&gt;・LocalMappinngスレッドが動いていない&lt;br&gt;・最後のKeyFrame追加から20 Frame経過&lt;br&gt;・and で 50点以上のMapPointをTrackingできている&lt;br&gt;・同じMapPointを観測しているKeyFrameのうち、最も多くのMapPointを共有しているKeyFrameの、90%以下のMapPointしかTrackingしていない&lt;br&gt;&lt;br&gt;あとでKeyFrameは登録解除もするらいしいので割と緩めの基準でKeyFrame登録するらしい" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="1500" y="337.5" width="510" height="155" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-30" value="" style="shape=flexArrow;endArrow=classic;html=1;" edge="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-30" value="" style="shape=flexArrow;endArrow=classic;html=1;" parent="1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="160" y="414" as="sourcePoint" />
             <mxPoint x="210" y="413.75" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-35" value="Tracking thread" style="rounded=0;whiteSpace=wrap;html=1;align=center;rotation=-90;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=34;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-35" value="Tracking thread" style="rounded=0;whiteSpace=wrap;html=1;align=center;rotation=-90;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=34;" parent="1" vertex="1">
           <mxGeometry x="-310" y="420" width="380" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-38" value="Local mapping thread" style="rounded=0;whiteSpace=wrap;html=1;align=center;rotation=-90;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=34;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-38" value="Local mapping thread" style="rounded=0;whiteSpace=wrap;html=1;align=center;rotation=-90;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=34;" parent="1" vertex="1">
           <mxGeometry x="-310" y="1080" width="380" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=34;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-39" target="CZVS23kr_gq7ErG93lJm-41">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=34;" parent="1" source="CZVS23kr_gq7ErG93lJm-39" target="CZVS23kr_gq7ErG93lJm-41" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="440" y="1170" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-39" value="KeyFrameの追加&lt;br&gt;&lt;br&gt;・新規追加KeyFrameを使ってCo-visibility graphの更新&lt;br&gt;・一番MapPointを共有するKeyFrameを繋いだSpanning Treeを更新&lt;br&gt;・KeyFrameをBoWに変換" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-39" value="KeyFrameの追加&lt;br&gt;&lt;br&gt;・新規追加KeyFrameを使ってCo-visibility graphの更新&lt;br&gt;・一番MapPointを共有するKeyFrameを繋いだSpanning Treeを更新&lt;br&gt;・KeyFrameをBoWに変換" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="-20" y="1120" width="380" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=34;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-41" target="CZVS23kr_gq7ErG93lJm-42">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=34;" parent="1" source="CZVS23kr_gq7ErG93lJm-41" target="CZVS23kr_gq7ErG93lJm-42" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;shadow=0;fontSize=24;strokeWidth=3;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-41" target="CZVS23kr_gq7ErG93lJm-54">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;shadow=0;fontSize=24;strokeWidth=3;" parent="1" source="CZVS23kr_gq7ErG93lJm-41" target="CZVS23kr_gq7ErG93lJm-54" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="645" y="990" />
@@ -112,26 +112,26 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-41" value="MapPointの削除&lt;br&gt;&lt;br&gt;・削除判定の対象は最近追加されたMapPpointのみらしい。&lt;br&gt;・以下条件を満たさないものは削除決定。削除タイミングはこのあとにあるLocal BAでのOutlier除去のときに削除する。&lt;br&gt;&lt;br&gt;・削除条件１：見えているはずのKeyFrameの中で、25%以上見れていれば削除なし&lt;br&gt;・削除条件２：MapPointが作成され、その後にKeyFrameが追加された時、そのMapPointが３枚以上のKeyFrameで観測されていれば削除なし（単純に観測枚数が少ないものは消す？２５％判定にでも消されると思われるが、より即効性を持って絶対にOutlierポイMapPointを消すといこと？）&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-41" value="MapPointの削除&lt;br&gt;&lt;br&gt;・削除判定の対象は最近追加されたMapPpointのみらしい。&lt;br&gt;・以下条件を満たさないものは削除決定。削除タイミングはこのあとにあるLocal BAでのOutlier除去のときに削除する。&lt;br&gt;&lt;br&gt;・削除条件１：見えているはずのKeyFrameの中で、25%以上見れていれば削除なし&lt;br&gt;・削除条件２：MapPointが作成され、その後にKeyFrameが追加された時、そのMapPointが３枚以上のKeyFrameで観測されていれば削除なし（単純に観測枚数が少ないものは消す？２５％判定にでも消されると思われるが、より即効性を持って絶対にOutlierポイMapPointを消すといこと？）&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="455" y="1060" width="380" height="220" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-55" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;shadow=0;fontSize=24;strokeWidth=3;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-42" target="CZVS23kr_gq7ErG93lJm-54">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-55" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;shadow=0;fontSize=24;strokeWidth=3;" parent="1" source="CZVS23kr_gq7ErG93lJm-42" target="CZVS23kr_gq7ErG93lJm-54" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1070" y="770" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-42" value="MapPointの追加&lt;br&gt;&lt;br&gt;・Co-visibility graphを使ってTriangulateするらしい&lt;br&gt;・そもそもMapPointとして登録されなければCo-visibility graohは作られないのでは？&lt;br&gt;・追加する特徴点がきまったら、一旦Triangulateして、Trackingのときと同じように更に観測しているKeyFrameの探索を行う&lt;br&gt;・BoWで作成したVocab Treeで対応候補を絞りつつ探索&lt;br&gt;・エピポーラ制約を持たさない対応は破棄する&lt;br&gt;・そもそも個々での処理が走る特徴点の基準はなんなのか？" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-42" value="MapPointの追加&lt;br&gt;&lt;br&gt;・Co-visibility graphを使ってTriangulateするらしい&lt;br&gt;・そもそもMapPointとして登録されなければCo-visibility graohは作られないのでは？&lt;br&gt;・追加する特徴点がきまったら、一旦Triangulateして、Trackingのときと同じように更に観測しているKeyFrameの探索を行う&lt;br&gt;・BoWで作成したVocab Treeで対応候補を絞りつつ探索&lt;br&gt;・エピポーラ制約を持たさない対応は破棄する&lt;br&gt;・そもそも個々での処理が走る特徴点の基準はなんなのか？" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="880" y="1070" width="380" height="200" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=34;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-43" target="CZVS23kr_gq7ErG93lJm-44">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=34;" parent="1" source="CZVS23kr_gq7ErG93lJm-43" target="CZVS23kr_gq7ErG93lJm-44" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-43" value="Local BA&lt;br&gt;&lt;br&gt;・Local BAの範囲は、今回追加したKeyFrameのCo-visibility graphで繋がったKeyFrameと、それらで観測されているMapPoint&lt;br&gt;・選択されているKeyFrame以外はMarginalize outする？&lt;br&gt;・BA終了後？に再投影誤差？など利用してMapPointのOutlierを除去？Local mapping処理の初めに決めた削除対象MapPointもこのタイミングで削除される。" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-43" value="Local BA&lt;br&gt;&lt;br&gt;・Local BAの範囲は、今回追加したKeyFrameのCo-visibility graphで繋がったKeyFrameと、それらで観測されているMapPoint&lt;br&gt;・選択されているKeyFrame以外はMarginalize outする？&lt;br&gt;・BA終了後？に再投影誤差？など利用してMapPointのOutlierを除去？Local mapping処理の初めに決めた削除対象MapPointもこのタイミングで削除される。" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="1385" y="1090" width="380" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=34;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-44" target="CZVS23kr_gq7ErG93lJm-39">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=34;" parent="1" source="CZVS23kr_gq7ErG93lJm-44" target="CZVS23kr_gq7ErG93lJm-39" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="2300" y="1170" />
@@ -140,13 +140,13 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-44" value="KeyFrameの削除&lt;br&gt;&lt;br&gt;・以下の条件でKeyFrameが削除される&lt;br&gt;・条件１：MapPointの９０％が共有されているKeyFrame&lt;br&gt;・条件２：MapPointの９０％が小さいスケールとして観測されているKeyFrame？&lt;br&gt;&lt;br&gt;詳細な条件は不明、&lt;b&gt;要調査。&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-44" value="KeyFrameの削除&lt;br&gt;&lt;br&gt;・以下の条件でKeyFrameが削除される&lt;br&gt;・条件１：MapPointの９０％が共有されているKeyFrame&lt;br&gt;・条件２：MapPointの９０％が小さいスケールとして観測されているKeyFrame？&lt;br&gt;&lt;br&gt;詳細な条件は不明、&lt;b&gt;要調査。&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="1850" y="1100" width="380" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-46" value="疑問１：MapPointに追加する特徴点の基準は？&lt;br&gt;疑問２：MapPointに追加する前の特徴点のCovisibility graphは生成されていいないはず。どうやって対応関係を探索するのか？" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-46" value="疑問１：MapPointに追加する特徴点の基準は？&lt;br&gt;疑問２：MapPointに追加する前の特徴点のCovisibility graphは生成されていいないはず。どうやって対応関係を探索するのか？" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="1" vertex="1">
           <mxGeometry x="880" y="1280" width="690" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;jumpStyle=arc;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-23">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;jumpStyle=arc;" parent="1" source="CZVS23kr_gq7ErG93lJm-23" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="80" y="510" as="targetPoint" />
             <Array as="points">
@@ -156,16 +156,16 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-53" value="&lt;h1&gt;Kimera-VIO&lt;/h1&gt;&lt;p&gt;MapPointを再投影するなどやっていない&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="-290" y="1530" width="240" height="120" as="geometry" />
+        <mxCell id="CZVS23kr_gq7ErG93lJm-53" value="&lt;h1&gt;Kimera-VIO&lt;/h1&gt;&lt;p&gt;MapPointを再投影するなどやっていない&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="-420" y="1440" width="240" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;shadow=0;fontSize=24;strokeWidth=3;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-54" target="CZVS23kr_gq7ErG93lJm-16">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;shadow=0;fontSize=24;strokeWidth=3;" parent="1" source="CZVS23kr_gq7ErG93lJm-54" target="CZVS23kr_gq7ErG93lJm-16" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;shadow=0;fontSize=24;strokeWidth=3;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-54" target="CZVS23kr_gq7ErG93lJm-12">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.75;entryDx=0;entryDy=0;shadow=0;fontSize=24;strokeWidth=3;" parent="1" source="CZVS23kr_gq7ErG93lJm-54" target="CZVS23kr_gq7ErG93lJm-12" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;shadow=0;fontSize=24;strokeWidth=3;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-54" target="CZVS23kr_gq7ErG93lJm-19">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;shadow=0;fontSize=24;strokeWidth=3;" parent="1" source="CZVS23kr_gq7ErG93lJm-54" target="CZVS23kr_gq7ErG93lJm-19" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="790" y="770" />
@@ -175,7 +175,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;shadow=0;strokeWidth=3;fontSize=24;" edge="1" parent="1" source="CZVS23kr_gq7ErG93lJm-54" target="CZVS23kr_gq7ErG93lJm-23">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;comic=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;shadow=0;strokeWidth=3;fontSize=24;" parent="1" source="CZVS23kr_gq7ErG93lJm-54" target="CZVS23kr_gq7ErG93lJm-23" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="790" y="770" />
@@ -185,11 +185,78 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-54" value="MapPoint" style="rounded=0;whiteSpace=wrap;html=1;align=center;fontSize=24;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-54" value="MapPoint" style="rounded=0;whiteSpace=wrap;html=1;align=center;fontSize=24;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
           <mxGeometry x="810" y="740" width="210" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="CZVS23kr_gq7ErG93lJm-22" value="疑問：MapPoint追加はどうやるのか？　＝＞　カメラTracking（Front end?）のスレッドでは追加なし&lt;br&gt;　　　　　　　　　　　　　　　　　　　　　Local Mappingスレッドで追加するかどうか判断し、クリアしたものだけが追加される&lt;br&gt;ここまでで、MapPointとして登録済みの特徴点と現在Frameの特徴点の対応付けにいろいろ工夫があることはわかった。&lt;br&gt;しかし、対応付けができていない特徴点をMapPointに追加しなければ、初期化時に生成したMapPointしか存在できない。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=#ffffff;" vertex="1" parent="1">
+        <mxCell id="CZVS23kr_gq7ErG93lJm-22" value="疑問：MapPoint追加はどうやるのか？　＝＞　カメラTracking（Front end?）のスレッドでは追加なし&lt;br&gt;　　　　　　　　　　　　　　　　　　　　　Local Mappingスレッドで追加するかどうか判断し、クリアしたものだけが追加される&lt;br&gt;ここまでで、MapPointとして登録済みの特徴点と現在Frameの特徴点の対応付けにいろいろ工夫があることはわかった。&lt;br&gt;しかし、対応付けができていない特徴点をMapPointに追加しなければ、初期化時に生成したMapPointしか存在できない。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=#ffffff;" parent="1" vertex="1">
           <mxGeometry x="550" y="620" width="730" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-1" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
+          <mxGeometry y="1610" width="90" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-2" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
+          <mxGeometry x="10" y="1620" width="90" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="UyCWRXfSo20qLZG2_h02-9">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1180" y="1490" as="targetPoint" />
+            <mxPoint x="130" y="1651" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="260" y="1651" />
+              <mxPoint x="260" y="1520" />
+              <mxPoint x="1450" y="1520" />
+              <mxPoint x="1450" y="1651" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-3" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
+          <mxGeometry x="20" y="1630" width="90" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-4" value="Camera Input" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="1580" width="90" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="UyCWRXfSo20qLZG2_h02-5" target="UyCWRXfSo20qLZG2_h02-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-5" value="Feature tracking&lt;br&gt;&lt;br&gt;・Lukas-Kanade trackerで特徴点を追跡" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="280" y="1610" width="221" height="82.5" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="UyCWRXfSo20qLZG2_h02-6" target="UyCWRXfSo20qLZG2_h02-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-6" value="KeyFrame Selection&lt;br&gt;&lt;br&gt;・以下の基準を満たせばKeyFrameとして選択する&lt;br&gt;・基準１：前回のKeyFrame選択から一定時間経っている&lt;br&gt;・基準２：Trackingできている特徴点が一定以下になった" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="580" y="1610" width="360" height="82.5" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="UyCWRXfSo20qLZG2_h02-9">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="70" y="1730" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1950" y="1651" />
+              <mxPoint x="1950" y="1770" />
+              <mxPoint x="70" y="1770" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-9" value="Feature detection&lt;br&gt;&lt;br&gt;・Shi-Tomasi cornersで特徴点検出&lt;br&gt;・Keyframeのみで特徴点の検出を行う" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1500" y="1610" width="240" height="82.5" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="UyCWRXfSo20qLZG2_h02-10" target="UyCWRXfSo20qLZG2_h02-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-10" value="Verificaiton&lt;br&gt;&lt;br&gt;・１Frame目はKeyFrame&lt;br&gt;・単眼カメラの場合は５点法＋RANSACで特徴点を選別&lt;br&gt;・Landmark ageが一定値以上の場合は排除（何回KeyFrameに観測されたか？をカウントする。）&lt;br&gt;・同時にLandmark視差の中央値、トラッキングしている特徴点数のチェックを行う。" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="1581.25" width="330" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-11" value="" style="shape=flexArrow;endArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="120" y="1665.1599999999999" as="sourcePoint" />
+            <mxPoint x="230" y="1664.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-18" value="１Frame目はトラッキングできない&lt;br&gt;のでKeyFrameとして、特徴点検出を行う" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="261" y="1480" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="UyCWRXfSo20qLZG2_h02-19" value="Tracking thread" style="rounded=0;whiteSpace=wrap;html=1;align=center;rotation=-90;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=34;" vertex="1" parent="1">
+          <mxGeometry x="-280" y="1600" width="380" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
