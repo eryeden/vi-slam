@@ -1,10 +1,10 @@
-<mxfile host="app.diagrams.net" modified="2020-04-22T14:37:10.905Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="I1h-wcteCzcvtvQpXViA" version="12.9.14" type="github">
+<mxfile host="app.diagrams.net" modified="2020-04-24T07:02:45.530Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="Ah0zv1-RqNUk1Z7u-ycq" version="13.0.1" type="github" pages="2">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
-    <mxGraphModel dx="4710" dy="2769" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="9887" dy="5960" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="VGC260k_tyWZGbdCQ8ms-19" target="VGC260k_tyWZGbdCQ8ms-23">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="VGC260k_tyWZGbdCQ8ms-19" target="VGC260k_tyWZGbdCQ8ms-23" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1610" y="2480.02" />
@@ -319,13 +319,13 @@
         <mxCell id="UyCWRXfSo20qLZG2_h02-32" value="Feature tracking&lt;br&gt;&lt;br&gt;・Lukas-Kanade trackerで特徴点を追跡" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="240" y="2053.7549999999997" width="221" height="82.5" as="geometry" />
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-1" value="&lt;h1&gt;VITAMIN-E&lt;/h1&gt;&lt;p&gt;こちらも、MapPointを再投影するなどやっていないし、特徴点も利用しない&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-1" value="&lt;h1&gt;VITAMIN-E&lt;/h1&gt;&lt;p&gt;こちらも、MapPointを再投影するなどやっていないし、特徴点も利用しない&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="-400" y="2413.02" width="240" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-7" value="Tracking thread" style="rounded=0;whiteSpace=wrap;html=1;align=center;rotation=-90;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=34;" vertex="1" parent="1">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-7" value="Tracking thread" style="rounded=0;whiteSpace=wrap;html=1;align=center;rotation=-90;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=34;" parent="1" vertex="1">
           <mxGeometry x="-280" y="2540" width="380" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="VGC260k_tyWZGbdCQ8ms-17" target="VGC260k_tyWZGbdCQ8ms-23">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="VGC260k_tyWZGbdCQ8ms-17" target="VGC260k_tyWZGbdCQ8ms-23" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="720" y="2655.02" />
@@ -335,10 +335,10 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-17" value="Estimate Dominant Flow&lt;br&gt;&lt;br&gt;・Detect feature point（Shi-tomasi corner or something）&lt;br&gt;・Compute the BRIEF feature&lt;br&gt;・前フレームとのマッチングを探索し、Affine変換を推定する" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-17" value="Estimate Dominant Flow&lt;br&gt;&lt;br&gt;・Detect feature point（Shi-tomasi corner or something）&lt;br&gt;・Compute the BRIEF feature&lt;br&gt;・前フレームとのマッチングを探索し、Affine変換を推定する" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="270" y="2610.03" width="366" height="89.99" as="geometry" />
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-31" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="VGC260k_tyWZGbdCQ8ms-18" target="VGC260k_tyWZGbdCQ8ms-17">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-31" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="VGC260k_tyWZGbdCQ8ms-18" target="VGC260k_tyWZGbdCQ8ms-17" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="360" y="2518.02" />
@@ -348,37 +348,37 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-18" value="Resize Image&lt;br&gt;1/6 or 1/3 ..." style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-18" value="Resize Image&lt;br&gt;1/6 or 1/3 ..." style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="210" y="2493.02" width="90" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-19" value="Feature detection&lt;br&gt;&lt;br&gt;・画像中で特徴点分布が均等になるように特徴点を追加&lt;br&gt;・特徴点の存在しない部分に一様分布で特徴点を配置&lt;br&gt;・配置した位置を初期値として、曲率ピーク探索を実施、特徴点位置とする" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-19" value="Feature detection&lt;br&gt;&lt;br&gt;・画像中で特徴点分布が均等になるように特徴点を追加&lt;br&gt;・特徴点の存在しない部分に一様分布で特徴点を配置&lt;br&gt;・配置した位置を初期値として、曲率ピーク探索を実施、特徴点位置とする" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="1220" y="2420" width="350" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="VGC260k_tyWZGbdCQ8ms-20" target="VGC260k_tyWZGbdCQ8ms-22">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="VGC260k_tyWZGbdCQ8ms-20" target="VGC260k_tyWZGbdCQ8ms-22" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-20" value="曲率画像生成" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-20" value="曲率画像生成" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="616" y="2409.999999999999" width="130" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-34" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="VGC260k_tyWZGbdCQ8ms-22" target="VGC260k_tyWZGbdCQ8ms-19">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-34" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="VGC260k_tyWZGbdCQ8ms-22" target="VGC260k_tyWZGbdCQ8ms-19" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-22" value="Feature tracking&lt;br&gt;&lt;br&gt;・ワープした前Frame特徴点位置を初期値として、現在Frameの曲率ピークを探索&lt;br&gt;・ピーク位置を現在Frameの特徴点位置とする" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-22" value="Feature tracking&lt;br&gt;&lt;br&gt;・ワープした前Frame特徴点位置を初期値として、現在Frameの曲率ピークを探索&lt;br&gt;・ピーク位置を現在Frameの特徴点位置とする" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="805" y="2435.0099999999998" width="366" height="89.99" as="geometry" />
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="VGC260k_tyWZGbdCQ8ms-23" target="VGC260k_tyWZGbdCQ8ms-22">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="VGC260k_tyWZGbdCQ8ms-23" target="VGC260k_tyWZGbdCQ8ms-22" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-23" value="Feature warp&lt;br&gt;&lt;br&gt;・推定したDominant Flowを元に、前回Frameの特徴点位置を移動する" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-23" value="Feature warp&lt;br&gt;&lt;br&gt;・推定したDominant Flowを元に、前回Frameの特徴点位置を移動する" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="1" vertex="1">
           <mxGeometry x="530" y="2480.0199999999995" width="216" height="75.01" as="geometry" />
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-24" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-24" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" parent="1" vertex="1">
           <mxGeometry x="10" y="2440" width="90" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-25" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-25" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" parent="1" vertex="1">
           <mxGeometry x="20" y="2450" width="90" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="VGC260k_tyWZGbdCQ8ms-26" target="VGC260k_tyWZGbdCQ8ms-20">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="VGC260k_tyWZGbdCQ8ms-26" target="VGC260k_tyWZGbdCQ8ms-20" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="160" y="2505.02" />
@@ -386,7 +386,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="VGC260k_tyWZGbdCQ8ms-26" target="VGC260k_tyWZGbdCQ8ms-18">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="VGC260k_tyWZGbdCQ8ms-26" target="VGC260k_tyWZGbdCQ8ms-18" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="160" y="2505.02" />
@@ -394,15 +394,23 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-26" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" vertex="1" parent="1">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-26" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn.tatsunoko-mall.com/res/tatsunoko/NTMX-8-2019-10-17-11-00-03/5da7cb232b18c;imageBackground=#000000;" parent="1" vertex="1">
           <mxGeometry x="30" y="2460" width="90" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-27" value="Camera Input" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-27" value="Camera Input" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="1" vertex="1">
           <mxGeometry x="10" y="2410" width="90" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="VGC260k_tyWZGbdCQ8ms-40" value="この部分は、自分が推測している部分なので実際とは違う可能性あり&lt;br&gt;・DSOのように、画像の勾配の大きい部分のみに初期特徴点位置を配置しているようにも動画が見える&lt;br&gt;・また、特徴点寿命についても言及がない、曲率ピーク探索の部分で若い特徴点が重なる可能性は十分にあるので、Landmarkの寿命管理のようなものは必要だろう" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+        <mxCell id="VGC260k_tyWZGbdCQ8ms-40" value="この部分は、自分が推測している部分なので実際とは違う可能性あり&lt;br&gt;・DSOのように、画像の勾配の大きい部分のみに初期特徴点位置を配置しているようにも動画が見える&lt;br&gt;・また、特徴点寿命についても言及がない、曲率ピーク探索の部分で若い特徴点が重なる可能性は十分にあるので、Landmarkの寿命管理のようなものは必要だろう" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
           <mxGeometry x="1171" y="2543.02" width="460" height="86.98" as="geometry" />
         </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="KfDyO8I-pmFeG0Nn9npx" name="Proposed-Frontend">
+    <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="jS7kERMsJuhV1MZeAvF8-0" />
+        <mxCell id="jS7kERMsJuhV1MZeAvF8-1" parent="jS7kERMsJuhV1MZeAvF8-0" />
       </root>
     </mxGraphModel>
   </diagram>
