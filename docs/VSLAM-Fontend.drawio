@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-04-24T12:10:53.293Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="-P-gXsc0HJjCb5NaANe3" version="13.0.1" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-04-24T12:13:57.610Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="SIwtWGZhaoDtL14lfUl-" version="13.0.1" type="github" pages="2">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
     <mxGraphModel dx="2426" dy="1052" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -407,7 +407,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="KfDyO8I-pmFeG0Nn9npx" name="Proposed-Frontend">
-    <mxGraphModel dx="1941" dy="2446" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2265" dy="2659" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="jS7kERMsJuhV1MZeAvF8-0" />
         <mxCell id="jS7kERMsJuhV1MZeAvF8-1" parent="jS7kERMsJuhV1MZeAvF8-0" />
@@ -487,8 +487,8 @@
             <mxPoint x="827" y="229.50000000000006" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="ytnsG8BYgxHmYPclWwfR-2" value="全ての観測したFrameが&lt;br&gt;登録されてる&lt;br&gt;最新FrameのPoseも出力" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="680" y="160" width="180" height="60" as="geometry" />
+        <mxCell id="ytnsG8BYgxHmYPclWwfR-2" value="全ての観測したFrameが&lt;br&gt;登録されてる&lt;br&gt;最新FrameのPoseも出力&lt;br&gt;（最適化はしない）" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="680" y="150" width="180" height="80" as="geometry" />
         </mxCell>
         <mxCell id="ytnsG8BYgxHmYPclWwfR-3" value="" style="endArrow=classic;html=1;fontSize=15;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -526,6 +526,59 @@
         </mxCell>
         <mxCell id="ytnsG8BYgxHmYPclWwfR-12" value="Backend : Optimization thread" style="rounded=0;whiteSpace=wrap;html=1;align=center;rotation=-90;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=15;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="-180" y="850" width="520" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="ytnsG8BYgxHmYPclWwfR-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fontSize=15;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="ytnsG8BYgxHmYPclWwfR-13" target="ytnsG8BYgxHmYPclWwfR-19">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="285" y="910" />
+              <mxPoint x="448" y="910" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ytnsG8BYgxHmYPclWwfR-13" value="Database&lt;br&gt;Map Point" style="shape=datastore;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="250" y="740" width="70" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ytnsG8BYgxHmYPclWwfR-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=15;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="ytnsG8BYgxHmYPclWwfR-14" target="ytnsG8BYgxHmYPclWwfR-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ytnsG8BYgxHmYPclWwfR-14" value="Database&lt;br&gt;Frame" style="shape=datastore;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="470" y="740" width="70" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ytnsG8BYgxHmYPclWwfR-15" value="Database&lt;br&gt;KeyFrame" style="shape=datastore;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="735" y="740" width="70" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ytnsG8BYgxHmYPclWwfR-16" value="" style="shape=flexArrow;endArrow=classic;html=1;fontSize=15;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="590" y="780" as="sourcePoint" />
+            <mxPoint x="660" y="780" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ytnsG8BYgxHmYPclWwfR-18" value="Subset of Frame database" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="540" y="740" width="190" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ytnsG8BYgxHmYPclWwfR-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=15;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="ytnsG8BYgxHmYPclWwfR-19">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="810" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="430" y="930" />
+              <mxPoint x="270" y="930" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ytnsG8BYgxHmYPclWwfR-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=15;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="ytnsG8BYgxHmYPclWwfR-19">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="515" y="810" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="540" y="880" />
+              <mxPoint x="515" y="880" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ytnsG8BYgxHmYPclWwfR-19" value="iSAM2がいい感じに最適化をかけてくれる" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="380" y="973" width="270" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ytnsG8BYgxHmYPclWwfR-24" value="ミッション&lt;br&gt;・Frontend作ったら考えます。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="120" y="633" width="220" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
