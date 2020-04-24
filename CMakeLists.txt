@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.1)
 project(vi-slam LANGUAGES CXX C)
+set(VISLAM_PROJECT_NAME vislam)
+set(VSLAM_PROJECT_NAME vslam)
+
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

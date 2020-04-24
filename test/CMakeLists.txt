@@ -59,7 +59,7 @@ foreach (SOURCE_PATH ${SOURCE_PATHS})
     #                       opencv_highgui)
     target_link_libraries(${TEST_EXECUTABLE_NAME}
             PRIVATE
-            ${PROJECT_NAME}
+            ${VISLAM_PROJECT_NAME}
             GTest::GTest
             GTest::Main
             opencv_imgcodecs

@@ -1,4 +1,4 @@
-target_sources(${PROJECT_NAME}
+target_sources(${VISLAM_PROJECT_NAME}
         PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/csv.h
         ${CMAKE_CURRENT_SOURCE_DIR}/image_util.cc
