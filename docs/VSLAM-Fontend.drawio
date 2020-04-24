@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-04-24T10:03:26.387Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="G19rER15hajNkzj0I7nb" version="13.0.1" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-04-24T12:02:31.898Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="UWK6vRB8NLiIixcNcKht" version="13.0.1" type="github" pages="2">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
     <mxGraphModel dx="2426" dy="1052" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -407,7 +407,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="KfDyO8I-pmFeG0Nn9npx" name="Proposed-Frontend">
-    <mxGraphModel dx="1359" dy="2063" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1599" dy="2221" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="jS7kERMsJuhV1MZeAvF8-0" />
         <mxCell id="jS7kERMsJuhV1MZeAvF8-1" parent="jS7kERMsJuhV1MZeAvF8-0" />
@@ -469,8 +469,8 @@
             <mxPoint x="579.9999999999999" y="370" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="jS7kERMsJuhV1MZeAvF8-26" value="Tracking時に&lt;br&gt;Featureの登録を行う&lt;br&gt;タイプは、データベースへの&lt;br&gt;書き込みあり" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="590" y="380" width="210" height="80" as="geometry" />
+        <mxCell id="jS7kERMsJuhV1MZeAvF8-26" value="Tracking時にFeatureの登録を行う&lt;br&gt;タイプは、データベースへの&lt;br&gt;書き込みあり" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="600" y="390" width="240" height="60" as="geometry" />
         </mxCell>
         <mxCell id="jS7kERMsJuhV1MZeAvF8-27" value="Tracking時に&lt;br&gt;Featureの登録を行う&lt;br&gt;タイプは、データベースへの&lt;br&gt;書き込みあり" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="360" y="380" width="210" height="80" as="geometry" />
