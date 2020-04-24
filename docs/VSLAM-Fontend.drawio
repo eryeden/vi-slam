@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-04-24T09:16:14.653Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="ChUkLCd2zXBKvzLqzXpT" version="13.0.1" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-04-24T10:03:26.387Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="G19rER15hajNkzj0I7nb" version="13.0.1" type="github" pages="2">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
     <mxGraphModel dx="2426" dy="1052" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -407,7 +407,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="KfDyO8I-pmFeG0Nn9npx" name="Proposed-Frontend">
-    <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1359" dy="2063" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="jS7kERMsJuhV1MZeAvF8-0" />
         <mxCell id="jS7kERMsJuhV1MZeAvF8-1" parent="jS7kERMsJuhV1MZeAvF8-0" />
@@ -514,6 +514,12 @@
         </mxCell>
         <mxCell id="ytnsG8BYgxHmYPclWwfR-7" value="Subset of Frame database" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="920" y="305" width="190" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ytnsG8BYgxHmYPclWwfR-9" value="カメラモデル&lt;br&gt;の話は&lt;br&gt;どこで入ってくる？" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#b85450;strokeWidth=1;fontSize=15;fillColor=#f8cecc;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="280" y="-140" width="170" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="ytnsG8BYgxHmYPclWwfR-10" value="カメラモデル扱いの問題&lt;br&gt;・VIO系は画像補正なしでFeature trackすること多い&lt;br&gt;・VITAMIN-EはDominant flow推定がAffine変換前提なので補正が必要&lt;br&gt;・OrbSLAMはReprojectionができればなんででOK" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;strokeWidth=1;fontSize=15;align=left;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="457" y="-140" width="610" height="110" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
