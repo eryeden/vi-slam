@@ -12,7 +12,7 @@ class Frame {
   Frame(uint64_t id,
         //          const std::unordered_set<uint64_t > & observing_feature_id,
         const std::set<uint64_t>& observing_feature_id,
-        const eigen_allocated_unordered_map<uint64_t, Vec2_t>&
+        const EigenAllocatedUnorderedMap<uint64_t, Vec2_t>&
             observing_feature_point_in_device,
         const Vec3_t& camera_position,
         const Quat_t& camera_attitude,
@@ -20,7 +20,7 @@ class Frame {
   Frame(uint64_t id,
         //          const std::unordered_set<uint64_t > & observing_feature_id,
         const std::set<uint64_t>& observing_feature_id,
-        const eigen_allocated_unordered_map<uint64_t, Vec2_t>&
+        const EigenAllocatedUnorderedMap<uint64_t, Vec2_t>&
             observing_feature_point_in_device,
         const Vec3_t& camera_position,
         const Quat_t& camera_attitude);
@@ -35,7 +35,7 @@ class Frame {
    * std::unordered_setはstd::set_intersectionがうまく行かないので、std::setにしている。
    */
   std::set<uint64_t> observingFeatureId;
-  eigen_allocated_unordered_map<uint64_t, Vec2_t> observingFeaturePointInDevice;
+  EigenAllocatedUnorderedMap<uint64_t, Vec2_t> observingFeaturePointInDevice;
 
   Vec3_t cameraPosition;
   Quat_t cameraAttitude;
@@ -44,5 +44,8 @@ class Frame {
 
  private:
 };
+
+template <typename T>
+using FrameUnorderedMap = std::unordered_map<T, Frame>;
 
 }  // namespace vslam::data

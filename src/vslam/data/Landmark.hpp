@@ -35,4 +35,7 @@ class Landmark {
  private:
 };
 
+template <typename T>
+using LandmarkUnorderedMap = std::unordered_map<T, Landmark>;
+
 }  // namespace vslam::data

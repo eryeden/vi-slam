@@ -6,8 +6,8 @@ Frame::Frame(
     uint64_t id_,
     //        const std::unordered_set<uint64_t> &observing_feature_id,
     const std::set<uint64_t>& observing_feature_id,
-    const vslam::eigen_allocated_unordered_map<uint64_t, vslam::Vec2_t>&
-        observing_feature_point_in_device,
+             const vslam::EigenAllocatedUnorderedMap<uint64_t, vslam::Vec2_t>&
+                 observing_feature_point_in_device,
     const vslam::Vec3_t& camera_position,
     const vslam::Quat_t& camera_attitude,
     const PinholeCameraModel& camera_parameter) {
@@ -22,7 +22,7 @@ Frame::Frame(
 Frame::Frame(uint64_t id,
              // const std::unordered_set<uint64_t > & observing_feature_id,
              const std::set<uint64_t>& observing_feature_id,
-             const eigen_allocated_unordered_map<uint64_t, Vec2_t>&
+             const EigenAllocatedUnorderedMap<uint64_t, Vec2_t>&
                  observing_feature_point_in_device,
              const Vec3_t& camera_position,
              const Quat_t& camera_attitude)

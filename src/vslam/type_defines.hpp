@@ -58,27 +58,30 @@ using VecX_t = Eigen::VectorXd;
 using Quat_t = Eigen::Quaterniond;
 
 // STL with Eigen custom allocator
-
 template <typename T>
-using eigen_allocated_vector = std::vector<T, Eigen::aligned_allocator<T>>;
+using EigenAllocatedVector = std::vector<T, Eigen::aligned_allocator<T>>;
 
 template <typename T, typename U>
-using eigen_allocated_map =
-    std::map<T, U, std::less<T>,
-             Eigen::aligned_allocator<std::pair<const T, U>>>;
+using EigenAllocatedMap = std::
+    map<T, U, std::less<T>, Eigen::aligned_allocator<std::pair<const T, U>>>;
 
 template <typename T>
-using eigen_allocated_set =
+using EigenAllocatedSet =
     std::set<T, std::less<T>, Eigen::aligned_allocator<const T>>;
 
 template <typename T, typename U>
-using eigen_allocated_unordered_map =
-    std::unordered_map<T, U, std::hash<T>, std::equal_to<T>,
+using EigenAllocatedUnorderedMap =
+    std::unordered_map<T,
+                       U,
+                       std::hash<T>,
+                       std::equal_to<T>,
                        Eigen::aligned_allocator<std::pair<const T, U>>>;
 
 template <typename T>
-using eigen_allocated_unordered_set =
-    std::unordered_set<T, std::hash<T>, std::equal_to<T>,
+using EigenAllocatedUnorderedSet =
+    std::unordered_set<T,
+                       std::hash<T>,
+                       std::equal_to<T>,
                        Eigen::aligned_allocator<const T>>;
 
 } // namespace vslam
