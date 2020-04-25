@@ -1,4 +1,4 @@
-# ----- Create vislam library -----
+# ----- Create vslam library -----
 
 add_library(${VSLAM_PROJECT_NAME}
         SHARED
@@ -25,12 +25,10 @@ endif ()
 # ここでInclude diretoryを追加しておけば、target_link_librariesやったときに参照されるようになる
 target_include_directories(${VSLAM_PROJECT_NAME}
         PUBLIC
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/>
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/frontend>
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/backend>
-        #        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/initialize>
-        #        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/bundle_adjustment>
-        #        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vislam/utils/loader>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/frontend>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/backend>
+
         )
 
 # Link to required libraries
@@ -50,6 +48,7 @@ target_link_libraries(${VSLAM_PROJECT_NAME}
 
 add_subdirectory(frontend)
 add_subdirectory(backend)
+add_subdirectory(data)
 
 #add_subdirectory(data)
 #add_subdirectory(feature)
