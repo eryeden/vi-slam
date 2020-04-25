@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-04-25T01:48:18.946Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="l86dRllr4I-wSHehcezT" version="13.0.1" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-04-25T05:30:23.547Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="72GbHD0Nbg7zpzrrcaJp" version="13.0.1" type="github" pages="2">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
     <mxGraphModel dx="2186" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -407,7 +407,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="KfDyO8I-pmFeG0Nn9npx" name="Proposed-Frontend">
-    <mxGraphModel dx="4530" dy="4149" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2265" dy="2659" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="jS7kERMsJuhV1MZeAvF8-0" />
         <mxCell id="jS7kERMsJuhV1MZeAvF8-1" parent="jS7kERMsJuhV1MZeAvF8-0" />
@@ -535,7 +535,7 @@
           <mxGeometry x="90" y="-1150" width="860" height="170" as="geometry" />
         </mxCell>
         <mxCell id="ytnsG8BYgxHmYPclWwfR-12" value="Backend : Optimization thread" style="rounded=0;whiteSpace=wrap;html=1;align=center;rotation=-90;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=15;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
-          <mxGeometry y="40" width="300" height="26" as="geometry" />
+          <mxGeometry x="10" y="40" width="300" height="26" as="geometry" />
         </mxCell>
         <mxCell id="ytnsG8BYgxHmYPclWwfR-19" value="iSAM2がいい感じに最適化をかけてくれる" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="500" y="106" width="270" height="40" as="geometry" />
