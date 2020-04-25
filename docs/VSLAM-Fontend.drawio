@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-04-25T23:35:47.782Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="Coj8do9frcuhgLl82TsK" version="13.0.1" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-04-25T23:41:25.712Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="Lw6JqXtxVUbAWcAFs0Ka" version="13.0.1" type="github" pages="2">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
     <mxGraphModel dx="2186" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -407,7 +407,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="KfDyO8I-pmFeG0Nn9npx" name="Proposed-Frontend">
-    <mxGraphModel dx="2265" dy="2659" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3883" dy="3723" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="jS7kERMsJuhV1MZeAvF8-0" />
         <mxCell id="jS7kERMsJuhV1MZeAvF8-1" parent="jS7kERMsJuhV1MZeAvF8-0" />
@@ -724,8 +724,8 @@
         <mxCell id="wpz5wSuJC5iDqOlf-yGl-14" value="・mutex" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="140" y="600" width="60" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-16" value="MapDatabase" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="50" y="460" width="90" height="20" as="geometry" />
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-16" value="MapDatabase&lt;br&gt;・内容の保持はしない&lt;br&gt;・簡便、高速なアクセスサービスの提供" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="70" y="430" width="230" height="50" as="geometry" />
         </mxCell>
         <mxCell id="wpz5wSuJC5iDqOlf-yGl-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="wpz5wSuJC5iDqOlf-yGl-17" target="wpz5wSuJC5iDqOlf-yGl-12">
           <mxGeometry relative="1" as="geometry">
@@ -766,8 +766,8 @@
         <mxCell id="wpz5wSuJC5iDqOlf-yGl-25" value="ポインタを持つようにする" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="310" y="780" width="160" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-26" value="実行機能&lt;br&gt;・add_frame&lt;br&gt;・erase_frame&lt;br&gt;・add_landmark&lt;br&gt;・erase_landmark&lt;br&gt;・get_all_landmarks&lt;br&gt;・get_all_frames" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="100" y="870" width="120" height="100" as="geometry" />
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-26" value="実行機能&lt;br&gt;・add_frame&lt;br&gt;・erase_frame&lt;br&gt;・add_landmark&lt;br&gt;・erase_landmark&lt;br&gt;・get_all_landmarks&lt;br&gt;・get_all_frames&lt;br&gt;・get_latest_frame&lt;br&gt;・get_latest_keyframe" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="100" y="855" width="140" height="130" as="geometry" />
         </mxCell>
         <mxCell id="wpz5wSuJC5iDqOlf-yGl-27" value="1Frame前のFrameと&lt;br&gt;画像中のFeature pointがほしい" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="1690" y="-264" width="180" height="30" as="geometry" />
@@ -786,6 +786,15 @@
         </mxCell>
         <mxCell id="wpz5wSuJC5iDqOlf-yGl-33" value="KeyFrame情報を登録したい" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="2910" y="-254" width="170" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-34" value="＋co-visibility graphの更新&lt;br&gt;＋spanning-treeの更新" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="100" y="990" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-36" value="各Frameはmutexを持つので&lt;br&gt;内容にアクセスするときは、排他処理を実施" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="570" y="560" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-37" value="各Pointはmutexを持つので&lt;br&gt;内容にアクセスするときは、排他処理を実施" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="366.5" y="350" width="250" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
