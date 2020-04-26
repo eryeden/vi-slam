@@ -5,8 +5,3 @@
 
 using namespace vslam::data;
 
-FrameUnorderedMap<uint64_t>&
-vslam::data::ThreadsafeFrameContainer::GetFrameDatabase() const {}
-FrameUnorderedMap<uint64_t>&
-vslam::data::ThreadsafeFrameContainer::GetLatestFrame() const {}
-void vslam::data::ThreadsafeFrameContainer::RegisterFrame(const Frame& frame) {}

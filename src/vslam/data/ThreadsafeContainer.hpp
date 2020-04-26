@@ -12,8 +12,6 @@
 
 namespace vslam::data {
 
-using FrameDatabase = FrameUnorderedMap<uint64_t>;
-using LandmarkDatabase = LandmarkUnorderedMap<uint64_t>;
 
 class ThreadsafeContainerBase {
  public:
@@ -24,19 +22,14 @@ class ThreadsafeContainerBase {
 class ThreadsafeMapPointContainer : public ThreadsafeContainerBase {
  public:
  private:
-  LandmarkUnorderedMap<uint64_t> map_points_database_;
 };
 
 class ThreadsafeFrameContainer : ThreadsafeContainerBase {
  public:
-  FrameDatabase& GetFrameDatabase() const;
-  FrameDatabase& GetLatestFrame() const;
 
   void RegisterFrame(const Frame& frame);
 
  private:
-  uint64_t latest_frame_index_;
-  FrameDatabase frame_database_;
 };
 
 };  // namespace vslam::data
