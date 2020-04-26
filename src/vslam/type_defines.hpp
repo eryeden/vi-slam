@@ -15,9 +15,12 @@ namespace vslam {
 
 typedef float real_t;
 
+typedef uint64_t database_index_t;
+
 // Eigen matrix types
 
-template <size_t R, size_t C> using MatRC_t = Eigen::Matrix<double, R, C>;
+template <size_t R, size_t C>
+using MatRC_t = Eigen::Matrix<double, R, C>;
 
 using Mat22_t = Eigen::Matrix2d;
 

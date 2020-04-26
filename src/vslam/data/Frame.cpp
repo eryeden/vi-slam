@@ -2,40 +2,56 @@
 
 using namespace vslam::data;
 
-Frame::Frame(
-    uint64_t id_,
-    //        const std::unordered_set<uint64_t> &observing_feature_id,
-    const std::set<uint64_t>& observing_feature_id,
-             const vslam::EigenAllocatedUnorderedMap<uint64_t, vslam::Vec2_t>&
-                 observing_feature_point_in_device,
-    const vslam::Vec3_t& camera_position,
-    const vslam::Quat_t& camera_attitude,
-    const PinholeCameraModel& camera_parameter) {
-  id = id_;
-  observingFeatureId = observing_feature_id;
-  observingFeaturePointInDevice = observing_feature_point_in_device;
-  cameraPosition = camera_position;
-  cameraAttitude = camera_attitude;
-  cameraParameter = camera_parameter;
-}
-
-Frame::Frame(uint64_t id,
-             // const std::unordered_set<uint64_t > & observing_feature_id,
-             const std::set<uint64_t>& observing_feature_id,
-             const EigenAllocatedUnorderedMap<uint64_t, Vec2_t>&
-                 observing_feature_point_in_device,
-             const Vec3_t& camera_position,
-             const Quat_t& camera_attitude)
-    : Frame(id,
-            observing_feature_id,
-            observing_feature_point_in_device,
-            camera_position,
-            camera_attitude,
-            PinholeCameraModel()) {}
-
-Frame::Frame(uint64_t id)
-    : Frame(id, {}, {}, {0, 0, 0}, {0, 0, 0, 1}, PinholeCameraModel()) {
+Frame::Frame(database_index_t id,
+             double timestamp,
+             bool is_keyframe,
+             const PinholeCameraModel& camera_parameters,
+             const std::set<database_index_t>& observing_feature_id,
+             const EigenAllocatedUnorderedMap<database_index_t, Vec2_t>&
+                 observing_feature_points_in_device)
+    : frame_id_(id),
+      timestamp_(timestamp),
+      is_keyframe_(is_keyframe),
+      camera_parameter_(camera_parameters),
+      observing_feature_id_(observing_feature_id),
+      observing_feature_point_in_device_(observing_feature_points_in_device) {
   ;
 }
 
-Frame::Frame() : Frame(std::numeric_limits<uint64_t>::max()) { ; }
+void Frame::SetCameraPose(const vslam::Vec3_t& position,
+                          const vslam::Quat_t& orientation) {
+  std::lock_guard<std::mutex> lock(mutex_camera_pose_);
+  camera_position_ = position;
+  camera_orientation_ = orientation;
+}
+vslam::Vec3_t Frame::GetCameraPosition() const {
+  std::lock_guard<std::mutex> lock(mutex_camera_pose_);
+  return camera_position_;
+}
+vslam::Quat_t Frame::GetCameraOrientation() const {
+  std::lock_guard<std::mutex> lock(mutex_camera_pose_);
+  return camera_orientation_;
+}
+void Frame::GetCameraPose(vslam::Vec3_t& position,
+                          vslam::Quat_t& orientation) const {
+  std::lock_guard<std::mutex> lock(mutex_camera_pose_);
+  position = camera_position_;
+  orientation = camera_orientation_;
+}
+
+void Frame::SetLandmark(const LandmarkPtr& landmark) {
+  std::lock_guard<std::mutex> lock(mutex_landmark_);
+  landmarks_[landmark->id] = landmark;
+}
+void Frame::EraseLandmark(vslam::database_index_t landmark_index) {
+  std::lock_guard<std::mutex> lock(mutex_landmark_);
+  landmarks_.erase(landmark_index);
+}
+LandmarkDatabaseType Frame::GetAllLandmarks() const {
+  std::lock_guard<std::mutex> lock(mutex_landmark_);
+  return landmarks_;
+}
+LandmarkPtr Frame::GetLandmark(vslam::database_index_t landmark_id) const {
+  std::lock_guard<std::mutex> lock(mutex_landmark_);
+  return landmarks_.at(landmark_id);
+}
