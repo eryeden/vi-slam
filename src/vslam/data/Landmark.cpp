@@ -1,25 +1,33 @@
 #include "Landmark.hpp"
 
+using namespace vslam;
 using namespace vslam::data;
 
-Landmark::Landmark(
-    uint64_t id_,
-    //        const std::unordered_set<uint64_t> & observed_frame_id,
-    const std::set<uint64_t>& observed_frame_id,
-    const Vec3_t& position_in_world,
-    bool is_outlier,
-    bool is_tracking,
-    bool is_initialized) {
-  id = id_;
-
-  observedFrameId = observed_frame_id;
-  positionInWorld = position_in_world;
-  isOutlier = is_outlier;
-  isTracking = is_tracking;
-  isInitialized = is_initialized;
-}
-Landmark::Landmark(uint64_t id_)
-    : Landmark(id_, {}, {0, 0, 0}, false, false, false) {
+Landmark::Landmark(vslam::database_index_t id,
+                   const std::set<database_index_t>& observed_frame_id,
+                   const vslam::Vec3_t& position_in_world,
+                   bool is_outlier,
+                   bool is_initialized)
+    : landmark_id_(id),
+      observed_frame_id_(observed_frame_id),
+      position_in_world_(position_in_world),
+      is_outlier_(is_outlier),
+      is_initialized_(is_initialized) {
   ;
 }
-Landmark::Landmark() : Landmark(std::numeric_limits<uint64_t>::max()) { ; }
+void Landmark::SetObservedFrameIndex(vslam::database_index_t frame_index) {
+  std::lock_guard<std::mutex> lock(mutex_observation_);
+  observed_frame_id_.insert(frame_index);
+}
+std::set<database_index_t> Landmark::GetAllObservedFrameIndex() const {
+  std::lock_guard<std::mutex> lock(mutex_observation_);
+  return observed_frame_id_;
+}
+void Landmark::SetLandmarkPosition(const vslam::Vec3_t& position_in_world) {
+  std::lock_guard<std::mutex> lock(mutex_position_);
+  position_in_world_ = position_in_world;
+}
+vslam::Vec3_t Landmark::GetLandmarkPosition() const {
+  std::lock_guard<std::mutex> lock(mutex_position_);
+  return position_in_world_;
+}

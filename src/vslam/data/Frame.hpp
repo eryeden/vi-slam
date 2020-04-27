@@ -10,8 +10,6 @@
 
 namespace vslam::data {
 
-using LandmarkPtr = std::shared_ptr<Landmark>;
-using LandmarkDatabaseType = std::unordered_map<database_index_t, LandmarkPtr>;
 
 class Frame {
  public:
@@ -33,7 +31,7 @@ class Frame {
   //! 観測したLandmarkを登録する。初見のIDなら登録、もし登録済みのIDならReplaceになる。
   void SetLandmark(const LandmarkPtr& landmark);
   void EraseLandmark(database_index_t landmark_index);
-  LandmarkDatabaseType GetAllLandmarks() const;
+  LandmarkDatabase GetAllLandmarks() const;
   LandmarkPtr GetLandmark(database_index_t landmark_id) const;
 
   //! FrameごとのID
@@ -76,7 +74,10 @@ class Frame {
   //! Landmark関係のMutex
   mutable std::mutex mutex_landmark_;
   //! Landmark
-  LandmarkDatabaseType landmarks_;
+  LandmarkDatabase landmarks_;
 };
+
+using FramePtr = std::shared_ptr<Frame>;
+using FrameDatabaseType = std::unordered_map<database_index_t, FramePtr>;
 
 }  // namespace vslam::data

@@ -1,5 +1,6 @@
 #include "Frame.hpp"
 
+using namespace vslam;
 using namespace vslam::data;
 
 Frame::Frame(database_index_t id,
@@ -41,13 +42,13 @@ void Frame::GetCameraPose(vslam::Vec3_t& position,
 
 void Frame::SetLandmark(const LandmarkPtr& landmark) {
   std::lock_guard<std::mutex> lock(mutex_landmark_);
-  landmarks_[landmark->id] = landmark;
+  landmarks_[landmark->landmark_id_] = landmark;
 }
 void Frame::EraseLandmark(vslam::database_index_t landmark_index) {
   std::lock_guard<std::mutex> lock(mutex_landmark_);
   landmarks_.erase(landmark_index);
 }
-LandmarkDatabaseType Frame::GetAllLandmarks() const {
+LandmarkDatabase Frame::GetAllLandmarks() const {
   std::lock_guard<std::mutex> lock(mutex_landmark_);
   return landmarks_;
 }
