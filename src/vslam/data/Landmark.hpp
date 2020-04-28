@@ -44,7 +44,12 @@ class Landmark {
   Vec3_t position_in_world_;
 };
 
-using LandmarkPtr = std::shared_ptr<Landmark>;
-using LandmarkDatabase = std::unordered_map<database_index_t, LandmarkPtr>;
+using LandmarkSharedPtr = std::shared_ptr<Landmark>;
+using LandmarkUniquePtr = std::unique_ptr<Landmark>;
+using LandmarkWeakPtr = std::weak_ptr<Landmark>;
+using LandmarkDatabaseWeak =
+    std::unordered_map<database_index_t, LandmarkWeakPtr>;
+using LandmarkDatabaseShared =
+    std::unordered_map<database_index_t, LandmarkSharedPtr>;
 
 }  // namespace vslam::data

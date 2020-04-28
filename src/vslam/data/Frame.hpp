@@ -29,10 +29,10 @@ class Frame {
   void GetCameraPose(Vec3_t& position, Quat_t& orientation) const;
 
   //! 観測したLandmarkを登録する。初見のIDなら登録、もし登録済みのIDならReplaceになる。
-  void SetLandmark(const LandmarkPtr& landmark);
+  void SetLandmark(const LandmarkSharedPtr& landmark);
   void EraseLandmark(database_index_t landmark_index);
-  LandmarkDatabase GetAllLandmarks() const;
-  LandmarkPtr GetLandmark(database_index_t landmark_id) const;
+  LandmarkDatabaseWeak GetAllLandmarks() const;
+  LandmarkWeakPtr GetLandmark(database_index_t landmark_id) const;
 
   //! FrameごとのID
   //! 一回定義されたら変更されないはずなので定数定義
@@ -74,10 +74,14 @@ class Frame {
   //! Landmark関係のMutex
   mutable std::mutex mutex_landmark_;
   //! Landmark
-  LandmarkDatabase landmarks_;
+  LandmarkDatabaseWeak landmarks_;
 };
 
-using FramePtr = std::shared_ptr<Frame>;
-using FrameDatabaseType = std::unordered_map<database_index_t, FramePtr>;
+using FrameSharedPtr = std::shared_ptr<Frame>;
+using FrameUniquePtr = std::unique_ptr<Frame>;
+using FrameWeakPtr = std::weak_ptr<Frame>;
+using FrameDatabaseWeak = std::unordered_map<database_index_t, FrameWeakPtr>;
+using FrameDatabaseShared =
+    std::unordered_map<database_index_t, FrameSharedPtr>;
 
 }  // namespace vslam::data

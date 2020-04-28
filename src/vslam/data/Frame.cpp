@@ -40,7 +40,7 @@ void Frame::GetCameraPose(vslam::Vec3_t& position,
   orientation = camera_orientation_;
 }
 
-void Frame::SetLandmark(const LandmarkPtr& landmark) {
+void Frame::SetLandmark(const LandmarkSharedPtr& landmark) {
   std::lock_guard<std::mutex> lock(mutex_landmark_);
   landmarks_[landmark->landmark_id_] = landmark;
 }
@@ -48,11 +48,11 @@ void Frame::EraseLandmark(vslam::database_index_t landmark_index) {
   std::lock_guard<std::mutex> lock(mutex_landmark_);
   landmarks_.erase(landmark_index);
 }
-LandmarkDatabase Frame::GetAllLandmarks() const {
+LandmarkDatabaseWeak Frame::GetAllLandmarks() const {
   std::lock_guard<std::mutex> lock(mutex_landmark_);
   return landmarks_;
 }
-LandmarkPtr Frame::GetLandmark(vslam::database_index_t landmark_id) const {
+LandmarkWeakPtr Frame::GetLandmark(vslam::database_index_t landmark_id) const {
   std::lock_guard<std::mutex> lock(mutex_landmark_);
   return landmarks_.at(landmark_id);
 }
