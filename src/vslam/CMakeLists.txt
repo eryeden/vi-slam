@@ -26,6 +26,7 @@ endif ()
 target_include_directories(${VSLAM_PROJECT_NAME}
         PUBLIC
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/data>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/frontend>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/backend>
 
