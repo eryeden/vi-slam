@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-04-25T23:41:25.712Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36" etag="Lw6JqXtxVUbAWcAFs0Ka" version="13.0.1" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-04-30T14:20:47.828Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="9ksE_XImzXrpA3xWSgK_" version="13.0.1" type="github" pages="2">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
     <mxGraphModel dx="2186" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -407,19 +407,22 @@
     </mxGraphModel>
   </diagram>
   <diagram id="KfDyO8I-pmFeG0Nn9npx" name="Proposed-Frontend">
-    <mxGraphModel dx="3883" dy="3723" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2265" dy="2659" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="jS7kERMsJuhV1MZeAvF8-0" />
         <mxCell id="jS7kERMsJuhV1MZeAvF8-1" parent="jS7kERMsJuhV1MZeAvF8-0" />
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-15" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="rEQugnzsgqi3RL8a4t9Y-0" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="2220" y="-800" width="900" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-15" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="90" y="480" width="210" height="370" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="wpz5wSuJC5iDqOlf-yGl-0">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="jS7kERMsJuhV1MZeAvF8-1" source="wpz5wSuJC5iDqOlf-yGl-0" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="3350" y="-450.0000000000002" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-0" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-0" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="1560" y="-670" width="1710" height="490" as="geometry" />
         </mxCell>
         <mxCell id="jS7kERMsJuhV1MZeAvF8-16" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;strokeWidth=1;fontSize=15;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
@@ -663,13 +666,13 @@
         <mxCell id="clbbCS2im2Wf6gLjw8WZ-30" value="・Frameの登録時に特徴点の観測情報も更新する" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;strokeWidth=1;fontSize=15;align=left;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="2260" y="-660" width="175" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-1" value="Frontend::feed_frame" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-1" value="Frontend::feed_frame" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="1550" y="-700" width="130" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-4" value="Frontend Status として&lt;br&gt;処理のステータスを出力？" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-4" value="Frontend Status として&lt;br&gt;処理のステータスを出力？" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="3370" y="-465" width="160" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-6" value="" style="endArrow=classic;html=1;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-6" value="" style="endArrow=classic;html=1;" parent="jS7kERMsJuhV1MZeAvF8-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="536.5" y="90" as="sourcePoint" />
             <mxPoint x="656.5" y="-190" as="targetPoint" />
@@ -679,7 +682,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-7" value="" style="endArrow=classic;html=1;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-7" value="" style="endArrow=classic;html=1;" parent="jS7kERMsJuhV1MZeAvF8-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="677" y="-190" as="sourcePoint" />
             <mxPoint x="556.5" y="90" as="targetPoint" />
@@ -689,7 +692,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-8" value="" style="endArrow=classic;html=1;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-8" value="" style="endArrow=classic;html=1;" parent="jS7kERMsJuhV1MZeAvF8-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="707" y="90" as="sourcePoint" />
             <mxPoint x="1000" y="-190" as="targetPoint" />
@@ -699,7 +702,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-9" value="" style="endArrow=classic;html=1;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-9" value="" style="endArrow=classic;html=1;" parent="jS7kERMsJuhV1MZeAvF8-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="1020" y="-190" as="sourcePoint" />
             <mxPoint x="730" y="90" as="targetPoint" />
@@ -709,92 +712,95 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-10" value="Database&lt;br&gt;Map Point" style="shape=datastore;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-10" value="Database&lt;br&gt;Map Point" style="shape=datastore;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="118.5" y="540" width="70" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-11" value="Database&lt;br&gt;Frame" style="shape=datastore;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-11" value="Database&lt;br&gt;Frame" style="shape=datastore;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="118.5" y="640" width="70" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-12" value="Database&lt;br&gt;KeyFrame" style="shape=datastore;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-12" value="Database&lt;br&gt;KeyFrame" style="shape=datastore;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="118.5" y="740.0000000000002" width="70" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-13" value="・mutex" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-13" value="・mutex" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="130" y="700" width="60" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-14" value="・mutex" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-14" value="・mutex" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="140" y="600" width="60" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-16" value="MapDatabase&lt;br&gt;・内容の保持はしない&lt;br&gt;・簡便、高速なアクセスサービスの提供" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-16" value="MapDatabase&lt;br&gt;・内容の保持はしない&lt;br&gt;・簡便、高速なアクセスサービスの提供" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="70" y="430" width="230" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="wpz5wSuJC5iDqOlf-yGl-17" target="wpz5wSuJC5iDqOlf-yGl-12">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="jS7kERMsJuhV1MZeAvF8-1" source="wpz5wSuJC5iDqOlf-yGl-17" target="wpz5wSuJC5iDqOlf-yGl-12" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="560" y="770" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="wpz5wSuJC5iDqOlf-yGl-17" target="wpz5wSuJC5iDqOlf-yGl-11">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="jS7kERMsJuhV1MZeAvF8-1" source="wpz5wSuJC5iDqOlf-yGl-17" target="wpz5wSuJC5iDqOlf-yGl-11" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="560" y="670" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-17" value="KeyFrameの実体" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-17" value="KeyFrameの実体" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="430" y="480" width="280" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="wpz5wSuJC5iDqOlf-yGl-18" target="wpz5wSuJC5iDqOlf-yGl-10">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="jS7kERMsJuhV1MZeAvF8-1" source="wpz5wSuJC5iDqOlf-yGl-18" target="wpz5wSuJC5iDqOlf-yGl-10" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="397" y="570" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-18" value="MapPointの実体" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-18" value="MapPointの実体" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="256.5" y="380" width="280" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-19" value="・mutex" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-19" value="・mutex" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="130" y="800" width="60" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-23" value="ポインタを持つようにする" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-23" value="ポインタを持つようにする" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="316.5" y="575" width="160" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-24" value="ポインタを持つようにする" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-24" value="ポインタを持つようにする" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="310" y="680" width="160" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-25" value="ポインタを持つようにする" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-25" value="ポインタを持つようにする" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="310" y="780" width="160" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-26" value="実行機能&lt;br&gt;・add_frame&lt;br&gt;・erase_frame&lt;br&gt;・add_landmark&lt;br&gt;・erase_landmark&lt;br&gt;・get_all_landmarks&lt;br&gt;・get_all_frames&lt;br&gt;・get_latest_frame&lt;br&gt;・get_latest_keyframe" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-26" value="実行機能&lt;br&gt;・add_frame&lt;br&gt;・erase_frame&lt;br&gt;・add_landmark&lt;br&gt;・erase_landmark&lt;br&gt;・get_all_landmarks&lt;br&gt;・get_all_frames&lt;br&gt;・get_latest_frame&lt;br&gt;・get_latest_keyframe" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="100" y="855" width="140" height="130" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-27" value="1Frame前のFrameと&lt;br&gt;画像中のFeature pointがほしい" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-27" value="1Frame前のFrameと&lt;br&gt;画像中のFeature pointがほしい" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="1690" y="-264" width="180" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-28" value="前回KeyFrameの情報がほしい" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-28" value="前回KeyFrameの情報がほしい" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="2000" y="-259" width="180" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-29" value="前回KeyFrameの情報がほしい" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-29" value="前回KeyFrameの情報がほしい" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="2470" y="-244" width="180" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-31" value="MapPointを登録したい" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-31" value="MapPointを登録したい" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="2910" y="-274" width="140" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-32" value="Frame情報を登録したい" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-32" value="Frame情報を登録したい" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="2000" y="-239" width="150" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-33" value="KeyFrame情報を登録したい" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-33" value="KeyFrame情報を登録したい" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="2910" y="-254" width="170" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-34" value="＋co-visibility graphの更新&lt;br&gt;＋spanning-treeの更新" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-34" value="＋co-visibility graphの更新&lt;br&gt;＋spanning-treeの更新" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="100" y="990" width="160" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-36" value="各Frameはmutexを持つので&lt;br&gt;内容にアクセスするときは、排他処理を実施" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-36" value="各Frameはmutexを持つので&lt;br&gt;内容にアクセスするときは、排他処理を実施" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="570" y="560" width="250" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="wpz5wSuJC5iDqOlf-yGl-37" value="各Pointはmutexを持つので&lt;br&gt;内容にアクセスするときは、排他処理を実施" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="wpz5wSuJC5iDqOlf-yGl-37" value="各Pointはmutexを持つので&lt;br&gt;内容にアクセスするときは、排他処理を実施" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="366.5" y="350" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rEQugnzsgqi3RL8a4t9Y-3" value="MapDatabase" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="2220" y="-820" width="90" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
