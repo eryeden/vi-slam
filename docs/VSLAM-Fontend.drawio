@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-05-02T04:04:16.453Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="B9DG01rGYS2vU9jNiwJC" version="13.0.1" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-05-02T04:09:22.638Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="lr7gYIBIDfhtB621PE2E" version="13.0.1" type="github" pages="2">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
     <mxGraphModel dx="2958" dy="982" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -862,15 +862,6 @@
         <mxCell id="JLCo8iVKEaS2xN67FaIW-12" value="KeyFrame Selection&lt;br&gt;&lt;br&gt;・以下の基準を満たせばKeyFrameとして選択する&lt;br&gt;・基準１：前回のKeyFrame選択から一定時間経っている&lt;br&gt;・基準２：Trackingできている特徴点が一定以下になった" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="1990" y="520" width="360" height="82.5" as="geometry" />
         </mxCell>
-        <mxCell id="JLCo8iVKEaS2xN67FaIW-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;fontSize=15;" edge="1" source="JLCo8iVKEaS2xN67FaIW-15" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="3030" y="180" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="3030" y="230" />
-              <mxPoint x="3030" y="230" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="JLCo8iVKEaS2xN67FaIW-15" target="JLCo8iVKEaS2xN67FaIW-55">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -908,7 +899,7 @@
           <mxGeometry x="2995" y="110" width="70" height="60" as="geometry" />
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-27" value="新たに検出したLandmarkを&lt;br&gt;追加する" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="2830" y="270" width="200" height="40" as="geometry" />
+          <mxGeometry x="2960" y="240" width="200" height="40" as="geometry" />
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-30" value="Frontend::feed_frame" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="1550" y="320" width="130" height="20" as="geometry" />
@@ -982,7 +973,7 @@
           <mxGeometry x="3190" y="800" width="270" height="250" as="geometry" />
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-63" value="ここではじめて、&lt;br&gt;・MapDBへの参照&lt;br&gt;・Pose推定&lt;br&gt;・Landmark位置の利用（３Point法）&lt;br&gt;がなされる" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=20;fontStyle=1" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="3308" y="610" width="360" height="130" as="geometry" />
+          <mxGeometry x="3370" y="606" width="360" height="130" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
