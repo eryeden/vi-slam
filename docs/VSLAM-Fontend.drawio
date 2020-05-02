@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-05-02T04:02:43.494Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="37LC_FQXNaAYh1sC73K5" version="13.0.1" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-05-02T04:03:58.667Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="gPQyfdROdpudnlPoFw-Y" version="13.0.1" type="github" pages="2">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
     <mxGraphModel dx="2958" dy="982" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -407,7 +407,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="KfDyO8I-pmFeG0Nn9npx" name="Proposed-Frontend">
-    <mxGraphModel dx="3971" dy="3820" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3475" dy="3489" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="jS7kERMsJuhV1MZeAvF8-0" />
         <mxCell id="jS7kERMsJuhV1MZeAvF8-1" parent="jS7kERMsJuhV1MZeAvF8-0" />
@@ -980,6 +980,9 @@
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-61" value="ここまでは、&lt;br style=&quot;font-size: 20px;&quot;&gt;・Feature tracking&lt;br style=&quot;font-size: 20px;&quot;&gt;・Feature verification&lt;br style=&quot;font-size: 20px;&quot;&gt;・Feature detection&lt;br style=&quot;font-size: 20px;&quot;&gt;&lt;br style=&quot;font-size: 20px;&quot;&gt;のみに注力する&lt;br style=&quot;font-size: 20px;&quot;&gt;&lt;br style=&quot;font-size: 20px;&quot;&gt;Pose推定は利用しない&lt;br style=&quot;font-size: 20px;&quot;&gt;MapDBも活用しない&lt;br style=&quot;font-size: 20px;&quot;&gt;Landmark位置も利用しない" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=20;fontStyle=1" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="3190" y="800" width="270" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-63" value="ここではじめて、&lt;br&gt;・MapDBへの参照&lt;br&gt;・Pose推定&lt;br&gt;・Landmark位置の利用（３Point法）&lt;br&gt;がなされる" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=20;fontStyle=1" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="3308" y="610" width="360" height="130" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
