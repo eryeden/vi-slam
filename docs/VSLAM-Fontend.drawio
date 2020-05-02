@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-05-02T03:44:02.308Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="jXeT252j6HLsYLy4MX-r" version="13.0.1" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-05-02T03:51:00.004Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="nmLQlaGYnSiNAB_xTZQn" version="13.0.1" type="github" pages="2">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
     <mxGraphModel dx="2958" dy="982" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -407,10 +407,13 @@
     </mxGraphModel>
   </diagram>
   <diagram id="KfDyO8I-pmFeG0Nn9npx" name="Proposed-Frontend">
-    <mxGraphModel dx="3928" dy="3489" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="4489" dy="3820" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="jS7kERMsJuhV1MZeAvF8-0" />
         <mxCell id="jS7kERMsJuhV1MZeAvF8-1" parent="jS7kERMsJuhV1MZeAvF8-0" />
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-54" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="2840" y="90" width="900" height="110" as="geometry" />
+        </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-2" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="1560" y="340" width="1980" height="560" as="geometry" />
         </mxCell>
@@ -881,8 +884,8 @@
         <mxCell id="JLCo8iVKEaS2xN67FaIW-18" value="１Frame目はトラッキングできない&lt;br&gt;のでKeyFrameとして、特徴点検出を行う" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="1671" y="390" width="240" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="JLCo8iVKEaS2xN67FaIW-19" value="ひとまず、Kimera-VIOのFrontendを実装してみる" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="1400" y="130" width="350" height="20" as="geometry" />
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-19" value="ひとまず、Kimera-VIOのFrontendを実装してみる&lt;br&gt;完全には同じにならない。IMUの情報をナチュラルに使ってきているので、その部分に制約がでる。&lt;br&gt;&lt;br&gt;例えば：&lt;br&gt;・Geometric verificationでは、IMUから得たRotationを利用&lt;br&gt;・KeyFrameではないFrameのPoseはIMUの情報をそのまま使っている？&lt;br&gt;&lt;br&gt;などなど" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="1540" y="146" width="690" height="150" as="geometry" />
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-20" value="Database&lt;br&gt;Frame" style="shape=datastore;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="3300" y="110" width="70" height="60" as="geometry" />
@@ -906,7 +909,7 @@
           <mxGeometry x="2830" y="270" width="200" height="40" as="geometry" />
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-30" value="Frontend::feed_frame" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="1550" y="180" width="130" height="20" as="geometry" />
+          <mxGeometry x="1550" y="320" width="130" height="20" as="geometry" />
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-32" value="1Frame前のFrameと&lt;br&gt;画像中のFeature pointがほしい" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="1690" y="616" width="180" height="30" as="geometry" />
@@ -927,7 +930,7 @@
           <mxGeometry x="2910" y="626" width="170" height="20" as="geometry" />
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-38" value="MapDatabase" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="2220" y="60" width="90" height="20" as="geometry" />
+          <mxGeometry x="2840" y="70" width="90" height="20" as="geometry" />
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="JLCo8iVKEaS2xN67FaIW-29">
           <mxGeometry relative="1" as="geometry">
