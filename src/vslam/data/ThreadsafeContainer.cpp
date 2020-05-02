@@ -9,6 +9,7 @@ ThreadsafeMapDatabase::ThreadsafeMapDatabase()
     : latest_frame_id_(0), latest_key_frame_id_(0) {
   ;
 }
+
 void ThreadsafeMapDatabase::AddFrame(FrameUniquePtr& frame_ptr) {
   std::lock_guard<std::mutex> lock(mutex_map_access_);
 

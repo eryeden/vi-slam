@@ -29,7 +29,7 @@ target_include_directories(${VSLAM_PROJECT_NAME}
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/data>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/frontend>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/backend>
-
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/utility>
         )
 
 # Link to required libraries
@@ -50,6 +50,7 @@ target_link_libraries(${VSLAM_PROJECT_NAME}
 add_subdirectory(frontend)
 add_subdirectory(backend)
 add_subdirectory(data)
+add_subdirectory(utility)
 
 #add_subdirectory(data)
 #add_subdirectory(feature)
