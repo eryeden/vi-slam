@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-05-02T03:51:00.004Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="nmLQlaGYnSiNAB_xTZQn" version="13.0.1" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-05-02T04:02:43.494Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="37LC_FQXNaAYh1sC73K5" version="13.0.1" type="github" pages="2">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
     <mxGraphModel dx="2958" dy="982" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -407,15 +407,20 @@
     </mxGraphModel>
   </diagram>
   <diagram id="KfDyO8I-pmFeG0Nn9npx" name="Proposed-Frontend">
-    <mxGraphModel dx="4489" dy="3820" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3971" dy="3820" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="jS7kERMsJuhV1MZeAvF8-0" />
         <mxCell id="jS7kERMsJuhV1MZeAvF8-1" parent="jS7kERMsJuhV1MZeAvF8-0" />
         <mxCell id="JLCo8iVKEaS2xN67FaIW-54" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="2840" y="90" width="900" height="110" as="geometry" />
         </mxCell>
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-62" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;fontSize=20;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="JLCo8iVKEaS2xN67FaIW-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1480" y="730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-2" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="1560" y="340" width="1980" height="560" as="geometry" />
+          <mxGeometry x="1560" y="350" width="2220" height="760" as="geometry" />
         </mxCell>
         <mxCell id="rEQugnzsgqi3RL8a4t9Y-0" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="2220" y="-800" width="900" height="110" as="geometry" />
@@ -844,24 +849,18 @@
         <mxCell id="JLCo8iVKEaS2xN67FaIW-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="JLCo8iVKEaS2xN67FaIW-12" target="JLCo8iVKEaS2xN67FaIW-17" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="JLCo8iVKEaS2xN67FaIW-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="JLCo8iVKEaS2xN67FaIW-12" target="JLCo8iVKEaS2xN67FaIW-39">
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="JLCo8iVKEaS2xN67FaIW-12" target="JLCo8iVKEaS2xN67FaIW-55">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="2410" y="561" />
-              <mxPoint x="2410" y="805" />
+              <mxPoint x="2390" y="561" />
+              <mxPoint x="2390" y="790" />
+              <mxPoint x="3220" y="790" />
+              <mxPoint x="3220" y="561" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-12" value="KeyFrame Selection&lt;br&gt;&lt;br&gt;・以下の基準を満たせばKeyFrameとして選択する&lt;br&gt;・基準１：前回のKeyFrame選択から一定時間経っている&lt;br&gt;・基準２：Trackingできている特徴点が一定以下になった" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="1990" y="520" width="360" height="82.5" as="geometry" />
-        </mxCell>
-        <mxCell id="JLCo8iVKEaS2xN67FaIW-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;fontSize=15;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" source="JLCo8iVKEaS2xN67FaIW-15" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="3340" y="180" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="3340" y="561" />
-            </Array>
-          </mxGeometry>
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;fontSize=15;" edge="1" source="JLCo8iVKEaS2xN67FaIW-15" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry relative="1" as="geometry">
@@ -872,14 +871,17 @@
             </Array>
           </mxGeometry>
         </mxCell>
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="JLCo8iVKEaS2xN67FaIW-15" target="JLCo8iVKEaS2xN67FaIW-55">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-15" value="Feature detection&lt;br&gt;&lt;br&gt;・Shi-Tomasi cornersで特徴点検出&lt;br&gt;・Keyframeのみで特徴点の検出を行う" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="2910" y="520" width="240" height="82.5" as="geometry" />
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="JLCo8iVKEaS2xN67FaIW-17" target="JLCo8iVKEaS2xN67FaIW-15" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="JLCo8iVKEaS2xN67FaIW-17" value="Verificaiton &amp;amp; 前回Frameとのrelative pose推定&lt;br&gt;&lt;br&gt;・１Frame目はKeyFrame&lt;br&gt;・単眼カメラの場合は５点法＋RANSACで特徴点を選別&lt;br&gt;・Landmark ageが一定値以上の場合は排除（何回KeyFrameに観測されたか？をカウントする。）&lt;br&gt;・同時にLandmark視差の中央値、トラッキングしている特徴点数のチェックを行う。&lt;br&gt;・5点法＋RANSACで前回Frameからのrelative poseがわかるが、ほかのKeyFrameペアとスケールが保たれない？" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="2505" y="471.88" width="330" height="178.75" as="geometry" />
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-17" value="Verificaiton &amp;amp; 前回Frameとのrelative pose推定&lt;br&gt;&lt;br&gt;・１Frame目はKeyFrame&lt;br&gt;・単眼カメラの場合は５点法＋RANSACで特徴点を選別&lt;br&gt;・Landmark ageが一定値以上の場合は排除（何回KeyFrameに観測されたか？をカウントする。）&lt;br&gt;・同時にLandmark視差の中央値、トラッキングしている特徴点数のチェックを行う。" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="2505" y="471.8750000000001" width="330" height="178.75" as="geometry" />
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-18" value="１Frame目はトラッキングできない&lt;br&gt;のでKeyFrameとして、特徴点検出を行う" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="1671" y="390" width="240" height="30" as="geometry" />
@@ -917,9 +919,6 @@
         <mxCell id="JLCo8iVKEaS2xN67FaIW-33" value="前回KeyFrameの情報がほしい" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="2000" y="621" width="180" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="JLCo8iVKEaS2xN67FaIW-34" value="前回KeyFrameの情報がほしい" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="2620" y="650.63" width="180" height="20" as="geometry" />
-        </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-35" value="MapPointを登録したい" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="2910" y="606" width="140" height="20" as="geometry" />
         </mxCell>
@@ -941,17 +940,11 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="JLCo8iVKEaS2xN67FaIW-39" value="Pose推定&lt;br&gt;&lt;br&gt;・3point ransacを使って、MapDatabaseから現在FrameのPoseを推定する&lt;br&gt;&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="2505" y="770" width="330" height="70" as="geometry" />
-        </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-40" value="KeyFrameの時" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="2415" y="540" width="90" height="20" as="geometry" />
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-42" value="KeyFrameでない時" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;rotation=-90;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="2340" y="680" width="120" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="JLCo8iVKEaS2xN67FaIW-43" value="MapDatabaseへのアクセスが必要" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="2620" y="840" width="200" height="20" as="geometry" />
+          <mxGeometry x="2315" y="680" width="120" height="20" as="geometry" />
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="JLCo8iVKEaS2xN67FaIW-29">
           <mxGeometry relative="1" as="geometry">
@@ -965,23 +958,28 @@
         <mxCell id="JLCo8iVKEaS2xN67FaIW-29" value="Frameの登録時に特徴点の観測情報も更新する" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#000000;strokeWidth=1;fontSize=15;align=left;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="3260" y="360" width="175" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="JLCo8iVKEaS2xN67FaIW-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.46;entryY=1.011;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="JLCo8iVKEaS2xN67FaIW-39" target="JLCo8iVKEaS2xN67FaIW-29">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="3340" y="180" as="targetPoint" />
-            <mxPoint x="2835" y="805" as="sourcePoint" />
-          </mxGeometry>
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-53" value="Frontend Status として&lt;br&gt;処理のステータスを出力？" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="1320" y="720" width="160" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="JLCo8iVKEaS2xN67FaIW-52" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="JLCo8iVKEaS2xN67FaIW-2">
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="JLCo8iVKEaS2xN67FaIW-55" target="JLCo8iVKEaS2xN67FaIW-29">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="3650" y="620" as="targetPoint" />
-            <mxPoint x="3570" y="661" as="sourcePoint" />
             <Array as="points">
-              <mxPoint x="3650" y="620" />
+              <mxPoint x="3680" y="561" />
+              <mxPoint x="3680" y="390" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="JLCo8iVKEaS2xN67FaIW-53" value="Frontend Status として&lt;br&gt;処理のステータスを出力？" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="3660" y="605" width="160" height="30" as="geometry" />
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-55" value="Pose推定&lt;br&gt;&lt;br&gt;（可能なら；3点以上の対応点がないなど）&lt;br&gt;・3point ransacを使って、MapDatabaseから現在FrameのPoseを推定する&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="3280" y="521.25" width="325" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-60" value="" style="endArrow=none;dashed=1;html=1;strokeWidth=3;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="3180" y="970" as="sourcePoint" />
+            <mxPoint x="3180" y="450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-61" value="ここまでは、&lt;br style=&quot;font-size: 20px;&quot;&gt;・Feature tracking&lt;br style=&quot;font-size: 20px;&quot;&gt;・Feature verification&lt;br style=&quot;font-size: 20px;&quot;&gt;・Feature detection&lt;br style=&quot;font-size: 20px;&quot;&gt;&lt;br style=&quot;font-size: 20px;&quot;&gt;のみに注力する&lt;br style=&quot;font-size: 20px;&quot;&gt;&lt;br style=&quot;font-size: 20px;&quot;&gt;Pose推定は利用しない&lt;br style=&quot;font-size: 20px;&quot;&gt;MapDBも活用しない&lt;br style=&quot;font-size: 20px;&quot;&gt;Landmark位置も利用しない" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=20;fontStyle=1" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="3190" y="800" width="270" height="250" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
