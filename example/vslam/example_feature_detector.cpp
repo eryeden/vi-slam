@@ -20,7 +20,7 @@ int main() {
 
     // detect
     auto frame = vslam::feature::DetectShiTomasiCorners(
-        vslam::data::FrameSharedPtr(), input.value().frame_, 1, 1, 1);
+        vslam::data::FrameSharedPtr(), input.value().frame_, 5, 5, 300);
 
     // visualize
     cv::Mat vis;
