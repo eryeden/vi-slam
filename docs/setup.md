@@ -43,3 +43,20 @@ make -j13
 sudo make install
 ```
 
+- spdlog
+
+```bash
+# ソースコードをダウンロード
+cd somewhere/convenient/directory/
+wget https://github.com/gabime/spdlog/archive/v1.5.0.tar.gz
+tar zxvf v1.5.0.tar.gz
+cd spdlog-1.5.0
+mkdir build
+cd build
+cmake .. -DCMAKE_CXX_FLAGS="-fpic" #このオプションがないと下記エラーがでるので注意。
+make -j; sudo make install
+```
+Error message:
+```
+/usr/bin/ld: /usr/local/lib/libspdlog.a(spdlog.cpp.o): relocation R_X86_64_TPOFF32 against `_ZGVZN6spdlog7details2os9thread_idEvE3tid' can not be used when making a shared object。 -fPIC を付けて再コンパイルしてください。
+```
