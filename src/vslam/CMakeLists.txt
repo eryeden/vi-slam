@@ -29,7 +29,9 @@ target_include_directories(${VSLAM_PROJECT_NAME}
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/data>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/frontend>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/backend>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/feature>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/utility>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/dataprovider>
         )
 
 # Link to required libraries
@@ -44,13 +46,16 @@ target_link_libraries(${VSLAM_PROJECT_NAME}
         opencv_xfeatures2d
         opencv_calib3d
         pthread
+        spdlog::spdlog
         )
 
 
 add_subdirectory(frontend)
 add_subdirectory(backend)
 add_subdirectory(data)
+add_subdirectory(feature)
 add_subdirectory(utility)
+add_subdirectory(dataprovider)
 
 #add_subdirectory(data)
 #add_subdirectory(feature)

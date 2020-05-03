@@ -1,5 +1,7 @@
 add_executable(example_hello example_hello.cpp)
 list(APPEND EXECUTABLE_TARGETS example_hello)
+add_executable(example_feature_detector example_feature_detector.cpp)
+list(APPEND EXECUTABLE_TARGETS example_feature_detector)
 
 foreach (EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
 

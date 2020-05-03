@@ -55,8 +55,8 @@ FrontendStatus KimeraFrontend::Feed(const KimeraFrontendInput& frontend_input) {
   cv::undistort(frontend_input.frame_,
                 undistorted_image,
                 utility::ConvertEigenMatToCVMat(
-                    pinhole_camera_model_.GetIntrinsicMatrix()),
-                pinhole_camera_model_.GetDistortionParameters());
+                    frontend_input.camera_model_.GetIntrinsicMatrix()),
+                frontend_input.camera_model_.GetDistortionParameters());
   KimeraFrontendInput undistorted_frontend_input = frontend_input;
   undistorted_frontend_input.frame_ = undistorted_image;
 

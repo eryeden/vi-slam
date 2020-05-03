@@ -22,7 +22,7 @@ class KimeraFrontend : public FrontendBase {
   KimeraFrontend(const std::shared_ptr<data::ThreadsafeMapDatabase>&
                      threadsafe_map_database);
 
-  FrontendStatus Feed(const KimeraFrontendInput& frontend_input) override;
+  FrontendStatus Feed(const KimeraFrontendInput& frontend_input);
 
  private:
   data::Frame ProcessFirstFrame(const KimeraFrontendInput& frontend_input);
@@ -31,14 +31,13 @@ class KimeraFrontend : public FrontendBase {
                            const data::FrameSharedPtr& last_keyframe);
   /**
    * @note
-   * 自分用メモだが、SharedPrtは上書きでも参照回数がデクリメントされるので、
+   * 自分用メモ:SharedPrtは上書きでも参照回数がデクリメントされるので、
    * メモリが開放される。　https://beatsync.net/bayside/memo/log20050905.html
    *
    */
   data::FrameSharedPtr last_frame_;
   data::FrameSharedPtr last_keyframe_;
 
-  data::PinholeCameraModel pinhole_camera_model_;
   bool is_first_frame_;
 };
 
