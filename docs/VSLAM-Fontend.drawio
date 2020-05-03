@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-05-02T04:09:22.638Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="lr7gYIBIDfhtB621PE2E" version="13.0.1" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-05-03T15:28:30.274Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="0wcwoJQ46tPsoAJv4Kdn" version="13.0.1" type="github" pages="2">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
     <mxGraphModel dx="2958" dy="982" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -407,7 +407,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="KfDyO8I-pmFeG0Nn9npx" name="Proposed-Frontend">
-    <mxGraphModel dx="3971" dy="3820" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1158" dy="1942" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="jS7kERMsJuhV1MZeAvF8-0" />
         <mxCell id="jS7kERMsJuhV1MZeAvF8-1" parent="jS7kERMsJuhV1MZeAvF8-0" />
@@ -963,17 +963,32 @@
         <mxCell id="JLCo8iVKEaS2xN67FaIW-55" value="Pose推定&lt;br&gt;&lt;br&gt;（可能なら；3点以上の対応点がないなど）&lt;br&gt;・3point ransacを使って、MapDatabaseから現在FrameのPoseを推定する&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
           <mxGeometry x="3280" y="521.25" width="325" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="JLCo8iVKEaS2xN67FaIW-60" value="" style="endArrow=none;dashed=1;html=1;strokeWidth=3;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-60" value="" style="endArrow=none;dashed=1;html=1;strokeWidth=3;exitX=0.761;exitY=0.983;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="jS7kERMsJuhV1MZeAvF8-1" source="JLCo8iVKEaS2xN67FaIW-2">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="3180" y="970" as="sourcePoint" />
-            <mxPoint x="3180" y="450" as="targetPoint" />
+            <mxPoint x="3250" y="970" as="sourcePoint" />
+            <mxPoint x="3250" y="450" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="JLCo8iVKEaS2xN67FaIW-61" value="ここまでは、&lt;br style=&quot;font-size: 20px;&quot;&gt;・Feature tracking&lt;br style=&quot;font-size: 20px;&quot;&gt;・Feature verification&lt;br style=&quot;font-size: 20px;&quot;&gt;・Feature detection&lt;br style=&quot;font-size: 20px;&quot;&gt;&lt;br style=&quot;font-size: 20px;&quot;&gt;のみに注力する&lt;br style=&quot;font-size: 20px;&quot;&gt;&lt;br style=&quot;font-size: 20px;&quot;&gt;Pose推定は利用しない&lt;br style=&quot;font-size: 20px;&quot;&gt;MapDBも活用しない&lt;br style=&quot;font-size: 20px;&quot;&gt;Landmark位置も利用しない" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=20;fontStyle=1" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="3190" y="800" width="270" height="250" as="geometry" />
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-61" value="ここまでは、&lt;br style=&quot;font-size: 12px;&quot;&gt;・Feature tracking&lt;br style=&quot;font-size: 12px;&quot;&gt;・Feature verification&lt;br style=&quot;font-size: 12px;&quot;&gt;・Feature detection&lt;br style=&quot;font-size: 12px;&quot;&gt;&lt;br style=&quot;font-size: 12px;&quot;&gt;のみに注力する&lt;br style=&quot;font-size: 12px;&quot;&gt;&lt;br style=&quot;font-size: 12px;&quot;&gt;Pose推定は利用しない&lt;br style=&quot;font-size: 12px;&quot;&gt;MapDBも活用しない&lt;br style=&quot;font-size: 12px;&quot;&gt;Landmark位置も利用しない" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=12;fontStyle=0" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="3090" y="795" width="160" height="150" as="geometry" />
         </mxCell>
-        <mxCell id="JLCo8iVKEaS2xN67FaIW-63" value="ここではじめて、&lt;br&gt;・MapDBへの参照&lt;br&gt;・Pose推定&lt;br&gt;・Landmark位置の利用（３Point法）&lt;br&gt;がなされる" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=20;fontStyle=1" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
-          <mxGeometry x="3370" y="606" width="360" height="130" as="geometry" />
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-63" value="ここではじめて、&lt;br style=&quot;font-size: 12px;&quot;&gt;・MapDBへの参照&lt;br style=&quot;font-size: 12px;&quot;&gt;・Pose推定&lt;br style=&quot;font-size: 12px;&quot;&gt;・Landmark位置の利用（３Point法）&lt;br style=&quot;font-size: 12px;&quot;&gt;がなされる" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=12;fontStyle=0" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="3360" y="616" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-66" value="Feature tracking&lt;br&gt;&lt;br&gt;・Lukas-Kanade trackerで特徴点を追跡&lt;br&gt;・Landmark ageをカウントアップ：&lt;br&gt;　・ageの指標として、トラッキングのFrame数とタイムスタンプからの経過時間がある。どちらがいいか判断できないので、両方ともAgeとして保持することにする。" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="1710" y="1220" width="415" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-67" value="KeyFrame Selection&lt;br&gt;&lt;br&gt;・以下の基準を満たせばKeyFrameとして選択する&lt;br&gt;・基準１：前回のKeyFrame選択から一定時間経っている&lt;br&gt;・基準２：Trackingできている特徴点が一定以下になった" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="1710" y="1390" width="360" height="82.5" as="geometry" />
+        </mxCell>
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-68" value="Verificaiton &amp;amp; 前回Frameとのrelative pose推定&lt;br&gt;&lt;br&gt;・１Frame目はKeyFrame&lt;br&gt;・単眼カメラの場合は５点法＋RANSACで特徴点を選別&lt;br&gt;・Landmark ageが一定値以上の場合は排除（何回KeyFrameに観測されたか？をカウントする。）&lt;br&gt;・同時にLandmark視差の中央値、トラッキングしている特徴点数のチェックを行う。" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="1710" y="1500.0049999999999" width="330" height="178.75" as="geometry" />
+        </mxCell>
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-69" value="Feature detection&lt;br&gt;&lt;br&gt;・Shi-Tomasi cornersで特徴点検出&lt;br&gt;・Keyframeのみで特徴点の検出を行う&lt;br&gt;・画像全体で均一な検出を行うために、画像分割をしてDetectionを実施" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="1710" y="1720" width="450" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="JLCo8iVKEaS2xN67FaIW-70" value="・Tracking&lt;br style=&quot;font-size: 12px;&quot;&gt;・Verification&lt;br style=&quot;font-size: 12px;&quot;&gt;・Detection&lt;br style=&quot;font-size: 12px;&quot;&gt;では、&lt;br style=&quot;font-size: 12px;&quot;&gt;１．画像上に検出されたFeature pointが、&lt;br style=&quot;font-size: 12px;&quot;&gt;２．あるIDを持って、複数Frame間で継続的に追跡され、&lt;br style=&quot;font-size: 12px;&quot;&gt;３．入力画像上に存在しているFeatureのIDと位置のペアを出力できれば、&lt;br style=&quot;font-size: 12px;&quot;&gt;OK" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=12;fontStyle=0" vertex="1" parent="jS7kERMsJuhV1MZeAvF8-1">
+          <mxGeometry x="3270" y="820" width="420" height="120" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
