@@ -97,6 +97,9 @@ message(STATUS "Use OpenCV ${OpenCV_VERSION}")
 
 find_package(Threads REQUIRED)
 
+# spdlog
+find_package(spdlog REQUIRED)
+
 # ----- Build selection -----
 add_subdirectory(src)
 add_subdirectory(example)
