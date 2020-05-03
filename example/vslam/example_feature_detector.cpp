@@ -18,7 +18,19 @@ int main() {
       continue;
     }
 
-    cv::imshow("First", input->frame_);
+    // detect
+    auto frame = vslam::feature::DetectShiTomasiCorners(
+        vslam::data::FrameSharedPtr(), input.value().frame_, 1, 1, 1);
+
+    // visualize
+    cv::Mat vis;
+    //    cv::cvtColor(input.value().frame_, vis, CV_GRAY2BGR);
+    input.value().frame_.copyTo(vis);
+    for (const auto& [id, pos] : frame.observing_feature_point_in_device_) {
+      cv::circle(vis, cv::Point(pos[0], pos[1]), 1, cv::Scalar(255, 0, 0), 1);
+    }
+
+    cv::imshow("First", vis);
     cv::waitKey(10);
   }
 
