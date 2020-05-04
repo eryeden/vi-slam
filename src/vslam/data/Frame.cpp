@@ -3,19 +3,22 @@
 using namespace vslam;
 using namespace vslam::data;
 
-Frame::Frame(database_index_t id,
-             double timestamp,
-             bool is_keyframe,
-             const PinholeCameraModel& camera_parameters,
-             const std::set<database_index_t>& observing_feature_id,
-             const EigenAllocatedUnorderedMap<database_index_t, Vec2_t>&
-                 observing_feature_points_in_device)
+Frame::Frame(
+    database_index_t id,
+    double timestamp,
+    bool is_keyframe,
+    const PinholeCameraModel& camera_parameters,
+    const std::set<database_index_t>& observing_feature_id,
+    const EigenAllocatedUnorderedMap<database_index_t, Vec2_t>&
+        observing_feature_points_in_device,
+    const std::unordered_map<database_index_t, uint32_t>& feature_point_age)
     : frame_id_(id),
       timestamp_(timestamp),
       is_keyframe_(is_keyframe),
       camera_parameter_(camera_parameters),
       observing_feature_id_(observing_feature_id),
-      observing_feature_point_in_device_(observing_feature_points_in_device) {
+      observing_feature_point_in_device_(observing_feature_points_in_device),
+      feature_point_age_(feature_point_age) {
   ;
 }
 
@@ -25,7 +28,8 @@ Frame::Frame()
             false,
             PinholeCameraModel(),
             std::set<database_index_t>(),
-            EigenAllocatedUnorderedMap<database_index_t, Vec2_t>()) {}
+            EigenAllocatedUnorderedMap<database_index_t, Vec2_t>(),
+            std::unordered_map<database_index_t, uint32_t>()) {}
 
 Frame::Frame(const Frame& frame)
     : Frame(frame.frame_id_,
@@ -33,7 +37,8 @@ Frame::Frame(const Frame& frame)
             frame.is_keyframe_,
             frame.camera_parameter_,
             frame.observing_feature_id_,
-            frame.observing_feature_point_in_device_) {
+            frame.observing_feature_point_in_device_,
+            frame.feature_point_age_) {
   camera_position_ = frame.camera_position_;
   camera_orientation_ = frame.camera_orientation_;
   landmarks_ = frame.landmarks_;

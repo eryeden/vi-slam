@@ -118,6 +118,8 @@ vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
     EigenAllocatedUnorderedMap<database_index_t, Vec2_t>
         observing_feature_points_in_device =
             previous_frame->observing_feature_point_in_device_;
+    std::unordered_map<database_index_t, uint32_t> feature_point_age =
+        previous_frame->feature_point_age_;
 
     uint64_t feature_index = max_feature_index;
     for (const auto& grect : grid_def) {
@@ -151,6 +153,7 @@ vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
           observing_feature_ids.insert(feature_index);
           observing_feature_points_in_device[feature_index] =
               Vec2_t{kp.pt.x + grect.x, kp.pt.y + grect.y};
+          feature_point_age[feature_index] = 1;
           feature_index++;
         }
       }
@@ -161,15 +164,17 @@ vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
                        false,
                        data::PinholeCameraModel(),
                        observing_feature_ids,
-                       observing_feature_points_in_device);
+                       observing_feature_points_in_device,
+                       feature_point_age);
 
   } else {
     spdlog::info("Empty previous frame.");
 
-
     std::set<database_index_t> observing_feature_ids;
     EigenAllocatedUnorderedMap<database_index_t, Vec2_t>
         observing_feature_points_in_device;
+    std::unordered_map<database_index_t, uint32_t> feature_point_age;
+
     uint64_t feature_index = 0;
     for (const auto& grect : grid_def) {
       cv::Mat div_image = frame_mono(grect);
@@ -186,6 +191,7 @@ vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
         observing_feature_ids.insert(feature_index);
         observing_feature_points_in_device[feature_index] =
             Vec2_t{kp.pt.x + grect.x, kp.pt.y + grect.y};
+        feature_point_age[feature_index] = 1;
 
         //        spdlog::info("points[{}] : {}, {}", feature_index, kp.pt.x +
         //        grect.x, kp.pt.y + grect.y);
@@ -199,6 +205,7 @@ vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
                        false,
                        data::PinholeCameraModel(),
                        observing_feature_ids,
-                       observing_feature_points_in_device);
+                       observing_feature_points_in_device,
+                       feature_point_age);
   }
 }
