@@ -20,10 +20,37 @@
 
 namespace vslam::feature {
 
-data::Frame DetectShiTomasiCorners(const data::FrameSharedPtr& previous_frame,
-                                   const cv::Mat& undistorted_current_image,
-                                   int32_t division_number_row,
-                                   int32_t division_number_col,
-                                   int32_t max_feature_number);
-
+namespace utility {
+std::vector<cv::Rect2f> GenerateGrid(const cv::Size& size,
+                                     int32_t division_number_col,
+                                     int32_t division_number_row);
 }
+
+class FeatureDetectorShiTomasi {
+ public:
+  FeatureDetectorShiTomasi(int32_t division_number_row,
+                           int32_t division_number_col,
+                           int32_t max_feature_number,
+                           double min_feature_distance);
+
+  data::Frame detect(const data::FrameSharedPtr& previous_frame,
+                     const cv::Mat& current_image);
+
+ private:
+  data::Frame DetectShiTomasiCorners(const data::FrameSharedPtr& previous_frame,
+                                     const cv::Mat& current_image,
+                                     int32_t division_number_row,
+                                     int32_t division_number_col,
+                                     int32_t max_feature_number,
+                                     double min_feature_distance,
+                                     database_index_t& max_feature_index) const;
+
+  database_index_t max_feature_index_;
+
+  int32_t division_number_row_;
+  int32_t division_number_col_;
+  int32_t max_feature_number_;
+  double min_feature_distance_;
+};
+
+}  // namespace vslam::feature
