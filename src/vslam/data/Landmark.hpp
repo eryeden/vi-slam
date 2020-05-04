@@ -18,6 +18,10 @@ class Landmark {
            bool is_outlier,
            bool is_initialized);
 
+  Landmark();
+
+  Landmark(const Landmark& landmark);
+
   //! Landmarkの被観測関係の取得、設定
   void SetObservedFrameIndex(database_index_t frame_index);
   std::set<database_index_t> GetAllObservedFrameIndex() const;

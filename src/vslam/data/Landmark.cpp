@@ -15,6 +15,19 @@ Landmark::Landmark(vslam::database_index_t id,
       is_initialized_(is_initialized) {
   ;
 }
+
+Landmark::Landmark()
+    : Landmark(0, std::set<database_index_t>(), {0, 0, 0}, false, false) {}
+
+Landmark::Landmark(const Landmark& landmark)
+    : Landmark(landmark.landmark_id_,
+               landmark.observed_frame_id_,
+               landmark.position_in_world_,
+               landmark.is_outlier_,
+               landmark.is_initialized_) {
+  ;
+}
+
 void Landmark::SetObservedFrameIndex(vslam::database_index_t frame_index) {
   std::lock_guard<std::mutex> lock(mutex_observation_);
   observed_frame_id_.insert(frame_index);

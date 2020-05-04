@@ -44,7 +44,7 @@ vslam::feature::FeatureDetectorShiTomasi::FeatureDetectorShiTomasi(
       max_feature_number_(max_feature_number),
       min_feature_distance_(min_feature_distance) {}
 
-vslam::data::Frame vslam::feature::FeatureDetectorShiTomasi::detect(
+vslam::data::Frame vslam::feature::FeatureDetectorShiTomasi::Detect(
     const vslam::data::FrameSharedPtr& previous_frame,
     const cv::Mat& current_image) {
   database_index_t updated_max_feature_index = 0;
@@ -106,12 +106,15 @@ vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
         flag_img.at<uint8_t>(pos[1], pos[0]) = 1;
       }
       kd_points.push_back({pos[0], pos[1]});
+      //      spdlog::info("points[{}] : {}, {}", id, pos[0], pos[1]);
     }
     utility::KDTree kd_tree(kd_points);
 
     // gridごとに検出と、最近特徴点の削除を行う
     std::set<database_index_t> observing_feature_ids =
         previous_frame->observing_feature_id_;
+    //    std::set<database_index_t>
+    //    observing_feature_ids(previous_frame->observing_feature_id_);
     EigenAllocatedUnorderedMap<database_index_t, Vec2_t>
         observing_feature_points_in_device =
             previous_frame->observing_feature_point_in_device_;
@@ -153,6 +156,13 @@ vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
       }
     }
     max_feature_index = feature_index - 1;
+    return data::Frame(0,
+                       0,
+                       false,
+                       data::PinholeCameraModel(),
+                       observing_feature_ids,
+                       observing_feature_points_in_device);
+
   } else {
     spdlog::info("Empty previous frame.");
 
@@ -176,6 +186,9 @@ vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
         observing_feature_ids.insert(feature_index);
         observing_feature_points_in_device[feature_index] =
             Vec2_t{kp.pt.x + grect.x, kp.pt.y + grect.y};
+
+        //        spdlog::info("points[{}] : {}, {}", feature_index, kp.pt.x +
+        //        grect.x, kp.pt.y + grect.y);
         feature_index++;
       }
     }

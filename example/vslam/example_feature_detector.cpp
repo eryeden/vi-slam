@@ -11,6 +11,11 @@ int main() {
   vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
       path_to_euroc);
 
+  // Build detector
+  vslam::feature::FeatureDetectorShiTomasi shi_tomasi_detector(4, 4, 300, 1.0);
+
+  vslam::data::FrameSharedPtr prev_frame = nullptr;
+
   bool is_reach_the_last = false;
   while (!is_reach_the_last) {
     auto input = euroc_kimera_data_provider.GetInput();
@@ -19,20 +24,17 @@ int main() {
       continue;
     }
 
-    //    // detect
-    //    auto frame = vslam::feature::DetectShiTomasiCorners(
-    //        vslam::data::FrameSharedPtr(), input.value().frame_, 5, 5,
-    //        300, 5.0);
+    // detect
+    auto frame = shi_tomasi_detector.Detect(prev_frame, input.value().frame_);
 
     // visualize
     cv::Mat vis;
-    //    cv::cvtColor(input.value().frame_, vis, CV_GRAY2BGR);
     input.value().frame_.copyTo(vis);
-    //    for (const auto& [id, pos] : frame.observing_feature_point_in_device_)
-    //    {
-    //      cv::circle(vis, cv::Point(pos[0], pos[1]), 1, cv::Scalar(255, 0, 0),
-    //      1);
-    //    }
+    for (const auto& [id, pos] : frame.observing_feature_point_in_device_) {
+      cv::circle(vis, cv::Point(pos[0], pos[1]), 1, cv::Scalar(255, 0, 0), 1);
+    }
+
+    prev_frame = std::make_shared<vslam::data::Frame>(frame);
 
     cv::imshow("First", vis);
     cv::waitKey(10);

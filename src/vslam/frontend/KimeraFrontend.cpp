@@ -66,12 +66,13 @@ FrontendStatus KimeraFrontend::Feed(const KimeraFrontendInput& frontend_input) {
 
     auto processed_frame = ProcessFirstFrame(undistorted_frontend_input);
     last_frame_ =
-        std::shared_ptr<data::Frame>(&processed_frame);  // Frame copied
+        std::make_shared<data::Frame>(processed_frame);  // Frame copied
+
     if (last_frame_->is_keyframe_) {
       last_keyframe_ = last_frame_;
     }
-    data::FrameUniquePtr tmp_frame_ptr =
-        data::FrameUniquePtr(&processed_frame);  // Frame copied
+    auto tmp_frame_ptr =
+        std::make_unique<data::Frame>(processed_frame);  // Frame copied
     map_database_->AddFrame(tmp_frame_ptr);
 
   } else {
@@ -79,12 +80,13 @@ FrontendStatus KimeraFrontend::Feed(const KimeraFrontendInput& frontend_input) {
     auto processed_frame =
         ProcessFrame(undistorted_frontend_input, last_frame_, last_keyframe_);
     last_frame_ =
-        std::shared_ptr<data::Frame>(&processed_frame);  // Frame copied
+        std::make_shared<data::Frame>(processed_frame);  // Frame copied
+
     if (last_frame_->is_keyframe_) {
       last_keyframe_ = last_frame_;
     }
-    data::FrameUniquePtr tmp_frame_ptr =
-        data::FrameUniquePtr(&processed_frame);  // Frame copied
+    auto tmp_frame_ptr =
+        std::make_unique<data::Frame>(processed_frame);  // Frame copied
     map_database_->AddFrame(tmp_frame_ptr);
   }
 

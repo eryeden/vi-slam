@@ -10,10 +10,11 @@
 
 namespace vslam::data {
 
-
 class Frame {
  public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+  Frame();
 
   Frame(database_index_t id,
         double timestamp,
@@ -22,6 +23,8 @@ class Frame {
         const std::set<database_index_t>& observing_feature_id,
         const EigenAllocatedUnorderedMap<database_index_t, Vec2_t>&
             observing_feature_points_in_device);
+
+  Frame(const Frame& frame);
 
   void SetCameraPose(const Vec3_t& position, const Quat_t& orientation);
   Vec3_t GetCameraPosition() const;
@@ -45,6 +48,7 @@ class Frame {
   //! @note あとから変更されうるのでstd::atomicによるガードを行う
   //! FrameはKeyFrameか？TrueでKeyFrameになる
   std::atomic_bool is_keyframe_;
+  //  bool is_keyframe_;
 
   //! Pinholeカメラパラメータ
   const PinholeCameraModel camera_parameter_;

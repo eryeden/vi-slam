@@ -33,7 +33,7 @@ class FeatureDetectorShiTomasi {
                            int32_t max_feature_number,
                            double min_feature_distance);
 
-  data::Frame detect(const data::FrameSharedPtr& previous_frame,
+  data::Frame Detect(const data::FrameSharedPtr& previous_frame,
                      const cv::Mat& current_image);
 
  private:

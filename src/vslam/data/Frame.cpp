@@ -19,6 +19,26 @@ Frame::Frame(database_index_t id,
   ;
 }
 
+Frame::Frame()
+    : Frame(0,
+            0,
+            false,
+            PinholeCameraModel(),
+            std::set<database_index_t>(),
+            EigenAllocatedUnorderedMap<database_index_t, Vec2_t>()) {}
+
+Frame::Frame(const Frame& frame)
+    : Frame(frame.frame_id_,
+            frame.timestamp_,
+            frame.is_keyframe_,
+            frame.camera_parameter_,
+            frame.observing_feature_id_,
+            frame.observing_feature_point_in_device_) {
+  camera_position_ = frame.camera_position_;
+  camera_orientation_ = frame.camera_orientation_;
+  landmarks_ = frame.landmarks_;
+}
+
 void Frame::SetCameraPose(const vslam::Vec3_t& position,
                           const vslam::Quat_t& orientation) {
   std::lock_guard<std::mutex> lock(mutex_camera_pose_);
