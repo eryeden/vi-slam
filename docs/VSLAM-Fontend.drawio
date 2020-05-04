@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-05-04T12:48:29.755Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="mjHiC0hg45b56HyZgija" version="13.0.6" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2020-05-04T14:00:25.788Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="W1a0cwzPFv1wFeXwCvwY" version="13.0.6" type="github" pages="3">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
     <mxGraphModel dx="4020" dy="2333" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -407,7 +407,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="KfDyO8I-pmFeG0Nn9npx" name="Proposed-Frontend">
-    <mxGraphModel dx="2265" dy="2659" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1359" dy="2063" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="jS7kERMsJuhV1MZeAvF8-0" />
         <mxCell id="jS7kERMsJuhV1MZeAvF8-1" parent="jS7kERMsJuhV1MZeAvF8-0" />
@@ -976,7 +976,7 @@
           <mxGeometry x="3360" y="616" width="220" height="80" as="geometry" />
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-66" value="Feature tracking&lt;br&gt;&lt;br&gt;・Lukas-Kanade trackerで特徴点を追跡&lt;br&gt;・Landmark ageをカウントアップ：&lt;br&gt;　・ageの指標として、トラッキングのFrame数とタイムスタンプからの経過時間がある。どちらがいいか判断できないので、両方ともAgeとして保持することにする。" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
-          <mxGeometry x="1710" y="1220" width="415" height="130" as="geometry" />
+          <mxGeometry x="1710" y="1230" width="415" height="130" as="geometry" />
         </mxCell>
         <mxCell id="JLCo8iVKEaS2xN67FaIW-67" value="KeyFrame Selection&lt;br&gt;&lt;br&gt;・以下の基準を満たせばKeyFrameとして選択する&lt;br&gt;・基準１：前回のKeyFrame選択から一定時間経っている&lt;br&gt;・基準２：Trackingできている特徴点が一定以下になった" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="jS7kERMsJuhV1MZeAvF8-1" vertex="1">
           <mxGeometry x="1710" y="1390" width="360" height="82.5" as="geometry" />
