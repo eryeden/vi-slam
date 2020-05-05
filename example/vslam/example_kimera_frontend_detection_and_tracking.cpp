@@ -16,23 +16,25 @@ int main() {
       path_to_euroc);
 
   // Map database
-  //  vslam::data::ThreadsafeMapDatabase threadsafe_map_database;
   auto threadsafe_map_database_ptr =
       std::make_shared<vslam::data::ThreadsafeMapDatabase>();
 
   // Build detector
-  //  vslam::feature::FeatureDetectorShiTomasi shi_tomasi_detector(4, 4,
-  //  300, 2.0);
   auto shi_tomasi_detector_ptr =
       std::make_shared<vslam::feature::FeatureDetectorShiTomasi>(
           4, 4, 300, 2.0);
 
   // Build tracker
-  //  vslam::feature::FeatureTrackerLucasKanade kl_tracker(30, 0.01, 15, 3);
   auto kl_tracker_ptr =
       std::make_shared<vslam::feature::FeatureTrackerLucasKanade>(
           30, 0.01, 15, 3);
 
+  /**
+   * @note
+   * ↓のように、実体のあるインスタンスのポインタからShared pointerをつくると、
+   * Shared_ptrによるデストラクタコール？と実体の方のデストラクタコールがかぶるので
+   * double free or corruptionが発生する可能性あり。
+   */
   // Build frontend
   //  vslam::frontend::KimeraFrontend kimera_frontend(
   //      std::shared_ptr<vslam::data::ThreadsafeMapDatabase>(
