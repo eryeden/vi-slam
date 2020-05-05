@@ -25,10 +25,11 @@ KimeraFrontend::KimeraFrontend(
     uint32_t keyframe_feature_number_threshold)
     : FrontendBase(threadsafe_map_database),
       is_first_frame_(true),
-      feature_detector_shi_tomasi_(feature_detector_shi_tomasi),
-      feature_tracker_lucas_kanade_(feature_tracker_lucas_kanade),
       keyframe_interval_threshold_(keyframe_interval_threshold),
       keyframe_feature_number_threshold_(keyframe_feature_number_threshold) {
+  feature_detector_shi_tomasi_ = feature_detector_shi_tomasi;
+  feature_tracker_lucas_kanade_ = feature_tracker_lucas_kanade;
+
   // input check
   if (feature_tracker_lucas_kanade_ == nullptr) {
     spdlog::warn(

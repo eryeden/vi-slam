@@ -16,23 +16,38 @@ int main() {
       path_to_euroc);
 
   // Map database
-  vslam::data::ThreadsafeMapDatabase threadsafe_map_database;
+  //  vslam::data::ThreadsafeMapDatabase threadsafe_map_database;
+  auto threadsafe_map_database_ptr =
+      std::make_shared<vslam::data::ThreadsafeMapDatabase>();
 
   // Build detector
-  vslam::feature::FeatureDetectorShiTomasi shi_tomasi_detector(4, 4, 300, 2.0);
+  //  vslam::feature::FeatureDetectorShiTomasi shi_tomasi_detector(4, 4,
+  //  300, 2.0);
+  auto shi_tomasi_detector_ptr =
+      std::make_shared<vslam::feature::FeatureDetectorShiTomasi>(
+          4, 4, 300, 2.0);
 
   // Build tracker
-  vslam::feature::FeatureTrackerLucasKanade kl_tracker(30, 0.01, 15, 3);
+  //  vslam::feature::FeatureTrackerLucasKanade kl_tracker(30, 0.01, 15, 3);
+  auto kl_tracker_ptr =
+      std::make_shared<vslam::feature::FeatureTrackerLucasKanade>(
+          30, 0.01, 15, 3);
 
   // Build frontend
-  vslam::frontend::KimeraFrontend kimera_frontend(
-      std::shared_ptr<vslam::data::ThreadsafeMapDatabase>(
-          &threadsafe_map_database),
-      std::shared_ptr<vslam::feature::FeatureDetectorShiTomasi>(
-          &shi_tomasi_detector),
-      std::shared_ptr<vslam::feature::FeatureTrackerLucasKanade>(&kl_tracker),
-      100.0,
-      100);
+  //  vslam::frontend::KimeraFrontend kimera_frontend(
+  //      std::shared_ptr<vslam::data::ThreadsafeMapDatabase>(
+  //          &threadsafe_map_database),
+  //      std::shared_ptr<vslam::feature::FeatureDetectorShiTomasi>(
+  //          &shi_tomasi_detector),
+  //      std::shared_ptr<vslam::feature::FeatureTrackerLucasKanade>(&kl_tracker),
+  //      100.0,
+  //      100);
+
+  vslam::frontend::KimeraFrontend kimera_frontend(threadsafe_map_database_ptr,
+                                                  shi_tomasi_detector_ptr,
+                                                  kl_tracker_ptr,
+                                                  100.0,
+                                                  100);
 
   vslam::data::FrameSharedPtr prev_frame = nullptr;
   vslam::FeatureAgeDatabase prev_feature_age;
@@ -46,6 +61,11 @@ int main() {
   while (!is_reach_the_last) {
     auto input = euroc_kimera_data_provider.GetInput();
     if (input == std::nullopt) {
+      is_reach_the_last = true;
+      continue;
+    }
+
+    if (counter > 100) {
       is_reach_the_last = true;
       continue;
     }
@@ -74,8 +94,8 @@ int main() {
     cv::Mat vis;
     kimera_frontend.last_input_.frame_.copyTo(vis);
 
-    auto latest_frame = threadsafe_map_database.GetFrame(
-        threadsafe_map_database.latest_frame_id_);
+    auto latest_frame = threadsafe_map_database_ptr->GetFrame(
+        threadsafe_map_database_ptr->latest_frame_id_);
 
     for (const auto& [id, pos] :
          latest_frame.lock()->observing_feature_point_in_device_) {
@@ -95,6 +115,8 @@ int main() {
                 CV_AA);
     //
     //    prev_input = input.value();
+
+    counter++;
 
     cv::imshow("First", vis);
     cv::waitKey(10);
