@@ -28,9 +28,6 @@ std::vector<cv::Rect2f> GenerateGrid(const cv::Size& size,
 
 class FeatureDetectorShiTomasi {
  public:
-  using FeaturePositionDatabase =
-      EigenAllocatedUnorderedMap<database_index_t, Vec2_t>;
-  using FeatureAgeDatabase = std::unordered_map<database_index_t, uint32_t>;
 
   FeatureDetectorShiTomasi(int32_t division_number_row,
                            int32_t division_number_col,

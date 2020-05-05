@@ -16,15 +16,17 @@ class Frame {
 
   Frame();
 
-  Frame(
-      database_index_t id,
-      double timestamp,
-      bool is_keyframe,
-      const PinholeCameraModel& camera_parameters,
-      const std::set<database_index_t>& observing_feature_id,
-      const EigenAllocatedUnorderedMap<database_index_t, Vec2_t>&
-          observing_feature_points_in_device,
-      const std::unordered_map<database_index_t, uint32_t>& feature_point_age);
+  Frame(database_index_t id,
+        double timestamp,
+        bool is_keyframe,
+        const PinholeCameraModel& camera_parameters,
+        const std::set<database_index_t>& observing_feature_id,
+        //      const EigenAllocatedUnorderedMap<database_index_t, Vec2_t>&
+        //          observing_feature_points_in_device,
+        const FeaturePositionDatabase& observing_feature_points_in_device,
+        //      const std::unordered_map<database_index_t, uint32_t>&
+        //      feature_point_age
+        const FeatureAgeDatabase& feature_point_age);
 
   Frame(const Frame& frame);
 
@@ -60,10 +62,11 @@ class Frame {
   //! 観測したLandmark IDを保持する
   const std::set<database_index_t> observing_feature_id_;
   //! 観測した画像上のFeature positionを保持する
-  const EigenAllocatedUnorderedMap<database_index_t, Vec2_t>
-      observing_feature_point_in_device_;
+  // const EigenAllocatedUnorderedMap<database_index_t, Vec2_t>
+  const FeaturePositionDatabase observing_feature_point_in_device_;
   //! 観測した画像上のFeature positionを保持する
-  const std::unordered_map<database_index_t, uint32_t> feature_point_age_;
+  //  const std::unordered_map<database_index_t, uint32_t> feature_point_age_;
+  const FeatureAgeDatabase feature_point_age_;
 
  private:
   //! @note

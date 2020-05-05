@@ -87,4 +87,8 @@ using EigenAllocatedUnorderedSet =
                        std::equal_to<T>,
                        Eigen::aligned_allocator<const T>>;
 
-} // namespace vslam
+using FeaturePositionDatabase =
+    EigenAllocatedUnorderedMap<database_index_t, Vec2_t>;
+using FeatureAgeDatabase = std::unordered_map<database_index_t, uint32_t>;
+
+}  // namespace vslam

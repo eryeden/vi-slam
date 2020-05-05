@@ -2,7 +2,7 @@
 // Created by ery on 2020/05/03.
 //
 
-#include "FeatureDetector.hpp"
+#include "FeatureDetectorShiTomasi.hpp"
 
 #include <spdlog/spdlog.h>
 
@@ -45,9 +45,8 @@ vslam::feature::FeatureDetectorShiTomasi::FeatureDetectorShiTomasi(
       min_feature_distance_(min_feature_distance) {}
 
 void vslam::feature::FeatureDetectorShiTomasi::UpdateDetection(
-    vslam::feature::FeatureDetectorShiTomasi::FeaturePositionDatabase&
-        feature_position,
-    vslam::feature::FeatureDetectorShiTomasi::FeatureAgeDatabase& feature_age,
+    vslam::FeaturePositionDatabase& feature_position,
+    vslam::FeatureAgeDatabase& feature_age,
     const cv::Mat& current_image) {
   database_index_t updated_max_feature_index = 0;
   DetectShiTomasiCorners(feature_position,
@@ -61,9 +60,8 @@ void vslam::feature::FeatureDetectorShiTomasi::UpdateDetection(
 }
 
 void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
-    vslam::feature::FeatureDetectorShiTomasi::FeaturePositionDatabase&
-        feature_position,
-    vslam::feature::FeatureDetectorShiTomasi::FeatureAgeDatabase& feature_age,
+    vslam::FeaturePositionDatabase& feature_position,
+    vslam::FeatureAgeDatabase& feature_age,
     const cv::Mat& current_image,
     int32_t division_number_row,
     int32_t division_number_col,
