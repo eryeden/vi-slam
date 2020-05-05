@@ -103,6 +103,10 @@ find_package(spdlog REQUIRED)
 # fmt
 find_package(fmt)
 
+# opengv
+find_package(opengv REQUIRED)
+
+
 # ----- Build selection -----
 add_subdirectory(src)
 add_subdirectory(example)

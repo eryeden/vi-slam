@@ -48,6 +48,7 @@ target_link_libraries(${VSLAM_PROJECT_NAME}
         pthread
         spdlog::spdlog
         fmt::fmt
+        opengv
         )
 
 

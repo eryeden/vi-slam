@@ -75,3 +75,18 @@ cd build
 cmake ..
 make -j; sudo make install
 ```
+
+- [opengv](https://github.com/laurentkneip/opengv)
+
+ref: https://laurentkneip.github.io/opengv/page_installation.html
+```bash
+sudo apt-get install build-essential
+sudo apt-get install cmake
+sudo apt-get install cmake libeigen3-dev
+
+# Downloading the source code
+git clone https://github.com/laurentkneip/opengv
+# Go to the top-level directory of OpenGV. Type:
+mkdir build && cd build && cmake .. && make
+sudo make install
+```
