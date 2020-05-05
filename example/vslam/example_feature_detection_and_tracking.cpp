@@ -29,6 +29,7 @@ int main() {
   bool is_initialized = false;
 
   bool is_reach_the_last = false;
+  uint64_t counter = 0;
   while (!is_reach_the_last) {
     auto input = euroc_kimera_data_provider.GetInput();
     if (input == std::nullopt) {
@@ -42,6 +43,11 @@ int main() {
           prev_feature_position, prev_feature_age, input.value().frame_);
       is_initialized = true;
     } else {
+      // 10 Frameごとに特徴点を追加する
+      if (counter++ % 10 == 0) {
+        shi_tomasi_detector.UpdateDetection(
+            prev_feature_position, prev_feature_age, input.value().frame_);
+      }
       kl_tracker.Track(prev_feature_position,
                        prev_feature_age,
                        prev_input.frame_,

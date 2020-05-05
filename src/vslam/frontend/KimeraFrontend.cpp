@@ -4,6 +4,8 @@
 
 #include "KimeraFrontend.hpp"
 
+#include <spdlog/spdlog.h>
+
 #include "OpenCVUtilities.hpp"
 
 using namespace vslam::data;
@@ -14,8 +16,30 @@ using namespace vslam::frontend;
  * @param threadsafe_map_database
  */
 KimeraFrontend::KimeraFrontend(
-    const std::shared_ptr<data::ThreadsafeMapDatabase>& threadsafe_map_database)
-    : FrontendBase(threadsafe_map_database), is_first_frame_(true) {}
+    const std::shared_ptr<data::ThreadsafeMapDatabase>& threadsafe_map_database,
+    const std::shared_ptr<feature::FeatureDetectorShiTomasi>&
+        feature_detector_shi_tomasi,
+    const std::shared_ptr<feature::FeatureTrackerLucasKanade>&
+        feature_tracker_lucas_kanade,
+    double keyframe_interval_threshold,
+    uint32_t keyframe_feature_number_threshold)
+    : FrontendBase(threadsafe_map_database),
+      is_first_frame_(true),
+      feature_detector_shi_tomasi_(feature_detector_shi_tomasi),
+      feature_tracker_lucas_kanade_(feature_tracker_lucas_kanade),
+      keyframe_interval_threshold_(keyframe_interval_threshold),
+      keyframe_feature_number_threshold_(keyframe_feature_number_threshold) {
+  // input check
+  if (feature_tracker_lucas_kanade_ == nullptr) {
+    spdlog::warn(
+        "{}:{} Null input for feature tracker.", __FILE__, __FUNCTION__);
+  }
+  // input check
+  if (feature_detector_shi_tomasi_ == nullptr) {
+    spdlog::warn(
+        "{}:{} Null input for feature detector.", __FILE__, __FUNCTION__);
+  }
+}
 
 /**
  * @brief Implementation of Kimera-based Vision-Frontend
@@ -90,6 +114,7 @@ FrontendStatus KimeraFrontend::Feed(const KimeraFrontendInput& frontend_input) {
     map_database_->AddFrame(tmp_frame_ptr);
   }
 
+  last_input_ = frontend_input;
   return FrontendStatus();
 }
 
@@ -99,7 +124,34 @@ FrontendStatus KimeraFrontend::Feed(const KimeraFrontendInput& frontend_input) {
  * @return
  */
 Frame KimeraFrontend::ProcessFirstFrame(
-    const KimeraFrontendInput& frontend_input) {}
+    const KimeraFrontendInput& frontend_input) {
+  /**
+   * @brief 処理内容、一番最初のFrameを生成する
+   * @details
+   * input : 補正済み画像
+   * 1. 特徴点の検出
+   * 2. KeyFrame生成、初期位置設定
+   */
+
+  // detect features
+  FeatureAgeDatabase feature_age_database;
+  FeaturePositionDatabase feature_position_database;
+  std::set<database_index_t> feature_id_database;
+
+  feature_detector_shi_tomasi_->UpdateDetection(
+      feature_position_database, feature_age_database, frontend_input.frame_);
+  for (const auto& [id, pos] : feature_position_database) {
+    feature_id_database.insert(id);
+  }
+
+  return Frame(0,
+               frontend_input.timestamp_,
+               true,
+               frontend_input.camera_model_,
+               feature_id_database,
+               feature_position_database,
+               feature_age_database);
+}
 
 /**
  * @brief 2Frame以降の処理
@@ -110,4 +162,59 @@ Frame KimeraFrontend::ProcessFirstFrame(
  */
 Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
                                    const FrameSharedPtr& last_frame,
-                                   const FrameSharedPtr& last_keyframe) {}
+                                   const FrameSharedPtr& last_keyframe) {
+  /**
+   * @brief 処理内容
+   * @details
+   * input : 2枚目以降のKimeraFrontendInput
+   * 1. Feature tracking
+   * 2. Keyframe selection
+   * 3. (Keyframeなら)Verification
+   * 4. (Keyframeなら)FeatureDetection
+   * 5. Pose推定(あとで実装)
+   */
+
+  FeatureAgeDatabase feature_age_database = last_frame->feature_point_age_;
+  FeaturePositionDatabase feature_position_database =
+      last_frame->observing_feature_point_in_device_;
+  std::set<database_index_t> feature_id_database =
+      last_frame->observing_feature_id_;
+
+  // Track feature
+  feature_tracker_lucas_kanade_->Track(feature_position_database,
+                                       feature_age_database,
+                                       last_input_.frame_,
+                                       frontend_input.frame_);
+
+  // Select keyframe or not.
+  if ((feature_position_database.size() < keyframe_feature_number_threshold_) ||
+      ((frontend_input.timestamp_ - last_keyframe->timestamp_) <
+       keyframe_interval_threshold_)) {
+    // Verification
+    // TODO : Implement this.
+
+    // Feature detection
+    feature_detector_shi_tomasi_->UpdateDetection(
+        feature_position_database, feature_age_database, frontend_input.frame_);
+    for (const auto& [id, pos] : feature_position_database) {
+      feature_id_database.insert(id);
+    }
+
+    return Frame(last_frame_->frame_id_ + 1,
+                 frontend_input.timestamp_,
+                 true,
+                 frontend_input.camera_model_,
+                 feature_id_database,
+                 feature_position_database,
+                 feature_age_database);
+
+  } else {
+    return Frame(last_frame_->frame_id_ + 1,
+                 frontend_input.timestamp_,
+                 false,
+                 frontend_input.camera_model_,
+                 feature_id_database,
+                 feature_position_database,
+                 feature_age_database);
+  }
+}
