@@ -100,6 +100,9 @@ find_package(Threads REQUIRED)
 # spdlog
 find_package(spdlog REQUIRED)
 
+# fmt
+find_package(fmt)
+
 # ----- Build selection -----
 add_subdirectory(src)
 add_subdirectory(example)

@@ -47,6 +47,7 @@ target_link_libraries(${VSLAM_PROJECT_NAME}
         opencv_calib3d
         pthread
         spdlog::spdlog
+        fmt::fmt
         )
 
 

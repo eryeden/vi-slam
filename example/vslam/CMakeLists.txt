@@ -13,6 +13,9 @@ foreach (EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
             opencv_imgcodecs
             opencv_videoio
             opencv_viz
-            opencv_calib3d)
+            opencv_calib3d
+            spdlog::spdlog
+            fmt::fmt
+            )
 
 endforeach (EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)

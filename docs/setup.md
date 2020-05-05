@@ -43,7 +43,7 @@ make -j13
 sudo make install
 ```
 
-- spdlog
+- [spdlog](https://github.com/gabime/spdlog)
 
 ```bash
 # ソースコードをダウンロード
@@ -59,4 +59,19 @@ make -j; sudo make install
 Error message:
 ```
 /usr/bin/ld: /usr/local/lib/libspdlog.a(spdlog.cpp.o): relocation R_X86_64_TPOFF32 against `_ZGVZN6spdlog7details2os9thread_idEvE3tid' can not be used when making a shared object。 -fPIC を付けて再コンパイルしてください。
+```
+
+- [fmt](https://github.com/fmtlib/fmt)
+
+ref: https://github.com/fmtlib/fmt/blob/master/doc/usage.rst
+```bash
+# ソースコードをダウンロード
+cd somewhere/convenient/directory/
+wget https://github.com/fmtlib/fmt/archive/6.2.0.tar.gz
+tar zxvf 6.2.0.tar.gz
+cd fmt-6.2.0
+mkdir build
+cd build
+cmake ..
+make -j; sudo make install
 ```

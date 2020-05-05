@@ -2,6 +2,8 @@
 // Created by ery on 2020/05/05.
 //
 
+#include <fmt/format.h>
+
 #include "EurocKimeraDataProvider.hpp"
 #include "FeatureDetectorShiTomasi.hpp"
 #include "FeatureTrackerLucasKanade.hpp"
@@ -52,6 +54,17 @@ int main() {
     for (const auto& [id, pos] : prev_feature_position) {
       cv::circle(vis, cv::Point(pos[0], pos[1]), 1, cv::Scalar(255, 0, 0), 1);
     }
+    // draw feature point number
+    std::string str_feature_number =
+        fmt::format("Features : {}", prev_feature_position.size());
+    cv::putText(vis,
+                str_feature_number,
+                cv::Point(20, 20),
+                CV_FONT_NORMAL,
+                0.8,
+                cv::Scalar(0, 0, 0),
+                1,
+                CV_AA);
 
     prev_input = input.value();
 
