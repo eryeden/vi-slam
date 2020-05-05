@@ -15,6 +15,9 @@ int main() {
   vslam::feature::FeatureDetectorShiTomasi shi_tomasi_detector(4, 4, 300, 1.0);
 
   vslam::data::FrameSharedPtr prev_frame = nullptr;
+  vslam::feature::FeatureDetectorShiTomasi::FeatureAgeDatabase prev_feature_age;
+  vslam::feature::FeatureDetectorShiTomasi::FeaturePositionDatabase
+      prev_feature_position;
 
   bool is_reach_the_last = false;
   while (!is_reach_the_last) {
@@ -25,16 +28,15 @@ int main() {
     }
 
     // detect
-    auto frame = shi_tomasi_detector.Detect(prev_frame, input.value().frame_);
+    shi_tomasi_detector.UpdateDetection(
+        prev_feature_position, prev_feature_age, input.value().frame_);
 
     // visualize
     cv::Mat vis;
     input.value().frame_.copyTo(vis);
-    for (const auto& [id, pos] : frame.observing_feature_point_in_device_) {
+    for (const auto& [id, pos] : prev_feature_position) {
       cv::circle(vis, cv::Point(pos[0], pos[1]), 1, cv::Scalar(255, 0, 0), 1);
     }
-
-    prev_frame = std::make_shared<vslam::data::Frame>(frame);
 
     cv::imshow("First", vis);
     cv::waitKey(10);

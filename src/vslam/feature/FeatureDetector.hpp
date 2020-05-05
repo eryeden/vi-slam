@@ -28,22 +28,28 @@ std::vector<cv::Rect2f> GenerateGrid(const cv::Size& size,
 
 class FeatureDetectorShiTomasi {
  public:
+  using FeaturePositionDatabase =
+      EigenAllocatedUnorderedMap<database_index_t, Vec2_t>;
+  using FeatureAgeDatabase = std::unordered_map<database_index_t, uint32_t>;
+
   FeatureDetectorShiTomasi(int32_t division_number_row,
                            int32_t division_number_col,
                            int32_t max_feature_number,
                            double min_feature_distance);
 
-  data::Frame Detect(const data::FrameSharedPtr& previous_frame,
-                     const cv::Mat& current_image);
+  void UpdateDetection(FeaturePositionDatabase& feature_position,
+                       FeatureAgeDatabase& feature_age,
+                       const cv::Mat& current_image);
 
  private:
-  data::Frame DetectShiTomasiCorners(const data::FrameSharedPtr& previous_frame,
-                                     const cv::Mat& current_image,
-                                     int32_t division_number_row,
-                                     int32_t division_number_col,
-                                     int32_t max_feature_number,
-                                     double min_feature_distance,
-                                     database_index_t& max_feature_index) const;
+  void DetectShiTomasiCorners(FeaturePositionDatabase& feature_position,
+                              FeatureAgeDatabase& feature_age,
+                              const cv::Mat& current_image,
+                              int32_t division_number_row,
+                              int32_t division_number_col,
+                              int32_t max_feature_number,
+                              double min_feature_distance,
+                              database_index_t& max_feature_index) const;
 
   database_index_t max_feature_index_;
 
