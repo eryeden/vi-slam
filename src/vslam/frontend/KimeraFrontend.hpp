@@ -32,6 +32,9 @@ class KimeraFrontend : public FrontendBase {
 
   FrontendStatus Feed(const KimeraFrontendInput& frontend_input);
 
+  // Last input
+  KimeraFrontendInput last_input_;
+
  private:
   data::Frame ProcessFirstFrame(const KimeraFrontendInput& frontend_input);
   data::Frame ProcessFrame(const KimeraFrontendInput& frontend_input,
@@ -48,8 +51,6 @@ class KimeraFrontend : public FrontendBase {
 
   bool is_first_frame_;
 
-  // Last input
-  KimeraFrontendInput last_input_;
   // Feature Detector
   std::shared_ptr<feature::FeatureDetectorShiTomasi>
       feature_detector_shi_tomasi_;

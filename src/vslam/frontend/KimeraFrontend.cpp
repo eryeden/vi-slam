@@ -32,12 +32,12 @@ KimeraFrontend::KimeraFrontend(
   // input check
   if (feature_tracker_lucas_kanade_ == nullptr) {
     spdlog::warn(
-        "{}:{} Null input for feature tracker.", __FILE__, __FUNCTION__);
+        "{}:{} Null input of feature tracker.", __FILE__, __FUNCTION__);
   }
   // input check
   if (feature_detector_shi_tomasi_ == nullptr) {
     spdlog::warn(
-        "{}:{} Null input for feature detector.", __FILE__, __FUNCTION__);
+        "{}:{} Null input of feature detector.", __FILE__, __FUNCTION__);
   }
 }
 
@@ -114,7 +114,7 @@ FrontendStatus KimeraFrontend::Feed(const KimeraFrontendInput& frontend_input) {
     map_database_->AddFrame(tmp_frame_ptr);
   }
 
-  last_input_ = frontend_input;
+  last_input_ = undistorted_frontend_input;
   return FrontendStatus();
 }
 
