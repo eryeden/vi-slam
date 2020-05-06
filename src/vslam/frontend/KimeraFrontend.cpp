@@ -198,6 +198,11 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
         (frontend_input.timestamp_ - last_keyframe->timestamp_),
         keyframe_interval_threshold_);
 
+    // Increment feature age
+    for (auto& itr : feature_age_database) {
+      itr.second++;
+    }
+
     // Verification
     // TODO : Implement this.
 

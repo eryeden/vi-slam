@@ -101,7 +101,8 @@ int main() {
 
     for (const auto& [id, pos] :
          latest_frame.lock()->observing_feature_point_in_device_) {
-      cv::circle(vis, cv::Point(pos[0], pos[1]), 1, cv::Scalar(255, 0, 0), 1);
+      cv::circle(
+          vis, cv::Point(pos[0], pos[1]), 3, cv::Scalar(255, 0, 0), 1, CV_AA);
     }
     // draw feature point number
     std::string str_feature_number = fmt::format(
