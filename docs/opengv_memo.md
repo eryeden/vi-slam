@@ -1,4 +1,6 @@
-# OpenGVメモ
+# [OpenGV](https://github.com/laurentkneip/opengv) メモ
+
+ここの内容は基本[ここ](https://laurentkneip.github.io/opengv/page_how_to_use.html) の内容。
 
 ## 基本用語
 - Bearing vector
