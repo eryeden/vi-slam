@@ -21,6 +21,8 @@ KimeraFrontend::KimeraFrontend(
         feature_detector_shi_tomasi,
     const std::shared_ptr<feature::FeatureTrackerLucasKanade>&
         feature_tracker_lucas_kanade,
+    const std::shared_ptr<verification::FeatureVerification5PointRANSAC>&
+        feature_verification,
     double keyframe_interval_threshold,
     uint32_t keyframe_feature_number_threshold)
     : FrontendBase(threadsafe_map_database),
@@ -29,6 +31,7 @@ KimeraFrontend::KimeraFrontend(
       keyframe_feature_number_threshold_(keyframe_feature_number_threshold) {
   feature_detector_shi_tomasi_ = feature_detector_shi_tomasi;
   feature_tracker_lucas_kanade_ = feature_tracker_lucas_kanade;
+  feature_verification_ = feature_verification;
 
   // input check
   if (feature_tracker_lucas_kanade_ == nullptr) {
@@ -39,6 +42,11 @@ KimeraFrontend::KimeraFrontend(
   if (feature_detector_shi_tomasi_ == nullptr) {
     spdlog::warn(
         "{}:{} Null input of feature detector.", __FILE__, __FUNCTION__);
+  }
+  // input check
+  if (feature_verification_ == nullptr) {
+    spdlog::warn(
+        "{}:{} Null input of feature verification.", __FILE__, __FUNCTION__);
   }
 }
 
@@ -178,14 +186,18 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
   FeatureAgeDatabase feature_age_database = last_frame->feature_point_age_;
   FeaturePositionDatabase feature_position_database =
       last_frame->observing_feature_point_in_device_;
-  std::set<database_index_t> feature_id_database =
-      last_frame->observing_feature_id_;
+  std::set<database_index_t> feature_id_database;
+  //      last_frame->observing_feature_id_;
 
   // Track feature
   feature_tracker_lucas_kanade_->Track(feature_position_database,
                                        feature_age_database,
                                        last_input_.frame_,
                                        frontend_input.frame_);
+  // update id list
+  for (const auto itr : feature_age_database) {
+    feature_id_database.insert(itr.first);
+  }
 
   // Select keyframe or not.
   if ((feature_position_database.size() < keyframe_feature_number_threshold_) ||
@@ -205,6 +217,19 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
 
     // Verification
     // TODO : Implement this.
+    data::Frame tmp_frame(0,
+                          0,
+                          true,
+                          frontend_input.camera_model_,
+                          feature_id_database,
+                          feature_position_database,
+                          feature_age_database);
+    auto verified_frame =
+        feature_verification_->RemoveOutlier(*last_keyframe_, tmp_frame);
+    feature_id_database = verified_frame.observing_feature_id_;
+    feature_position_database =
+        verified_frame.observing_feature_point_in_device_;
+    feature_age_database = verified_frame.feature_point_age_;
 
     // Feature detection
     feature_detector_shi_tomasi_->UpdateDetection(

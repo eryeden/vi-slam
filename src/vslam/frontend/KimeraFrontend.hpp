@@ -7,6 +7,7 @@
 #include "FeatureDetectorShiTomasi.hpp"
 #include "FeatureTrackerLucasKanade.hpp"
 #include "FrontendBase.hpp"
+#include "Verification.hpp"
 
 namespace vslam::frontend {
 
@@ -21,14 +22,17 @@ class KimeraFrontendInput {
 
 class KimeraFrontend : public FrontendBase {
  public:
-  KimeraFrontend(const std::shared_ptr<data::ThreadsafeMapDatabase>&
-                     threadsafe_map_database,
-                 const std::shared_ptr<feature::FeatureDetectorShiTomasi>&
-                     feature_detector_shi_tomasi,
-                 const std::shared_ptr<feature::FeatureTrackerLucasKanade>&
-                     feature_tracker_lucas_kanade,
-                 double keyframe_interval_threshold,
-                 uint32_t keyframe_feature_number_threshold);
+  KimeraFrontend(
+      const std::shared_ptr<data::ThreadsafeMapDatabase>&
+          threadsafe_map_database,
+      const std::shared_ptr<feature::FeatureDetectorShiTomasi>&
+          feature_detector_shi_tomasi,
+      const std::shared_ptr<feature::FeatureTrackerLucasKanade>&
+          feature_tracker_lucas_kanade,
+      const std::shared_ptr<verification::FeatureVerification5PointRANSAC>&
+          feature_verification_,
+      double keyframe_interval_threshold,
+      uint32_t keyframe_feature_number_threshold);
 
   FrontendStatus Feed(const KimeraFrontendInput& frontend_input);
 
@@ -57,6 +61,9 @@ class KimeraFrontend : public FrontendBase {
   // Feature Tracker
   std::shared_ptr<feature::FeatureTrackerLucasKanade>
       feature_tracker_lucas_kanade_;
+  // Feature Verification
+  std::shared_ptr<verification::FeatureVerification5PointRANSAC>
+      feature_verification_;
 
   // Parameter
   double keyframe_interval_threshold_;

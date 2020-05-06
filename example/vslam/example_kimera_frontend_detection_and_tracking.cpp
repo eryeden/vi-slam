@@ -8,6 +8,7 @@
 #include "FeatureDetectorShiTomasi.hpp"
 #include "FeatureTrackerLucasKanade.hpp"
 #include "KimeraFrontend.hpp"
+#include "Verification.hpp"
 
 int main() {
   std::string path_to_euroc = "/home/ery/Downloads/V1_01_easy";
@@ -29,6 +30,11 @@ int main() {
       std::make_shared<vslam::feature::FeatureTrackerLucasKanade>(
           30, 0.01, 15, 3);
 
+  // Build verification
+  auto verification_ptr =
+      std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
+          3.0 * M_PI / 180.0, 100, 0.99);
+
   /**
    * @note
    * ↓のように、実体のあるインスタンスのポインタからShared pointerをつくると、
@@ -48,6 +54,7 @@ int main() {
   vslam::frontend::KimeraFrontend kimera_frontend(threadsafe_map_database_ptr,
                                                   shi_tomasi_detector_ptr,
                                                   kl_tracker_ptr,
+                                                  verification_ptr,
                                                   10.0,
                                                   100);
 
@@ -101,8 +108,10 @@ int main() {
 
     for (const auto& [id, pos] :
          latest_frame.lock()->observing_feature_point_in_device_) {
-      cv::circle(
-          vis, cv::Point(pos[0], pos[1]), 3, cv::Scalar(255, 0, 0), 1, CV_AA);
+      if (latest_frame.lock()->feature_point_age_.at(id) > 1) {
+        cv::circle(
+            vis, cv::Point(pos[0], pos[1]), 3, cv::Scalar(255, 0, 0), 1, CV_AA);
+      }
     }
     // draw feature point number
     std::string str_feature_number = fmt::format(
