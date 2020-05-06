@@ -54,7 +54,55 @@ Bearing vectorと３次元点の対応（2D-3D）、
 
 ## ライブラリの使い方
 
-Keywordとして、"Adapter"と"Visitor"があるらしい。
+1. Adapterを用意
 
-- 
+OpenGV利用の第一歩は"Adapter"。これに、Bearing vectorやCorrespondenceなどの参照を渡しておけば、
+OpenGV側がかってにアクセスするようになる。
 
+OpenGVは設定されたAdapterを通してBering vectorとかCorrespondenceにアクセスする。
+標準で設定されているAdapterはOpenGVの型をそのままバイパスするだけ。OpenCVや独自て定義した型は、専用にAdapterを作ればバイパスすることができる。
+
+例：5point ransacなどの利用を想定して、２セットの対応関係の取れたBearing vectorを設定する。
+```c++
+// create the central relative adapter
+relative_pose::CentralRelativeAdapter adapter(bearingVectors1, bearingVectors2 );
+```
+
+2. RANSAC + 5point algorithmを構築する
+
+```c++
+// create a RANSAC object
+sac::Ransac<sac_problems::relative_pose::CentralRelativePoseSacProblem> ransac;
+// create a CentralRelativePoseSacProblem
+// (set algorithm to STEWENIUS, NISTER, SEVENPT, or EIGHTPT)
+std::shared_ptr<sac_problems::relative_pose::CentralRelativePoseSacProblem>
+    relposeproblem_ptr(
+    new sac_problems::relative_pose::CentralRelativePoseSacProblem(
+    adapter, // ここに入力情報へのAdapterを設定
+    sac_problems::relative_pose::CentralRelativePoseSacProblem::NISTER // ここに5pointの手法を選択 
+) );
+// run ransac
+ransac.sac_model_ = relposeproblem_ptr; // problemをRANSACに設定
+ransac.threshold_ = threshold; // RANSACのしきい値
+ransac.max_iterations_ = maxIterations; // MAX繰り返し回数
+ransac.computeModel(); // run ransac
+// get the result
+transformation_t best_transformation =
+    ransac.model_coefficients_;
+```
+
+## RANSACのしきい値設定について
+↓みたいな感じでRANSACのしきい値を設定する。このときのしきい値計算方法について。
+```c++
+ransac.threshold_ = threshold;
+```
+
+答え： `ransac.threshold_ = 1.0 - cos(許容Bearing angle角度[rad]);`
+
+詳細：
+OpenGV内の多くの実装ではReprojection誤差をBearing vectorとreprojectしたbearing vectorの内積から計算している。
+ただし、内積は、誤差なしで1、真反対で-1になって0が最小値になっていない。
+なので、`error = 1 - inner_product`をReprojection errorとしている。
+よって、しきい値も、`1.0 - cos(許容Bearing angle角度[rad])`で計算する。
+
+![reprojeciton error](./figs/reprojectionError.png)
