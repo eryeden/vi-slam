@@ -48,7 +48,7 @@ int main() {
   vslam::frontend::KimeraFrontend kimera_frontend(threadsafe_map_database_ptr,
                                                   shi_tomasi_detector_ptr,
                                                   kl_tracker_ptr,
-                                                  100.0,
+                                                  10.0,
                                                   100);
 
   vslam::data::FrameSharedPtr prev_frame = nullptr;
@@ -67,10 +67,10 @@ int main() {
       continue;
     }
 
-    if (counter > 100) {
-      is_reach_the_last = true;
-      continue;
-    }
+    //    if (counter > 100) {
+    //      is_reach_the_last = true;
+    //      continue;
+    //    }
 
     //    // detect
     //    if (!is_initialized) {

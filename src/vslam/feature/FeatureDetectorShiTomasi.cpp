@@ -86,6 +86,15 @@ void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
    * - feature point number
    */
 
+  // Input check
+  if (feature_position.size() > max_feature_number) {
+    spdlog::warn("{}:{} Input feature seems to much. In:{} / Desired:{}",
+                 __FILE__,
+                 __FUNCTION__,
+                 feature_position.size(),
+                 max_feature_number);
+  }
+
   // Generate mono channel image
   cv::Mat frame_mono;
   cv::cvtColor(current_image, frame_mono, CV_BGR2GRAY);
@@ -156,6 +165,7 @@ void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
       }
     }
   }
+
   max_feature_index = feature_index - 1;
 }
 

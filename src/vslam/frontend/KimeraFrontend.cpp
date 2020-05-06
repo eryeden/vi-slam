@@ -189,8 +189,15 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
 
   // Select keyframe or not.
   if ((feature_position_database.size() < keyframe_feature_number_threshold_) ||
-      ((frontend_input.timestamp_ - last_keyframe->timestamp_) <
+      ((frontend_input.timestamp_ - last_keyframe->timestamp_) >
        keyframe_interval_threshold_)) {
+    spdlog::info(
+        "Keyframe detected. Feature[qty] : {}/{}, Interval[s] : {:.3}/{:.3}",
+        feature_position_database.size(),
+        keyframe_feature_number_threshold_,
+        (frontend_input.timestamp_ - last_keyframe->timestamp_),
+        keyframe_interval_threshold_);
+
     // Verification
     // TODO : Implement this.
 
