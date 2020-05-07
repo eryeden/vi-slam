@@ -199,8 +199,25 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
     feature_id_database.insert(itr.first);
   }
 
+  // landmark ageが2歳以上のものをカウントする
+  uint32_t aged_landmark_number = 0;
+  for (const auto& itr : feature_age_database) {
+    if (itr.second >= 2) aged_landmark_number++;
+  }
+
+  // check the number of landmark
+  bool features_low_number = false;
+  features_low_number =
+      (aged_landmark_number < keyframe_feature_number_threshold_);
+  //  features_low_number = (feature_position_database.size() <
+  //  keyframe_feature_number_threshold_);
+
   // Select keyframe or not.
-  if ((feature_position_database.size() < keyframe_feature_number_threshold_) ||
+  //  if ((feature_position_database.size() <
+  //  keyframe_feature_number_threshold_) ||
+  //      ((frontend_input.timestamp_ - last_keyframe->timestamp_) >
+  //       keyframe_interval_threshold_))
+  if (features_low_number ||
       ((frontend_input.timestamp_ - last_keyframe->timestamp_) >
        keyframe_interval_threshold_)) {
     spdlog::info(
@@ -247,6 +264,20 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
                  feature_age_database);
 
   } else {
+    data::Frame tmp_frame(0,
+                          0,
+                          true,
+                          frontend_input.camera_model_,
+                          feature_id_database,
+                          feature_position_database,
+                          feature_age_database);
+    auto verified_frame =
+        feature_verification_->RemoveOutlier(*last_keyframe_, tmp_frame);
+    feature_id_database = verified_frame.observing_feature_id_;
+    feature_position_database =
+        verified_frame.observing_feature_point_in_device_;
+    feature_age_database = verified_frame.feature_point_age_;
+
     return Frame(last_frame_->frame_id_ + 1,
                  frontend_input.timestamp_,
                  false,

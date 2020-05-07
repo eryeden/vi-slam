@@ -23,7 +23,7 @@ int main() {
   // Build detector
   auto shi_tomasi_detector_ptr =
       std::make_shared<vslam::feature::FeatureDetectorShiTomasi>(
-          4, 4, 300, 2.0);
+          2, 2, 200, 20.0);
 
   // Build tracker
   auto kl_tracker_ptr =
@@ -33,7 +33,7 @@ int main() {
   // Build verification
   auto verification_ptr =
       std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
-          3.0 * M_PI / 180.0, 100, 0.99);
+          1.0 * M_PI / 180.0, 150, 0.99);
 
   /**
    * @note
@@ -108,9 +108,20 @@ int main() {
 
     for (const auto& [id, pos] :
          latest_frame.lock()->observing_feature_point_in_device_) {
-      if (latest_frame.lock()->feature_point_age_.at(id) > 1) {
+      int32_t landmark_age = latest_frame.lock()->feature_point_age_.at(id);
+      if (landmark_age <= 1) {
+        cv::circle(
+            vis, cv::Point(pos[0], pos[1]), 2, cv::Scalar(0, 0, 0), 1, CV_AA);
+      } else if (landmark_age == 2) {
         cv::circle(
             vis, cv::Point(pos[0], pos[1]), 3, cv::Scalar(255, 0, 0), 1, CV_AA);
+      } else if (landmark_age > 2) {
+        cv::circle(vis,
+                   cv::Point(pos[0], pos[1]),
+                   landmark_age,
+                   cv::Scalar(0, 255, 0),
+                   1,
+                   CV_AA);
       }
     }
     // draw feature point number

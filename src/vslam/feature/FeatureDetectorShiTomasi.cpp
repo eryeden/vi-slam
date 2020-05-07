@@ -161,6 +161,9 @@ void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
               Vec2_t{kp.pt.x + grect.x, kp.pt.y + grect.y};
           feature_point_age[feature_index] = 1;
           feature_index++;
+        } else {
+          //          spdlog::info("Rejected S[{},{}], NN[{},{}]", check_pt[0],
+          //          check_pt[1], nnkp[0], nnkp[1]);
         }
       }
     }
