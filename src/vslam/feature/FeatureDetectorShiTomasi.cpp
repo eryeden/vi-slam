@@ -8,6 +8,8 @@
 
 #include "kdtree/KDTree.hpp"
 
+#define SHOW_DEBUG
+
 std::vector<cv::Rect2f> vslam::feature::utility::GenerateGrid(
     const cv::Size& size,
     int32_t division_number_col,
@@ -124,6 +126,11 @@ void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
       feature_position;
   FeatureAgeDatabase& feature_point_age = feature_age;
 
+#ifdef SHOW_DEBUG
+  cv::Mat vis;
+  current_image.copyTo(vis);
+#endif
+
   uint64_t feature_index = max_feature_index;
   for (const auto& grect : grid_def) {
     cv::Mat div_image = frame_mono(grect);
@@ -146,8 +153,9 @@ void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
 
     // 最近傍特徴点からの距離がmin_feature_distance以上かチェック
     for (const auto& kp : current_keypoints) {
-      utility::point_t check_pt{kp.pt.x, kp.pt.y};
+      utility::point_t check_pt{kp.pt.x + grect.x, kp.pt.y + grect.y};
       auto nnkp = kd_tree.nearest_point(check_pt);  // KDTreeを使ってNNPを探索。
+
       if (nnkp.empty()) {  // 再近傍点が発見できない場：初回など
         observing_feature_points_in_device[feature_index] =
             Vec2_t{kp.pt.x + grect.x, kp.pt.y + grect.y};
@@ -161,13 +169,58 @@ void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
               Vec2_t{kp.pt.x + grect.x, kp.pt.y + grect.y};
           feature_point_age[feature_index] = 1;
           feature_index++;
+
+#ifdef SHOW_DEBUG
+          cv::circle(
+              vis, cv::Point(nnkp[0], nnkp[1]), 3, cv::Scalar(255, 0, 0), 1);
+          cv::circle(vis,
+                     cv::Point(check_pt[0], check_pt[1]),
+                     3,
+                     cv::Scalar(0, 255, 0),
+                     1);
+          cv::line(vis,
+                   cv::Point(nnkp[0], nnkp[1]),
+                   cv::Point(check_pt[0], check_pt[1]),
+                   cv::Scalar(0, 0, 0),
+                   1);
+          spdlog::info(
+              "Inserted Dist:{}, S[{},{}], NN[{},{}]",
+              (Vec2_t{check_pt[0], check_pt[1]} - Vec2_t{nnkp[0], nnkp[1]})
+                  .norm(),
+              check_pt[0],
+              check_pt[1],
+              nnkp[0],
+              nnkp[1]);
+#endif
         } else {
-          //          spdlog::info("Rejected S[{},{}], NN[{},{}]", check_pt[0],
-          //          check_pt[1], nnkp[0], nnkp[1]);
+#ifdef SHOW_DEBUG
+          cv::circle(
+              vis, cv::Point(nnkp[0], nnkp[1]), 3, cv::Scalar(255, 0, 0), 1);
+          cv::circle(vis,
+                     cv::Point(check_pt[0], check_pt[1]),
+                     3,
+                     cv::Scalar(0, 0, 0),
+                     1);
+          cv::line(vis,
+                   cv::Point(nnkp[0], nnkp[1]),
+                   cv::Point(check_pt[0], check_pt[1]),
+                   cv::Scalar(0, 0, 0),
+                   1);
+          spdlog::info("Rejected S[{},{}], NN[{},{}]",
+                       check_pt[0],
+                       check_pt[1],
+                       nnkp[0],
+                       nnkp[1]);
+#endif
         }
       }
     }
   }
+
+#ifdef SHOW_DEBUG
+  cv::imshow("Detection", vis);
+  //  cv::waitKey(0);
+#endif
 
   max_feature_index = feature_index - 1;
 }

@@ -11,8 +11,8 @@
 #include "Verification.hpp"
 
 int main() {
-  std::string path_to_euroc = "/home/ery/Downloads/V1_01_easy";
-  //  std::string path_to_euroc = "/home/ery/Downloads/V2_01_easy";
+  //  std::string path_to_euroc = "/home/ery/Downloads/V1_01_easy";
+  std::string path_to_euroc = "/home/ery/Downloads/V2_01_easy";
   vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
       path_to_euroc);
 
@@ -23,7 +23,7 @@ int main() {
   // Build detector
   auto shi_tomasi_detector_ptr =
       std::make_shared<vslam::feature::FeatureDetectorShiTomasi>(
-          2, 2, 200, 20.0);
+          5, 5, 300, 20.0);
 
   // Build tracker
   auto kl_tracker_ptr =
@@ -111,17 +111,13 @@ int main() {
       int32_t landmark_age = latest_frame.lock()->feature_point_age_.at(id);
       if (landmark_age <= 1) {
         cv::circle(
-            vis, cv::Point(pos[0], pos[1]), 2, cv::Scalar(0, 0, 0), 1, CV_AA);
+            vis, cv::Point(pos[0], pos[1]), 2, cv::Scalar(0, 0, 255), 1, CV_AA);
       } else if (landmark_age == 2) {
         cv::circle(
             vis, cv::Point(pos[0], pos[1]), 3, cv::Scalar(255, 0, 0), 1, CV_AA);
       } else if (landmark_age > 2) {
-        cv::circle(vis,
-                   cv::Point(pos[0], pos[1]),
-                   landmark_age,
-                   cv::Scalar(0, 255, 0),
-                   1,
-                   CV_AA);
+        cv::circle(
+            vis, cv::Point(pos[0], pos[1]), 3, cv::Scalar(0, 255, 0), 1, CV_AA);
       }
     }
     // draw feature point number
@@ -142,7 +138,7 @@ int main() {
     counter++;
 
     cv::imshow("First", vis);
-    cv::waitKey(10);
+    cv::waitKey(20);
   }
 
   return 0;
