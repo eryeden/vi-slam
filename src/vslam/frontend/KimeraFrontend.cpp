@@ -265,19 +265,19 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
                  feature_age_database);
 
   } else {
-    //    data::Frame tmp_frame(0,
-    //                          0,
-    //                          true,
-    //                          frontend_input.camera_model_,
-    //                          feature_id_database,
-    //                          feature_position_database,
-    //                          feature_age_database);
-    //    auto verified_frame =
-    //        feature_verification_->RemoveOutlier(*last_keyframe_, tmp_frame);
-    //    feature_id_database = verified_frame.observing_feature_id_;
-    //    feature_position_database =
-    //        verified_frame.observing_feature_point_in_device_;
-    //    feature_age_database = verified_frame.feature_point_age_;
+    data::Frame tmp_frame(0,
+                          0,
+                          true,
+                          frontend_input.camera_model_,
+                          feature_id_database,
+                          feature_position_database,
+                          feature_age_database);
+    auto verified_frame =
+        feature_verification_->RemoveOutlier(*last_keyframe_, tmp_frame);
+    feature_id_database = verified_frame.observing_feature_id_;
+    feature_position_database =
+        verified_frame.observing_feature_point_in_device_;
+    feature_age_database = verified_frame.feature_point_age_;
 
     return Frame(last_frame_->frame_id_ + 1,
                  frontend_input.timestamp_,

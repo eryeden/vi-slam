@@ -11,10 +11,17 @@
 #include "Verification.hpp"
 
 int main() {
-  //  std::string path_to_euroc = "/home/ery/Downloads/V1_01_easy";
-  std::string path_to_euroc = "/home/ery/Downloads/V2_01_easy";
+  std::string path_to_euroc = "/home/ery/Downloads/V1_01_easy";
+  //  std::string path_to_euroc = "/home/ery/Downloads/V2_01_easy";
+  //  std::string path_to_euroc = "/home/ery/Downloads/MH_01_easy";
   vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
       path_to_euroc);
+
+  // For output
+  //  cv::VideoWriter video_writer("feature_tracking_and_detection.mp4",
+  //                               cv::VideoWriter::fourcc('m','p','4', 'v'),
+  //                               30,
+  //                               euroc_kimera_data_provider.GetInput(0).value().frame_.size());
 
   // Map database
   auto threadsafe_map_database_ptr =
@@ -23,7 +30,7 @@ int main() {
   // Build detector
   auto shi_tomasi_detector_ptr =
       std::make_shared<vslam::feature::FeatureDetectorShiTomasi>(
-          5, 5, 300, 20.0);
+          3, 3, 300, 20.0);
 
   // Build tracker
   auto kl_tracker_ptr =
@@ -138,6 +145,7 @@ int main() {
     counter++;
 
     cv::imshow("First", vis);
+    //    video_writer << vis;
     cv::waitKey(20);
   }
 
