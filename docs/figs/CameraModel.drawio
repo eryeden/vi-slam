@@ -1,6 +1,6 @@
-<mxfile host="www.draw.io" modified="2020-05-10T09:50:02.031Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="grJB9iR1GQxe_Yrjp-v7" version="12.9.14" type="github">
+<mxfile host="www.draw.io" modified="2020-05-10T11:18:57.585Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="HXHLvduf3aEWy54zpmoj" version="12.9.14" type="github">
   <diagram id="UHiFiQ8tBaN5sUJ-tNkC" name="Page-1">
-    <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="525" dy="503" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -42,6 +42,18 @@
         </mxCell>
         <mxCell id="KH99gnBK2z-O9xpqxuGS-14" value="↑本命、これを使いたい" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
           <mxGeometry x="85.78999999999999" y="322" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="KH99gnBK2z-O9xpqxuGS-15" value="よく出てくるやつ？&lt;br&gt;OpenCVのUndistort？" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="627" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="KH99gnBK2z-O9xpqxuGS-16" value="メモ&lt;br&gt;&lt;br&gt;\( \boldsymbol{u} \) : 画像座標系での位置&lt;br&gt;\( \Theta \) : Project可能な画像中の領域&lt;br&gt;&lt;br&gt;\( \boldsymbol{x} = [x, y, z]^T \) : 3Dの位置&lt;br&gt;\( \Omega \) : ValidにProjectできる３次元位置の集合&lt;br&gt;&lt;br&gt;\( \pi \) : \( \Omega \rightarrow \Theta&amp;nbsp; \) のProjection、Mappingと呼ぶ&lt;br&gt;３次元点をイメージセンサに投影するイメージ&lt;br&gt;&lt;br&gt;\( \pi^{-1} \) : \( \Theta \rightarrow \mathbb{S}^2&amp;nbsp; \) のProjection、Unprojectionと呼ぶ&lt;br&gt;イメージセンサ上の２D位置を3次元点を通るBearing vectorに変換する。&lt;br&gt;なので、 \( \Theta \rightarrow \mathbb{S}^2&amp;nbsp; \) となっていて \( \Omega \) への変換になっていない" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="48.6" y="665" width="540" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="KH99gnBK2z-O9xpqxuGS-17" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://docs.opencv.org/3.4.9/pinhole_camera_model.png;" vertex="1" parent="1">
+          <mxGeometry x="850" y="91.5" width="521" height="367" as="geometry" />
+        </mxCell>
+        <mxCell id="KH99gnBK2z-O9xpqxuGS-18" value="座標系" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=19;" vertex="1" parent="1">
+          <mxGeometry x="850" y="110" width="70" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
