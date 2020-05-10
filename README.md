@@ -13,6 +13,7 @@ Try to make Visual Inertial SLAM
 - [Vision frontend](docs/vision-frontend.md)
 - [Dataset](docs/dataset.md)
 - [OpenGV Memo](docs/opengv_memo.md)
+- [Camera model](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2FCameraModel.drawio)
 - [Fig](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Fvislam.drawio)
 
 ## Policy
