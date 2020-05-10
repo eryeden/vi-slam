@@ -4,6 +4,21 @@
 
 #include "Camera.hpp"
 
+#include "spdlog/spdlog.h"
+
+using namespace vslam::data;
+
+vslam::data::CameraModelBase::CameraModelBase(uint8_t camera_id,
+                                              uint32_t image_width_pixel,
+                                              uint32_t image_height_pixel,
+                                              double rate)
+    : id_(camera_id),
+      width_(image_width_pixel),
+      height_(image_height_pixel),
+      rate_(rate) {}
+
+vslam::data::CameraModelBase::CameraModelBase() : CameraModelBase(0, 0, 0, 0) {}
+
 vslam::data::PinholeCameraModel::PinholeCameraModel(uint8_t id_,
                                                     uint32_t width_,
                                                     uint32_t height_,
@@ -79,4 +94,57 @@ void vslam::data::PinholeCameraModel::SetCameraDistortionParameter(
   p1 = distortion_parameter[2];
   p2 = distortion_parameter[3];
   k3 = distortion_parameter[4];
+}
+
+DoubleSphereCameraModel::DoubleSphereCameraModel(uint8_t camera_id,
+                                                 uint32_t image_width_pixel,
+                                                 uint32_t image_height_pixel,
+                                                 double rate,
+                                                 double fx,
+                                                 double fy,
+                                                 double cx,
+                                                 double cy,
+                                                 double xi,
+                                                 double alpha)
+    : CameraModelBase(camera_id, image_width_pixel, image_height_pixel, rate),
+      fx_(fx),
+      fy_(fy),
+      cx_(cx),
+      cy_(cy),
+      xi_(xi),
+      alpha_(alpha) {
+  Eigen::Matrix<double, 6, 1> ds_parameters;
+  ds_parameters << fx_, fy_, cx_, cy_, xi_, alpha_;
+  ds_camera_model_ptr_ =
+      std::make_unique<basalt::DoubleSphereCamera<double>>(ds_parameters);
+}
+DoubleSphereCameraModel::DoubleSphereCameraModel()
+    : DoubleSphereCameraModel(0, 0, 0, 0, 0, 0, 0, 0, 0, 0) {
+  ;
+}
+
+vslam::Vec2_t DoubleSphereCameraModel::Project(
+    const vslam::Vec3_t& pos_camera_frame) const {
+  Vec2_t pos_image_frame;
+  if (ds_camera_model_ptr_->project(
+          {pos_camera_frame[0], pos_camera_frame[1], pos_camera_frame[2], 0},
+          pos_image_frame)) {
+    spdlog::warn("{}:{} Invalid Projection.", __FILE__, __FUNCTION__);
+  }
+  return pos_image_frame;
+}
+
+vslam::Vec3_t DoubleSphereCameraModel::Unproject(
+    const vslam::Vec2_t& pos_image_frame) const {
+  Vec4_t pos_camera_frame;
+  if (ds_camera_model_ptr_->unproject(pos_image_frame, pos_camera_frame)) {
+    spdlog::warn("{}:{} Invalid Unprojection.", __FILE__, __FUNCTION__);
+  }
+  return {pos_camera_frame[0], pos_camera_frame[1], pos_camera_frame[2]};
+}
+
+vslam::Mat33_t DoubleSphereCameraModel::IntrinsicMatrix() const {
+  Mat33_t out;
+  out << fx_, 0, cx_, 0, fy_, cy_, 0, 0, 1.0;
+  return out;
 }
