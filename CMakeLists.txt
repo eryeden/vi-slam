@@ -106,6 +106,11 @@ find_package(fmt)
 # opengv
 find_package(opengv REQUIRED)
 
+# basalt-headers
+include_directories(3rd/basalt-headers/thirdparty/Sophus)
+include_directories(3rd/basalt-headers/thirdparty/cereal/include)
+include_directories(3rd/basalt-headers/include)
+
 
 # ----- Build selection -----
 add_subdirectory(src)

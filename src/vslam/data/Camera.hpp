@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <basalt/camera/double_sphere_camera.hpp>
+
 #include "type_defines.hpp"
 
 namespace vslam::data {
