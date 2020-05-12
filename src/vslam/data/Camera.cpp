@@ -158,7 +158,7 @@ vslam::Vec3_t DoubleSphereCameraModel::Unproject(
     const vslam::Vec2_t& pos_image_frame) const {
   Vec4_t pos_camera_frame;
   if (ds_camera_model_ptr_->unproject(pos_image_frame, pos_camera_frame)) {
-    spdlog::warn("{}:{} Invalid Unprojection.", __FILE__, __FUNCTION__);
+    //    spdlog::warn("{}:{} Invalid Unprojection.", __FILE__, __FUNCTION__);
   }
   return {pos_camera_frame[0], pos_camera_frame[1], pos_camera_frame[2]};
 }

@@ -5,8 +5,6 @@
 #include "EurocKimeraDataProvider.hpp"
 
 #include <spdlog/spdlog.h>
-#include <yaml-cpp/yaml.h>
-
 #include "DataProviderBase.hpp"
 #include "nlohmann/json.hpp"
 
@@ -113,6 +111,7 @@ EurocKimeraDataProvider::ParseCameraParameters(
 
   std::string camera_model_name =
       calib_json["value0"]["intrinsics"][0]["camera_type"];
+
   if (camera_model_name == "ds") {
     double fx = calib_json["value0"]["intrinsics"][0]["intrinsics"]["fx"];
     double fy = calib_json["value0"]["intrinsics"][0]["intrinsics"]["fy"];
@@ -120,6 +119,22 @@ EurocKimeraDataProvider::ParseCameraParameters(
     double cy = calib_json["value0"]["intrinsics"][0]["intrinsics"]["cy"];
     double xi = calib_json["value0"]["intrinsics"][0]["intrinsics"]["xi"];
     double alpha = calib_json["value0"]["intrinsics"][0]["intrinsics"]["alpha"];
+
+    spdlog::info(
+        "Calib file loaded\n"
+        "fx:{}, fy:{}\n"
+        "cx:{}, cy:{}\n"
+        "xi:{}, alpha:{}\n"
+        "W:{}, H:{}",
+        fx,
+        fy,
+        cx,
+        cy,
+        xi,
+        alpha,
+        resolution_width,
+        resolution_height);
+
     return std::make_unique<data::DoubleSphereCameraModel>(
         0, resolution_width, resolution_height, 0, fx, fy, cx, cy, xi, alpha);
   } else {

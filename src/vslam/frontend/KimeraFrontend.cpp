@@ -19,10 +19,10 @@ KimeraFrontendInput::KimeraFrontendInput(
     double timestamp,
     const cv::Mat& frame,
     const std::unique_ptr<data::CameraModelBase>& camera_model)
-    : timestamp_(timestamp),
-      frame_(frame),
-      camera_model_ptr_(camera_model->Clone()) {
-  ;
+    : timestamp_(timestamp), frame_(frame) {
+  if (camera_model != nullptr) {
+    camera_model_ptr_.reset(camera_model->Clone());
+  }
 }
 
 KimeraFrontendInput::KimeraFrontendInput(
