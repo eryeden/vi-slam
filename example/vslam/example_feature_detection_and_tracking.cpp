@@ -4,7 +4,7 @@
 
 #include <fmt/format.h>
 
-#include "EurocKimeraDataProvider.hpp"
+#include "EurocKimeraDataProviderRadialTangentialCameraModel.hpp"
 #include "FeatureDetectorShiTomasi.hpp"
 #include "FeatureTrackerLucasKanade.hpp"
 #include "KimeraFrontend.hpp"
@@ -12,8 +12,8 @@
 int main() {
   std::string path_to_euroc = "/home/ery/Downloads/V1_01_easy";
   //  std::string path_to_euroc = "/home/ery/Downloads/V2_01_easy";
-  vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
-      path_to_euroc);
+  vslam::dataprovider::EurocKimeraDataProviderRadialTangentialCameraModel
+      euroc_kimera_data_provider(path_to_euroc);
 
   // Build detector
   vslam::feature::FeatureDetectorShiTomasi shi_tomasi_detector(4, 4, 300, 2.0);
@@ -25,7 +25,7 @@ int main() {
   vslam::FeatureAgeDatabase prev_feature_age;
   vslam::FeaturePositionDatabase prev_feature_position;
 
-  vslam::frontend::KimeraFrontendInput prev_input;
+  vslam::frontend::KimeraFrontendInputRadialTangentialCameraModel prev_input;
   bool is_initialized = false;
 
   bool is_reach_the_last = false;
