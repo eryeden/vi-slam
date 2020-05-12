@@ -20,16 +20,17 @@ int main() {
   //      euroc_kimera_data_provider(path_to_euroc);
 
   // EUROC
-  //  std::string path_to_euroc =
-  //  "/home/ery/subspace/docker_work/dataset/V1_01_easy"; std::string
-  //  path_to_calibfile =
-  //  "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/calib_results/calibration.json";
-  //
   std::string path_to_euroc =
-      "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+      "/home/ery/subspace/docker_work/dataset/V1_01_easy";
   std::string path_to_calibfile =
-      "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
-      "results/calibration.json";
+      "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
+      "calib_results/calibration.json";
+
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+  //  std::string path_to_calibfile =
+  //      "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
+  //      "results/calibration.json";
 
   spdlog::info(
       "Load dataset from:\n"
