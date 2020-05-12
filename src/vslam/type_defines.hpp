@@ -89,6 +89,8 @@ using EigenAllocatedUnorderedSet =
 
 using FeaturePositionDatabase =
     EigenAllocatedUnorderedMap<database_index_t, Vec2_t>;
+using FeatureBearingDatabase =
+    EigenAllocatedUnorderedMap<database_index_t, Vec3_t>;
 using FeatureAgeDatabase = std::unordered_map<database_index_t, uint32_t>;
 
 }  // namespace vslam

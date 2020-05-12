@@ -8,19 +8,26 @@
 #include <yaml-cpp/yaml.h>
 
 #include "DataProviderBase.hpp"
+#include "nlohmann/json.hpp"
 
 using namespace vslam;
 using namespace vslam::data;
 using namespace vslam::dataprovider;
 
+// EurocKimeraDataProvider::EurocKimeraDataProvider(
+//    const std::string& path_to_dataset_root,
+//    const std::string& path_to_calibration_file) {}
+
 EurocKimeraDataProvider::EurocKimeraDataProvider(
-    const std::string& path_to_dataset_root)
-    : path_to_dataset_root_(path_to_dataset_root), last_index_(0) {
+    const std::string& path_to_dataset_root,
+    const std::string& path_to_calibration_file)
+    : path_to_dataset_root_(path_to_dataset_root),
+      path_to_calibration_file_(path_to_calibration_file),
+      last_index_(0) {
   // Parse CSV
   log_stored_ = LogParser(path_to_dataset_root + "/mav0/cam0/data.csv");
   // Load camera parameters
-  camera_model_ =
-      ParseCameraParameters(path_to_dataset_root + "/mav0/cam0/sensor.yaml");
+  camera_model_ = ParseCameraParameters(path_to_calibration_file_);
 }
 
 std::optional<frontend::KimeraFrontendInput>
@@ -30,15 +37,13 @@ EurocKimeraDataProvider::GetInput() {
     return std::nullopt;
   }
 
-  frontend::KimeraFrontendInput frontend_input;
-
-  frontend_input.timestamp_ =
-      static_cast<double>(std::get<0>(log_stored_[last_index_])) * 1e-9;
-  frontend_input.camera_model_ = camera_model_;
-
   std::string path_to_image = path_to_dataset_root_ + "/mav0/cam0/data/" +
                               std::get<1>(log_stored_[last_index_]);
-  frontend_input.frame_ = cv::imread(path_to_image);
+
+  frontend::KimeraFrontendInput frontend_input(
+      static_cast<double>(std::get<0>(log_stored_[last_index_])) * 1e-9,
+      cv::imread(path_to_image),
+      camera_model_);
 
   last_index_++;
   return frontend_input;
@@ -51,15 +56,13 @@ std::optional<frontend::KimeraFrontendInput> EurocKimeraDataProvider::GetInput(
     return std::nullopt;
   }
 
-  frontend::KimeraFrontendInput frontend_input;
-
-  frontend_input.timestamp_ =
-      static_cast<double>(std::get<0>(log_stored_[index])) * 1e-9;
-  frontend_input.camera_model_ = camera_model_;
-
   std::string path_to_image = path_to_dataset_root_ + "/mav0/cam0/data/" +
                               std::get<1>(log_stored_[index]);
-  frontend_input.frame_ = cv::imread(path_to_image);
+
+  frontend::KimeraFrontendInput frontend_input(
+      static_cast<double>(std::get<0>(log_stored_[index])) * 1e-9,
+      cv::imread(path_to_image),
+      camera_model_);
 
   return frontend_input;
 }
@@ -96,49 +99,35 @@ EurocKimeraDataProvider::LogParser(const std::string& path_to_csv) {
   return logs;
 }
 
-data::PinholeCameraModel EurocKimeraDataProvider::ParseCameraParameters(
-    const std::string& path_to_camera_parameters) {
-  YAML::Node config = YAML::LoadFile(path_to_camera_parameters);
+std::unique_ptr<data::CameraModelBase>
+EurocKimeraDataProvider::ParseCameraParameters(
+    const std::string& path_to_calibration_file) {
+  // Read calib file
+  std::fstream calib_file_input(path_to_calibration_file);
+  nlohmann::json calib_json;
+  calib_file_input >> calib_json;
 
   int32_t resolution_width, resolution_height;
-  resolution_width = config["resolution"][0].as<int32_t>();
-  resolution_height = config["resolution"][1].as<int32_t>();
+  resolution_width = calib_json["value0"]["resolution"][0][0];
+  resolution_height = calib_json["value0"]["resolution"][0][1];
 
-  double fx, fy, cx, cy;
-  fx = config["intrinsics"][0].as<double>();
-  fy = config["intrinsics"][1].as<double>();
-  cx = config["intrinsics"][2].as<double>();
-  cy = config["intrinsics"][3].as<double>();
-
-  /**
-   * @brief Load distortion coefficients
-   * @note
-   * The parameter k3 seems neglected in EUROC, so specify it as 0 currently.
-   */
-  double k1, k2, p1, p2, k3;
-  k1 = config["distortion_coefficients"][0].as<double>();
-  k2 = config["distortion_coefficients"][1].as<double>();
-  p1 = config["distortion_coefficients"][2].as<double>();
-  p2 = config["distortion_coefficients"][3].as<double>();
-  k3 = 0;
-
-  int32_t rate_hz;
-  rate_hz = config["rate_hz"].as<int32_t>();
-
-  data::PinholeCameraModel camera_model;
-  camera_model.id = 0;
-  camera_model.width = resolution_width;
-  camera_model.height = resolution_height;
-  camera_model.fx = fx;
-  camera_model.fy = fy;
-  camera_model.cx = cx;
-  camera_model.cy = cy;
-  camera_model.k1 = k1;
-  camera_model.k2 = k2;
-  camera_model.p1 = p1;
-  camera_model.p2 = p2;
-  camera_model.k3 = k3;
-  camera_model.fps = rate_hz;
-
-  return camera_model;
+  std::string camera_model_name =
+      calib_json["value0"]["intrinsics"][0]["camera_type"];
+  if (camera_model_name == "ds") {
+    double fx = calib_json["value0"]["intrinsics"][0]["intrinsics"]["fx"];
+    double fy = calib_json["value0"]["intrinsics"][0]["intrinsics"]["fy"];
+    double cx = calib_json["value0"]["intrinsics"][0]["intrinsics"]["cx"];
+    double cy = calib_json["value0"]["intrinsics"][0]["intrinsics"]["cy"];
+    double xi = calib_json["value0"]["intrinsics"][0]["intrinsics"]["xi"];
+    double alpha = calib_json["value0"]["intrinsics"][0]["intrinsics"]["alpha"];
+    return std::make_unique<data::DoubleSphereCameraModel>(
+        0, resolution_width, resolution_height, 0, fx, fy, cx, cy, xi, alpha);
+  } else {
+    spdlog::warn("{}:{} [{}] Specified camera model not implemented yet.",
+                 __FILE__,
+                 __FUNCTION__,
+                 camera_model_name);
+    std::exception();
+    return std::unique_ptr<data::CameraModelBase>();
+  }
 }

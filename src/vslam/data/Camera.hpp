@@ -20,6 +20,12 @@ class CameraModelBase {
   CameraModelBase();  //:CameraModelBase(0,0,0,0){}
 
   /**
+   * @brief Deep copy 用
+   * @return
+   */
+  virtual CameraModelBase* Clone() = 0;
+
+  /**
    * @brief カメラ座標系での３次元ポイントを画像上に投影する
    * @param pos_camera_frame
    * @return
@@ -52,22 +58,22 @@ class CameraModelBase {
  private:
 };
 
-class PinholeCameraModel {
+class RadialTangentialCameraModel {
  public:
-  PinholeCameraModel(uint8_t id,
-                     uint32_t width,
-                     uint32_t height,
-                     double fps,
-                     double fx,
-                     double fy,
-                     double cx,
-                     double cy,
-                     double k1,
-                     double k2,
-                     double p1,
-                     double p2,
-                     double k3);
-  PinholeCameraModel();
+  RadialTangentialCameraModel(uint8_t id,
+                              uint32_t width,
+                              uint32_t height,
+                              double fps,
+                              double fx,
+                              double fy,
+                              double cx,
+                              double cy,
+                              double k1,
+                              double k2,
+                              double p1,
+                              double p2,
+                              double k3);
+  RadialTangentialCameraModel();
 
   Mat33_t GetIntrinsicMatrix() const;
   std::vector<double> GetDistortionParameters() const;
@@ -76,7 +82,7 @@ class PinholeCameraModel {
   void SetCameraDistortionParameter(
       const std::vector<double>& distortion_parameter);
 
-  //! PinholeCameraModel id
+  //! RadialTangentialCameraModel id
   uint8_t id;
 
   //! width of image
@@ -134,6 +140,15 @@ class DoubleSphereCameraModel : public CameraModelBase {
                           double xi,
                           double alpha);
   DoubleSphereCameraModel();
+
+  DoubleSphereCameraModel(
+      const DoubleSphereCameraModel& double_sphere_camera_model);
+
+  /**
+   * @brief For deep copy
+   * @return
+   */
+  DoubleSphereCameraModel* Clone();
 
   /**
    * @brief カメラ座標系での３次元ポイントを画像上に投影する

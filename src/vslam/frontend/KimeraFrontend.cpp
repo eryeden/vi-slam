@@ -11,6 +11,35 @@
 using namespace vslam::data;
 using namespace vslam::frontend;
 
+KimeraFrontendInput::KimeraFrontendInput()
+    : KimeraFrontendInput(0, cv::Mat(), std::unique_ptr<CameraModelBase>()) {
+  ;
+}
+KimeraFrontendInput::KimeraFrontendInput(
+    double timestamp,
+    const cv::Mat& frame,
+    const std::unique_ptr<data::CameraModelBase>& camera_model)
+    : timestamp_(timestamp),
+      frame_(frame),
+      camera_model_ptr_(camera_model->Clone()) {
+  ;
+}
+
+KimeraFrontendInput::KimeraFrontendInput(
+    const KimeraFrontendInput& kimera_frontend_input)
+    : timestamp_(kimera_frontend_input.timestamp_),
+      frame_(kimera_frontend_input.frame_),
+      camera_model_ptr_(kimera_frontend_input.camera_model_ptr_->Clone()) {
+  ;
+}
+KimeraFrontendInput& KimeraFrontendInput::operator=(
+    const KimeraFrontendInput& kimera_frontend_input) {
+  timestamp_ = kimera_frontend_input.timestamp_;
+  frame_ = kimera_frontend_input.frame_;
+  camera_model_ptr_.reset(kimera_frontend_input.camera_model_ptr_->Clone());
+  return *this;
+}
+
 /**
  * @brief Kimera-VIOベースの単眼Frontend
  * @param threadsafe_map_database
@@ -62,42 +91,30 @@ FrontendStatus KimeraFrontend::Feed(const KimeraFrontendInput& frontend_input) {
    * @brief 処理フロー
    * @details
    * ## 初期フレームの場合
-   * 1. 画像をUndistort
-   * 2. Feature detection
-   * 3. FrameDBにFirst Keyframeとして登録
+   * 1. Feature detection
+   * 2. FrameDBにFirst Keyframeとして登録
    * (LandmarkDBへの特徴点登録は、２Frame以降のFrameVerificationを実行した後に行う)
    *
    * ## 2Frame目以降の場合
-   * 1. 画像をUndistort
-   * 2. 前FrameのFeature pointをTrackする
-   * 3. KeyFrameかどうかの判定を行う
-   * 4. ===
+   * 1. 前FrameのFeature pointをTrackする
+   * 2. KeyFrameかどうかの判定を行う
+   * 3. ===
    *
    * ### KeyFrameでない場合
-   * 4.1. 検出LandmarkをLandmark DBに、FrameをFrameDBに登録
+   * 3.1. 検出LandmarkをLandmark DBに、FrameをFrameDBに登録
    * (2つめのKeyFrameが出現し、Verificationが完了するまでは、LandmarkDBへの更新、登録を行わない)
    *
    * ### KeyFrameの場合
-   * 4.1. Verificationを実施、5-pointRANSACや、Feature ageによる特徴点削除を行う
-   * 4.2. 特徴点の不足、分布の偏りがあれば、特徴点の追加検出を行う。
+   * 3.1. Verificationを実施、5-pointRANSACや、Feature ageによる特徴点削除を行う
+   * 3.2. 特徴点の不足、分布の偏りがあれば、特徴点の追加検出を行う。
    *
    */
-
-  //! Undistort
-  cv::Mat undistorted_image;
-  cv::undistort(frontend_input.frame_,
-                undistorted_image,
-                utility::ConvertEigenMatToCVMat(
-                    frontend_input.camera_model_.GetIntrinsicMatrix()),
-                frontend_input.camera_model_.GetDistortionParameters());
-  KimeraFrontendInput undistorted_frontend_input = frontend_input;
-  undistorted_frontend_input.frame_ = undistorted_image;
 
   if (is_first_frame_) {
     ////////////////////////// Process the first frame /////////////////////////
     is_first_frame_ = false;
 
-    auto processed_frame = ProcessFirstFrame(undistorted_frontend_input);
+    auto processed_frame = ProcessFirstFrame(frontend_input);
     last_frame_ =
         std::make_shared<data::Frame>(processed_frame);  // Frame copied
 
@@ -111,7 +128,7 @@ FrontendStatus KimeraFrontend::Feed(const KimeraFrontendInput& frontend_input) {
   } else {
     ////////////////////////// Process the second or later frame ///////////////
     auto processed_frame =
-        ProcessFrame(undistorted_frontend_input, last_frame_, last_keyframe_);
+        ProcessFrame(frontend_input, last_frame_, last_keyframe_);
     last_frame_ =
         std::make_shared<data::Frame>(processed_frame);  // Frame copied
 
@@ -123,7 +140,7 @@ FrontendStatus KimeraFrontend::Feed(const KimeraFrontendInput& frontend_input) {
     map_database_->AddFrame(tmp_frame_ptr);
   }
 
-  last_input_ = undistorted_frontend_input;
+  last_input_ = frontend_input;
   return FrontendStatus();
 }
 
@@ -145,20 +162,26 @@ Frame KimeraFrontend::ProcessFirstFrame(
   // detect features
   FeatureAgeDatabase feature_age_database;
   FeaturePositionDatabase feature_position_database;
+  FeatureBearingDatabase feature_bearing_database;
   std::set<database_index_t> feature_id_database;
 
   feature_detector_shi_tomasi_->UpdateDetection(
       feature_position_database, feature_age_database, frontend_input.frame_);
+
+  // Update Observed id and feature bearing information
   for (const auto& [id, pos] : feature_position_database) {
     feature_id_database.insert(id);
+    feature_bearing_database[id] =
+        frontend_input.camera_model_ptr_->Unproject(pos);
   }
 
   return Frame(0,
                frontend_input.timestamp_,
                true,
-               frontend_input.camera_model_,
+               frontend_input.camera_model_ptr_,
                feature_id_database,
                feature_position_database,
+               feature_bearing_database,
                feature_age_database);
 }
 
@@ -186,18 +209,22 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
   FeatureAgeDatabase feature_age_database = last_frame->feature_point_age_;
   FeaturePositionDatabase feature_position_database =
       last_frame->observing_feature_point_in_device_;
+  FeatureBearingDatabase
+      feature_bearing_database;  // =
+                                 // last_frame->observing_feature_bearing_in_camera_frame_;
   std::set<database_index_t> feature_id_database;
   //      last_frame->observing_feature_id_;
-
   // Track feature
   feature_tracker_lucas_kanade_->Track(feature_position_database,
                                        feature_age_database,
                                        last_input_.frame_,
                                        frontend_input.frame_);
 
-  // update id list
-  for (const auto itr : feature_age_database) {
-    feature_id_database.insert(itr.first);
+  // update id list and feature bearing vector
+  for (const auto& [id, pos] : feature_position_database) {
+    feature_id_database.insert(id);
+    feature_bearing_database[id] =
+        frontend_input.camera_model_ptr_->Unproject(pos);
   }
 
   // landmark ageが2歳以上のものをカウントする
@@ -234,19 +261,21 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
     }
 
     // Verification
-    // TODO : Implement this.
     data::Frame tmp_frame(0,
                           0,
                           true,
-                          frontend_input.camera_model_,
+                          frontend_input.camera_model_ptr_,
                           feature_id_database,
                           feature_position_database,
+                          feature_bearing_database,
                           feature_age_database);
     auto verified_frame =
         feature_verification_->RemoveOutlier(*last_keyframe_, tmp_frame);
     feature_id_database = verified_frame.observing_feature_id_;
     feature_position_database =
         verified_frame.observing_feature_point_in_device_;
+    feature_bearing_database =
+        verified_frame.observing_feature_bearing_in_camera_frame_;
     feature_age_database = verified_frame.feature_point_age_;
 
     // Feature detection
@@ -254,37 +283,44 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
         feature_position_database, feature_age_database, frontend_input.frame_);
     for (const auto& [id, pos] : feature_position_database) {
       feature_id_database.insert(id);
+      feature_bearing_database[id] =
+          frontend_input.camera_model_ptr_->Unproject(pos);
     }
 
     return Frame(last_frame_->frame_id_ + 1,
                  frontend_input.timestamp_,
                  true,
-                 frontend_input.camera_model_,
+                 frontend_input.camera_model_ptr_,
                  feature_id_database,
                  feature_position_database,
+                 feature_bearing_database,
                  feature_age_database);
 
   } else {
     data::Frame tmp_frame(0,
                           0,
                           true,
-                          frontend_input.camera_model_,
+                          frontend_input.camera_model_ptr_,
                           feature_id_database,
                           feature_position_database,
+                          feature_bearing_database,
                           feature_age_database);
     auto verified_frame =
         feature_verification_->RemoveOutlier(*last_keyframe_, tmp_frame);
     feature_id_database = verified_frame.observing_feature_id_;
     feature_position_database =
         verified_frame.observing_feature_point_in_device_;
+    feature_bearing_database =
+        verified_frame.observing_feature_bearing_in_camera_frame_;
     feature_age_database = verified_frame.feature_point_age_;
 
     return Frame(last_frame_->frame_id_ + 1,
                  frontend_input.timestamp_,
                  false,
-                 frontend_input.camera_model_,
+                 frontend_input.camera_model_ptr_,
                  feature_id_database,
                  feature_position_database,
+                 feature_bearing_database,
                  feature_age_database);
   }
 }

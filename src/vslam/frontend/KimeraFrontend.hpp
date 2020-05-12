@@ -11,11 +11,30 @@
 
 namespace vslam::frontend {
 
-class KimeraFrontendInput {
+class KimeraFrontendInputRadialTangentialCameraModel {
  public:
   double timestamp_;
   cv::Mat frame_;
-  data::PinholeCameraModel camera_model_;
+  data::RadialTangentialCameraModel camera_model_;
+
+ private:
+};
+
+class KimeraFrontendInput {
+ public:
+  KimeraFrontendInput();
+  KimeraFrontendInput(
+      double timestamp,
+      const cv::Mat& frame,
+      const std::unique_ptr<data::CameraModelBase>& camera_model);
+  KimeraFrontendInput(const KimeraFrontendInput& kimera_frontend_input);
+
+  KimeraFrontendInput& operator=(
+      const KimeraFrontendInput& kimera_frontend_input);
+
+  double timestamp_;
+  cv::Mat frame_;
+  std::unique_ptr<data::CameraModelBase> camera_model_ptr_;
 
  private:
 };

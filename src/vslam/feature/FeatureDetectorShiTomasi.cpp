@@ -344,7 +344,7 @@ void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
 //    return data::Frame(0,
 //                       0,
 //                       false,
-//                       data::PinholeCameraModel(),
+//                       data::RadialTangentialCameraModel(),
 //                       observing_feature_ids,
 //                       observing_feature_points_in_device,
 //                       feature_point_age);
@@ -385,7 +385,7 @@ void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
 //    return data::Frame(0,
 //                       0,
 //                       false,
-//                       data::PinholeCameraModel(),
+//                       data::RadialTangentialCameraModel(),
 //                       observing_feature_ids,
 //                       observing_feature_points_in_device,
 //                       feature_point_age);

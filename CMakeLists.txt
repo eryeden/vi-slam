@@ -111,6 +111,8 @@ include_directories(3rd/basalt-headers/thirdparty/Sophus)
 include_directories(3rd/basalt-headers/thirdparty/cereal/include)
 include_directories(3rd/basalt-headers/include)
 
+# json
+include_directories(3rd/json/include/)
 
 # ----- Build selection -----
 add_subdirectory(src)
