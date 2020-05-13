@@ -183,14 +183,14 @@ void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
                    cv::Point(check_pt[0], check_pt[1]),
                    cv::Scalar(0, 0, 0),
                    1);
-          spdlog::info(
-              "Inserted Dist:{}, S[{},{}], NN[{},{}]",
-              (Vec2_t{check_pt[0], check_pt[1]} - Vec2_t{nnkp[0], nnkp[1]})
-                  .norm(),
-              check_pt[0],
-              check_pt[1],
-              nnkp[0],
-              nnkp[1]);
+//          spdlog::info(
+//              "Inserted Dist:{}, S[{},{}], NN[{},{}]",
+//              (Vec2_t{check_pt[0], check_pt[1]} - Vec2_t{nnkp[0], nnkp[1]})
+//                  .norm(),
+//              check_pt[0],
+//              check_pt[1],
+//              nnkp[0],
+//              nnkp[1]);
 #endif
         } else {
 #ifdef SHOW_DEBUG
@@ -206,11 +206,11 @@ void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
                    cv::Point(check_pt[0], check_pt[1]),
                    cv::Scalar(0, 0, 0),
                    1);
-          spdlog::info("Rejected S[{},{}], NN[{},{}]",
-                       check_pt[0],
-                       check_pt[1],
-                       nnkp[0],
-                       nnkp[1]);
+//          spdlog::info("Rejected S[{},{}], NN[{},{}]",
+//                       check_pt[0],
+//                       check_pt[1],
+//                       nnkp[0],
+//                       nnkp[1]);
 #endif
         }
       }
