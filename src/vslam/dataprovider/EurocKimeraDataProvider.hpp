@@ -26,7 +26,8 @@ class EurocKimeraDataProvider : public KimeraDataProviderBase {
    * file.
    */
   EurocKimeraDataProvider(const std::string& path_to_dataset_root,
-                          const std::string& path_to_calibration_file);
+                          const std::string& path_to_calibration_file,
+                          const std::string& path_to_mask_image = "");
 
   /**
    * @brief Get data and increment a internal line index.
@@ -55,6 +56,8 @@ class EurocKimeraDataProvider : public KimeraDataProviderBase {
 
   std::string path_to_dataset_root_;
   std::string path_to_calibration_file_;
+
+  cv::Mat mask_image_;
 
   uint64_t last_index_;
   std::unique_ptr<data::CameraModelBase> camera_model_;

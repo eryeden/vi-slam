@@ -18,7 +18,8 @@ using namespace vslam::dataprovider;
 
 EurocKimeraDataProvider::EurocKimeraDataProvider(
     const std::string& path_to_dataset_root,
-    const std::string& path_to_calibration_file)
+    const std::string& path_to_calibration_file,
+    const std::string& path_to_mask_image)
     : path_to_dataset_root_(path_to_dataset_root),
       path_to_calibration_file_(path_to_calibration_file),
       last_index_(0) {
@@ -26,6 +27,12 @@ EurocKimeraDataProvider::EurocKimeraDataProvider(
   log_stored_ = LogParser(path_to_dataset_root + "/mav0/cam0/data.csv");
   // Load camera parameters
   camera_model_ = ParseCameraParameters(path_to_calibration_file_);
+  // Load mask image
+  if (path_to_mask_image != "") {
+    cv::Mat mask_image_raw =
+        cv::imread(path_to_mask_image, cv::IMREAD_GRAYSCALE);
+    cv::threshold(mask_image_raw, mask_image_, 10, 255, CV_THRESH_BINARY);
+  }
 }
 
 std::optional<frontend::KimeraFrontendInput>
@@ -38,9 +45,14 @@ EurocKimeraDataProvider::GetInput() {
   std::string path_to_image = path_to_dataset_root_ + "/mav0/cam0/data/" +
                               std::get<1>(log_stored_[last_index_]);
 
+  cv::Mat load_raw = cv::imread(path_to_image, cv::IMREAD_GRAYSCALE);
+  //  cv::Mat store_img(load_raw.size(), CV_8U);
+  //  load_raw.convertTo(store_img, CV_8U);
+
   frontend::KimeraFrontendInput frontend_input(
       static_cast<double>(std::get<0>(log_stored_[last_index_])) * 1e-9,
-      cv::imread(path_to_image),
+      load_raw,  // & mask_image_,
+      mask_image_,
       camera_model_);
 
   last_index_++;
@@ -57,9 +69,12 @@ std::optional<frontend::KimeraFrontendInput> EurocKimeraDataProvider::GetInput(
   std::string path_to_image = path_to_dataset_root_ + "/mav0/cam0/data/" +
                               std::get<1>(log_stored_[index]);
 
+  cv::Mat load_raw = cv::imread(path_to_image, cv::IMREAD_GRAYSCALE);
+
   frontend::KimeraFrontendInput frontend_input(
       static_cast<double>(std::get<0>(log_stored_[index])) * 1e-9,
-      cv::imread(path_to_image),
+      load_raw,  // & mask_image_,
+      mask_image_,
       camera_model_);
 
   return frontend_input;

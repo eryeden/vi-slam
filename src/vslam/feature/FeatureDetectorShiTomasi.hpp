@@ -36,7 +36,8 @@ class FeatureDetectorShiTomasi {
 
   void UpdateDetection(FeaturePositionDatabase& feature_position,
                        FeatureAgeDatabase& feature_age,
-                       const cv::Mat& current_image);
+                       const cv::Mat& current_image,
+                       const cv::Mat& mask_image = cv::Mat());
 
  private:
   void DetectShiTomasiCorners(FeaturePositionDatabase& feature_position,
@@ -46,7 +47,8 @@ class FeatureDetectorShiTomasi {
                               int32_t division_number_col,
                               int32_t max_feature_number,
                               double min_feature_distance,
-                              database_index_t& max_feature_index) const;
+                              database_index_t& max_feature_index,
+                              const cv::Mat& mask_image = cv::Mat()) const;
 
   database_index_t max_feature_index_;
 

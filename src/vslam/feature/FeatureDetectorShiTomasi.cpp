@@ -49,7 +49,8 @@ vslam::feature::FeatureDetectorShiTomasi::FeatureDetectorShiTomasi(
 void vslam::feature::FeatureDetectorShiTomasi::UpdateDetection(
     vslam::FeaturePositionDatabase& feature_position,
     vslam::FeatureAgeDatabase& feature_age,
-    const cv::Mat& current_image) {
+    const cv::Mat& current_image,
+    const cv::Mat& mask_image) {
   database_index_t updated_max_feature_index = 0;
   DetectShiTomasiCorners(feature_position,
                          feature_age,
@@ -58,7 +59,8 @@ void vslam::feature::FeatureDetectorShiTomasi::UpdateDetection(
                          division_number_col_,
                          max_feature_number_,
                          min_feature_distance_,
-                         max_feature_index_);
+                         max_feature_index_,
+                         mask_image);
 }
 
 void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
@@ -69,7 +71,8 @@ void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
     int32_t division_number_col,
     int32_t max_feature_number,
     double min_feature_distance,
-    vslam::database_index_t& max_feature_index) const {
+    vslam::database_index_t& max_feature_index,
+    const cv::Mat& mask_image) const {
   /**
    * @brief 設定項目
    * @details
@@ -99,7 +102,11 @@ void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
 
   // Generate mono channel image
   cv::Mat frame_mono;
-  cv::cvtColor(current_image, frame_mono, CV_BGR2GRAY);
+  if (current_image.channels() != 1) {
+    cv::cvtColor(current_image, frame_mono, CV_BGR2GRAY);
+  } else {
+    frame_mono = current_image;
+  }
   auto image_size = frame_mono.size();
 
   // 分割しただけのGridを生成する
@@ -128,13 +135,17 @@ void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
 
 #ifdef SHOW_DEBUG
   cv::Mat vis;
-  current_image.copyTo(vis);
+  cv::cvtColor(current_image, vis, CV_GRAY2BGR);
 #endif
 
   uint64_t feature_index = max_feature_index;
   for (const auto& grect : grid_def) {
     cv::Mat div_image = frame_mono(grect);
     cv::Mat div_mask_image = flag_img(grect);
+    cv::Mat div_frame_mask;
+    if (!mask_image.empty()) {
+      div_frame_mask = mask_image(grect);
+    }
 
     // 事前に存在するFeature point数をカウント
     int32_t num_features = cv::countNonZero(div_mask_image);
@@ -147,7 +158,8 @@ void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
                             points_from_input,
                             query_feature_number,
                             0.1,
-                            min_feature_distance);
+                            min_feature_distance,
+                            div_frame_mask);
     std::vector<cv::KeyPoint> current_keypoints;
     cv::KeyPoint::convert(points_from_input, current_keypoints);
 

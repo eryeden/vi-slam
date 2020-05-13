@@ -12,14 +12,20 @@ using namespace vslam::data;
 using namespace vslam::frontend;
 
 KimeraFrontendInput::KimeraFrontendInput()
-    : KimeraFrontendInput(0, cv::Mat(), std::unique_ptr<CameraModelBase>()) {
+    : KimeraFrontendInput(0,
+                          cv::Mat(),
+                          cv::Mat(),
+                          std::unique_ptr<CameraModelBase>()) {
   ;
 }
 KimeraFrontendInput::KimeraFrontendInput(
     double timestamp,
     const cv::Mat& frame,
+    const cv::Mat& mask,
     const std::unique_ptr<data::CameraModelBase>& camera_model)
-    : timestamp_(timestamp), frame_(frame) {
+    : timestamp_(timestamp) {
+  frame_ = frame;
+  mask_ = mask;
   if (camera_model) {
     camera_model_ptr_ =
         std::unique_ptr<data::CameraModelBase>(camera_model->Clone());
@@ -39,12 +45,14 @@ KimeraFrontendInput::KimeraFrontendInput(
     const KimeraFrontendInput& kimera_frontend_input)
     : KimeraFrontendInput(kimera_frontend_input.timestamp_,
                           kimera_frontend_input.frame_,
+                          kimera_frontend_input.mask_,
                           kimera_frontend_input.camera_model_ptr_) {}
 
 KimeraFrontendInput& KimeraFrontendInput::operator=(
     const KimeraFrontendInput& kimera_frontend_input) {
   timestamp_ = kimera_frontend_input.timestamp_;
   frame_ = kimera_frontend_input.frame_;
+  mask_ = kimera_frontend_input.mask_;
   if (kimera_frontend_input.camera_model_ptr_ != nullptr) {
     camera_model_ptr_.reset(kimera_frontend_input.camera_model_ptr_->Clone());
   }
@@ -176,8 +184,10 @@ Frame KimeraFrontend::ProcessFirstFrame(
   FeatureBearingDatabase feature_bearing_database;
   std::set<database_index_t> feature_id_database;
 
-  feature_detector_shi_tomasi_->UpdateDetection(
-      feature_position_database, feature_age_database, frontend_input.frame_);
+  feature_detector_shi_tomasi_->UpdateDetection(feature_position_database,
+                                                feature_age_database,
+                                                frontend_input.frame_,
+                                                frontend_input.mask_);
 
   // Update Observed id and feature bearing information
   for (const auto& [id, pos] : feature_position_database) {
@@ -290,8 +300,10 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
     feature_age_database = verified_frame.feature_point_age_;
 
     // Feature detection
-    feature_detector_shi_tomasi_->UpdateDetection(
-        feature_position_database, feature_age_database, frontend_input.frame_);
+    feature_detector_shi_tomasi_->UpdateDetection(feature_position_database,
+                                                  feature_age_database,
+                                                  frontend_input.frame_,
+                                                  frontend_input.mask_);
     for (const auto& [id, pos] : feature_position_database) {
       feature_id_database.insert(id);
       feature_bearing_database[id] =
@@ -308,22 +320,22 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
                  feature_age_database);
 
   } else {
-    //    data::Frame tmp_frame(0,
-    //                          0,
-    //                          true,
-    //                          frontend_input.camera_model_ptr_,
-    //                          feature_id_database,
-    //                          feature_position_database,
-    //                          feature_bearing_database,
-    //                          feature_age_database);
-    //    auto verified_frame =
-    //        feature_verification_->RemoveOutlier(*last_keyframe_, tmp_frame);
-    //    feature_id_database = verified_frame.observing_feature_id_;
-    //    feature_position_database =
-    //        verified_frame.observing_feature_point_in_device_;
-    //    feature_bearing_database =
-    //        verified_frame.observing_feature_bearing_in_camera_frame_;
-    //    feature_age_database = verified_frame.feature_point_age_;
+    data::Frame tmp_frame(0,
+                          0,
+                          true,
+                          frontend_input.camera_model_ptr_,
+                          feature_id_database,
+                          feature_position_database,
+                          feature_bearing_database,
+                          feature_age_database);
+    auto verified_frame =
+        feature_verification_->RemoveOutlier(*last_keyframe_, tmp_frame);
+    feature_id_database = verified_frame.observing_feature_id_;
+    feature_position_database =
+        verified_frame.observing_feature_point_in_device_;
+    feature_bearing_database =
+        verified_frame.observing_feature_bearing_in_camera_frame_;
+    feature_age_database = verified_frame.feature_point_age_;
 
     return Frame(last_frame_->frame_id_ + 1,
                  frontend_input.timestamp_,

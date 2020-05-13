@@ -26,6 +26,7 @@ class KimeraFrontendInput {
   KimeraFrontendInput(
       double timestamp,
       const cv::Mat& frame,
+      const cv::Mat& mask,
       const std::unique_ptr<data::CameraModelBase>& camera_model);
   KimeraFrontendInput(const KimeraFrontendInput& kimera_frontend_input);
 
@@ -34,6 +35,7 @@ class KimeraFrontendInput {
 
   double timestamp_;
   cv::Mat frame_;
+  cv::Mat mask_;
   std::unique_ptr<data::CameraModelBase> camera_model_ptr_;
 
  private:
