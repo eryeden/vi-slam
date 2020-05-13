@@ -3,19 +3,44 @@
 //
 
 #include <fmt/format.h>
+#include <spdlog/spdlog.h>
 
 #include "EurocKimeraDataProvider.hpp"
+#include "EurocKimeraDataProviderRadialTangentialCameraModel.hpp"
 #include "FeatureDetectorShiTomasi.hpp"
 #include "FeatureTrackerLucasKanade.hpp"
 #include "KimeraFrontend.hpp"
 #include "Verification.hpp"
 
 int main() {
-  std::string path_to_euroc = "/home/ery/Downloads/V1_01_easy";
+  //  std::string path_to_euroc = "/home/ery/Downloads/V1_01_easy";
   //  std::string path_to_euroc = "/home/ery/Downloads/V2_01_easy";
   //  std::string path_to_euroc = "/home/ery/Downloads/MH_01_easy";
+  //  vslam::dataprovider::EurocKimeraDataProviderRadialTangentialCameraModel
+  //      euroc_kimera_data_provider(path_to_euroc);
+
+  // EUROC
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/V1_01_easy";
+  //  std::string path_to_calibfile =
+  //      "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
+  //      "calib_results/calibration.json";
+
+  std::string path_to_euroc =
+      "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+  std::string path_to_calibfile =
+      "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
+      "results/calibration.json";
+
+  spdlog::info(
+      "Load dataset from:\n"
+      "Dataset : {}\n"
+      "Calibfile : {}",
+      path_to_euroc,
+      path_to_calibfile);
+
   vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
-      path_to_euroc);
+      path_to_euroc, path_to_calibfile);
 
   // For output
   //  cv::VideoWriter video_writer("feature_tracking_and_detection.mp4",
@@ -30,12 +55,12 @@ int main() {
   // Build detector
   auto shi_tomasi_detector_ptr =
       std::make_shared<vslam::feature::FeatureDetectorShiTomasi>(
-          3, 3, 300, 20.0);
+          3, 3, 300, 5.0);
 
   // Build tracker
   auto kl_tracker_ptr =
       std::make_shared<vslam::feature::FeatureTrackerLucasKanade>(
-          30, 0.01, 15, 3);
+          30, 0.01, 15, 3, 1.0);
 
   // Build verification
   auto verification_ptr =
@@ -63,13 +88,13 @@ int main() {
                                                   kl_tracker_ptr,
                                                   verification_ptr,
                                                   10.0,
-                                                  100);
+                                                  80);
 
   vslam::data::FrameSharedPtr prev_frame = nullptr;
   vslam::FeatureAgeDatabase prev_feature_age;
   vslam::FeaturePositionDatabase prev_feature_position;
 
-  vslam::frontend::KimeraFrontendInput prev_input;
+  vslam::frontend::KimeraFrontendInputRadialTangentialCameraModel prev_input;
   bool is_initialized = false;
 
   bool is_reach_the_last = false;
@@ -127,6 +152,7 @@ int main() {
             vis, cv::Point(pos[0], pos[1]), 3, cv::Scalar(0, 255, 0), 1, CV_AA);
       }
     }
+
     // draw feature point number
     std::string str_feature_number = fmt::format(
         "Features : {}",

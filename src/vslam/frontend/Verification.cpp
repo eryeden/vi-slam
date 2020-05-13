@@ -34,27 +34,14 @@ vslam::verification::FeatureVerification5PointRANSAC::RemoveOutlier(
                         frame_current.observing_feature_id_.end(),
                         std::back_inserter(intersection_indices));
   for (const auto idx : intersection_indices) {
-    opengv::bearingVector_t bearing_a, bearing_b;
-    Vec2_t p_a_in_device =
-        frame_reference.observing_feature_point_in_device_.at(idx);
-    Vec2_t p_b_in_device =
-        frame_current.observing_feature_point_in_device_.at(idx);
-    bearing_a = {
-        (frame_reference.camera_parameter_.cx - p_a_in_device[0]) /
-            frame_reference.camera_parameter_.fx,
-        (frame_reference.camera_parameter_.cy - p_a_in_device[1]) /
-            frame_reference.camera_parameter_.fy,
-        1,
-    };
-    bearing_a.normalize();
-    bearing_b = {(frame_current.camera_parameter_.cx - p_b_in_device[0]) /
-                     frame_current.camera_parameter_.fx,
-                 (frame_current.camera_parameter_.cy - p_b_in_device[1]) /
-                     frame_current.camera_parameter_.fy,
-                 1};
-    bearing_b.normalize();
-    bearings_reference.emplace_back(bearing_a);
-    bearings_current.emplace_back(bearing_b);
+    opengv::bearingVector_t bearing_reference, bearing_current;
+    bearing_reference =
+        frame_reference.observing_feature_bearing_in_camera_frame_.at(idx);
+    bearing_current =
+        frame_current.observing_feature_bearing_in_camera_frame_.at(idx);
+
+    bearings_reference.emplace_back(bearing_reference);
+    bearings_current.emplace_back(bearing_current);
   }
 
   // Setup ransac problem
@@ -75,14 +62,18 @@ vslam::verification::FeatureVerification5PointRANSAC::RemoveOutlier(
 
   // Output
   FeatureAgeDatabase verified_feature_age_database;
-  FeaturePositionDatabase verified_feeature_position_database;
+  FeaturePositionDatabase verified_feature_position_database;
+  FeatureBearingDatabase verified_feature_bearing_database;
   std::set<database_index_t> verified_feature_indices;
 
   for (auto inlier_array_idx : mono_ransac_.inliers_) {
     database_index_t landmark_index = intersection_indices[inlier_array_idx];
     verified_feature_indices.insert(landmark_index);
-    verified_feeature_position_database[landmark_index] =
+    verified_feature_position_database[landmark_index] =
         frame_current.observing_feature_point_in_device_.at(landmark_index);
+    verified_feature_bearing_database[landmark_index] =
+        frame_current.observing_feature_bearing_in_camera_frame_.at(
+            landmark_index);
     verified_feature_age_database[landmark_index] =
         frame_current.feature_point_age_.at(landmark_index);
   }
@@ -90,9 +81,10 @@ vslam::verification::FeatureVerification5PointRANSAC::RemoveOutlier(
   data::Frame output_frame(frame_current.frame_id_,
                            frame_current.timestamp_,
                            frame_current.is_keyframe_,
-                           frame_current.camera_parameter_,
+                           frame_current.camera_model_,
                            verified_feature_indices,
-                           verified_feeature_position_database,
+                           verified_feature_position_database,
+                           verified_feature_bearing_database,
                            verified_feature_age_database);
 
   return output_frame;

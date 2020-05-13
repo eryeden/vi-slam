@@ -16,16 +16,24 @@ class Frame {
 
   Frame();
 
+  /**
+   * @note CameraModelは内部的にコピーされるので、Const参照でOKです。
+   * @param id
+   * @param timestamp
+   * @param is_keyframe
+   * @param camera_model
+   * @param observing_feature_id
+   * @param observing_feature_points_in_device
+   * @param observing_feature_bearing_in_camera_frame
+   * @param feature_point_age
+   */
   Frame(database_index_t id,
         double timestamp,
         bool is_keyframe,
-        const PinholeCameraModel& camera_parameters,
+        const std::unique_ptr<CameraModelBase>& camera_model,
         const std::set<database_index_t>& observing_feature_id,
-        //      const EigenAllocatedUnorderedMap<database_index_t, Vec2_t>&
-        //          observing_feature_points_in_device,
         const FeaturePositionDatabase& observing_feature_points_in_device,
-        //      const std::unordered_map<database_index_t, uint32_t>&
-        //      feature_point_age
+        const FeatureBearingDatabase& observing_feature_bearing_in_camera_frame,
         const FeatureAgeDatabase& feature_point_age);
 
   Frame(const Frame& frame);
@@ -52,20 +60,20 @@ class Frame {
   //! @note あとから変更されうるのでstd::atomicによるガードを行う
   //! FrameはKeyFrameか？TrueでKeyFrameになる
   std::atomic_bool is_keyframe_;
-  //  bool is_keyframe_;
 
-  //! Pinholeカメラパラメータ
-  const PinholeCameraModel camera_parameter_;
+  //! Camera model
+  const std::unique_ptr<CameraModelBase> camera_model_;
 
   //! @note
   //! 観測情報はFrame生成時から変わり得ないのでconstで保持する。故にMutexなどのガードは必要ない
   //! 観測したLandmark IDを保持する
   const std::set<database_index_t> observing_feature_id_;
-  //! 観測した画像上のFeature positionを保持する
-  // const EigenAllocatedUnorderedMap<database_index_t, Vec2_t>
+  //! 観測した画像上のFeature
+  //! positionを保持する。Frontendの実装によるが多くの場合、歪んだままの位置が格納される。
   const FeaturePositionDatabase observing_feature_point_in_device_;
+  //! 観測した特徴点位置のカメラ座標系におけるBearing vectorを保持する。
+  const FeatureBearingDatabase observing_feature_bearing_in_camera_frame_;
   //! 観測した画像上のFeature positionを保持する
-  //  const std::unordered_map<database_index_t, uint32_t> feature_point_age_;
   const FeatureAgeDatabase feature_point_age_;
 
  private:

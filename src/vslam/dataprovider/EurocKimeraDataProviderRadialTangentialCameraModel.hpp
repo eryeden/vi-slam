@@ -12,7 +12,7 @@
 
 namespace vslam::dataprovider {
 
-class EurocKimeraDataProvider : public KimeraDataProviderBase {
+class EurocKimeraDataProviderRadialTangentialCameraModel {
  private:
   using LogPack = std::tuple<uint64_t,    // save time
                              std::string  // path to image
@@ -22,24 +22,23 @@ class EurocKimeraDataProvider : public KimeraDataProviderBase {
   /**
    * @param path_to_dataset_root : Specify the path to the root of EUROC. ex)
    * path/to/dataset/V1_01_easy
-   * @param path_to_calibration_file : Specify the path to a basalt calibration
-   * file.
    */
-  EurocKimeraDataProvider(const std::string& path_to_dataset_root,
-                          const std::string& path_to_calibration_file);
+  explicit EurocKimeraDataProviderRadialTangentialCameraModel(
+      const std::string& path_to_dataset_root);
 
   /**
    * @brief Get data and increment a internal line index.
    * @return KimeraFrontendInputRadialTangentialCameraModel
    */
-  std::optional<frontend::KimeraFrontendInput> GetInput() override;
+  std::optional<frontend::KimeraFrontendInputRadialTangentialCameraModel>
+  GetInput();
   /**
    * @brief Get data by the index specified.
    * @param index : A line number of data frame which you want.
    * @return KimeraFrontendInputRadialTangentialCameraModel
    */
-  std::optional<frontend::KimeraFrontendInput> GetInput(
-      uint64_t index) override;
+  std::optional<frontend::KimeraFrontendInputRadialTangentialCameraModel>
+  GetInput(uint64_t index);
 
  private:
   std::string GetPathToImageByIndexAndZeroFillNum(
@@ -50,14 +49,12 @@ class EurocKimeraDataProvider : public KimeraDataProviderBase {
       const std::string& image_type);
   std::string Basename(const std::string& path);
   std::vector<LogPack> LogParser(const std::string& path_to_csv);
-  std::unique_ptr<data::CameraModelBase> ParseCameraParameters(
-      const std::string& path_to_calibration_file);
+  data::RadialTangentialCameraModel ParseCameraParameters(
+      const std::string& path_to_camera_parameters);
 
   std::string path_to_dataset_root_;
-  std::string path_to_calibration_file_;
-
   uint64_t last_index_;
-  std::unique_ptr<data::CameraModelBase> camera_model_;
+  data::RadialTangentialCameraModel camera_model_;
   std::vector<LogPack> log_stored_;
 };
 

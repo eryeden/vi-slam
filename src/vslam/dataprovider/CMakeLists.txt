@@ -6,5 +6,7 @@ target_sources(${VSLAM_PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/DataProviderBase.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/EurocKimeraDataProvider.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/EurocKimeraDataProvider.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/EurocKimeraDataProviderRadialTangentialCameraModel.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/EurocKimeraDataProviderRadialTangentialCameraModel.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/csv.h
         )

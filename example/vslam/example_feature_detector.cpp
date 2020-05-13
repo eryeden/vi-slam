@@ -2,14 +2,14 @@
 // Created by ery on 2020/05/03.
 //
 
-#include "EurocKimeraDataProvider.hpp"
+#include "EurocKimeraDataProviderRadialTangentialCameraModel.hpp"
 #include "FeatureDetectorShiTomasi.hpp"
 
 int main() {
   std::string path_to_euroc = "/home/ery/Downloads/V1_01_easy";
   //  std::string path_to_euroc = "/home/ery/Downloads/V2_01_easy";
-  vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
-      path_to_euroc);
+  vslam::dataprovider::EurocKimeraDataProviderRadialTangentialCameraModel
+      euroc_kimera_data_provider(path_to_euroc);
 
   // Build detector
   vslam::feature::FeatureDetectorShiTomasi shi_tomasi_detector(4, 4, 300, 1.0);

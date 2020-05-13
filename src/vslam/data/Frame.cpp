@@ -3,23 +3,23 @@
 using namespace vslam;
 using namespace vslam::data;
 
-Frame::Frame(database_index_t id,
-             double timestamp,
-             bool is_keyframe,
-             const PinholeCameraModel& camera_parameters,
-             const std::set<database_index_t>& observing_feature_id,
-             //    const EigenAllocatedUnorderedMap<database_index_t, Vec2_t>&
-             //        observing_feature_points_in_device,
-             const FeaturePositionDatabase& observing_feature_points_in_device,
-             //    const std::unordered_map<database_index_t, uint32_t>&
-             //    feature_point_age
-             const FeatureAgeDatabase& feature_point_age)
+Frame::Frame(
+    database_index_t id,
+    double timestamp,
+    bool is_keyframe,
+    const std::unique_ptr<CameraModelBase>& camera_model,
+    const std::set<database_index_t>& observing_feature_id,
+    const FeaturePositionDatabase& observing_feature_points_in_device,
+    const FeatureBearingDatabase& observing_feature_bearing_in_camera_frame,
+    const FeatureAgeDatabase& feature_point_age)
     : frame_id_(id),
       timestamp_(timestamp),
       is_keyframe_(is_keyframe),
-      camera_parameter_(camera_parameters),
+      camera_model_(std::move(camera_model->Clone())),
       observing_feature_id_(observing_feature_id),
       observing_feature_point_in_device_(observing_feature_points_in_device),
+      observing_feature_bearing_in_camera_frame_(
+          observing_feature_bearing_in_camera_frame),
       feature_point_age_(feature_point_age) {
   ;
 }
@@ -28,18 +28,21 @@ Frame::Frame()
     : Frame(0,
             0,
             false,
-            PinholeCameraModel(),
+            std::unique_ptr<CameraModelBase>(),
             std::set<database_index_t>(),
             FeaturePositionDatabase(),
+            FeatureBearingDatabase(),
             FeatureAgeDatabase()) {}
 
 Frame::Frame(const Frame& frame)
     : Frame(frame.frame_id_,
             frame.timestamp_,
             frame.is_keyframe_,
-            frame.camera_parameter_,
+            std::unique_ptr<CameraModelBase>(
+                (frame.camera_model_) ? frame.camera_model_->Clone() : nullptr),
             frame.observing_feature_id_,
             frame.observing_feature_point_in_device_,
+            frame.observing_feature_bearing_in_camera_frame_,
             frame.feature_point_age_) {
   camera_position_ = frame.camera_position_;
   camera_orientation_ = frame.camera_orientation_;
