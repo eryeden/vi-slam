@@ -20,23 +20,34 @@ KimeraFrontendInput::KimeraFrontendInput(
     const cv::Mat& frame,
     const std::unique_ptr<data::CameraModelBase>& camera_model)
     : timestamp_(timestamp), frame_(frame) {
-  if (camera_model != nullptr) {
-    camera_model_ptr_.reset(camera_model->Clone());
+  if (camera_model) {
+    camera_model_ptr_ =
+        std::unique_ptr<data::CameraModelBase>(camera_model->Clone());
   }
 }
 
+// KimeraFrontendInput::KimeraFrontendInput(
+//    const KimeraFrontendInput& kimera_frontend_input)
+//    : timestamp_(kimera_frontend_input.timestamp_),
+//      frame_(kimera_frontend_input.frame_){
+//  if (kimera_frontend_input.camera_model_ptr_ != nullptr) {
+//    camera_model_ptr_.reset(kimera_frontend_input.camera_model_ptr_->Clone());
+//  }
+//}
+
 KimeraFrontendInput::KimeraFrontendInput(
     const KimeraFrontendInput& kimera_frontend_input)
-    : timestamp_(kimera_frontend_input.timestamp_),
-      frame_(kimera_frontend_input.frame_),
-      camera_model_ptr_(kimera_frontend_input.camera_model_ptr_->Clone()) {
-  ;
-}
+    : KimeraFrontendInput(kimera_frontend_input.timestamp_,
+                          kimera_frontend_input.frame_,
+                          kimera_frontend_input.camera_model_ptr_) {}
+
 KimeraFrontendInput& KimeraFrontendInput::operator=(
     const KimeraFrontendInput& kimera_frontend_input) {
   timestamp_ = kimera_frontend_input.timestamp_;
   frame_ = kimera_frontend_input.frame_;
-  camera_model_ptr_.reset(kimera_frontend_input.camera_model_ptr_->Clone());
+  if (kimera_frontend_input.camera_model_ptr_ != nullptr) {
+    camera_model_ptr_.reset(kimera_frontend_input.camera_model_ptr_->Clone());
+  }
   return *this;
 }
 
@@ -297,22 +308,22 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
                  feature_age_database);
 
   } else {
-    data::Frame tmp_frame(0,
-                          0,
-                          true,
-                          frontend_input.camera_model_ptr_,
-                          feature_id_database,
-                          feature_position_database,
-                          feature_bearing_database,
-                          feature_age_database);
-    auto verified_frame =
-        feature_verification_->RemoveOutlier(*last_keyframe_, tmp_frame);
-    feature_id_database = verified_frame.observing_feature_id_;
-    feature_position_database =
-        verified_frame.observing_feature_point_in_device_;
-    feature_bearing_database =
-        verified_frame.observing_feature_bearing_in_camera_frame_;
-    feature_age_database = verified_frame.feature_point_age_;
+    //    data::Frame tmp_frame(0,
+    //                          0,
+    //                          true,
+    //                          frontend_input.camera_model_ptr_,
+    //                          feature_id_database,
+    //                          feature_position_database,
+    //                          feature_bearing_database,
+    //                          feature_age_database);
+    //    auto verified_frame =
+    //        feature_verification_->RemoveOutlier(*last_keyframe_, tmp_frame);
+    //    feature_id_database = verified_frame.observing_feature_id_;
+    //    feature_position_database =
+    //        verified_frame.observing_feature_point_in_device_;
+    //    feature_bearing_database =
+    //        verified_frame.observing_feature_bearing_in_camera_frame_;
+    //    feature_age_database = verified_frame.feature_point_age_;
 
     return Frame(last_frame_->frame_id_ + 1,
                  frontend_input.timestamp_,

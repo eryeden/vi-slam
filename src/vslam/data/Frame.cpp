@@ -38,7 +38,8 @@ Frame::Frame(const Frame& frame)
     : Frame(frame.frame_id_,
             frame.timestamp_,
             frame.is_keyframe_,
-            std::unique_ptr<CameraModelBase>(frame.camera_model_->Clone()),
+            std::unique_ptr<CameraModelBase>(
+                (frame.camera_model_) ? frame.camera_model_->Clone() : nullptr),
             frame.observing_feature_id_,
             frame.observing_feature_point_in_device_,
             frame.observing_feature_bearing_in_camera_frame_,
