@@ -20,17 +20,28 @@ int main() {
   //      euroc_kimera_data_provider(path_to_euroc);
 
   // EUROC
-  //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/V1_01_easy";
-  //  std::string path_to_calibfile =
-  //      "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
-  //      "calib_results/calibration.json";
-
   std::string path_to_euroc =
-      "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+      "/home/ery/subspace/docker_work/dataset/V1_01_easy";
   std::string path_to_calibfile =
-      "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
-      "results/calibration.json";
+      "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
+      "calib_results/calibration.json";
+
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+  //  std::string path_to_calibfile =
+  //      "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
+  //      "results/calibration.json";
+  vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
+      path_to_euroc, path_to_calibfile);
+
+  //  std::string path_to_euroc =
+  //      "/e/subspace/docker_work/dataset/fukuroi/camlog_2020-05-13-21-09-39/";
+  //  std::string path_to_calibfile =
+  //      "/e/subspace/docker_work/dataset/fukuroi/calib_result/calibration.json";
+  //  std::string path_to_mask =
+  //  "/e/subspace/docker_work/dataset/fukuroi/calib_result/vingette_0.png";
+  //  vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
+  //      path_to_euroc, path_to_calibfile, path_to_mask);
 
   spdlog::info(
       "Load dataset from:\n"
@@ -38,9 +49,6 @@ int main() {
       "Calibfile : {}",
       path_to_euroc,
       path_to_calibfile);
-
-  vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
-      path_to_euroc, path_to_calibfile);
 
   // For output
   //  cv::VideoWriter video_writer("feature_tracking_and_detection.mp4",
@@ -55,7 +63,7 @@ int main() {
   // Build detector
   auto shi_tomasi_detector_ptr =
       std::make_shared<vslam::feature::FeatureDetectorShiTomasi>(
-          3, 3, 300, 5.0);
+          2, 2, 300, 10.0);
 
   // Build tracker
   auto kl_tracker_ptr =
@@ -65,7 +73,7 @@ int main() {
   // Build verification
   auto verification_ptr =
       std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
-          1.0 * M_PI / 180.0, 150, 0.99);
+          5.0 * M_PI / 180.0, 150, 0.99);
 
   /**
    * @note
@@ -88,7 +96,7 @@ int main() {
                                                   kl_tracker_ptr,
                                                   verification_ptr,
                                                   10.0,
-                                                  80);
+                                                  100);
 
   vslam::data::FrameSharedPtr prev_frame = nullptr;
   vslam::FeatureAgeDatabase prev_feature_age;
@@ -133,7 +141,8 @@ int main() {
 
     // visualize
     cv::Mat vis;
-    kimera_frontend.last_input_.frame_.copyTo(vis);
+    //    kimera_frontend.last_input_.frame_.convertTo(vis, CV_8UC3);
+    cv::cvtColor(kimera_frontend.last_input_.frame_, vis, CV_GRAY2BGR);
 
     auto latest_frame = threadsafe_map_database_ptr->GetFrame(
         threadsafe_map_database_ptr->latest_frame_id_);
