@@ -9,13 +9,15 @@ vslam::feature::FeatureTrackerLucasKanade::FeatureTrackerLucasKanade(
     int32_t klt_max_iteration,
     double klt_epsilon,
     int32_t klt_window_size,
-    int32_t klt_max_level)
+    int32_t klt_max_level,
+    double backtrack_distance_threshold)
     : termination_criteria_(
           cv::TermCriteria(cv::TermCriteria::COUNT + cv::TermCriteria::EPS,
                            klt_max_iteration,
                            klt_epsilon)),
       tracker_window_size_(cv::Size2i(klt_window_size, klt_window_size)),
-      tracker_max_level_(klt_max_level) {
+      tracker_max_level_(klt_max_level),
+      backtrack_distance_threshold_(backtrack_distance_threshold) {
   ;
 }
 
@@ -24,12 +26,39 @@ void vslam::feature::FeatureTrackerLucasKanade::Track(
     vslam::FeatureAgeDatabase& feature_age,
     const cv::Mat& prev_image,
     const cv::Mat& current_frame) {
-  TrackByLucasKanade(feature_position,
-                     feature_age,
+  // Forward track
+  vslam::FeaturePositionDatabase forward_feature_position = feature_position;
+  vslam::FeatureAgeDatabase forward_feature_age = feature_age;
+  TrackByLucasKanade(forward_feature_position,
+                     forward_feature_age,
                      prev_image,
                      current_frame,
                      termination_criteria_,
                      tracker_window_size_);
+
+  // Back track
+  vslam::FeaturePositionDatabase back_feature_position =
+      forward_feature_position;
+  vslam::FeatureAgeDatabase back_feature_age = forward_feature_age;
+  TrackByLucasKanade(back_feature_position,
+                     back_feature_age,
+                     current_frame,
+                     prev_image,
+                     termination_criteria_,
+                     tracker_window_size_);
+
+  // Perform back track verification
+  vslam::FeaturePositionDatabase verified_feature_position;
+  vslam::FeatureAgeDatabase verified_feature_age;
+  for (const auto& [id, pos] : back_feature_position) {
+    if ((pos - feature_position[id]).norm() <= backtrack_distance_threshold_) {
+      verified_feature_position[id] = forward_feature_position[id];
+      verified_feature_age[id] = forward_feature_age[id];
+    }
+  }
+
+  feature_position = verified_feature_position;
+  feature_age = verified_feature_age;
 }
 
 void vslam::feature::FeatureTrackerLucasKanade::TrackByLucasKanade(

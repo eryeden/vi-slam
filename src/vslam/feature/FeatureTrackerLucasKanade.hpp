@@ -16,7 +16,8 @@ class FeatureTrackerLucasKanade {
   FeatureTrackerLucasKanade(int32_t klt_max_iteration,
                             double klt_epsilon,
                             int32_t klt_window_size,
-                            int32_t klt_max_level);
+                            int32_t klt_max_level,
+                            double backtrack_distance_threshold);
 
   void Track(FeaturePositionDatabase& feature_position,
              FeatureAgeDatabase& feature_age,
@@ -34,6 +35,7 @@ class FeatureTrackerLucasKanade {
   cv::TermCriteria termination_criteria_;
   cv::Size2i tracker_window_size_;
   int32_t tracker_max_level_;
+  double backtrack_distance_threshold_;
 };
 
 }  // namespace vslam::feature
