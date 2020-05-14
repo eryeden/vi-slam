@@ -20,17 +20,18 @@ int main() {
   //      euroc_kimera_data_provider(path_to_euroc);
 
   // EUROC
-  std::string path_to_euroc =
-      "/home/ery/subspace/docker_work/dataset/V1_01_easy";
-  std::string path_to_calibfile =
-      "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
-      "calib_results/calibration.json";
-
   //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+  //      "/home/ery/subspace/docker_work/dataset/V1_01_easy";
   //  std::string path_to_calibfile =
-  //      "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
-  //      "results/calibration.json";
+  //      "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
+  //      "calib_results/calibration.json";
+
+  std::string path_to_euroc =
+      "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+  std::string path_to_calibfile =
+      "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
+      "results/calibration.json";
+
   vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
       path_to_euroc, path_to_calibfile);
 
@@ -63,7 +64,7 @@ int main() {
   // Build detector
   auto shi_tomasi_detector_ptr =
       std::make_shared<vslam::feature::FeatureDetectorShiTomasi>(
-          2, 2, 300, 10.0);
+          2, 2, 200, 5.0);
 
   // Build tracker
   auto kl_tracker_ptr =
@@ -73,7 +74,7 @@ int main() {
   // Build verification
   auto verification_ptr =
       std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
-          5.0 * M_PI / 180.0, 150, 0.99);
+          2 * M_PI / 180.0, 150, 0.9);
 
   /**
    * @note
@@ -96,7 +97,7 @@ int main() {
                                                   kl_tracker_ptr,
                                                   verification_ptr,
                                                   10.0,
-                                                  100);
+                                                  60);
 
   vslam::data::FrameSharedPtr prev_frame = nullptr;
   vslam::FeatureAgeDatabase prev_feature_age;
