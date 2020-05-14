@@ -65,8 +65,7 @@ KimeraFrontendInput& KimeraFrontendInput::operator=(
  */
 KimeraFrontend::KimeraFrontend(
     const std::shared_ptr<data::ThreadsafeMapDatabase>& threadsafe_map_database,
-    const std::shared_ptr<feature::FeatureDetectorShiTomasi>&
-        feature_detector_shi_tomasi,
+    const std::shared_ptr<feature::FeatureDetectorBase>& feature_detector,
     const std::shared_ptr<feature::FeatureTrackerLucasKanade>&
         feature_tracker_lucas_kanade,
     const std::shared_ptr<verification::FeatureVerification5PointRANSAC>&
@@ -77,7 +76,7 @@ KimeraFrontend::KimeraFrontend(
       is_first_frame_(true),
       keyframe_interval_threshold_(keyframe_interval_threshold),
       keyframe_feature_number_threshold_(keyframe_feature_number_threshold) {
-  feature_detector_shi_tomasi_ = feature_detector_shi_tomasi;
+  feature_detector_ = feature_detector;
   feature_tracker_lucas_kanade_ = feature_tracker_lucas_kanade;
   feature_verification_ = feature_verification;
 
@@ -87,7 +86,7 @@ KimeraFrontend::KimeraFrontend(
         "{}:{} Null input of feature tracker.", __FILE__, __FUNCTION__);
   }
   // input check
-  if (feature_detector_shi_tomasi_ == nullptr) {
+  if (feature_detector_ == nullptr) {
     spdlog::warn(
         "{}:{} Null input of feature detector.", __FILE__, __FUNCTION__);
   }
@@ -184,10 +183,10 @@ Frame KimeraFrontend::ProcessFirstFrame(
   FeatureBearingDatabase feature_bearing_database;
   std::set<database_index_t> feature_id_database;
 
-  feature_detector_shi_tomasi_->UpdateDetection(feature_position_database,
-                                                feature_age_database,
-                                                frontend_input.frame_,
-                                                frontend_input.mask_);
+  feature_detector_->UpdateDetection(feature_position_database,
+                                     feature_age_database,
+                                     frontend_input.frame_,
+                                     frontend_input.mask_);
 
   // Update Observed id and feature bearing information
   for (const auto& [id, pos] : feature_position_database) {
@@ -300,10 +299,10 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
     feature_age_database = verified_frame.feature_point_age_;
 
     // Feature detection
-    feature_detector_shi_tomasi_->UpdateDetection(feature_position_database,
-                                                  feature_age_database,
-                                                  frontend_input.frame_,
-                                                  frontend_input.mask_);
+    feature_detector_->UpdateDetection(feature_position_database,
+                                       feature_age_database,
+                                       frontend_input.frame_,
+                                       frontend_input.mask_);
     for (const auto& [id, pos] : feature_position_database) {
       feature_id_database.insert(id);
       feature_bearing_database[id] =

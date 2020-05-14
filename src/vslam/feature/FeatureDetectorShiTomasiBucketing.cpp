@@ -2,7 +2,7 @@
 // Created by ery on 2020/05/03.
 //
 
-#include "FeatureDetectorShiTomasi.hpp"
+#include "FeatureDetectorShiTomasiBucketing.hpp"
 
 #include <spdlog/spdlog.h>
 
@@ -35,18 +35,19 @@ std::vector<cv::Rect2f> vslam::feature::utility::GenerateGrid(
   return grid_def;
 }
 
-vslam::feature::FeatureDetectorShiTomasi::FeatureDetectorShiTomasi(
-    int32_t division_number_row,
-    int32_t division_number_col,
-    int32_t max_feature_number,
-    double min_feature_distance)
-    : max_feature_index_(0),
+vslam::feature::FeatureDetectorShiTomasiBucketing::
+    FeatureDetectorShiTomasiBucketing(int32_t division_number_row,
+                                      int32_t division_number_col,
+                                      int32_t max_feature_number,
+                                      double min_feature_distance)
+    : FeatureDetectorBase(),
+      max_feature_index_(0),
       division_number_row_(division_number_row),
       division_number_col_(division_number_col),
       max_feature_number_(max_feature_number),
       min_feature_distance_(min_feature_distance) {}
 
-void vslam::feature::FeatureDetectorShiTomasi::UpdateDetection(
+void vslam::feature::FeatureDetectorShiTomasiBucketing::UpdateDetection(
     vslam::FeaturePositionDatabase& feature_position,
     vslam::FeatureAgeDatabase& feature_age,
     const cv::Mat& current_image,
@@ -63,7 +64,7 @@ void vslam::feature::FeatureDetectorShiTomasi::UpdateDetection(
                          mask_image);
 }
 
-void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
+void vslam::feature::FeatureDetectorShiTomasiBucketing::DetectShiTomasiCorners(
     vslam::FeaturePositionDatabase& feature_position,
     vslam::FeatureAgeDatabase& feature_age,
     const cv::Mat& current_image,
@@ -237,7 +238,7 @@ void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
   max_feature_index = feature_index - 1;
 }
 
-// vslam::data::Frame vslam::feature::FeatureDetectorShiTomasi::Detect(
+// vslam::data::Frame vslam::feature::FeatureDetectorShiTomasiBucketing::Detect(
 //    const vslam::data::FrameSharedPtr& previous_frame,
 //    const cv::Mat& current_image) {
 //  database_index_t updated_max_feature_index = 0;
@@ -251,7 +252,7 @@ void vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
 //}
 
 // vslam::data::Frame
-// vslam::feature::FeatureDetectorShiTomasi::DetectShiTomasiCorners(
+// vslam::feature::FeatureDetectorShiTomasiBucketing::DetectShiTomasiCorners(
 //    const vslam::data::FrameSharedPtr& previous_frame,
 //    const cv::Mat& current_image,
 //    int32_t division_number_row,

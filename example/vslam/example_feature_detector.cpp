@@ -3,7 +3,7 @@
 //
 
 #include "EurocKimeraDataProviderRadialTangentialCameraModel.hpp"
-#include "FeatureDetectorShiTomasi.hpp"
+#include "FeatureDetectorShiTomasiBucketing.hpp"
 
 int main() {
   std::string path_to_euroc = "/home/ery/Downloads/V1_01_easy";
@@ -12,7 +12,8 @@ int main() {
       euroc_kimera_data_provider(path_to_euroc);
 
   // Build detector
-  vslam::feature::FeatureDetectorShiTomasi shi_tomasi_detector(4, 4, 300, 1.0);
+  vslam::feature::FeatureDetectorShiTomasiBucketing shi_tomasi_detector(
+      4, 4, 300, 1.0);
 
   vslam::data::FrameSharedPtr prev_frame = nullptr;
   vslam::FeatureAgeDatabase prev_feature_age;
