@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "FeatureDetectorShiTomasi.hpp"
+#include "FeatureDetectorShiTomasiBucketing.hpp"
 #include "FeatureTrackerLucasKanade.hpp"
 #include "FrontendBase.hpp"
 #include "Verification.hpp"
@@ -46,7 +46,7 @@ class KimeraFrontend : public FrontendBase {
   KimeraFrontend(
       const std::shared_ptr<data::ThreadsafeMapDatabase>&
           threadsafe_map_database,
-      const std::shared_ptr<feature::FeatureDetectorShiTomasi>&
+      const std::shared_ptr<feature::FeatureDetectorShiTomasiBucketing>&
           feature_detector_shi_tomasi,
       const std::shared_ptr<feature::FeatureTrackerLucasKanade>&
           feature_tracker_lucas_kanade,
@@ -77,7 +77,7 @@ class KimeraFrontend : public FrontendBase {
   bool is_first_frame_;
 
   // Feature Detector
-  std::shared_ptr<feature::FeatureDetectorShiTomasi>
+  std::shared_ptr<feature::FeatureDetectorShiTomasiBucketing>
       feature_detector_shi_tomasi_;
   // Feature Tracker
   std::shared_ptr<feature::FeatureTrackerLucasKanade>

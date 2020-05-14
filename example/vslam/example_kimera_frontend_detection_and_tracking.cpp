@@ -7,7 +7,7 @@
 
 #include "EurocKimeraDataProvider.hpp"
 #include "EurocKimeraDataProviderRadialTangentialCameraModel.hpp"
-#include "FeatureDetectorShiTomasi.hpp"
+#include "FeatureDetectorShiTomasiBucketing.hpp"
 #include "FeatureTrackerLucasKanade.hpp"
 #include "KimeraFrontend.hpp"
 #include "Verification.hpp"
@@ -63,7 +63,7 @@ int main() {
 
   // Build detector
   auto shi_tomasi_detector_ptr =
-      std::make_shared<vslam::feature::FeatureDetectorShiTomasi>(
+      std::make_shared<vslam::feature::FeatureDetectorShiTomasiBucketing>(
           2, 2, 200, 5.0);
 
   // Build tracker
@@ -86,7 +86,7 @@ int main() {
   //  vslam::frontend::KimeraFrontend kimera_frontend(
   //      std::shared_ptr<vslam::data::ThreadsafeMapDatabase>(
   //          &threadsafe_map_database),
-  //      std::shared_ptr<vslam::feature::FeatureDetectorShiTomasi>(
+  //      std::shared_ptr<vslam::feature::FeatureDetectorShiTomasiBucketing>(
   //          &shi_tomasi_detector),
   //      std::shared_ptr<vslam::feature::FeatureTrackerLucasKanade>(&kl_tracker),
   //      100.0,

@@ -65,7 +65,7 @@ KimeraFrontendInput& KimeraFrontendInput::operator=(
  */
 KimeraFrontend::KimeraFrontend(
     const std::shared_ptr<data::ThreadsafeMapDatabase>& threadsafe_map_database,
-    const std::shared_ptr<feature::FeatureDetectorShiTomasi>&
+    const std::shared_ptr<feature::FeatureDetectorShiTomasiBucketing>&
         feature_detector_shi_tomasi,
     const std::shared_ptr<feature::FeatureTrackerLucasKanade>&
         feature_tracker_lucas_kanade,
