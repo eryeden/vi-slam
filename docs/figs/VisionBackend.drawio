@@ -1,4 +1,4 @@
-<mxfile host="www.draw.io" modified="2020-05-16T15:20:51.401Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="Nhi3oZNH1KCYCAbYioy9" version="13.1.2" type="github" pages="2">
+<mxfile host="www.draw.io" modified="2020-05-16T16:31:35.251Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="1vd11JqhX0jZIC9Cary_" version="13.1.2" type="github" pages="2">
   <diagram id="mYV5fHMhs3SO6_IcKCSN" name="Page-1">
     <mxGraphModel dx="1941" dy="1277" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -11,10 +11,13 @@
     </mxGraphModel>
   </diagram>
   <diagram id="CG2pjZPTrM2GcYqYaMGn" name="GTSAM">
-    <mxGraphModel dx="1317" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="2195" dy="1490" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="malhQMyiqFlj0tt06wjK-0" />
         <mxCell id="malhQMyiqFlj0tt06wjK-1" parent="malhQMyiqFlj0tt06wjK-0" />
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-31" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/MultivariateNormal.png/300px-MultivariateNormal.png;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="1006" y="870" width="181.05" height="137" as="geometry" />
+        </mxCell>
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-0" value="&lt;h1&gt;GTSAM&lt;/h1&gt;&lt;p&gt;iSAM2をVision backendに使う予定である。iSAM2はGTSAM内に実装されているらしいので、この使い方をメモしておく。&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
           <mxGeometry x="20" y="40" width="730" height="80" as="geometry" />
         </mxCell>
@@ -24,8 +27,8 @@
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-2" value="基本の登場人物&lt;br&gt;- Fractor graph&lt;br&gt;&lt;div&gt;- Variables : 推定したい値&lt;/div&gt;&lt;div&gt;- Factors：Variableに対する確率的な拘束条件、ここに観測値や、観測モデルが入っていくる。&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
           <mxGeometry x="10" y="170" width="520" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-3" value="Factor Graphってなに？" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
-          <mxGeometry x="30" y="660" width="150" height="20" as="geometry" />
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-3" value="Factor Graphってなに？&lt;br&gt;&lt;br&gt;隠れマルコフモデル（HMM）というのが元になっているらしい。&lt;br&gt;隠れマルコフモデルは、モデルの内部状態が直接観測できない状態繊維モデルのことらしい。&lt;br&gt;考えて見ると、GTSAMで扱いたい問題はほとんどHMMになりそうだ。&lt;br&gt;VSLAMや位置推定であっても、ロボットの本当のPoseは直接観測できない場合がほとんど。センサにノイズが乗っていたり、積分が必要だったり。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="10" y="585" width="810" height="90" as="geometry" />
         </mxCell>
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-4" value="個人的に…&lt;br&gt;この先、確率の話が大量に登場する。いつも確率の話が出てくると、&lt;br&gt;実際の数式、計算の処理に結びつけて理解できなくなる。どうにか抽象的な話を&lt;br&gt;プログラムとして記述できる具体的な話として変換しつつ進めていきたい。&lt;br&gt;とりあえず、現状の確率というものの理解を下に書いておく。&lt;br&gt;&lt;br&gt;\( X_1 \) の意味は？&lt;br&gt;何らかの数値、物理量などがこの \( X_1 \) として表現される。&lt;br&gt;普通の変数との違いは、 \( P(X_1) \) となったときに確率が出力されること。&lt;br&gt;&lt;br&gt;&lt;br&gt;\( P(X_1) \)の意味は？ \( X_1 \) との違いは？&lt;br&gt;\(X_1 \)はなんらかの値（物理量など）を示す。&lt;br&gt;\( P(X_1) \) は\(X_1\)が、ある値1や2などを撮る場合の確率を示す。&lt;br&gt;なのでよくある正規分布の図は、横軸\(X_1\)、縦軸\( P(X_1) \)になる。&lt;br&gt;&lt;br&gt;とりあえず、ある現象をモデル化するときに、&lt;br&gt;背後にある複雑、モデル化困難なメカニズムを簡単にモデル化する手法として、&lt;br&gt;すべての出力値に値の出やすさという数値を関連付けるという単純な方法があって、&lt;br&gt;これが確率変数、確率密度関数というものであると、理解しておく…とりあえず。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
           <mxGeometry x="10" y="260" width="470" height="290" as="geometry" />
@@ -61,6 +64,75 @@
         </mxCell>
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-14" value="このグラフの形はいかようにも変えることができ、&lt;br&gt;この形一つによって、数式として書き下すことが困難な&lt;br&gt;現象であっても表現できる、、、、という理解です" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
           <mxGeometry x="740" y="385" width="310" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-15" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://gtsam.org/tutorials/intro-images/2_Users_dellaert_git_github_doc_images_hmm.png;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="150" y="710" width="398.2" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-16" value="HMM" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="329.1" y="880" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-17" value="HMMの模式図。&lt;br&gt;観測値は\( Z_{1,2,3,...} \)&lt;br&gt;内部状態は\( X_{1,2,3,...} \)&lt;br&gt;ここでの変数は全て確率変数らしい" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="540" y="765" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.342;entryY=0.294;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="malhQMyiqFlj0tt06wjK-1" source="y6ONzhfBYeOvc6R4NJ2u-18" target="y6ONzhfBYeOvc6R4NJ2u-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-18" value="矢印は条件付き確率密度関数に相当するらしい" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="40" y="702" width="270" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-20" value="ここはおそらく&lt;br&gt;\( P(X_2 | X_1) \)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="65" y="722" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-21" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Multivariate_Gaussian.png/300px-Multivariate_Gaussian.png;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="808.83" y="710" width="172.34" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-22" value="\( P(Y|X) \)の話&lt;br&gt;たぶんだが、&lt;br&gt;Xの値が決まれば、Xの値の平面で&lt;br&gt;図形をスライスして、その断面が、Xの値が決まった時の&lt;br&gt;Yの確率密度関数になっているのだろうな。&lt;br&gt;Y自体の確率密度関数がわかれば、Yで一番出力する確率が高い値がわかる（平均値とか？）&lt;br&gt;その値を推定値として、偉い人に教えるなど、ここで初めて利用価値が生まれる気がする。&lt;br&gt;&lt;br&gt;\( P(Y|X=3) = P_{X=3}(Y) \)のように、Xの値が決まっときに&lt;br&gt;ただの確率密度関数になるとおしえられたが、その話がようやくわかった気がする。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="1006" y="620" width="510" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-23" value="" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;align=left;rotation=-90;size=0.2433392122281001;flipH=1;fillColor=none;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="824.12" y="702" width="141.75" height="66.25" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-24" value="Xが決まると&lt;br&gt;この平面で凸をスライスできる" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="808.83" y="630" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-25" value="" style="endArrow=none;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;exitX=0;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="malhQMyiqFlj0tt06wjK-1" source="y6ONzhfBYeOvc6R4NJ2u-23" target="y6ONzhfBYeOvc6R4NJ2u-23">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="850" y="870" as="sourcePoint" />
+            <mxPoint x="900" y="820" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="880" y="790" />
+              <mxPoint x="895" y="750" />
+              <mxPoint x="910" y="771" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-26" value="\( P(Z_1 | X_1) \)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="139" y="780" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-28" value="\( P(X, Y) \)の例" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="848.83" y="830" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.775;entryY=0.466;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="malhQMyiqFlj0tt06wjK-1" source="y6ONzhfBYeOvc6R4NJ2u-29" target="y6ONzhfBYeOvc6R4NJ2u-23">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="950" y="815" />
+              <mxPoint x="950" y="774" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.271;entryY=0.314;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="malhQMyiqFlj0tt06wjK-1" source="y6ONzhfBYeOvc6R4NJ2u-29" target="y6ONzhfBYeOvc6R4NJ2u-31">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1140" y="830" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-29" value="\( P(Y|X) \)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="1020" y="805" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-33" value="これをXに沿って積分すると\( P(Y) \)になる。&lt;br&gt;この操作を周辺化、Marginalizationというらしい。（噂の）" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="1071" y="830" width="340" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-34" value="↓式の面では疑問はあるが、イメージ、意味合い的には正しいはず" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="871" y="590" width="370" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
