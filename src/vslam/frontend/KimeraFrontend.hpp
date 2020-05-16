@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "FeatureDetectorShiTomasi.hpp"
+#include "FeatureDetectorBase.hpp"
 #include "FeatureTrackerLucasKanade.hpp"
 #include "FrontendBase.hpp"
 #include "Verification.hpp"
@@ -26,6 +26,7 @@ class KimeraFrontendInput {
   KimeraFrontendInput(
       double timestamp,
       const cv::Mat& frame,
+      const cv::Mat& mask,
       const std::unique_ptr<data::CameraModelBase>& camera_model);
   KimeraFrontendInput(const KimeraFrontendInput& kimera_frontend_input);
 
@@ -34,6 +35,7 @@ class KimeraFrontendInput {
 
   double timestamp_;
   cv::Mat frame_;
+  cv::Mat mask_;
   std::unique_ptr<data::CameraModelBase> camera_model_ptr_;
 
  private:
@@ -44,8 +46,7 @@ class KimeraFrontend : public FrontendBase {
   KimeraFrontend(
       const std::shared_ptr<data::ThreadsafeMapDatabase>&
           threadsafe_map_database,
-      const std::shared_ptr<feature::FeatureDetectorShiTomasi>&
-          feature_detector_shi_tomasi,
+      const std::shared_ptr<feature::FeatureDetectorBase>& feature_detector,
       const std::shared_ptr<feature::FeatureTrackerLucasKanade>&
           feature_tracker_lucas_kanade,
       const std::shared_ptr<verification::FeatureVerification5PointRANSAC>&
@@ -75,8 +76,7 @@ class KimeraFrontend : public FrontendBase {
   bool is_first_frame_;
 
   // Feature Detector
-  std::shared_ptr<feature::FeatureDetectorShiTomasi>
-      feature_detector_shi_tomasi_;
+  std::shared_ptr<feature::FeatureDetectorBase> feature_detector_;
   // Feature Tracker
   std::shared_ptr<feature::FeatureTrackerLucasKanade>
       feature_tracker_lucas_kanade_;

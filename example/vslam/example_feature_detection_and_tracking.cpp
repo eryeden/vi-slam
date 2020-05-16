@@ -5,7 +5,7 @@
 #include <fmt/format.h>
 
 #include "EurocKimeraDataProviderRadialTangentialCameraModel.hpp"
-#include "FeatureDetectorShiTomasi.hpp"
+#include "FeatureDetectorShiTomasiBucketing.hpp"
 #include "FeatureTrackerLucasKanade.hpp"
 #include "KimeraFrontend.hpp"
 
@@ -16,7 +16,8 @@ int main() {
       euroc_kimera_data_provider(path_to_euroc);
 
   // Build detector
-  vslam::feature::FeatureDetectorShiTomasi shi_tomasi_detector(4, 4, 300, 2.0);
+  vslam::feature::FeatureDetectorShiTomasiBucketing shi_tomasi_detector(
+      4, 4, 300, 2.0);
 
   // Build tracker
   vslam::feature::FeatureTrackerLucasKanade kl_tracker(30, 0.01, 15, 3);

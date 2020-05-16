@@ -6,6 +6,7 @@
 
 #include <opencv2/opencv.hpp>
 
+#include "FeatureDetectorBase.hpp"
 #include "Frame.hpp"
 
 /**
@@ -26,17 +27,17 @@ std::vector<cv::Rect2f> GenerateGrid(const cv::Size& size,
                                      int32_t division_number_row);
 }
 
-class FeatureDetectorShiTomasi {
+class FeatureDetectorShiTomasiBucketing : public FeatureDetectorBase {
  public:
-
-  FeatureDetectorShiTomasi(int32_t division_number_row,
-                           int32_t division_number_col,
-                           int32_t max_feature_number,
-                           double min_feature_distance);
+  FeatureDetectorShiTomasiBucketing(int32_t division_number_row,
+                                    int32_t division_number_col,
+                                    int32_t max_feature_number,
+                                    double min_feature_distance);
 
   void UpdateDetection(FeaturePositionDatabase& feature_position,
                        FeatureAgeDatabase& feature_age,
-                       const cv::Mat& current_image);
+                       const cv::Mat& current_image,
+                       const cv::Mat& mask_image = cv::Mat()) override;
 
  private:
   void DetectShiTomasiCorners(FeaturePositionDatabase& feature_position,
@@ -46,7 +47,8 @@ class FeatureDetectorShiTomasi {
                               int32_t division_number_col,
                               int32_t max_feature_number,
                               double min_feature_distance,
-                              database_index_t& max_feature_index) const;
+                              database_index_t& max_feature_index,
+                              const cv::Mat& mask_image = cv::Mat()) const;
 
   database_index_t max_feature_index_;
 
