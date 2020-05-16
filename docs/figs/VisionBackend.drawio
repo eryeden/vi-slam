@@ -1,4 +1,4 @@
-<mxfile host="www.draw.io" modified="2020-05-16T16:31:35.251Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="1vd11JqhX0jZIC9Cary_" version="13.1.2" type="github" pages="2">
+<mxfile host="www.draw.io" modified="2020-05-16T17:18:17.465Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="IiBO2okgei3d4x7rtGBm" version="13.1.2" type="github" pages="2">
   <diagram id="mYV5fHMhs3SO6_IcKCSN" name="Page-1">
     <mxGraphModel dx="1941" dy="1277" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -11,7 +11,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="CG2pjZPTrM2GcYqYaMGn" name="GTSAM">
-    <mxGraphModel dx="2195" dy="1490" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="908" dy="617" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="malhQMyiqFlj0tt06wjK-0" />
         <mxCell id="malhQMyiqFlj0tt06wjK-1" parent="malhQMyiqFlj0tt06wjK-0" />
@@ -80,8 +80,8 @@
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-18" value="矢印は条件付き確率密度関数に相当するらしい" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
           <mxGeometry x="40" y="702" width="270" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-20" value="ここはおそらく&lt;br&gt;\( P(X_2 | X_1) \)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
-          <mxGeometry x="65" y="722" width="110" height="30" as="geometry" />
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-20" value="\( P(X_2 | X_1) \)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="230" y="720" width="110" height="20" as="geometry" />
         </mxCell>
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-21" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Multivariate_Gaussian.png/300px-Multivariate_Gaussian.png;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
           <mxGeometry x="808.83" y="710" width="172.34" height="108" as="geometry" />
@@ -109,8 +109,8 @@
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-26" value="\( P(Z_1 | X_1) \)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
           <mxGeometry x="139" y="780" width="100" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-28" value="\( P(X, Y) \)の例" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
-          <mxGeometry x="848.83" y="830" width="100" height="20" as="geometry" />
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-28" value="\( P(X, Y) \)をプロットした例" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="813.83" y="830" width="170" height="20" as="geometry" />
         </mxCell>
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.775;entryY=0.466;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="malhQMyiqFlj0tt06wjK-1" source="y6ONzhfBYeOvc6R4NJ2u-29" target="y6ONzhfBYeOvc6R4NJ2u-23">
           <mxGeometry relative="1" as="geometry">
@@ -133,6 +133,9 @@
         </mxCell>
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-34" value="↓式の面では疑問はあるが、イメージ、意味合い的には正しいはず" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
           <mxGeometry x="871" y="590" width="370" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-35" value="↑のHMMは、あくまでも現象をどうモデル化するかという話。&lt;br&gt;やりたいことは、HMMでは隠されているモデルの内部状態 \( X_1, X_2, X_3 \)を求めること。&lt;br&gt;ここは、\( P(X_1, X_2, X_3 | Z_1 = z_1, Z_2 = z_2, Z_3 = z_3) \)である条件付き確率密度関数が、&lt;br&gt;\( z_1, z_2, z_3 \) という値が観測されたときのシステム状態の確率密度関数として、&lt;br&gt;このP(~)がのピークになている\(X_1, X_2, X_3 \)の値を求めることをこれからやっていく。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="20" y="920" width="540" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
