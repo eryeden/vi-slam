@@ -68,7 +68,7 @@ int main() {
           2, 2, 200, 5.0);
 
   auto anms_detector_ptr =
-      std::make_shared<vslam::feature::FeatureDetectorANMS>(200, 10.0);
+      std::make_shared<vslam::feature::FeatureDetectorANMS>(100, 20.0);
 
   // Build tracker
   auto kl_tracker_ptr =
@@ -78,7 +78,7 @@ int main() {
   // Build verification
   auto verification_ptr =
       std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
-          2 * M_PI / 180.0, 150, 0.9);
+          5 * M_PI / 180.0, 150, 0.9);
 
   /**
    * @note
@@ -103,7 +103,7 @@ int main() {
       kl_tracker_ptr,
       verification_ptr,
       10.0,
-      100);
+      50);
 
   vslam::data::FrameSharedPtr prev_frame = nullptr;
   vslam::FeatureAgeDatabase prev_feature_age;
