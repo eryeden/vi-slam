@@ -15,7 +15,11 @@ Try to make Visual Inertial SLAM
 - [Dataset](docs/dataset.md)
 - [OpenGV Memo](docs/opengv_memo.md)
 - [Camera model](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2FCameraModel.drawio)
-- [Fig](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Fvislam.drawio)
+
+## Figs
+- [Overview](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Fvislam.drawio)
+- [Vision-frontend](https://app.diagrams.net/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2FVSLAM-Fontend.drawio)
+- [Vision-backend](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2FVisionBackend.drawio)
 
 ## Policy
 1. Keep a license of this repo as non-GPL.
