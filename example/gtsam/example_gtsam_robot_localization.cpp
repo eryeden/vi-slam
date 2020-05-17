@@ -5,6 +5,8 @@
 #include <fmt/format.h>
 #include <spdlog/spdlog.h>
 
+#include <optional>
+
 // We will use Pose2 variables (x, y, theta) to represent the robot positions
 #include <gtsam/geometry/Pose2.h>
 
@@ -39,30 +41,47 @@
 // Values container.
 #include <gtsam/nonlinear/Values.h>
 
-/**
- * @brief A first example : Odometry
- * @details
- * 基本やることは、Factorとして、観測値の設定を行うこと。
- * Prior Factorとして、起点となる位置の情報を与えること。
- * 推定値の初期値を設定すること。
- * 最後に最適化関数を呼んで、最大事後確率となる推定値を探索すること。
- *
- * 追加で、今回問題の対象としている確率変数それぞれについて周辺化を実施して、
- * 共分散を求めること。
- */
-
 using namespace std;
 using namespace gtsam;
+
+/**
+ * @brief Solve a localization problem using odometry and GPS measurements.
+ * @details
+ * 前回のOdometryに加えて、GPSの観測値を使ったPose推定問題を記述する。
+ * 一つの観測値は、関連した一つのPoseにリンクしているので、（Odometryは２つのPoseを関連付ける）Unary
+ * Factorを追加することになる。
+ * また、絶対位置を観測している情報が追加されたので、PriorFactorは不要になる。
+ * Odometryだけの場合は、相対的なPose情報しか得られていなかったので最適化の安定性、
+ * Poseに確定性をもたせるためにPriorFactorが必要になる。
+ */
+
+class GPSUnaryFactor : public NoiseModelFactor1<Pose2> {
+  double mx_, my_;
+
+ public:
+  GPSUnaryFactor(Key j, double x, double y, const SharedNoiseModel& noise_model)
+      : NoiseModelFactor1<Pose2>(noise_model, j), mx_(x), my_(y) {}
+
+  Vector evaluateError(const Pose2& q,
+                       boost::optional<Matrix&> H = boost::none) const {
+    if (H) {
+      (*H) =
+          (Matrix(2, 3) << 1.0, 0.0, 0.0, 0.0, 1.0, 0.0)
+              .finished();  // h(q)についてのqで偏微分したときのヤコビアンをここに代入する
+    }
+    return (Vector2(2) << q.x() - mx_, q.y() - my_).finished();
+  }
+};
 
 int main() {
   // Create an empty nonlinear factor graph
   NonlinearFactorGraph graph;
 
-  // Add a prior on the first pose, setting it to the origin
-  // A prior factor consists of a mean and a noise model (covariance matrix)
-  Pose2 prior_mean(0.0, 0.0, 0.0);  // prior at origin
-  auto prior_noise = noiseModel::Diagonal::Sigmas(Vector3(0.3, 0.3, 0.1));
-  graph.add(PriorFactor<Pose2>(1, prior_mean, prior_noise));
+  //  // Add a prior on the first pose, setting it to the origin
+  //  // A prior factor consists of a mean and a noise model (covariance matrix)
+  //  Pose2 prior_mean(0.0, 0.0, 0.0);  // prior at origin
+  //  auto prior_noise = noiseModel::Diagonal::Sigmas(Vector3(0.3, 0.3, 0.1));
+  //  graph.add(PriorFactor<Pose2>(1, prior_mean, prior_noise));
 
   // Add odometry factors
   Pose2 odometry(2.0, 0.0, 0.0);
@@ -71,6 +90,12 @@ int main() {
   // Create odometry (Between) factors between consecutive poses
   graph.add(BetweenFactor<Pose2>(1, 2, odometry, odometry_noise));
   graph.add(BetweenFactor<Pose2>(2, 3, odometry, odometry_noise));
+
+  // GPS unary measurement factors
+  auto gpsUnaryNoise = noiseModel::Diagonal::Sigmas(Vector2(0.1, 0.1));
+  graph.add(GPSUnaryFactor(1, 0.0, 0.0, gpsUnaryNoise));
+  graph.add(GPSUnaryFactor(2, 2.0, 0.0, gpsUnaryNoise));
+  graph.add(GPSUnaryFactor(3, 4.0, 0.0, gpsUnaryNoise));
 
   graph.print("\nFactor Graph:\n");  // print
 

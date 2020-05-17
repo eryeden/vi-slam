@@ -27,23 +27,23 @@ int main() {
   //        "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
   //        "calib_results/calibration.json";
 
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+  //  std::string path_to_calibfile =
+  //      "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
+  //      "results/calibration.json";
+  //
+  //  vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
+  //      path_to_euroc, path_to_calibfile);
+
   std::string path_to_euroc =
-      "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+      "/e/subspace/docker_work/dataset/fukuroi/camlog_2020-05-13-21-09-39/";
   std::string path_to_calibfile =
-      "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
-      "results/calibration.json";
-
+      "/e/subspace/docker_work/dataset/fukuroi/calib_result/calibration.json";
+  std::string path_to_mask =
+      "/e/subspace/docker_work/dataset/fukuroi/calib_result/vingette_0.png";
   vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
-      path_to_euroc, path_to_calibfile);
-
-  //    std::string path_to_euroc =
-  //        "/e/subspace/docker_work/dataset/fukuroi/camlog_2020-05-13-21-09-39/";
-  //    std::string path_to_calibfile =
-  //        "/e/subspace/docker_work/dataset/fukuroi/calib_result/calibration.json";
-  //    std::string path_to_mask =
-  //    "/e/subspace/docker_work/dataset/fukuroi/calib_result/vingette_0.png";
-  //    vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
-  //        path_to_euroc, path_to_calibfile, path_to_mask);
+      path_to_euroc, path_to_calibfile, path_to_mask);
   //
   //  spdlog::info(
   //      "Load dataset from:\n"

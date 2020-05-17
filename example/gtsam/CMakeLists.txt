@@ -2,7 +2,8 @@ add_executable(example_gtsam_test1 example_gtsam_test1.cpp)
 list(APPEND EXECUTABLE_TARGETS example_gtsam_test1)
 add_executable(example_gtsam_odometry example_gtsam_odometry.cpp)
 list(APPEND EXECUTABLE_TARGETS example_gtsam_odometry)
-
+add_executable(example_gtsam_robot_localization example_gtsam_robot_localization.cpp)
+list(APPEND EXECUTABLE_TARGETS example_gtsam_robot_localization)
 
 foreach (EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
 
