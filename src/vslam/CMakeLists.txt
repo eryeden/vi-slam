@@ -49,6 +49,9 @@ target_link_libraries(${VSLAM_PROJECT_NAME}
         spdlog::spdlog
         fmt::fmt
         opengv
+        Boost::boost
+        gtsam
+        gtsam_unstable
         )
 
 
