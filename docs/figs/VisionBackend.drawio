@@ -1,4 +1,4 @@
-<mxfile host="www.draw.io" modified="2020-05-17T02:10:45.687Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="fZZIEtakd-WhW0Aclsbx" version="13.1.2" type="github" pages="2">
+<mxfile host="www.draw.io" modified="2020-05-17T02:14:58.813Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="yiYq3gdOQ2bVPcHT-Y5P" version="13.1.2" type="github" pages="2">
   <diagram id="mYV5fHMhs3SO6_IcKCSN" name="Page-1">
     <mxGraphModel dx="1941" dy="1277" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -27,7 +27,7 @@
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-2" value="基本の登場人物&lt;br&gt;- Fractor graph&lt;br&gt;&lt;div&gt;- Variables : 推定したい値&lt;/div&gt;&lt;div&gt;- Factors：Variableに対する確率的な拘束条件、ここに観測値や、観測モデルが入っていくる。&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
           <mxGeometry x="10" y="170" width="520" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-3" value="Factor Graphってなに？&lt;br&gt;&lt;br&gt;隠れマルコフモデル（HMM）というのが元になっているらしい。&lt;br&gt;隠れマルコフモデルは、モデルの内部状態が直接観測できない状態繊維モデルのことらしい。&lt;br&gt;考えて見ると、GTSAMで扱いたい問題はほとんどHMMになりそうだ。&lt;br&gt;VSLAMや位置推定であっても、ロボットの本当のPoseは直接観測できない場合がほとんど。センサにノイズが乗っていたり、積分が必要だったり。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-3" value="&lt;font style=&quot;font-size: 15px&quot;&gt;&lt;b&gt;Factor Graphってなに？&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;br&gt;隠れマルコフモデル（HMM）というのが元になっているらしい。&lt;br&gt;隠れマルコフモデルは、モデルの内部状態が直接観測できない状態繊維モデルのことらしい。&lt;br&gt;考えて見ると、GTSAMで扱いたい問題はほとんどHMMになりそうだ。&lt;br&gt;VSLAMや位置推定であっても、ロボットの本当のPoseは直接観測できない場合がほとんど。センサにノイズが乗っていたり、積分が必要だったり。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
           <mxGeometry x="10" y="585" width="810" height="90" as="geometry" />
         </mxCell>
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-4" value="個人的に…&lt;br&gt;この先、確率の話が大量に登場する。いつも確率の話が出てくると、&lt;br&gt;実際の数式、計算の処理に結びつけて理解できなくなる。どうにか抽象的な話を&lt;br&gt;プログラムとして記述できる具体的な話として変換しつつ進めていきたい。&lt;br&gt;とりあえず、現状の確率というものの理解を下に書いておく。&lt;br&gt;&lt;br&gt;\( X_1 \) の意味は？&lt;br&gt;何らかの数値、物理量などがこの \( X_1 \) として表現される。&lt;br&gt;普通の変数との違いは、 \( P(X_1) \) となったときに確率が出力されること。&lt;br&gt;&lt;br&gt;&lt;br&gt;\( P(X_1) \)の意味は？ \( X_1 \) との違いは？&lt;br&gt;\(X_1 \)はなんらかの値（物理量など）を示す。&lt;br&gt;\( P(X_1) \) は\(X_1\)が、ある値1や2などを撮る場合の確率を示す。&lt;br&gt;なのでよくある正規分布の図は、横軸\(X_1\)、縦軸\( P(X_1) \)になる。&lt;br&gt;&lt;br&gt;とりあえず、ある現象をモデル化するときに、&lt;br&gt;背後にある複雑、モデル化困難なメカニズムを簡単にモデル化する手法として、&lt;br&gt;すべての出力値に値の出やすさという数値を関連付けるという単純な方法があって、&lt;br&gt;これが確率変数、確率密度関数というものであると、理解しておく…とりあえず。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
@@ -110,7 +110,7 @@
           <mxGeometry x="139" y="780" width="100" height="20" as="geometry" />
         </mxCell>
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-28" value="\( P(X, Y) \)をプロットした例" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
-          <mxGeometry x="813.83" y="830" width="170" height="20" as="geometry" />
+          <mxGeometry x="808.83" y="818" width="170" height="20" as="geometry" />
         </mxCell>
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.775;entryY=0.466;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="malhQMyiqFlj0tt06wjK-1" source="y6ONzhfBYeOvc6R4NJ2u-29" target="y6ONzhfBYeOvc6R4NJ2u-23">
           <mxGeometry relative="1" as="geometry">
@@ -142,6 +142,9 @@
         </mxCell>
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-38" value="\( P(Y |X) = P(X, Y) / P(X) \)についてメモ&lt;br&gt;&lt;br&gt;ここで登場する\( P(X) \)は周辺化されたP(X)である。&lt;br&gt;この式は確率変数にある値が入った、上図の一点の値について記述していると考えたほうがわかりやすい気がする。&lt;br&gt;つまり、上図のx = 2, y = 3とか具体的な数字が設定された状態で、&lt;br&gt;\( P(Y = y | X = x) = P(X = x, Y = y) / P(X = x) \)&lt;br&gt;が成り立っているということ。&lt;br&gt;&lt;br&gt;一番の疑問である、なぜ割るのか？ということだが、 \( P(Y | X) \)をY方向に積分して合計1にならないから。&lt;br&gt;\( P(X, Y) \)は、X, Y方向に２D積分すると１になるが、\( P(Y | X) \)は \( P(X, Y) \)の一部をスライスしただけなので、&lt;br&gt;変数Y（ \( P(Y | X) \) ではXは定数扱い）の全区間で積分しても１にならず確率の定義を満たさないらしい。&lt;br&gt;これを解消するためのスケーリングパラメータとしての \(1/ P(X) \)がある。&lt;br&gt;&lt;br&gt;ここまででわかったこととしては、\( P(X) \)の意味合いが結構変わってわかりにくいということ。&lt;br&gt;パターンは２つある。&lt;br&gt;1. \(X\)は取りうる地域全てを表現しており、\( P(X) \)は確率分布の形か何かを表現しているパターン&lt;br&gt;2. \(X\)は代入された後の変数のように値が確定していて、\( P(X) \)はその値の出現する確率の値（これも具体的な値）を表現している&lt;br&gt;上級者から見たら一緒の話なのかもしれないが、少なくともこの段階で俺は結構混乱した。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
           <mxGeometry x="1006" y="1060" width="810" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-40" value="Xで積分すると &lt;br&gt;\(P(Y)\)になる" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="965.87" y="860" width="100" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
