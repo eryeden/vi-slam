@@ -1,4 +1,4 @@
-<mxfile host="www.draw.io" modified="2020-05-17T02:14:58.813Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="yiYq3gdOQ2bVPcHT-Y5P" version="13.1.2" type="github" pages="2">
+<mxfile host="www.draw.io" modified="2020-05-17T02:55:34.329Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="y4-x5yIEGHxRkJoklbha" version="13.1.2" type="github" pages="2">
   <diagram id="mYV5fHMhs3SO6_IcKCSN" name="Page-1">
     <mxGraphModel dx="1941" dy="1277" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -11,7 +11,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="CG2pjZPTrM2GcYqYaMGn" name="GTSAM">
-    <mxGraphModel dx="2193" dy="1490" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="1097" dy="745" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="malhQMyiqFlj0tt06wjK-0" />
         <mxCell id="malhQMyiqFlj0tt06wjK-1" parent="malhQMyiqFlj0tt06wjK-0" />
@@ -145,6 +145,21 @@
         </mxCell>
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-40" value="Xで積分すると &lt;br&gt;\(P(Y)\)になる" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
           <mxGeometry x="965.87" y="860" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-41" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://gtsam.org/tutorials/intro-images/3_Users_dellaert_git_github_doc_images_hmm-FG.png;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="45" y="1470" width="520" height="235" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-42" value="↑でいろいろ出てきた確率的な拘束条件というものは次のFactor graphというものでまとめ上げることが&lt;br&gt;できるらしい&lt;br&gt;確率的な拘束条件とは？&lt;br&gt;おそらく、 \( P(X_i | X_{i-1}) \)だったり、\( L(X_i; z_i ) \)といった式がここに相当すると思われる。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="10" y="1430" width="570" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-43" value="&lt;font style=&quot;font-size: 15px&quot;&gt;&lt;b&gt;具体例：オドメトリを使ったロボット位置の推定&lt;br&gt;&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="10" y="1734" width="350" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-44" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://gtsam.org/tutorials/intro-images/4_Users_dellaert_git_github_doc_images_FactorGraph.png;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="340" y="1730" width="370" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-45" value="→が今回のFactor graphらしい。&lt;br&gt;\( f_i(***) \) がFactor。&lt;br&gt;&lt;br&gt;GTSAMでやることは、以下の設定。&lt;br&gt;- Factorを設定する&lt;br&gt;- \( x_1, x_2, x_3 \)などのPを最大化したい変数の最適化時初期値を設定する。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="10" y="1780" width="440" height="90" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
