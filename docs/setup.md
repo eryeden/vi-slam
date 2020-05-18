@@ -85,6 +85,7 @@ sudo apt-get install cmake
 sudo apt-get install cmake libeigen3-dev
 
 # Downloading the source code
+cd somewhere/convenient/directory/
 git clone https://github.com/laurentkneip/opengv
 # Go to the top-level directory of OpenGV. Type:
 mkdir build && cd build && cmake .. && make -j $(nproc)
@@ -113,6 +114,7 @@ sudo apt-get install -y \
       libatlas-base-dev gfortran
 
 # Clone GTSAM and build it.
+cd somewhere/convenient/directory/
 git clone https://github.com/borglab/gtsam.git
 cd gtsam
 mkdir build
@@ -122,3 +124,20 @@ make -j $(nproc)
 sudo make -j $(nproc) install
 ```
 
+- [Pangolin](https://github.com/stevenlovegrove/Pangolin)
+
+基本はPangolinのREADME.mdを参照すればインストールできるはず。
+
+```bash
+sudo apt install libgl1-mesa-dev
+sudo apt install libglew-dev
+
+cd somewhere/convenient/directory/
+git clone https://github.com/stevenlovegrove/Pangolin.git
+cd Pangolin
+mkdir build
+cd build
+cmake ..
+cmake --build .
+sudo make install
+```
