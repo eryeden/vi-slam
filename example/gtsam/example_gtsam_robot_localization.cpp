@@ -73,6 +73,27 @@ class GPSUnaryFactor : public NoiseModelFactor1<Pose2> {
   }
 };
 
+class GPSUnaryFactorMod : public NoiseModelFactor1<Pose2> {
+  double mx_, my_;
+
+ public:
+  GPSUnaryFactorMod(Key j,
+                    double x,
+                    double y,
+                    const SharedNoiseModel& noise_model)
+      : NoiseModelFactor1<Pose2>(noise_model, j), mx_(x), my_(y) {}
+
+  Vector evaluateError(const Pose2& q,
+                       boost::optional<Matrix&> H = boost::none) const {
+    if (H) {
+      (*H) =
+          (Matrix(3, 3) << 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0)
+              .finished();  // h(q)についてのqで偏微分したときのヤコビアンをここに代入する
+    }
+    return (Vector3(3) << q.x() - mx_, q.y() - my_, 0).finished();
+  }
+};
+
 int main() {
   // Create an empty nonlinear factor graph
   NonlinearFactorGraph graph;
@@ -96,6 +117,12 @@ int main() {
   graph.add(GPSUnaryFactor(1, 0.0, 0.0, gpsUnaryNoise));
   graph.add(GPSUnaryFactor(2, 2.0, 0.0, gpsUnaryNoise));
   graph.add(GPSUnaryFactor(3, 4.0, 0.0, gpsUnaryNoise));
+
+  //  auto gpsUnaryNoise = noiseModel::Diagonal::Sigmas(Vector3(0.1, 0.1, 0.1));
+  //  // ここのノイズモデルの次元は、h(q)の次元と一致している必要あり。
+  //  graph.add(GPSUnaryFactorMod(1, 0.0, 0.0, gpsUnaryNoise));
+  //  graph.add(GPSUnaryFactorMod(2, 2.0, 0.0, gpsUnaryNoise));
+  //  graph.add(GPSUnaryFactorMod(3, 4.0, 0.0, gpsUnaryNoise));
 
   graph.print("\nFactor Graph:\n");  // print
 
