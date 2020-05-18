@@ -39,7 +39,7 @@ cd opencv3.4.9
 mkdir build
 cd build
 cmake-gui ..
-make -j13
+make -j $(nproc)
 sudo make install
 ```
 
@@ -54,7 +54,7 @@ cd spdlog-1.5.0
 mkdir build
 cd build
 cmake .. -DCMAKE_CXX_FLAGS="-fpic" #このオプションがないと下記エラーがでるので注意。
-make -j; sudo make install
+make -j $(nproc); sudo make install
 ```
 Error message:
 ```
@@ -73,7 +73,7 @@ cd fmt-6.2.0
 mkdir build
 cd build
 cmake ..
-make -j; sudo make install
+make -j $(nproc); sudo make install
 ```
 
 - [opengv](https://github.com/laurentkneip/opengv)
@@ -87,6 +87,38 @@ sudo apt-get install cmake libeigen3-dev
 # Downloading the source code
 git clone https://github.com/laurentkneip/opengv
 # Go to the top-level directory of OpenGV. Type:
-mkdir build && cd build && cmake .. && make
+mkdir build && cd build && cmake .. && make -j $(nproc)
 sudo make install
 ```
+
+- [GTSAM](https://github.com/borglab/gtsam)
+
+ref : https://github.com/MIT-SPARK/Kimera-VIO/blob/master/docs/kimera_vio_install.md
+
+Kimera-VIOでのセットアップ手順に準拠してGTSAMをインストールする。基本的に手順はは上記リンクを参照すればOK。
+
+
+```bash
+# Install deps for GTSAM.
+sudo apt-get update
+sudo apt-get install -y --no-install-recommends apt-utils
+sudo apt-get install -y cmake
+sudo apt-get install -y libboost-all-dev
+sudo apt-get install -y \
+      build-essential unzip pkg-config \
+      libjpeg-dev libpng-dev libtiff-dev \
+      libvtk6-dev \
+      libgtk-3-dev \
+      libparmetis-dev \
+      libatlas-base-dev gfortran
+
+# Clone GTSAM and build it.
+git clone https://github.com/borglab/gtsam.git
+cd gtsam
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Release -DGTSAM_USE_SYSTEM_EIGEN=OFF -DGTSAM_POSE3_EXPMAP=ON -DGTSAM_ROT3_EXPMAP=ON ..
+make -j $(nproc)
+sudo make -j $(nproc) install
+```
+
