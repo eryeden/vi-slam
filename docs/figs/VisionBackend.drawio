@@ -1,4 +1,4 @@
-<mxfile host="www.draw.io" modified="2020-05-18T01:01:56.527Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="u7cTavqh6yWU_osOZLdb" version="13.1.2" type="github" pages="2">
+<mxfile host="www.draw.io" modified="2020-05-18T02:36:21.932Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="ghJ8OTm0AQhhmKSbGrUP" version="13.1.2" type="github" pages="2">
   <diagram id="mYV5fHMhs3SO6_IcKCSN" name="Page-1">
     <mxGraphModel dx="1359" dy="801" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -11,7 +11,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="CG2pjZPTrM2GcYqYaMGn" name="GTSAM">
-    <mxGraphModel dx="2718" dy="1788" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="1133" dy="745" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="malhQMyiqFlj0tt06wjK-0" />
         <mxCell id="malhQMyiqFlj0tt06wjK-1" parent="malhQMyiqFlj0tt06wjK-0" />
@@ -202,6 +202,30 @@
         </mxCell>
         <mxCell id="iuoN6O5FOuv3n4ogCXSz-16" value="ここで\( E(q) \)をリターンするのだが、&lt;br&gt;このベクトルの次元はなんでもよさそう？" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
           <mxGeometry x="375" y="2308" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-18" value="&lt;font style=&quot;font-size: 15px&quot;&gt;&lt;b&gt;具体例：Landmark based SLAM&lt;br&gt;&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="10" y="2640" width="240" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-19" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://gtsam.org/tutorials/intro-images/12_Users_dellaert_git_github_doc_images_FactorGraph4.png;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="510" y="2570" width="354" height="185" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-20" value="Landmark based SLAMでは、未知の変数がもう一つ登場する。&lt;br&gt;- Robot Pose　に加えて&lt;br&gt;- Landmark location が登場する" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="10" y="2690" width="360" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-21" value="Landmark based SLAMのFactor graph" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="580" y="2755" width="220" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-22" value="\(x_1 \)からLandmark 1を観測する&lt;br&gt;Binary Factor" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="470" y="2640" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-23" value="絶対位置は決まらないので&lt;br&gt;Prior Factorとしての&lt;br&gt;Unary Factorをつなげておく" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="360" y="2705" width="170" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-24" value="観測情報のFactorのモデルについて：&lt;br&gt;Bearing + Range　Factorを利用している。&lt;br&gt;なので観測情報は、Bearing角と車両からの距離(Range)になる。&lt;br&gt;ノイズパラメータは、Bearingの文さん、Rangeの分散として設定する。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="10" y="2760" width="400" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-25" value="VariableのKeyについて：&lt;br&gt;前回までは、自分でVariableのKeyを整数で採番して設定していた。&lt;br&gt;このまま使っていいが、採番済みのKey番号など管理するのが大変なので、Helperが用意されている。&lt;br&gt;symbol Typeを利用すると、文字とIndexの組み合わせでUniqueな採番ができるようになっているらしい。&lt;br&gt;サンプルでは、Robot Poseはx、Landmark Locationはlとして文字を設定して、その文字の中で１からそれぞれ採番していた。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="10" y="2830" width="690" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
