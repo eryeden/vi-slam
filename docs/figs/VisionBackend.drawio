@@ -1,4 +1,4 @@
-<mxfile host="www.draw.io" modified="2020-05-18T00:00:06.521Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="zfuaHtZAP4bxXkc3EfDo" version="13.1.2" type="github" pages="2">
+<mxfile host="www.draw.io" modified="2020-05-18T01:01:56.527Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="u7cTavqh6yWU_osOZLdb" version="13.1.2" type="github" pages="2">
   <diagram id="mYV5fHMhs3SO6_IcKCSN" name="Page-1">
     <mxGraphModel dx="1359" dy="801" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -11,7 +11,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="CG2pjZPTrM2GcYqYaMGn" name="GTSAM">
-    <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="2718" dy="1788" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="malhQMyiqFlj0tt06wjK-0" />
         <mxCell id="malhQMyiqFlj0tt06wjK-1" parent="malhQMyiqFlj0tt06wjK-0" />
@@ -152,11 +152,11 @@
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-42" value="↑でいろいろ出てきた確率的な拘束条件というものは次のFactor graphというものでまとめ上げることが&lt;br&gt;できるらしい&lt;br&gt;確率的な拘束条件とは？&lt;br&gt;おそらく、 \( P(X_i | X_{i-1}) \)だったり、\( L(X_i; z_i ) \)といった式がここに相当すると思われる。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="malhQMyiqFlj0tt06wjK-1" vertex="1">
           <mxGeometry x="10" y="1430" width="570" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-43" value="&lt;font style=&quot;font-size: 15px&quot;&gt;&lt;b&gt;具体例：オドメトリを使ったロボット位置の推定&lt;br&gt;&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="malhQMyiqFlj0tt06wjK-1" vertex="1">
-          <mxGeometry x="10" y="1734" width="350" height="20" as="geometry" />
+        <mxCell id="y6ONzhfBYeOvc6R4NJ2u-43" value="&lt;font style=&quot;font-size: 15px&quot;&gt;&lt;b&gt;具体例：オドメトリを使ったロボット位置の推定 + GPS&lt;br&gt;&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="malhQMyiqFlj0tt06wjK-1" vertex="1">
+          <mxGeometry x="10" y="1734" width="390" height="20" as="geometry" />
         </mxCell>
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-44" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://gtsam.org/tutorials/intro-images/4_Users_dellaert_git_github_doc_images_FactorGraph.png;" parent="malhQMyiqFlj0tt06wjK-1" vertex="1">
-          <mxGeometry x="340" y="1730" width="370" height="112" as="geometry" />
+          <mxGeometry x="570" y="1705" width="370" height="112" as="geometry" />
         </mxCell>
         <mxCell id="y6ONzhfBYeOvc6R4NJ2u-45" value="→が今回のFactor graphらしい。&lt;br&gt;\( f_i(***) \) がFactor。&lt;br&gt;&lt;br&gt;GTSAMでやることは、以下の設定。&lt;br&gt;- Factorを設定する&lt;br&gt;- \( x_1, x_2, x_3 \)などのPを最大化したい変数の最適化時初期値を設定する。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="malhQMyiqFlj0tt06wjK-1" vertex="1">
           <mxGeometry x="10" y="1780" width="440" height="90" as="geometry" />
@@ -164,8 +164,44 @@
         <mxCell id="iuoN6O5FOuv3n4ogCXSz-0" value="この例では、\( f_0, f_1, f_2 \)を設定する。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
           <mxGeometry x="10" y="1900" width="240" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="iuoN6O5FOuv3n4ogCXSz-1" value="ではFの中身はなんなのか？　＝＞Measurement likehoodらしい&lt;br&gt;BetweenFactorはなにかわからないが、UnaryFactorは次のようなモデルを考えることがある。&lt;br&gt;\( L(q;m) = \exp{(-1/2 || h(q) - m ||^2_{\Sigma})} = f(q) \)&lt;br&gt;&lt;br&gt;\( m \) : 観測値や外部設定値&lt;br&gt;\( q \) : 最適化対象のパラメータ&lt;br&gt;\( h(q) \) : 観測モデル、内部パラメータqから観測値を作り出すモデル&lt;br&gt;\( \exp{\{ ... \}}&amp;nbsp;\) : ガウシアンモデル？&lt;br&gt;\( \Sigma \) : 観測値m？このモデルのノイズモデルについてのパラメータ&lt;br&gt;&lt;br&gt;GTSAMでは、UnaryFactorの定義で、NoiseModelFactor1を継承する限り、以下二点の設定でFactorを定義できる。&lt;br&gt;1. 誤差関数 : \( h(q) - m \)&lt;br&gt;2. NoiseModelパラメータ : \( \Sigma \)&lt;br&gt;3. ヤコビアン : \( \frac{\partial (h(q)-m)}{\partial q} \)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
-          <mxGeometry x="10" y="1950" width="630" height="200" as="geometry" />
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-1" value="ではFの中身はなんなのか？　＝＞Measurement likehoodらしい&lt;br&gt;BetweenFactorはなにかわからないが、UnaryFactorは次のようなモデルを考えることがある。&lt;br&gt;\( L(q;m) = \exp{(-1/2 || h(q) - m ||^2_{\Sigma})} = f(q) \)　&amp;lt;=　普通にガウシアンの形になっている。&lt;br&gt;定数がないのは、FactorGraphだと最終的に全ての積になるため、定数の大きさは関係なくなるため？&lt;br&gt;&lt;br&gt;\( m \) : 観測値や外部設定値&lt;br&gt;\( q \) : 最適化対象のパラメータ&lt;br&gt;\( h(q) \) : 観測モデル、内部パラメータqから観測値を作り出すモデル&lt;br&gt;\( \exp{\{ ... \}}&amp;nbsp;\) : ガウシアンモデル？&lt;br&gt;\( \Sigma \) : 観測値m？このモデルのノイズモデルについてのパラメータ&lt;br&gt;&lt;br&gt;GTSAMでは、UnaryFactorの定義で、NoiseModelFactor1を継承する限り、以下二点の設定でFactorを定義できる。&lt;br&gt;1. 誤差関数 : \( h(q) - m \)&lt;br&gt;2. NoiseModelパラメータ : \( \Sigma \)&lt;br&gt;3. ヤコビアン : \( \frac{\partial (h(q)-m)}{\partial q} \)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="10" y="1970" width="630" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-2" value="&lt;div&gt;&lt;span&gt;普通のガウシアン：&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;$$ N(x | \mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp{\{&amp;nbsp; -\frac{1}{2} \frac{1}{\sigma^2} (x -\mu)^2 \}} $$&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="630" y="1970" width="580" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-3" value="Odometryだけ" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="710" y="1797" width="90" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-4" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://gtsam.org/tutorials/intro-images/5_Users_dellaert_git_github_doc_images_FactorGraph2.png;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="1006" y="1710" width="327" height="136" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-5" value="Odometry + GPS measurement" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="1070" y="1830" width="180" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-6" value="ということでGPS MeasurementになるUnary Factorを作っていく&lt;br&gt;&lt;br&gt;決めること：&lt;br&gt;- qのタイプは？ =&amp;gt; Pose2(x,y,heading)&lt;br&gt;- ノイズモデルは？ =&amp;gt; NoseModelFactor1&lt;br&gt;(ここで一つしか結合のないUnary Factorの指定もされる)&lt;br&gt;- 誤差関数\( E(q) =&amp;nbsp; h(q)-m \)は？ =&amp;gt; \([q_x -m_x, q_y - m_y]^T\)&lt;br&gt;- \( h(q) \)のヤコビアンは？ =&amp;gt; \(J= \frac{\partial [q_x, q_y]^T}{\partial \boldsymbol{q}} \)&lt;br&gt;(ここで \( \boldsymbol{q} = [q_x, q_y, q_{\theta}]^T \)なので)&lt;br&gt;=&amp;gt; \( J = [1, 0, 0; 0,1,0]^T \)となる" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="10" y="2240" width="480" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="malhQMyiqFlj0tt06wjK-1" source="iuoN6O5FOuv3n4ogCXSz-8" target="iuoN6O5FOuv3n4ogCXSz-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-8" value="ｑ" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;align=center;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="40" y="2450" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-9" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;align=center;fillColor=#030303;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="50" y="2550" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-13" value="Unary Factor" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="85" y="2500" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-14" value="GPS Measurement" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="75" y="2545" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-15" value="Unknown variable" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="75" y="2450" width="110" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="iuoN6O5FOuv3n4ogCXSz-16" value="ここで\( E(q) \)をリターンするのだが、&lt;br&gt;このベクトルの次元はなんでもよさそう？" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="malhQMyiqFlj0tt06wjK-1">
+          <mxGeometry x="375" y="2308" width="240" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
