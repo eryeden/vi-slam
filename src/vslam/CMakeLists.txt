@@ -33,7 +33,9 @@ target_include_directories(${VSLAM_PROJECT_NAME}
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/utility>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/dataprovider>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/viewer>
+        /usr/include/vtk-6.3/  # TODO : VTKバージョンに依存しないようにする。
         )
+
 
 # Link to required libraries
 target_link_libraries(${VSLAM_PROJECT_NAME}
@@ -46,6 +48,7 @@ target_link_libraries(${VSLAM_PROJECT_NAME}
         opencv_features2d
         opencv_xfeatures2d
         opencv_calib3d
+        opencv_viz
         pthread
         spdlog::spdlog
         fmt::fmt
@@ -54,7 +57,11 @@ target_link_libraries(${VSLAM_PROJECT_NAME}
         gtsam
         gtsam_unstable
         ${Pangolin_LIBRARIES}
+        ${VTK_LIBRARIES}
         )
+
+
+#ocv_target_link_libraries(${VSLAM_PROJECT_NAME} PRIVATE ${VTK_LIBRARIES})
 
 
 add_subdirectory(frontend)

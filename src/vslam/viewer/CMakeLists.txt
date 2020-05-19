@@ -9,4 +9,6 @@ target_sources(${VSLAM_PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/ViewerPrimitives.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ViewerPrimitives.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ThreadsafeQueue.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Widget/Quadric.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Widget/Quadric.hpp
         )

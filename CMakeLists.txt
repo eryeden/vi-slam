@@ -130,6 +130,9 @@ include_directories(3rd/json/include/)
 # Pangolin
 find_package(Pangolin REQUIRED)
 
+# VTK
+#find_package(VTK REQUIRED)
+
 
 # ----- Build selection -----
 add_subdirectory(src)

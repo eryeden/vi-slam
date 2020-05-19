@@ -62,7 +62,7 @@ class CameraPosePrimitive : public PrimitiveBase {
                       const vslam::Mat33_t& intrinsic,
                       const vslam::Vec3_t& position_world_frame,
                       const vslam::Quat_t& orientation_world_frame,
-                      const vslam::Vec3_t& color_);
+                      const vslam::Vec3_t& color);
 
   std::string GetTag() const override;
   cv::viz::Widget GetWidget() const override;
@@ -95,6 +95,30 @@ class CoordinateSystemPrimitive : public PrimitiveBase {
   const std::string tag_name_;
   const vslam::Vec3_t position_world_frame_;
   const vslam::Quat_t orientation_world_frame_;
+
+ public:
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+};
+
+class QuadricPrimitive : public PrimitiveBase {
+ public:
+  QuadricPrimitive(const std::string& tag_name,
+                   const vslam::Vec3_t& quadric_scale,
+                   const vslam::Vec3_t& position_world_frame,
+                   const vslam::Quat_t& orientation_world_frame,
+                   const vslam::Vec3_t& color = vslam::Vec3_t());
+
+  std::string GetTag() const override;
+  cv::viz::Widget GetWidget() const override;
+  cv::Affine3d GetPose() const override;
+  QuadricPrimitive* Clone() const override;
+
+ private:
+  const std::string tag_name_;
+  const vslam::Vec3_t quadric_scale_;
+  const vslam::Vec3_t position_world_frame_;
+  const vslam::Quat_t orientation_world_frame_;
+  const vslam::Vec3_t color_;
 
  public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW

@@ -6,6 +6,8 @@
 
 #include <opencv2/core/eigen.hpp>
 
+#include "Widget/Quadric.hpp"
+
 using namespace vslam::viewer;
 
 vslam::viewer::PointCloudPrimitive::PointCloudPrimitive(
@@ -119,4 +121,34 @@ cv::Affine3d vslam::viewer::CoordinateSystemPrimitive::GetPose() const {
 vslam::viewer::CoordinateSystemPrimitive*
 vslam::viewer::CoordinateSystemPrimitive::Clone() const {
   return new CoordinateSystemPrimitive(*this);
+}
+
+QuadricPrimitive::QuadricPrimitive(const std::string& tag_name,
+                                   const vslam::Vec3_t& quadric_scale,
+                                   const vslam::Vec3_t& position_world_frame,
+                                   const vslam::Quat_t& orientation_world_frame,
+                                   const vslam::Vec3_t& color)
+    : PrimitiveBase(),
+      tag_name_(tag_name),
+      quadric_scale_(quadric_scale),
+      position_world_frame_(position_world_frame),
+      orientation_world_frame_(orientation_world_frame),
+      color_(color) {}
+
+std::string QuadricPrimitive::GetTag() const { return tag_name_; }
+cv::viz::Widget QuadricPrimitive::GetWidget() const {
+  return WQuadric(quadric_scale_, cv::Scalar(color_[0], color_[1], color_[2]));
+}
+cv::Affine3d QuadricPrimitive::GetPose() const {
+  cv::Mat tmp_camera_attitude;
+  cv::eigen2cv(orientation_world_frame_.toRotationMatrix(),
+               tmp_camera_attitude);
+  cv::Affine3d tmp_cam_pose(tmp_camera_attitude,
+                            cv::Vec3f(position_world_frame_[0],
+                                      position_world_frame_[1],
+                                      position_world_frame_[2]));
+  return tmp_cam_pose;
+}
+QuadricPrimitive* QuadricPrimitive::Clone() const {
+  return new QuadricPrimitive(*this);
 }
