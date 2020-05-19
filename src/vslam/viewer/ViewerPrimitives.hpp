@@ -56,6 +56,35 @@ class PointCloudPrimitive : public PrimitiveBase {
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
+class CovariancePrimitive : public PrimitiveBase {
+ public:
+  CovariancePrimitive(const std::string& tag_name,
+                      const vslam::Vec3_t& position_world_frame,
+                      const vslam::Quat_t& orientation_world_T_current,
+                      const vslam::Mat33_t& covariance_current_frame,
+                      const vslam::Vec3_t& color = vslam::Vec3_t(),
+                      double chi_chi = 9.21034);
+
+  std::string GetTag() const override;
+  cv::viz::Widget GetWidget() const override;
+  cv::Affine3d GetPose() const override;
+  CovariancePrimitive* Clone() const override;
+
+ private:
+  const std::string tag_name_;
+  const vslam::Vec3_t position_world_frame_;
+  const vslam::Quat_t orientation_world_T_current_;
+  const vslam::Mat33_t covariance_current_frame_;
+  const vslam::Vec3_t color_;
+
+  vslam::Vec3_t ellipsoid_scale_;
+  vslam::Mat33_t rotation_current_T_ellipsoid_;
+  const double chi_chi_;
+
+ public:
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+};
+
 class CameraPosePrimitive : public PrimitiveBase {
  public:
   CameraPosePrimitive(const std::string& tag_name,

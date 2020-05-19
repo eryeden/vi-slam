@@ -71,15 +71,29 @@ WQuadric::WQuadric(const std::array<double, 10>& quadric_coefficients,
   setColor(color);
 }
 
-WQuadric::WQuadric(const vslam::Vec3_t scale, const cv::viz::Color& color) {
+WQuadric::WQuadric(const vslam::Vec3_t& scale, const cv::viz::Color& color) {
+  double epsilon = 1e-3;
+  vslam::Vec3_t scale_eps{
+      scale[0] + epsilon, scale[1] + epsilon, scale[2] + epsilon};
   auto super_quadric = vtkSmartPointer<vtkSuperquadric>::New();
-  super_quadric->SetScale(scale[0], scale[1], scale[2]);
+  super_quadric->SetSize(scale_eps[0]);
+  super_quadric->SetScale(
+      1.0, scale_eps[1] / scale_eps[0], scale_eps[2] / scale_eps[0]);
+  super_quadric->SetPhiRoundness(1);
+  super_quadric->SetThetaRoundness(1);
 
   auto sample = vtkSmartPointer<vtkSampleFunction>::New();
   sample->SetImplicitFunction(super_quadric);
-  //  sample->SetModelBounds(-0.5, 0.5, -0.5, 0.5, -0.5, 0.5);
-  //  sample->SetSampleDimensions(40, 40, 40);
-  //  sample->ComputeNormalsOff();
+
+  int32_t sample_number = 10;
+  sample->SetModelBounds(-scale_eps[0],
+                         scale_eps[0],
+                         -scale_eps[1],
+                         scale_eps[1],
+                         -scale_eps[2],
+                         scale_eps[2]);
+  sample->SetSampleDimensions(sample_number, sample_number, sample_number);
+  sample->ComputeNormalsOff();
 
   // contour
   auto surface = vtkSmartPointer<vtkContourFilter>::New();
@@ -93,7 +107,7 @@ WQuadric::WQuadric(const vslam::Vec3_t scale, const cv::viz::Color& color) {
   auto actor = vtkSmartPointer<vtkActor>::New();
 
   actor->SetMapper(mapper);
-  //  actor->GetProperty()->EdgeVisibilityOn(); // Wire
+  // actor->GetProperty()->EdgeVisibilityOn(); // Wire
   //  frameを表示させたいときはOnにする
   cv::viz::WidgetAccessor::setProp(*this, actor);
 

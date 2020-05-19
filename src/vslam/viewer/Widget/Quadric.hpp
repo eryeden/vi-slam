@@ -30,7 +30,7 @@ class WQuadric : public cv::viz::Widget3D {
  public:
   WQuadric(const std::array<double, 10>& quadric_coefficients,
            const cv::viz::Color& color = cv::viz::Color::white());
-  WQuadric(const vslam::Vec3_t scale,
+  WQuadric(const vslam::Vec3_t& scale,
            const cv::viz::Color& color = cv::viz::Color::white());
 };
 
