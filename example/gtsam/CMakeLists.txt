@@ -17,11 +17,12 @@ foreach (EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
 
     target_link_libraries(${EXECUTABLE_TARGET}
             ${VSLAM_PROJECT_NAME}
-            Eigen3::Eigen
-            opencv_imgcodecs
-            opencv_videoio
-            opencv_viz
-            opencv_calib3d
+            #            Eigen3::Eigen
+            #            opencv_imgcodecs
+            #            opencv_videoio#            opencv_viz
+
+            #            opencv_viz
+            #            opencv_calib3d
             spdlog::spdlog
             fmt::fmt
             )

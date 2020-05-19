@@ -28,6 +28,13 @@ int main() {
   viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
       "world_origin", vslam::Vec3_t(0, 0, 0), vslam::Quat_t::Identity()));
 
+  viewer.PushPrimitive(
+      vslam::viewer::QuadricPrimitive("quadric_1",
+                                      {1, 1, 1},
+                                      {0, 0, 0},
+                                      vslam::Quat_t::Identity(),
+                                      {100, 1, 100}));
+
   vslam::EigenAllocatedVector<vslam::Vec3_t> points;
   for (size_t i = 0; i < 10000; i++) {
     points.emplace_back(vslam::Vec3_t{i, i, i});
