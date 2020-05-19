@@ -41,6 +41,8 @@
 // Values container.
 #include <gtsam/nonlinear/Values.h>
 
+#include "ViewerViz.hpp"
+
 using namespace std;
 using namespace gtsam;
 
@@ -145,6 +147,37 @@ int main() {
   cout << "x1 covariance:\n" << marginals.marginalCovariance(1) << endl;
   cout << "x2 covariance:\n" << marginals.marginalCovariance(2) << endl;
   cout << "x3 covariance:\n" << marginals.marginalCovariance(3) << endl;
+
+  // Generate viewer
+  auto viewer = vslam::viewer::ViewerViz();
+
+  // Feed drawing primitives
+  viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
+      "world_origin", vslam::Vec3_t(0, 0, 0), vslam::Quat_t::Identity()));
+
+  for (const auto& [id, res] : result) {
+    auto pose = res.cast<Pose2>();
+    viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
+        "pose_" + std::to_string(id),
+        {pose.x(), pose.y(), 0},
+        vslam::Quat_t(
+            Eigen::AngleAxisd(pose.theta(), vslam::Vec3_t(0.0, 0, 1.0))
+                .toRotationMatrix())));
+
+    vslam::Mat22_t tmp_cov;
+    tmp_cov << marginals.marginalCovariance(id)(0, 0),
+        marginals.marginalCovariance(id)(0, 1),
+        marginals.marginalCovariance(id)(1, 0),
+        marginals.marginalCovariance(id)(1, 1);
+    viewer.PushPrimitive(
+        vslam::viewer::Covariance2DPrimitive("cov_" + std::to_string(id),
+                                             {pose.x(), pose.y()},
+                                             pose.theta(),
+                                             tmp_cov,
+                                             {200, 1, 200}));
+  }
+
+  viewer.LaunchViewer(true);
 
   return 0;
 }

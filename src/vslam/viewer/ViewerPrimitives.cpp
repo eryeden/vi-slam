@@ -209,9 +209,9 @@ CovariancePrimitive::CovariancePrimitive(
 
 std::string CovariancePrimitive::GetTag() const { return tag_name_; }
 cv::viz::Widget CovariancePrimitive::GetWidget() const {
-  //  return WQuadric(ellipsoid_scale_,cv::Scalar(color_[0], color_[1],
-  //  color_[2]));
-  return WQuadric(ellipsoid_scale_, cv::Scalar(200, 0, 200));
+  return WQuadric(ellipsoid_scale_,
+                  cv::Scalar(color_[0], color_[1], color_[2]));
+  //  return WQuadric(ellipsoid_scale_, cv::Scalar(200, 0, 200));
 }
 cv::Affine3d CovariancePrimitive::GetPose() const {
   cv::Mat tmp_camera_attitude;
@@ -229,4 +229,86 @@ cv::Affine3d CovariancePrimitive::GetPose() const {
 }
 CovariancePrimitive* CovariancePrimitive::Clone() const {
   return new CovariancePrimitive(*this);
+}
+
+Covariance2DPrimitive::Covariance2DPrimitive(
+    const std::string& tag_name,
+    const vslam::Vec2_t& position_world_frame,
+    double heading_world_T_current,
+    const vslam::Mat22_t& covariance_current_frame,
+    const vslam::Vec3_t& color,
+    double chi_chi)
+    : PrimitiveBase(),
+      tag_name_(tag_name),
+      position_world_frame_(position_world_frame[0],
+                            position_world_frame[1],
+                            0),
+      orientation_world_T_current_(
+          Eigen::AngleAxisd(heading_world_T_current, vslam::Vec3_t(0.0, 0, 1.0))
+              .toRotationMatrix()),
+      color_(color),
+      chi_chi_(chi_chi) {
+  Eigen::SelfAdjointEigenSolver<Eigen::Matrix2d> eigensolver(
+      covariance_current_frame);
+  //  Eigen::EigenSolver<Eigen::Matrix3d>
+  //  eigensolver(covariance_current_frame_);
+  if (eigensolver.info() != Eigen::Success) {
+    ellipsoid_scale_ = {0.0, 0.0, 0.0};
+    rotation_current_T_ellipsoid_ = vslam::Mat33_t::Identity();
+    spdlog::warn("{}:{} Failed to compute eigen values.");
+  }
+  cout << "The eigenvalues of A are:\n" << eigensolver.eigenvalues() << endl;
+  cout << "Here's a matrix whose columns are eigenvectors of A \n"
+       << "corresponding to these eigenvalues:\n"
+       << eigensolver.eigenvectors() << endl;
+
+  //  ellipsoid_scale_ =
+  //  vslam::Vec3_t(std::sqrt(eigensolver.eigenvalues()[0].real() * chi_chi_),
+  //                                   std::sqrt(eigensolver.eigenvalues()[1].real()
+  //                                   * chi_chi_),
+  //                                   std::sqrt(eigensolver.eigenvalues()[2].real()
+  //                                   * chi_chi_));
+  ellipsoid_scale_ = vslam::Vec3_t(
+      std::sqrt(std::abs(eigensolver.eigenvalues()[0]) * chi_chi_),
+      std::sqrt(std::abs(eigensolver.eigenvalues()[1]) * chi_chi_),
+      0);
+
+  vslam::Mat22_t rotation_22;
+  rotation_22 << eigensolver.eigenvectors().col(0),
+      eigensolver.eigenvectors().col(1);
+  rotation_current_T_ellipsoid_ << rotation_22(0, 0), rotation_22(0, 1), 0,
+      rotation_22(1, 0), rotation_22(1, 1), 0, 0, 0, 1;
+  // normalize rotation matrix
+  rotation_current_T_ellipsoid_ = vslam::Quat_t(rotation_current_T_ellipsoid_)
+                                      .normalized()
+                                      .toRotationMatrix();
+
+  cout << "Ellipsoid scale : \n" << ellipsoid_scale_ << std::endl;
+  cout << "Rotation mat : \n" << rotation_current_T_ellipsoid_ << std::endl;
+}
+
+std::string Covariance2DPrimitive::GetTag() const { return tag_name_; }
+
+cv::viz::Widget Covariance2DPrimitive::GetWidget() const {
+  return WQuadric(ellipsoid_scale_,
+                  cv::Scalar(color_[0], color_[1], color_[2]));
+}
+
+cv::Affine3d Covariance2DPrimitive::GetPose() const {
+  cv::Mat tmp_camera_attitude;
+  vslam::Mat33_t rotation_world_T_ellipsoid =
+      rotation_current_T_ellipsoid_ *
+      orientation_world_T_current_.toRotationMatrix();
+  //  vslam::Mat33_t rotation_world_T_ellipsoid =
+  //  orientation_world_T_current_.toRotationMatrix();
+  cv::eigen2cv(rotation_world_T_ellipsoid, tmp_camera_attitude);
+  cv::Affine3d tmp_cam_pose(tmp_camera_attitude,
+                            cv::Vec3f(position_world_frame_[0],
+                                      position_world_frame_[1],
+                                      position_world_frame_[2]));
+  return tmp_cam_pose;
+}
+
+Covariance2DPrimitive* Covariance2DPrimitive::Clone() const {
+  return new Covariance2DPrimitive(*this);
 }

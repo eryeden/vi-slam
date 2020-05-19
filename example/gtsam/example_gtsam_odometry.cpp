@@ -39,6 +39,8 @@
 // Values container.
 #include <gtsam/nonlinear/Values.h>
 
+#include "ViewerViz.hpp"
+
 /**
  * @brief A first example : Odometry
  * @details
@@ -65,7 +67,7 @@ int main() {
   graph.add(PriorFactor<Pose2>(1, prior_mean, prior_noise));
 
   // Add odometry factors
-  Pose2 odometry(2.0, 0.0, 0.0);
+  Pose2 odometry(2.0, 0.0, 30.0 * M_PI / 180.0);
   // For simplicity, we will use the same noise model for each odometry factor
   auto odometry_noise = noiseModel::Diagonal::Sigmas(Vector3(0.2, 0.2, 0.1));
   // Create odometry (Between) factors between consecutive poses
@@ -87,12 +89,45 @@ int main() {
   Values result = LevenbergMarquardtOptimizer(graph, initial).optimize();
   result.print("Final Result:\n");
 
+  result.at(1).cast<Pose2>();
+
   // Calculate and print marginal covariances for all variables
   cout.precision(2);
   Marginals marginals(graph, result);
   cout << "x1 covariance:\n" << marginals.marginalCovariance(1) << endl;
   cout << "x2 covariance:\n" << marginals.marginalCovariance(2) << endl;
   cout << "x3 covariance:\n" << marginals.marginalCovariance(3) << endl;
+
+  // Generate viewer
+  auto viewer = vslam::viewer::ViewerViz();
+
+  // Feed drawing primitives
+  viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
+      "world_origin", vslam::Vec3_t(0, 0, 0), vslam::Quat_t::Identity()));
+
+  for (const auto& [id, res] : result) {
+    auto pose = res.cast<Pose2>();
+    viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
+        "pose_" + std::to_string(id),
+        {pose.x(), pose.y(), 0},
+        vslam::Quat_t(
+            Eigen::AngleAxisd(pose.theta(), vslam::Vec3_t(0.0, 0, 1.0))
+                .toRotationMatrix())));
+
+    vslam::Mat22_t tmp_cov;
+    tmp_cov << marginals.marginalCovariance(id)(0, 0),
+        marginals.marginalCovariance(id)(0, 1),
+        marginals.marginalCovariance(id)(1, 0),
+        marginals.marginalCovariance(id)(1, 1);
+    viewer.PushPrimitive(
+        vslam::viewer::Covariance2DPrimitive("cov_" + std::to_string(id),
+                                             {pose.x(), pose.y()},
+                                             pose.theta(),
+                                             tmp_cov,
+                                             {200, 1, 200}));
+  }
+
+  viewer.LaunchViewer(true);
 
   return 0;
 }

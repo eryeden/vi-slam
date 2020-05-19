@@ -85,6 +85,34 @@ class CovariancePrimitive : public PrimitiveBase {
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
+class Covariance2DPrimitive : public PrimitiveBase {
+ public:
+  Covariance2DPrimitive(const std::string& tag_name,
+                        const vslam::Vec2_t& position_world_frame,
+                        double heading_world_T_current,
+                        const vslam::Mat22_t& covariance_current_frame,
+                        const vslam::Vec3_t& color = vslam::Vec3_t(),
+                        double chi_chi = 9.21034);
+
+  std::string GetTag() const override;
+  cv::viz::Widget GetWidget() const override;
+  cv::Affine3d GetPose() const override;
+  Covariance2DPrimitive* Clone() const override;
+
+ private:
+  const std::string tag_name_;
+  const vslam::Vec3_t position_world_frame_;
+  const vslam::Quat_t orientation_world_T_current_;
+  const vslam::Vec3_t color_;
+
+  vslam::Vec3_t ellipsoid_scale_;
+  vslam::Mat33_t rotation_current_T_ellipsoid_;
+  const double chi_chi_;
+
+ public:
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+};
+
 class CameraPosePrimitive : public PrimitiveBase {
  public:
   CameraPosePrimitive(const std::string& tag_name,
