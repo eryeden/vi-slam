@@ -1,4 +1,4 @@
-<mxfile host="www.draw.io" modified="2020-05-19T12:51:46.757Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="Q7ioz9Ltg5FLzkW_4C-c" version="13.1.2" type="github" pages="10">
+<mxfile host="www.draw.io" modified="2020-05-19T15:52:38.615Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="UEGcUAv0ME2uNaGibuxk" version="13.1.2" type="github" pages="10">
   <diagram id="C0SdsD_nAt9h8TD434q8" name="Overview">
     <mxGraphModel dx="3398" dy="3404" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
@@ -1490,7 +1490,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="qMk56uP3W_rSexoOW-ph" name="ErrorEllipsoidの描画について">
-    <mxGraphModel dx="1599" dy="1052" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="1359" dy="801" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="WvSjYC67R5g7B22hy4Q1-0" />
         <mxCell id="WvSjYC67R5g7B22hy4Q1-1" parent="WvSjYC67R5g7B22hy4Q1-0" />
@@ -1570,6 +1570,9 @@
         </mxCell>
         <mxCell id="IeCUmoSh16gqG3rfgxAn-20" value="&lt;span style=&quot;text-align: left&quot;&gt;\(\boldsymbol{e}_z \)&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="WvSjYC67R5g7B22hy4Q1-1">
           <mxGeometry x="441.66" y="70" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="IeCUmoSh16gqG3rfgxAn-21" value="共分散行列のランクが落ちたら？&lt;br&gt;２Dで描画する？" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="WvSjYC67R5g7B22hy4Q1-1">
+          <mxGeometry x="20" y="730" width="200" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
