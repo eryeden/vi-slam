@@ -19,6 +19,8 @@ class CameraModelBase {
                   double rate);
   CameraModelBase();  //:CameraModelBase(0,0,0,0){}
 
+  virtual ~CameraModelBase() = default;
+
   /**
    * @brief Deep copy 用
    * @return

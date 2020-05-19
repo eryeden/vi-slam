@@ -127,6 +127,9 @@ include_directories(3rd/basalt-headers/include)
 # json
 include_directories(3rd/json/include/)
 
+# Pangolin
+find_package(Pangolin REQUIRED)
+
 
 # ----- Build selection -----
 add_subdirectory(src)

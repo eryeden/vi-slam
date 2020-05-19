@@ -32,6 +32,7 @@ target_include_directories(${VSLAM_PROJECT_NAME}
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/feature>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/utility>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/dataprovider>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/viewer>
         )
 
 # Link to required libraries
@@ -52,6 +53,7 @@ target_link_libraries(${VSLAM_PROJECT_NAME}
         Boost::boost
         gtsam
         gtsam_unstable
+        ${Pangolin_LIBRARIES}
         )
 
 
@@ -61,6 +63,7 @@ add_subdirectory(data)
 add_subdirectory(feature)
 add_subdirectory(utility)
 add_subdirectory(dataprovider)
+add_subdirectory(viewer)
 
 #add_subdirectory(data)
 #add_subdirectory(feature)

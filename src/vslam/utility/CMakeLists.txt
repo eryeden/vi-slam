@@ -4,4 +4,5 @@ target_sources(${VSLAM_PROJECT_NAME}
         PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/OpenCVUtilities.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/OpenCVUtilities.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Macros.h
         )
