@@ -7,6 +7,11 @@ list(APPEND EXECUTABLE_TARGETS example_gtsam_robot_localization)
 add_executable(example_gtsam_landmark_based_slam example_gtsam_landmark_based_slam.cpp)
 list(APPEND EXECUTABLE_TARGETS example_gtsam_landmark_based_slam)
 
+add_executable(example_pangolin example_pangolin.cpp)
+list(APPEND EXECUTABLE_TARGETS example_pangolin)
+add_executable(example_viewer_test1 example_viewer_test1.cpp)
+list(APPEND EXECUTABLE_TARGETS example_viewer_test1)
+
 
 foreach (EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
 
