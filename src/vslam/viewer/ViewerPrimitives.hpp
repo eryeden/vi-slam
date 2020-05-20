@@ -64,7 +64,8 @@ class CovariancePrimitive : public PrimitiveBase {
                       const vslam::Mat33_t& covariance_current_frame,
                       const vslam::Vec3_t& color = vslam::Vec3_t(),
                       double opacity = 1.0,  // 0.5,
-                      double chi_chi = 9.21034);
+                      double chi_chi = 6.25  // 11.3//  6.25:90%, 11.3:99%
+  );
 
   std::string GetTag() const override;
   cv::viz::Widget GetWidget() const override;
@@ -96,8 +97,8 @@ class Covariance2DPrimitive : public PrimitiveBase {
                         const vslam::Mat22_t& covariance_current_frame,
                         const vslam::Vec3_t& color = vslam::Vec3_t(),
                         double opacity = 0.5,
-                        double chi_chi = 9.21034);
-
+                        double chi_chi = 4.61  // 9.21034
+  );
   std::string GetTag() const override;
   cv::viz::Widget GetWidget() const override;
   cv::Affine3d GetPose() const override;

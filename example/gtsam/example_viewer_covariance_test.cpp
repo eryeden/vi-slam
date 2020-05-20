@@ -13,7 +13,7 @@ int main() {
   // generate sparse point and compute covariance
   vslam::EigenAllocatedVector<vslam::Vec3_t> points_world, points_body;
   vslam::Vec3_t position = {1.0, 2.0, 1.0};
-  vslam::Vec3_t sigma = {0.2, 2.0, 0.2};
+  vslam::Vec3_t sigma = {1.2, 2.0, 0.7};
   vslam::Mat33_t orientation =
       Eigen::AngleAxisd(0.0 * M_PI / 180.0, vslam::Vec3_t(0, 1, 0))
           .toRotationMatrix() *
@@ -65,8 +65,8 @@ int main() {
 
   viewer.PushPrimitive(vslam::viewer::PointCloudPrimitive("pc", points_world));
 
-  viewer.PushPrimitive(
-      vslam::viewer::PointCloudPrimitive("pc_body", points_body));
+  //  viewer.PushPrimitive(
+  //      vslam::viewer::PointCloudPrimitive("pc_body", points_body));
 
   viewer.PushPrimitive(
       vslam::viewer::CovariancePrimitive("cov",
