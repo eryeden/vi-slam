@@ -8,6 +8,8 @@ add_executable(example_gtsam_landmark_based_slam example_gtsam_landmark_based_sl
 list(APPEND EXECUTABLE_TARGETS example_gtsam_landmark_based_slam)
 add_executable(example_gtsam_sfm1 example_gtsam_sfm1.cpp)
 list(APPEND EXECUTABLE_TARGETS example_gtsam_sfm1)
+add_executable(example_gtsam_sfm_smart_factor example_gtsam_sfm_smart_factor.cpp)
+list(APPEND EXECUTABLE_TARGETS example_gtsam_sfm_smart_factor)
 
 add_executable(example_pangolin example_pangolin.cpp)
 list(APPEND EXECUTABLE_TARGETS example_pangolin)
@@ -21,12 +23,6 @@ foreach (EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
 
     target_link_libraries(${EXECUTABLE_TARGET}
             ${VSLAM_PROJECT_NAME}
-            #            Eigen3::Eigen
-            #            opencv_imgcodecs
-            #            opencv_videoio#            opencv_viz
-
-            #            opencv_viz
-            #            opencv_calib3d
             spdlog::spdlog
             fmt::fmt
             )

@@ -58,18 +58,32 @@ using namespace gtsam;
 
 /* ************************************************************************* */
 int main(int argc, char* argv[]) {
+  /**
+   * @brief カメラモデルの定義、sはSkewと言うらしい。
+   * @details
+   * [fx, s, ux; 0, fy, uy; 0,0,1]としてsが導入されるとのこと。
+   * sはここでは0なので、何かなければ無視しておけば良さそう。
+   */
   // Define the camera calibration parameters
   Cal3_S2::shared_ptr K(new Cal3_S2(50.0, 50.0, 0.0, 50.0, 50.0));
 
   // Define the camera observation noise model
+  // Isotropic error model
+  // は円形の分布となっている。普通の二次元分布のように楕円状の分布ではない。
   noiseModel::Isotropic::shared_ptr measurementNoise =
       noiseModel::Isotropic::Sigma(2, 1.0);  // one pixel in u and v
 
+  /**
+   * @brief Datasetを生成
+   * @details
+   * ３Dのランドマーク位置と、カメラの観測Poseを生成
+   */
+  //@{
   // Create the set of ground-truth landmarks
   vector<Point3> points = createPoints();
-
   // Create the set of ground-truth poses
   vector<Pose3> poses = createPoses();
+  //@}
 
   // Create a factor graph
   NonlinearFactorGraph graph;
@@ -81,6 +95,13 @@ int main(int argc, char* argv[]) {
   graph.emplace_shared<PriorFactor<Pose3> >(
       Symbol('x', 0), poses[0], poseNoise);  // add directly to graph
 
+  /**
+   * @brief ランドマークの観測Factorを追加する。
+   * @details
+   * GenericProjectionFactorにカメラの姿勢タイプPose3とランドマークの姿勢タイプPoint3、
+   * カメラモデルCal3_S2を渡すことで、いろんな場合における最投影誤差を計算できるぽい。
+   * 引数には、FrameIDとLandmarkID、カメラモデルのパラメータを入れているぽい。
+   */
   // Simulated measurements from each camera pose, adding them to the factor
   // graph
   for (size_t i = 0; i < poses.size(); ++i) {
@@ -92,6 +113,12 @@ int main(int argc, char* argv[]) {
     }
   }
 
+  /**
+   * @brief スケール不定性を排除する
+   * @details
+   * カメラ位置X0の位置をPriorFactorで拘束したことに加えて、
+   * LandmarkL0の位置もPriorFactorも初期位置に拘束することでスケールの不訂正を排除できる。
+   */
   // Because the structure-from-motion problem has a scale ambiguity, the
   // problem is still under-constrained Here we add a prior on the position of
   // the first landmark. This fixes the scale by indicating the distance between
