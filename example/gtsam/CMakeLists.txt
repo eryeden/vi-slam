@@ -10,6 +10,8 @@ add_executable(example_gtsam_sfm1 example_gtsam_sfm1.cpp)
 list(APPEND EXECUTABLE_TARGETS example_gtsam_sfm1)
 add_executable(example_gtsam_sfm_smart_factor example_gtsam_sfm_smart_factor.cpp)
 list(APPEND EXECUTABLE_TARGETS example_gtsam_sfm_smart_factor)
+add_executable(example_gtsam_isam2 example_gtsam_isam2.cpp)
+list(APPEND EXECUTABLE_TARGETS example_gtsam_isam2)
 
 add_executable(example_pangolin example_pangolin.cpp)
 list(APPEND EXECUTABLE_TARGETS example_pangolin)
