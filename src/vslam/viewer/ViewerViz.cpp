@@ -31,6 +31,38 @@ void vslam::viewer::ViewerViz::InitializeViewer(const std::string& window_name,
   window_ = cv::viz::Viz3d(window_name);
   //  window_.setBackgroundColor(cv::viz::Color::white());
   window_.setBackgroundColor(cv::viz::Color::gray(), cv::viz::Color::black());
+  //  window_.addLight(cv::Vec3d(100,100,100),
+  //                   cv::Vec3d(0,0,0),
+  //                   cv::viz::Color::white(),
+  //                   cv::viz::Color::white(),
+  //                   cv::viz::Color::white(),
+  //                   cv::viz::Color::white()
+  //                   );
+
+  window_.addLight(cv::Vec3d(0, 0, 100),
+                   cv::Vec3d(0, 0, 0),
+                   cv::viz::Color::white(),
+                   cv::viz::Color::white(),
+                   cv::viz::Color::white(),
+                   cv::viz::Color::white());
+  window_.addLight(cv::Vec3d(100, 100, 100),
+                   cv::Vec3d(0, 0, 0),
+                   cv::viz::Color::white(),
+                   cv::viz::Color::white(),
+                   cv::viz::Color::white(),
+                   cv::viz::Color::white());
+  window_.addLight(cv::Vec3d(0, 0, -100),
+                   cv::Vec3d(0, 0, 0),
+                   cv::viz::Color::white(),
+                   cv::viz::Color::white(),
+                   cv::viz::Color::white(),
+                   cv::viz::Color::white());
+  window_.addLight(cv::Vec3d(-100, -100, -100),
+                   cv::Vec3d(0, 0, 0),
+                   cv::viz::Color::white(),
+                   cv::viz::Color::white(),
+                   cv::viz::Color::white(),
+                   cv::viz::Color::white());
 
   // Feed primitive database from queue
   spdlog::info("Pop primitive queue.");

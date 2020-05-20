@@ -199,14 +199,18 @@ CovariancePrimitive::CovariancePrimitive(
       std::sqrt(std::abs(eigensolver.eigenvalues()[0]) * chi_chi_),
       std::sqrt(std::abs(eigensolver.eigenvalues()[1]) * chi_chi_),
       std::sqrt(std::abs(eigensolver.eigenvalues()[2]) * chi_chi_));
+
   rotation_current_T_ellipsoid_
       << eigensolver.eigenvectors().col(0).normalized(),
       eigensolver.eigenvectors().col(1).normalized(),
       eigensolver.eigenvectors().col(2).normalized();
+
+  //  rotation_current_T_ellipsoid_ << eigensolver.eigenvectors();
   // normalize rotation matrix
-  rotation_current_T_ellipsoid_ = vslam::Quat_t(rotation_current_T_ellipsoid_)
-                                      .normalized()
-                                      .toRotationMatrix();
+  //  rotation_current_T_ellipsoid_ =
+  //  vslam::Quat_t(rotation_current_T_ellipsoid_)
+  //                                      .normalized()
+  //                                      .toRotationMatrix();
 
   cout << "Ellipsoid scale : \n" << ellipsoid_scale_ << std::endl;
   cout << "Rotation mat : \n" << rotation_current_T_ellipsoid_ << std::endl;
@@ -217,13 +221,15 @@ cv::viz::Widget CovariancePrimitive::GetWidget() const {
   auto widget =
       WQuadric(ellipsoid_scale_, cv::Scalar(color_[0], color_[1], color_[2]));
   widget.setRenderingProperty(cv::viz::OPACITY, opacity_);
+  //  widget.setRenderingProperty(cv::viz::REPRESENTATION,
+  //  cv::viz::REPRESENTATION_POINTS);
   return widget;
 }
 cv::Affine3d CovariancePrimitive::GetPose() const {
   cv::Mat tmp_camera_attitude;
   vslam::Mat33_t rotation_world_T_ellipsoid =
-      rotation_current_T_ellipsoid_ *
-      orientation_world_T_current_.toRotationMatrix();
+      orientation_world_T_current_.toRotationMatrix() *
+      rotation_current_T_ellipsoid_;
   //  vslam::Mat33_t rotation_world_T_ellipsoid = rotation_current_T_ellipsoid_;
   cv::eigen2cv(rotation_world_T_ellipsoid, tmp_camera_attitude);
   cv::Affine3d tmp_cam_pose(tmp_camera_attitude,
@@ -281,14 +287,16 @@ Covariance2DPrimitive::Covariance2DPrimitive(
       0);
 
   vslam::Mat22_t rotation_22;
-  rotation_22 << eigensolver.eigenvectors().col(0),
-      eigensolver.eigenvectors().col(1);
+  rotation_22 << eigensolver.eigenvectors().col(0).normalized(),
+      eigensolver.eigenvectors().col(1).normalized();
   rotation_current_T_ellipsoid_ << rotation_22(0, 0), rotation_22(0, 1), 0,
       rotation_22(1, 0), rotation_22(1, 1), 0, 0, 0, 1;
-  // normalize rotation matrix
-  rotation_current_T_ellipsoid_ = vslam::Quat_t(rotation_current_T_ellipsoid_)
-                                      .normalized()
-                                      .toRotationMatrix();
+
+  //  // normalize rotation matrix
+  //  rotation_current_T_ellipsoid_ =
+  //  vslam::Quat_t(rotation_current_T_ellipsoid_)
+  //                                      .normalized()
+  //                                      .toRotationMatrix();
 
   cout << "Ellipsoid scale : \n" << ellipsoid_scale_ << std::endl;
   cout << "Rotation mat : \n" << rotation_current_T_ellipsoid_ << std::endl;

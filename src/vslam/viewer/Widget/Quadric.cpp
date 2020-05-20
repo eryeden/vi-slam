@@ -107,7 +107,7 @@ WQuadric::WQuadric(const vslam::Vec3_t& scale, const cv::viz::Color& color) {
   auto actor = vtkSmartPointer<vtkActor>::New();
 
   actor->SetMapper(mapper);
-  // actor->GetProperty()->EdgeVisibilityOn(); // Wire
+  //   actor->GetProperty()->EdgeVisibilityOn(); // Wire
   //  frameを表示させたいときはOnにする
   cv::viz::WidgetAccessor::setProp(*this, actor);
 
