@@ -13,6 +13,8 @@ add_executable(example_pangolin example_pangolin.cpp)
 list(APPEND EXECUTABLE_TARGETS example_pangolin)
 add_executable(example_viewer_test1 example_viewer_test1.cpp)
 list(APPEND EXECUTABLE_TARGETS example_viewer_test1)
+add_executable(example_viewer_covariance_test example_viewer_covariance_test.cpp)
+list(APPEND EXECUTABLE_TARGETS example_viewer_covariance_test)
 
 
 foreach (EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)

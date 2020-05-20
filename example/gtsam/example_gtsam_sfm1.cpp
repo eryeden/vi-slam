@@ -156,7 +156,8 @@ int main(int argc, char* argv[]) {
           {pose.x(), pose.y(), pose.z()},
           vslam::Quat_t(pose.rotation().matrix()),
           cov_position,
-          {200, 1, 200}));
+          {200, 1, 200},
+          0.5));
 
     } else if (key == 'l') {
       spdlog::info("Marginals of l:{}", symbol.index());
@@ -169,7 +170,8 @@ int main(int argc, char* argv[]) {
           p,
           vslam::Quat_t::Identity(),
           marginals.marginalCovariance(symbol),
-          {200, 1, 200}));
+          {200, 1, 200},
+          0.5));
     }
   }
 
