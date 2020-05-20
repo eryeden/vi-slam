@@ -6,6 +6,8 @@ add_executable(example_gtsam_robot_localization example_gtsam_robot_localization
 list(APPEND EXECUTABLE_TARGETS example_gtsam_robot_localization)
 add_executable(example_gtsam_landmark_based_slam example_gtsam_landmark_based_slam.cpp)
 list(APPEND EXECUTABLE_TARGETS example_gtsam_landmark_based_slam)
+add_executable(example_gtsam_sfm1 example_gtsam_sfm1.cpp)
+list(APPEND EXECUTABLE_TARGETS example_gtsam_sfm1)
 
 add_executable(example_pangolin example_pangolin.cpp)
 list(APPEND EXECUTABLE_TARGETS example_pangolin)

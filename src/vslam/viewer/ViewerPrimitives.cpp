@@ -36,10 +36,11 @@ cv::viz::Widget vslam::viewer::PointCloudPrimitive::GetWidget() const {
   if (colors_.empty()) {
     return cv::viz::WCloud(point_cloud);
   } else {
-    std::vector<cv::Scalar> color_cloud;
+    std::vector<cv::Vec3i> color_cloud;
     color_cloud.reserve(colors_.size());
     for (const auto& c : colors_) {
-      color_cloud.emplace_back(cv::Scalar(c[0], c[1], c[2]));
+      color_cloud.emplace_back(cv::Vec3i(c[0], c[1], c[2]));
+      //      color_cloud.emplace_back(cv::viz::Color);
     }
     return cv::viz::WCloud(point_cloud, color_cloud);
   }
@@ -164,6 +165,7 @@ CovariancePrimitive::CovariancePrimitive(
     const vslam::Quat_t& orientation_world_T_current,
     const vslam::Mat33_t& covariance_current_frame,
     const vslam::Vec3_t& color,
+    double opacity,
     double chi_chi)
     : PrimitiveBase(),
       tag_name_(tag_name),
@@ -171,6 +173,7 @@ CovariancePrimitive::CovariancePrimitive(
       orientation_world_T_current_(orientation_world_T_current),
       covariance_current_frame_(covariance_current_frame),
       color_(color),
+      opacity_(opacity),
       chi_chi_(chi_chi) {
   Eigen::SelfAdjointEigenSolver<Eigen::Matrix3d> eigensolver(
       covariance_current_frame_);
@@ -196,8 +199,10 @@ CovariancePrimitive::CovariancePrimitive(
       std::sqrt(std::abs(eigensolver.eigenvalues()[0]) * chi_chi_),
       std::sqrt(std::abs(eigensolver.eigenvalues()[1]) * chi_chi_),
       std::sqrt(std::abs(eigensolver.eigenvalues()[2]) * chi_chi_));
-  rotation_current_T_ellipsoid_ << eigensolver.eigenvectors().col(0),
-      eigensolver.eigenvectors().col(1), eigensolver.eigenvectors().col(2);
+  rotation_current_T_ellipsoid_
+      << eigensolver.eigenvectors().col(0).normalized(),
+      eigensolver.eigenvectors().col(1).normalized(),
+      eigensolver.eigenvectors().col(2).normalized();
   // normalize rotation matrix
   rotation_current_T_ellipsoid_ = vslam::Quat_t(rotation_current_T_ellipsoid_)
                                       .normalized()
@@ -209,17 +214,17 @@ CovariancePrimitive::CovariancePrimitive(
 
 std::string CovariancePrimitive::GetTag() const { return tag_name_; }
 cv::viz::Widget CovariancePrimitive::GetWidget() const {
-  return WQuadric(ellipsoid_scale_,
-                  cv::Scalar(color_[0], color_[1], color_[2]));
-  //  return WQuadric(ellipsoid_scale_, cv::Scalar(200, 0, 200));
+  auto widget =
+      WQuadric(ellipsoid_scale_, cv::Scalar(color_[0], color_[1], color_[2]));
+  widget.setRenderingProperty(cv::viz::OPACITY, opacity_);
+  return widget;
 }
 cv::Affine3d CovariancePrimitive::GetPose() const {
   cv::Mat tmp_camera_attitude;
   vslam::Mat33_t rotation_world_T_ellipsoid =
       rotation_current_T_ellipsoid_ *
       orientation_world_T_current_.toRotationMatrix();
-  //  vslam::Mat33_t rotation_world_T_ellipsoid =
-  //  orientation_world_T_current_.toRotationMatrix();
+  //  vslam::Mat33_t rotation_world_T_ellipsoid = rotation_current_T_ellipsoid_;
   cv::eigen2cv(rotation_world_T_ellipsoid, tmp_camera_attitude);
   cv::Affine3d tmp_cam_pose(tmp_camera_attitude,
                             cv::Vec3f(position_world_frame_[0],
@@ -237,6 +242,7 @@ Covariance2DPrimitive::Covariance2DPrimitive(
     double heading_world_T_current,
     const vslam::Mat22_t& covariance_current_frame,
     const vslam::Vec3_t& color,
+    double opacity,
     double chi_chi)
     : PrimitiveBase(),
       tag_name_(tag_name),
@@ -247,6 +253,7 @@ Covariance2DPrimitive::Covariance2DPrimitive(
           Eigen::AngleAxisd(heading_world_T_current, vslam::Vec3_t(0.0, 0, 1.0))
               .toRotationMatrix()),
       color_(color),
+      opacity_(opacity),
       chi_chi_(chi_chi) {
   Eigen::SelfAdjointEigenSolver<Eigen::Matrix2d> eigensolver(
       covariance_current_frame);
@@ -290,8 +297,10 @@ Covariance2DPrimitive::Covariance2DPrimitive(
 std::string Covariance2DPrimitive::GetTag() const { return tag_name_; }
 
 cv::viz::Widget Covariance2DPrimitive::GetWidget() const {
-  return WQuadric(ellipsoid_scale_,
-                  cv::Scalar(color_[0], color_[1], color_[2]));
+  auto widget =
+      WQuadric(ellipsoid_scale_, cv::Scalar(color_[0], color_[1], color_[2]));
+  widget.setRenderingProperty(cv::viz::OPACITY, opacity_);
+  return widget;
 }
 
 cv::Affine3d Covariance2DPrimitive::GetPose() const {

@@ -142,6 +142,7 @@ int main() {
   result.print("Final Result:\n");
 
   // Calculate and print marginal covariances for all variables
+  // 3x3の共分散が返される。x,y,headingの要素から3x3の行列になっている。
   cout.precision(2);
   Marginals marginals(graph, result);
   cout << "x1 covariance:\n" << marginals.marginalCovariance(1) << endl;

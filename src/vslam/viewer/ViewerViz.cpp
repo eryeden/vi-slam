@@ -29,6 +29,8 @@ void vslam::viewer::ViewerViz::InitializeViewer(const std::string& window_name,
                                                 int32_t window_width,
                                                 int32_t window_height) {
   window_ = cv::viz::Viz3d(window_name);
+  //  window_.setBackgroundColor(cv::viz::Color::white());
+  window_.setBackgroundColor(cv::viz::Color::gray(), cv::viz::Color::black());
 
   // Feed primitive database from queue
   spdlog::info("Pop primitive queue.");
@@ -68,7 +70,7 @@ void vslam::viewer::ViewerViz::ViewerLoop() {
     for (const auto& [tag, widget] : primitive_database_) {
       window_.showWidget(tag, widget.widget_, widget.pose_);
     }
-    window_.spinOnce(10);
+    window_.spinOnce(10, true);
   }
   spdlog::info("Shutdown drawing thread.");
 }
