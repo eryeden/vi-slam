@@ -1,11 +1,11 @@
-<mxfile host="www.draw.io" modified="2020-05-21T11:22:53.662Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="IEWPes4JWTFHELLi_beB" version="13.1.2" type="github" pages="4">
+<mxfile host="www.draw.io" modified="2020-05-21T11:25:46.306Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="_aEg02OjEj6Uek8shX7o" version="13.1.2" type="github" pages="4">
   <diagram id="mYV5fHMhs3SO6_IcKCSN" name="Top">
     <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="8OQvFZ2Zipv02wQBPf4X-1" value="&lt;h1&gt;Vision-Backend&lt;/h1&gt;&lt;p&gt;Vision backendについていろいろまとめてみた。&lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;目次：&lt;/p&gt;&lt;p&gt;- GTSAMメモ；Factor graphについてなど&lt;br&gt;Exampleのコメントも参照&lt;/p&gt;&lt;a href=&quot;https://github.com/eryeden/vi-slam/tree/feature-GTSAM-integration/example/gtsam&quot;&gt;https://github.com/eryeden/vi-slam/tree/feature-GTSAM-integration/example/gtsam&lt;/a&gt;&lt;br&gt;&lt;br&gt;- Backend review" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="20" y="20" width="410" height="230" as="geometry" />
+        <mxCell id="8OQvFZ2Zipv02wQBPf4X-1" value="&lt;h1&gt;Vision-Backend&lt;/h1&gt;&lt;p&gt;Vision backendについていろいろまとめてみた。&lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;目次：&lt;/p&gt;&lt;p&gt;- GTSAMメモ；Factor graphについてなど&lt;br&gt;Exampleのコメントも参照&lt;/p&gt;&lt;a href=&quot;https://github.com/eryeden/vi-slam/tree/feature-GTSAM-integration/example/gtsam&quot;&gt;https://github.com/eryeden/vi-slam/tree/feature-GTSAM-integration/example/gtsam&lt;/a&gt;&lt;br&gt;&lt;br&gt;- Backend review&lt;br&gt;&lt;br&gt;- Proposed Backend" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="20" y="20" width="410" height="270" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
@@ -293,7 +293,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="rxRwFc9iUt_cTfEsLqZz" name="Proposed-Backend">
-    <mxGraphModel dx="2768" dy="1277" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3545" dy="1788" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="wGwapt1zrAfcY-FxFDx9-0" />
         <mxCell id="wGwapt1zrAfcY-FxFDx9-1" parent="wGwapt1zrAfcY-FxFDx9-0" />
@@ -405,6 +405,12 @@
         </mxCell>
         <mxCell id="Zr_EwkMS2fTBts2OmuxF-27" value="- Update DB" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
           <mxGeometry x="750" y="665" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Iiumq8NnN7KaLzQg69bI-0" value="&lt;h1&gt;Camera modelの問題&lt;/h1&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="-780" y="1010" width="260" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Iiumq8NnN7KaLzQg69bI-1" value="GTSAMには、Pinholeベースの平面に一旦投影するタイプの&lt;br&gt;カメラモデルは準備されているが、180度以上の画角を扱える&lt;br&gt;球面投影モデル（VINS-Monoみたいなやつ）は実装されていない。&lt;br&gt;ここをどうするか？？？" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontColor=#000000;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="-780" y="1067" width="380" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
