@@ -1,4 +1,4 @@
-<mxfile host="www.draw.io" modified="2020-05-21T05:15:52.448Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="OtjZkBc_S2Qz9g6vkB2c" version="13.1.2" type="github" pages="3">
+<mxfile host="www.draw.io" modified="2020-05-21T08:32:28.797Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="B-s9W4x7sSB2WA9KZxfZ" version="13.1.2" type="github" pages="3">
   <diagram id="mYV5fHMhs3SO6_IcKCSN" name="Top">
     <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -231,7 +231,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="kNpirtqklpHFARO6nr_h" name="Backend review">
-    <mxGraphModel dx="1764" dy="617" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3545" dy="1788" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="k3kWPRcX1IhRkBELx6At-0" />
         <mxCell id="k3kWPRcX1IhRkBELx6At-1" parent="k3kWPRcX1IhRkBELx6At-0" />
@@ -250,13 +250,16 @@
           <mxGeometry x="-563" y="100" width="150" height="110" as="geometry" />
         </mxCell>
         <mxCell id="k3kWPRcX1IhRkBELx6At-5" value="BackendState : Bootstrap" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontColor=#000000;" vertex="1" parent="k3kWPRcX1IhRkBELx6At-1">
-          <mxGeometry x="-350" y="70" width="150" height="20" as="geometry" />
+          <mxGeometry x="-340" y="70" width="150" height="20" as="geometry" />
         </mxCell>
         <mxCell id="k3kWPRcX1IhRkBELx6At-6" value="BackendState : Nominal" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontColor=#000000;" vertex="1" parent="k3kWPRcX1IhRkBELx6At-1">
           <mxGeometry x="-340" y="190" width="140" height="20" as="geometry" />
         </mxCell>
         <mxCell id="k3kWPRcX1IhRkBELx6At-8" value="Initialize(未実装なので、ほかの場所で初期化しているのだろう)&lt;br&gt;初期化に成功したら、&lt;br&gt;BackendStateをNominalに遷移" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" vertex="1" parent="k3kWPRcX1IhRkBELx6At-1">
           <mxGeometry x="-320" y="100" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="k3kWPRcX1IhRkBELx6At-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;endFill=1;fontColor=#000000;" edge="1" parent="k3kWPRcX1IhRkBELx6At-1" source="k3kWPRcX1IhRkBELx6At-9" target="k3kWPRcX1IhRkBELx6At-12">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="k3kWPRcX1IhRkBELx6At-9" value="Add Visual &amp;amp; Inertial State&lt;br&gt;Do optimization" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" vertex="1" parent="k3kWPRcX1IhRkBELx6At-1">
           <mxGeometry x="-320" y="210" width="160" height="40" as="geometry" />
@@ -266,6 +269,25 @@
             <mxPoint x="-360" y="275" as="sourcePoint" />
             <mxPoint x="-360" y="45" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="k3kWPRcX1IhRkBELx6At-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=classic;endFill=1;fontColor=#000000;" edge="1" parent="k3kWPRcX1IhRkBELx6At-1" source="k3kWPRcX1IhRkBELx6At-12" target="k3kWPRcX1IhRkBELx6At-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="k3kWPRcX1IhRkBELx6At-12" value="Optimizationの前準備&lt;br&gt;- Factorの生成&lt;br&gt;&amp;nbsp; - 基本、メンバ変数として保持しているGraphにFactorを追加していく流れ。（iSAMのUpdateが完了した時点で、メンバとして保持されているGraphの内容はクリアされる。）&lt;br&gt;&amp;nbsp; &lt;br&gt;&amp;nbsp; - &lt;b&gt;IMU関係&lt;/b&gt;&lt;br&gt;&amp;nbsp; - Stereo RANSACから、前KeyFrameからの相対的な移動量がわかるので、これらから前KeyFramePoseとCurrentKeyFramePoseのBetweebFactorを生成&lt;br&gt;（使わなくてもOK、オプション次第）&lt;br&gt;&amp;nbsp; - IMU Factorの追加(PreintegrateされたIMUFactorを追加しているらしい)&lt;br&gt;&lt;br&gt;&amp;nbsp; - &lt;b&gt;Vision関係&lt;br&gt;&lt;/b&gt;&amp;nbsp; - 入力した観測情報（Feature IDとStereoPixel位置のペア）を、Backend側で保持している既観測情報に登録する？&lt;br&gt;&amp;nbsp; - 観測情報をFactorに追加する。（実装では、↑で選択したLandmark IDのみを渡していた。）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" vertex="1" parent="k3kWPRcX1IhRkBELx6At-1">
+          <mxGeometry x="-100" y="122.5" width="530" height="215" as="geometry" />
+        </mxCell>
+        <mxCell id="k3kWPRcX1IhRkBELx6At-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;endFill=1;fontColor=#000000;" edge="1" parent="k3kWPRcX1IhRkBELx6At-1" source="k3kWPRcX1IhRkBELx6At-14">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-500" y="250" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1110" y="230" />
+              <mxPoint x="1110" y="450" />
+              <mxPoint x="-500" y="450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="k3kWPRcX1IhRkBELx6At-14" value="Optimization&lt;br&gt;- 処理時間の計測&lt;br&gt;- SmarFactorSlotを更新するらしい、Fixed lag smootherで使うLagの範囲を更新するということ？&lt;br&gt;- iSAM::Update&lt;br&gt;- iSAMに追加したGraph情報を削除" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" vertex="1" parent="k3kWPRcX1IhRkBELx6At-1">
+          <mxGeometry x="500" y="185" width="540" height="90" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
