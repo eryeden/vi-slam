@@ -1,4 +1,4 @@
-<mxfile host="www.draw.io" modified="2020-05-21T04:45:16.391Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="NvaCQH-BgqgobVq7rGbQ" version="13.1.2" type="github" pages="3">
+<mxfile host="www.draw.io" modified="2020-05-21T05:15:52.448Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="OtjZkBc_S2Qz9g6vkB2c" version="13.1.2" type="github" pages="3">
   <diagram id="mYV5fHMhs3SO6_IcKCSN" name="Top">
     <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -231,10 +231,42 @@
     </mxGraphModel>
   </diagram>
   <diagram id="kNpirtqklpHFARO6nr_h" name="Backend review">
-    <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1764" dy="617" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="k3kWPRcX1IhRkBELx6At-0" />
         <mxCell id="k3kWPRcX1IhRkBELx6At-1" parent="k3kWPRcX1IhRkBELx6At-0" />
+        <mxCell id="k3kWPRcX1IhRkBELx6At-2" value="&lt;h1&gt;Backend review&lt;/h1&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="k3kWPRcX1IhRkBELx6At-1">
+          <mxGeometry x="-800" y="20" width="260" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="k3kWPRcX1IhRkBELx6At-3" value="&lt;h1&gt;Kimera-VIO&lt;/h1&gt;&lt;p&gt;Optimizationの計算にはGTSAMを利用&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="k3kWPRcX1IhRkBELx6At-1">
+          <mxGeometry x="-800" y="90" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="k3kWPRcX1IhRkBELx6At-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;endFill=1;fontColor=#000000;" edge="1" parent="k3kWPRcX1IhRkBELx6At-1" source="k3kWPRcX1IhRkBELx6At-4">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-370" y="155" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="k3kWPRcX1IhRkBELx6At-4" value="Backend Input&lt;br&gt;- Stereo measurement&lt;br&gt;- IMU measurement" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" vertex="1" parent="k3kWPRcX1IhRkBELx6At-1">
+          <mxGeometry x="-563" y="100" width="150" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="k3kWPRcX1IhRkBELx6At-5" value="BackendState : Bootstrap" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontColor=#000000;" vertex="1" parent="k3kWPRcX1IhRkBELx6At-1">
+          <mxGeometry x="-350" y="70" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="k3kWPRcX1IhRkBELx6At-6" value="BackendState : Nominal" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontColor=#000000;" vertex="1" parent="k3kWPRcX1IhRkBELx6At-1">
+          <mxGeometry x="-340" y="190" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="k3kWPRcX1IhRkBELx6At-8" value="Initialize(未実装なので、ほかの場所で初期化しているのだろう)&lt;br&gt;初期化に成功したら、&lt;br&gt;BackendStateをNominalに遷移" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" vertex="1" parent="k3kWPRcX1IhRkBELx6At-1">
+          <mxGeometry x="-320" y="100" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="k3kWPRcX1IhRkBELx6At-9" value="Add Visual &amp;amp; Inertial State&lt;br&gt;Do optimization" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" vertex="1" parent="k3kWPRcX1IhRkBELx6At-1">
+          <mxGeometry x="-320" y="210" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="k3kWPRcX1IhRkBELx6At-10" value="" style="endArrow=none;dashed=1;html=1;fontColor=#000000;" edge="1" parent="k3kWPRcX1IhRkBELx6At-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-360" y="275" as="sourcePoint" />
+            <mxPoint x="-360" y="45" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
