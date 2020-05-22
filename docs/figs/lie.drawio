@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-05-22T15:45:56.006Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="gTSlExPGko_Ea9abo50I" version="13.1.3" type="github">
+<mxfile host="app.diagrams.net" modified="2020-05-22T16:55:39.511Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="gFAq0U8sUeb3qUQZKkzl" version="13.1.3" type="github">
   <diagram id="0TtTwTlx6nBoanwULIQN" name="Page-1">
-    <mxGraphModel dx="1359" dy="801" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1133" dy="745" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -28,11 +28,86 @@
         <mxCell id="HKZpydoac81tIJ-0xGwn-9" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn-ak.f.st-hatena.com/images/fotolife/s/swkagami/20191007/20191007051617.png;" vertex="1" parent="1">
           <mxGeometry x="570.6700000000001" y="880" width="153.04" height="170" as="geometry" />
         </mxCell>
-        <mxCell id="HKZpydoac81tIJ-0xGwn-10" value="接空間：&lt;br&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&lt;br&gt;まず、問題意識として、回転させる順番で、&lt;br&gt;結果が変わるということがある。右の図。&lt;br&gt;曲面は、Lie群を示すらしい。てっぺんは単位行列で回転なし。&lt;br&gt;&lt;br&gt;青：X軸で４５度回転の後にY軸で４５度回転&lt;br&gt;赤：Y軸で４５度回転の後にX軸で４５度回転&lt;br&gt;青と赤の線で最終地点が違っており、回転の順番で姿勢が変わってしまうことが&lt;br&gt;表現されている。&lt;br&gt;&lt;br&gt;この原因として、回転が曲面上をなぞる動きになっていることがある。&lt;br&gt;もし、平面上の移動として回転を考えられれば、この問題がなくなるのではないか？？？&lt;br&gt;として登場する平面が接空間である。&lt;br&gt;→はてっぺん（単位元）での接空間。&lt;br&gt;こういった平面の問題として、接点付近はいい近似だが、線形化した点をはなれると&lt;br&gt;誤差が大きくなるのでは？という疑問がある。&lt;br&gt;＝＞Lieでは、平面上の点と曲面の各点を厳密に対応付ける変換を考えるらしいので、&lt;br&gt;この問題は発生しないらしい。&lt;br&gt;&lt;br&gt;これからは、平面と曲面を対応付ける変換を考えていく。&lt;br&gt;&lt;br&gt;ちなみに、接空間の定義？は↓のような感じらしい。&lt;br&gt;１．接する点を選ぶ&lt;br&gt;２．接する点を通る曲線をなんでもいいので一つ選ぶ&lt;br&gt;３．曲線の上を通って、点を通過した瞬間の速度ベクトルが接空間を構成するベクトルになる&lt;br&gt;４．点を通る全ての曲線、全ての速度で通過したときの速度ベクトルが成す空間が&lt;br&gt;接空間になるらしい。&lt;br&gt;&lt;br&gt;&lt;br&gt;この接空間を構成する、速度ベクトル、一体何者か？&lt;br&gt;３次元の回転行列なら、９次元なので、速度ベクトルも９次元、つまり、&lt;br&gt;接空間も９次元ベクトルで構成される。&lt;br&gt;&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="HKZpydoac81tIJ-0xGwn-10" value="&lt;font style=&quot;font-size: 15px&quot;&gt;接空間：&lt;br&gt;&lt;/font&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&lt;br&gt;まず、問題意識として、回転させる順番で、&lt;br&gt;結果が変わるということがある。右の図。&lt;br&gt;曲面は、Lie群を示すらしい。てっぺんは単位行列で回転なし。&lt;br&gt;&lt;br&gt;青：X軸で４５度回転の後にY軸で４５度回転&lt;br&gt;赤：Y軸で４５度回転の後にX軸で４５度回転&lt;br&gt;青と赤の線で最終地点が違っており、回転の順番で姿勢が変わってしまうことが&lt;br&gt;表現されている。&lt;br&gt;&lt;br&gt;この原因として、回転が曲面上をなぞる動きになっていることがある。&lt;br&gt;もし、平面上の移動として回転を考えられれば、この問題がなくなるのではないか？？？&lt;br&gt;として登場する平面が接空間である。&lt;br&gt;→はてっぺん（単位元）での接空間。&lt;br&gt;こういった平面の問題として、接点付近はいい近似だが、線形化した点をはなれると&lt;br&gt;誤差が大きくなるのでは？という疑問がある。&lt;br&gt;＝＞Lieでは、平面上の点と曲面の各点を厳密に対応付ける変換を考えるらしいので、&lt;br&gt;この問題は発生しないらしい。&lt;br&gt;&lt;br&gt;これからは、平面と曲面を対応付ける変換を考えていく。&lt;br&gt;&lt;br&gt;ちなみに、接空間の定義？は↓のような感じらしい。&lt;br&gt;１．接する点を選ぶ&lt;br&gt;２．接する点を通る曲線をなんでもいいので一つ選ぶ&lt;br&gt;３．曲線の上を通って、点を通過した瞬間の速度ベクトルが接空間を構成するベクトルになる&lt;br&gt;４．点を通る全ての曲線、全ての速度で通過したときの速度ベクトルが成す空間が&lt;br&gt;接空間になるらしい。&lt;br&gt;&lt;br&gt;&lt;br&gt;この接空間を構成する、速度ベクトル、一体何者か？&lt;br&gt;３次元の回転行列なら、９次元なので、速度ベクトルも９次元、つまり、&lt;br&gt;接空間も９次元ベクトルで構成される。&lt;br&gt;&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="15" y="760" width="520" height="470" as="geometry" />
         </mxCell>
         <mxCell id="HKZpydoac81tIJ-0xGwn-12" value="&lt;font style=&quot;font-size: 15px&quot;&gt;&lt;b&gt;疑問&lt;/b&gt;&lt;/font&gt;&lt;br&gt;1.回転の順序が違うと結果が違ってしまう問題は、Lie代数を利用することで解決したのか？" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
           <mxGeometry x="700" y="290" width="510" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-13" value="&lt;b style=&quot;font-size: 15px&quot;&gt;接空間とLie群の写像について&lt;br&gt;&lt;/b&gt;&lt;br&gt;１DOF回転の場合：&lt;br&gt;&lt;br&gt;微分から導けるらしい。ここがわからん。&lt;br&gt;&lt;br&gt;問題設定&lt;br&gt;- \( R(\theta) \) : なんでもいいので、角度\( \theta \)だけ回転する回転行列&lt;br&gt;これを \( \theta \)で微分することを考える。&lt;br&gt;&lt;br&gt;なんでこんなこと考えるか？：&lt;br&gt;今知りたいことは、Lie群と接空間の関係。&lt;br&gt;１DOF回転のLie空間は、３次元なら、回転行列の９次元空間中を通る、&lt;br&gt;１DOFの空間、つまり曲線になる。１DOFの回転行列の位置は、９次元中で定義される&lt;br&gt;曲線上をパラメータ\( \theta \)で移動すると考えられる。&lt;br&gt;&lt;br&gt;ここで、接空間は、どこかの点での速度ベクトルが生成する空間。&lt;br&gt;これは、１DOFの回転行列を位置\( \theta \) で微分した式に、接空間を定義したい点を代入することで得られる。&lt;br&gt;つまり、速度ベクトルと回転行列の関係式を作りたいがために微分を行う。&lt;br&gt;&lt;br&gt;微分する：&lt;br&gt;微分の定義から、&lt;br&gt;$$ \frac{dR(\theta)}{d\theta} = \lim_{\delta \theta \rightarrow 0}{\frac{R(\theta + \delta \theta) - R(\theta)}{\delta \theta}} $$&lt;br&gt;$$ = \lim_{\delta \theta \rightarrow 0}{\frac{R(\theta + \delta \theta) - R(0) (= I)}{\delta \theta}} R(\theta) $$&lt;br&gt;$$ = \frac{dR(\theta)}{d\theta} |_{\theta = 0} R(\theta) = X R(\theta) $$&lt;br&gt;&lt;br&gt;となるので、最終的につぎの微分方程式が得られる。&lt;br&gt;$$ \frac{dR(\theta)}{d\theta} = XR(\theta)&amp;nbsp;$$&lt;br&gt;&lt;br&gt;この式は、よくある1次遅れの微分方程式なので、R(θ)の解が解析的に求まる。&lt;br&gt;$$ R(\theta) = \exp{(\theta X)} $$" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="10" y="1250" width="650" height="440" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-14" value="" style="endArrow=none;dashed=1;html=1;exitX=0.274;exitY=1.015;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.551;entryY=1.02;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="HKZpydoac81tIJ-0xGwn-13" target="HKZpydoac81tIJ-0xGwn-13">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="310" y="1510" as="sourcePoint" />
+            <mxPoint x="360" y="1460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="HKZpydoac81tIJ-0xGwn-15" target="HKZpydoac81tIJ-0xGwn-13">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="269" y="1770" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="269" y="1720" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-15" value="Rをθで微分したものに、θ=0を代入した状態&lt;br&gt;なので、定数の行列になる&lt;br&gt;これをXとする&lt;br&gt;&lt;br&gt;これは、Rの行列の中に記述されている式がわかれば&lt;br&gt;各要素をθで微分してθ＝０として計算するだけなので、&lt;br&gt;具体的な値を計算できる。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="590" y="1675" width="320" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-17" value="行列指数関数というらしい" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="375" y="1940" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.501;entryY=1.613;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="HKZpydoac81tIJ-0xGwn-19" target="HKZpydoac81tIJ-0xGwn-13">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="410" y="1980" />
+              <mxPoint x="336" y="1980" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-19" value="接ベクトル" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="370" y="1990" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-21" value="" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="320" y="1930" width="21" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.016;entryY=0.875;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="HKZpydoac81tIJ-0xGwn-22" target="HKZpydoac81tIJ-0xGwn-21">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="300" y="1965" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="HKZpydoac81tIJ-0xGwn-22">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="720" y="2110" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-22" value="θが実数全体を取れば&lt;br&gt;θXは接空間全体を動くはず&lt;br&gt;&lt;br&gt;つまり&lt;br&gt;&lt;div&gt;&lt;span&gt;接空間のある一点を行列指数関数で、&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;回転行列R(θ)に変換できる式が求まったということ？&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;つまり、&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span&gt;接空間をLie群にマップできたということ？&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="185" y="1995" width="300" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-24" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn-ak.f.st-hatena.com/images/fotolife/s/swkagami/20191007/20191007051623.png;" vertex="1" parent="1">
+          <mxGeometry x="750" y="1990" width="232.31" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-26" value="図に描くと…" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="545" y="2119" width="90" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.945;entryY=0.125;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=15;" edge="1" parent="1" source="HKZpydoac81tIJ-0xGwn-27" target="HKZpydoac81tIJ-0xGwn-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-27" value="\( \theta X \) : 接ベクトルの一つ" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="900" y="1960" width="230" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.878;entryY=0.246;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=15;" edge="1" parent="1" source="HKZpydoac81tIJ-0xGwn-29" target="HKZpydoac81tIJ-0xGwn-24">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1255" y="2100" />
+              <mxPoint x="954" y="2100" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-29" value="\(\exp{( \theta X )}&amp;nbsp; = R(\theta)\) : この曲線上の一点が、接ベクトルに対応する回転行列" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="960" y="2210" width="590" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
