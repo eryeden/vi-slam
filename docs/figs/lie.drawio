@@ -1,1 +1,16 @@
-<mxfile host="app.diagrams.net" modified="2020-05-22T11:37:22.600Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" version="13.1.3" etag="ZXequeuKAfjgMFa3A-nS" type="github"><diagram id="0TtTwTlx6nBoanwULIQN">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2020-05-22T12:18:14.182Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="uWA8OVI_tapMb9MRlJ1Y" version="13.1.3" type="github">
+  <diagram id="0TtTwTlx6nBoanwULIQN" name="Page-1">
+    <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="HKZpydoac81tIJ-0xGwn-1" value="&lt;h1&gt;Lie代数の勉強&lt;/h1&gt;&lt;p&gt;GTSAMを使っていて、突然Lie代数の嵐に見舞われ空間識失調に陥った。&lt;br&gt;ロボティクス領域で利用されるLie代数の基本を学んでおく。&lt;/p&gt;&lt;p&gt;目標：&lt;br&gt;GTSAMの実装でLieが出てきたときにどんな処理を行っているか理解できる&lt;br&gt;投影行列のR、ｔ、ｐに関するヤコビ行列をチェインルールとLie関連を使って計算できる&lt;br&gt;球面投影した場合のReprojection errorについて、R、ｔ、ｐに関するヤコビ行列をチェインルールとLie関連を使って計算できる&lt;/p&gt;&lt;p&gt;参考：&lt;br&gt;&lt;a href=&quot;https://swkagami.hatenablog.com/entry/lie_01group&quot;&gt;https://swkagami.hatenablog.com/entry/lie_01group&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://arxiv.org/pdf/1812.01537.pdf&quot;&gt;https://arxiv.org/pdf/1812.01537.pdf&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://github.com/artivis/manif/blob/devel/paper/Lie_theory_cheat_sheet.pdf&quot;&gt;https://github.com/artivis/manif/blob/devel/paper/Lie_theory_cheat_sheet.pdf&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="10" y="40" width="510" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-2" value="&lt;a href=&quot;https://gist.github.com/eryeden/ecd04fb6bba7a0d3b5fd881630852228&quot;&gt;https://gist.github.com/eryeden/ecd04fb6bba7a0d3b5fd881630852228&lt;/a&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="430" y="10" width="390" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
