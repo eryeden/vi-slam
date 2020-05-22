@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-05-22T14:41:48.434Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="QSpVu579zMHmVAJ12X10" version="13.1.3" type="github">
+<mxfile host="app.diagrams.net" modified="2020-05-22T15:45:56.006Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="gTSlExPGko_Ea9abo50I" version="13.1.3" type="github">
   <diagram id="0TtTwTlx6nBoanwULIQN" name="Page-1">
-    <mxGraphModel dx="937" dy="617" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1359" dy="801" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -14,10 +14,10 @@
           <mxGeometry x="20" y="270" width="640" height="170" as="geometry" />
         </mxCell>
         <mxCell id="HKZpydoac81tIJ-0xGwn-4" value="群とは？&lt;br&gt;なんらかの空間があって、その内部の要素同士について以下の性質があれば群と呼ぶらしい。&lt;br&gt;１．積が閉じている&lt;br&gt;２．結合則が成立&lt;br&gt;３．逆元がある&lt;br&gt;４．単位元がある" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
-          <mxGeometry x="15" y="500" width="520" height="90" as="geometry" />
+          <mxGeometry x="10" y="550" width="520" height="90" as="geometry" />
         </mxCell>
         <mxCell id="HKZpydoac81tIJ-0xGwn-5" value="Lie群の特徴：&lt;br&gt;１．滑らかである&lt;br&gt;リー群の一例である３次元回転行列を例に取る。3x3は9次元なので、回転行列は9次元空間の一点に相当する。&lt;br&gt;しかし、回転の自由度は３のため、回転行列は９次元空間上で、３次元的な広がりを連続して持っているらしい。&lt;br&gt;３次元空間内にある２次元曲面上の点のような拘束が９次元空間上で３次元的に広がっているらしい。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
-          <mxGeometry x="15" y="615" width="630" height="80" as="geometry" />
+          <mxGeometry x="15" y="660" width="630" height="80" as="geometry" />
         </mxCell>
         <mxCell id="HKZpydoac81tIJ-0xGwn-7" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn-ak.f.st-hatena.com/images/fotolife/s/swkagami/20191007/20191007051625.png;" vertex="1" parent="1">
           <mxGeometry x="570.67" y="695" width="153.52" height="160" as="geometry" />
@@ -29,7 +29,10 @@
           <mxGeometry x="570.6700000000001" y="880" width="153.04" height="170" as="geometry" />
         </mxCell>
         <mxCell id="HKZpydoac81tIJ-0xGwn-10" value="接空間：&lt;br&gt;&lt;span style=&quot;font-weight: normal&quot;&gt;&lt;br&gt;まず、問題意識として、回転させる順番で、&lt;br&gt;結果が変わるということがある。右の図。&lt;br&gt;曲面は、Lie群を示すらしい。てっぺんは単位行列で回転なし。&lt;br&gt;&lt;br&gt;青：X軸で４５度回転の後にY軸で４５度回転&lt;br&gt;赤：Y軸で４５度回転の後にX軸で４５度回転&lt;br&gt;青と赤の線で最終地点が違っており、回転の順番で姿勢が変わってしまうことが&lt;br&gt;表現されている。&lt;br&gt;&lt;br&gt;この原因として、回転が曲面上をなぞる動きになっていることがある。&lt;br&gt;もし、平面上の移動として回転を考えられれば、この問題がなくなるのではないか？？？&lt;br&gt;として登場する平面が接空間である。&lt;br&gt;→はてっぺん（単位元）での接空間。&lt;br&gt;こういった平面の問題として、接点付近はいい近似だが、線形化した点をはなれると&lt;br&gt;誤差が大きくなるのでは？という疑問がある。&lt;br&gt;＝＞Lieでは、平面上の点と曲面の各点を厳密に対応付ける変換を考えるらしいので、&lt;br&gt;この問題は発生しないらしい。&lt;br&gt;&lt;br&gt;これからは、平面と曲面を対応付ける変換を考えていく。&lt;br&gt;&lt;br&gt;ちなみに、接空間の定義？は↓のような感じらしい。&lt;br&gt;１．接する点を選ぶ&lt;br&gt;２．接する点を通る曲線をなんでもいいので一つ選ぶ&lt;br&gt;３．曲線の上を通って、点を通過した瞬間の速度ベクトルが接空間を構成するベクトルになる&lt;br&gt;４．点を通る全ての曲線、全ての速度で通過したときの速度ベクトルが成す空間が&lt;br&gt;接空間になるらしい。&lt;br&gt;&lt;br&gt;&lt;br&gt;この接空間を構成する、速度ベクトル、一体何者か？&lt;br&gt;３次元の回転行列なら、９次元なので、速度ベクトルも９次元、つまり、&lt;br&gt;接空間も９次元ベクトルで構成される。&lt;br&gt;&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="20" y="720" width="520" height="470" as="geometry" />
+          <mxGeometry x="15" y="760" width="520" height="470" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-12" value="&lt;font style=&quot;font-size: 15px&quot;&gt;&lt;b&gt;疑問&lt;/b&gt;&lt;/font&gt;&lt;br&gt;1.回転の順序が違うと結果が違ってしまう問題は、Lie代数を利用することで解決したのか？" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="290" width="510" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
