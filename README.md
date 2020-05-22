@@ -21,6 +21,8 @@ Try to make Visual Inertial SLAM
 - [Vision-frontend](https://app.diagrams.net/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2FVSLAM-Fontend.drawio)
 - [Vision-backend](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2FVisionBackend.drawio)
 - [Camera model](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2FCameraModel.drawio)
+- [Lie](https://app.diagrams.net/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2Flie.drawio)
+
 
 ## Policy
 1. Keep a license of this repo as non-GPL.
