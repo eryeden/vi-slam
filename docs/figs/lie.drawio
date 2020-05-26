@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-05-23T16:45:52.991Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="C_1yXYQQ0-V1OpVm_9GV" version="13.1.3" type="github">
+<mxfile host="app.diagrams.net" modified="2020-05-26T11:36:33.963Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="8KHbk7RMVUd8UQnIHEm4" version="13.1.3" type="github">
   <diagram id="0TtTwTlx6nBoanwULIQN" name="Page-1">
-    <mxGraphModel dx="937" dy="617" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="4530" dy="2980" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -136,8 +136,8 @@
         <mxCell id="HKZpydoac81tIJ-0xGwn-43" value="\( X \in \mathfrak{g} \)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="1">
           <mxGeometry x="1762.69" y="1310" width="160" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="HKZpydoac81tIJ-0xGwn-44" value="\( G \) : GはLie群で&lt;br&gt;何らかの拘束条件を満たす集合" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="1">
-          <mxGeometry x="1987.69" y="1300" width="230" height="40" as="geometry" />
+        <mxCell id="HKZpydoac81tIJ-0xGwn-44" value="\( G \) : GはLie群で&lt;br&gt;何らかの拘束条件を満たす集合&lt;br&gt;つまりManifoldの上に拘束して存在する" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="1962.69" y="1290" width="280" height="60" as="geometry" />
         </mxCell>
         <mxCell id="HKZpydoac81tIJ-0xGwn-47" value="\( \exp{(tX)} \)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="1">
           <mxGeometry x="1882.69" y="1290" width="100" height="20" as="geometry" />
