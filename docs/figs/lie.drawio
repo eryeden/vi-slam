@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-05-26T11:56:28.236Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="-e8VG5uR5ZtBe1Dt3lW4" version="13.1.3" type="github">
+<mxfile host="app.diagrams.net" modified="2020-05-26T12:11:09.054Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="lGcrmEHkiSlL46mY72Hv" version="13.1.3" type="github">
   <diagram id="0TtTwTlx6nBoanwULIQN" name="Page-1">
-    <mxGraphModel dx="1133" dy="745" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="2265" dy="1490" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -147,6 +147,69 @@
         </mxCell>
         <mxCell id="HKZpydoac81tIJ-0xGwn-56" value="&lt;b&gt;Lie代数の微分&lt;br&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;SO2&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;font style=&quot;font-size: 12px&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 12px&quot;&gt;\( \boldsymbol{q}(\omega) \)の微分！！！&lt;br&gt;qについての説明：&lt;br&gt;- \( \omega \)：Lie代数の成分表示、からなる関数の微分について&lt;br&gt;- \( \boldsymbol{q} \) : SO2の作用先なので２次元ベクトル&lt;br&gt;- \( \boldsymbol{q}(\omega) = R \exp{( \omega^\wedge )} \boldsymbol{p} \)&lt;br&gt;- \( \frac{\partial \boldsymbol{q}(\omega) }{\partial \omega} = R \begin{pmatrix}&amp;nbsp;&lt;br&gt;0 &amp;amp; -1\\ 1 &amp;amp; 0 \end{pmatrix} \boldsymbol{p} = R H_p\)&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="1">
           <mxGeometry x="840" y="3530" width="430" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-57" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=none;fontSize=15;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="3540" width="310" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-58" value="" style="endArrow=none;html=1;fontSize=15;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1235" y="3694.58" as="sourcePoint" />
+            <mxPoint x="1675" y="3694.58" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-59" value="" style="endArrow=none;html=1;fontSize=15;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1455" y="3900" as="sourcePoint" />
+            <mxPoint x="1455" y="3520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-60" value="" style="endArrow=classic;html=1;fontSize=15;entryX=0.794;entryY=0.103;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=none;startFill=0;endFill=1;" edge="1" parent="1" target="HKZpydoac81tIJ-0xGwn-57">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1455" y="3695" as="sourcePoint" />
+            <mxPoint x="1630" y="3590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-61" value="X" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="1691" y="3689" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-62" value="Y" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="1440" y="3500" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-64" value="\(R\boldsymbol{p} \)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="1600" y="3604" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-67" value="&lt;span style=&quot;font-size: 12px;&quot;&gt;\( \boldsymbol{q}(\omega) = R \exp{( \omega^\wedge )} \boldsymbol{p} \)&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="1550" y="3550" width="400" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-68" value="" style="endArrow=classic;html=1;fontSize=15;entryX=-0.062;entryY=1.007;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=none;startFill=0;endFill=1;" edge="1" parent="1" target="HKZpydoac81tIJ-0xGwn-64">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1455" y="3695" as="sourcePoint" />
+            <mxPoint x="1630" y="3590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-69" value="\(\omega\)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="1508" y="3604" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-71" value="" style="endArrow=classic;html=1;fontSize=15;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1550" y="3638" as="sourcePoint" />
+            <mxPoint x="1520" y="3608" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1540" y="3620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-72" value="q(ω)の意味合いとしては、&lt;br&gt;R回転した位置を基準にωだけ微妙に&lt;br&gt;ずらすという感じ&lt;br&gt;つまり、ωで微分するということは、&lt;br&gt;ωだ微妙に動かした時にqは２次元ベクトルでどっち方向に&lt;br&gt;動くか？ということを示す。&lt;br&gt;たしかに、RHpはRpと直交した方向を示す。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="1705" y="3528" width="410" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-73" value="" style="endArrow=classic;html=1;fontSize=15;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1590" y="3624" as="sourcePoint" />
+            <mxPoint x="1560" y="3586" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HKZpydoac81tIJ-0xGwn-74" value="\( R H_p \)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="1549" y="3583" width="80" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
