@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-05-30T01:21:33.278Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="9zFh6IC8T5BU67ZcvX7A" version="13.1.3" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-05-30T02:00:48.337Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="mHSJ27kpayn9pccjXKvn" version="13.1.3" type="github" pages="2">
   <diagram id="0TtTwTlx6nBoanwULIQN" name="Lie色々">
     <mxGraphModel dx="1941" dy="1277" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
@@ -448,7 +448,7 @@
           <mxGeometry x="-374" y="4875" width="10" height="10" as="geometry" />
         </mxCell>
         <mxCell id="oqxru3ryfWRNUX-cAXBb-10" value="\( a \in G \)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
-          <mxGeometry x="-372" y="4868" width="60" height="20" as="geometry" />
+          <mxGeometry x="-372" y="4870" width="60" height="20" as="geometry" />
         </mxCell>
         <mxCell id="oqxru3ryfWRNUX-cAXBb-11" value="" style="endArrow=classic;html=1;fontSize=10;fontColor=#030203;" edge="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -456,8 +456,8 @@
             <mxPoint x="-347" y="4936" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oqxru3ryfWRNUX-cAXBb-12" value="\( \xi^\wedge \in \mathcal{T}_a \mathcal{M}\)&lt;br&gt;Direction of travel on&amp;nbsp; \(\mathcal{M}\)&lt;br&gt;in the local coordinate frame a&lt;br&gt;&lt;br&gt;I以外の接空間でのベクトルはLocal coordinatesと呼ばれることがある" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
-          <mxGeometry x="-312" y="4900" width="330" height="70" as="geometry" />
+        <mxCell id="oqxru3ryfWRNUX-cAXBb-12" value="Direction of travel on&amp;nbsp; \(\mathcal{M}\)&lt;br&gt;&lt;b&gt;in the local coordinate frame a&lt;/b&gt;&lt;br&gt;&lt;br&gt;I以外の接空間でのベクトルは&lt;br&gt;Local coordinatesと呼ばれることがある" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
+          <mxGeometry x="-260" y="4925" width="190" height="70" as="geometry" />
         </mxCell>
         <mxCell id="oqxru3ryfWRNUX-cAXBb-13" value="" style="endArrow=classic;html=1;fontSize=10;fontColor=#030203;exitX=0.3;exitY=0.6;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.609;entryY=0.72;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="emrZmxg8Dp6l0Uu8u_TT-1" source="oqxru3ryfWRNUX-cAXBb-6" target="oqxru3ryfWRNUX-cAXBb-5">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -466,16 +466,61 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="oqxru3ryfWRNUX-cAXBb-15" value="Tangent space at a&lt;br&gt;\( \mathcal{T}_a \mathcal{M} \)と書くことがある" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;fontStyle=1" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
-          <mxGeometry x="-450" y="4980" width="240" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="oqxru3ryfWRNUX-cAXBb-16" value="Local Coordinates" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;fontStyle=1" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
-          <mxGeometry x="-140" y="4740" width="100" height="20" as="geometry" />
+          <mxGeometry x="-443.07" y="4975" width="240" height="30" as="geometry" />
         </mxCell>
         <mxCell id="oqxru3ryfWRNUX-cAXBb-18" value="&lt;b&gt;Lie theoryの用語&lt;br&gt;&lt;/b&gt;&lt;font style=&quot;font-size: 12px&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;fontSize=15;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
           <mxGeometry x="-810" y="4680" width="130" height="60" as="geometry" />
         </mxCell>
         <mxCell id="oqxru3ryfWRNUX-cAXBb-20" value="Tangent space at I == Lie algebra&lt;br&gt;Iでの接空間のことを特にLie代数という" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;fontStyle=1" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
           <mxGeometry x="-742" y="4768" width="190" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="oqxru3ryfWRNUX-cAXBb-21" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#121212;gradientColor=none;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
+          <mxGeometry x="-390" y="4915" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="oqxru3ryfWRNUX-cAXBb-22" value="&lt;span style=&quot;&quot;&gt;\( \xi^\wedge \in \mathcal{T}_a \mathcal{M}\)&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
+          <mxGeometry x="-330" y="4925" width="210" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="oqxru3ryfWRNUX-cAXBb-23" value="" style="endArrow=none;html=1;fontSize=10;fontColor=#030203;entryX=0.05;entryY=0.55;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.4;exitY=0.6;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="emrZmxg8Dp6l0Uu8u_TT-1" source="oqxru3ryfWRNUX-cAXBb-21" target="oqxru3ryfWRNUX-cAXBb-10">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-300" y="4920" as="sourcePoint" />
+            <mxPoint x="-250" y="4870" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-370" y="4900" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oqxru3ryfWRNUX-cAXBb-24" value="\( a \exp{(\xi^\wedge)} \in G \)" style="text;html=1;align=right;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
+          <mxGeometry x="-514" y="4975" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="oqxru3ryfWRNUX-cAXBb-25" value="" style="endArrow=classic;html=1;fontSize=10;fontColor=#030203;entryX=0.93;entryY=0.72;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.685;exitY=-0.017;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="emrZmxg8Dp6l0Uu8u_TT-1" source="oqxru3ryfWRNUX-cAXBb-24" target="oqxru3ryfWRNUX-cAXBb-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-420" y="5000" as="sourcePoint" />
+            <mxPoint x="-370" y="4950" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oqxru3ryfWRNUX-cAXBb-26" value="&lt;span&gt;\( \tau^\wedge \in \mathcal{T}_I \mathcal{M} = \mathfrak{g}\)&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
+          <mxGeometry x="-481" y="4760" width="280" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="oqxru3ryfWRNUX-cAXBb-27" value="" style="endArrow=none;html=1;fontSize=10;fontColor=#030203;entryX=0.673;entryY=0.267;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="emrZmxg8Dp6l0Uu8u_TT-1" target="oqxru3ryfWRNUX-cAXBb-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-535" y="4820" as="sourcePoint" />
+            <mxPoint x="-410" y="4850" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-500" y="4837" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="oqxru3ryfWRNUX-cAXBb-30" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#121212;gradientColor=none;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
+          <mxGeometry x="-479" y="4855" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="oqxru3ryfWRNUX-cAXBb-31" value="\(\exp{(\tau^\wedge)} \)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
+          <mxGeometry x="-468" y="4850" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="oqxru3ryfWRNUX-cAXBb-33" value="" style="endArrow=classic;html=1;fontSize=10;fontColor=#030203;entryX=0.579;entryY=0.58;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.018;exitY=0.8;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="emrZmxg8Dp6l0Uu8u_TT-1" source="oqxru3ryfWRNUX-cAXBb-26" target="oqxru3ryfWRNUX-cAXBb-5">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-550" y="4780" as="sourcePoint" />
+            <mxPoint x="-500" y="4730" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
