@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-05-30T02:00:48.337Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="mHSJ27kpayn9pccjXKvn" version="13.1.3" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-05-30T02:01:35.949Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="ghd_yEznjY-t57bKd_US" version="13.1.3" type="github" pages="2">
   <diagram id="0TtTwTlx6nBoanwULIQN" name="Lie色々">
     <mxGraphModel dx="1941" dy="1277" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
@@ -490,7 +490,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="oqxru3ryfWRNUX-cAXBb-24" value="\( a \exp{(\xi^\wedge)} \in G \)" style="text;html=1;align=right;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
-          <mxGeometry x="-514" y="4975" width="140" height="20" as="geometry" />
+          <mxGeometry x="-530" y="4965" width="140" height="20" as="geometry" />
         </mxCell>
         <mxCell id="oqxru3ryfWRNUX-cAXBb-25" value="" style="endArrow=classic;html=1;fontSize=10;fontColor=#030203;entryX=0.93;entryY=0.72;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.685;exitY=-0.017;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="emrZmxg8Dp6l0Uu8u_TT-1" source="oqxru3ryfWRNUX-cAXBb-24" target="oqxru3ryfWRNUX-cAXBb-2">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
