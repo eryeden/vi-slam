@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-05-30T08:13:27.423Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="8fPxl1idCGlOnKxwiskj" version="13.1.3" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-05-30T08:37:58.076Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="KLJjgNpct1uj5wRWsQCQ" version="13.1.3" type="github" pages="2">
   <diagram id="0TtTwTlx6nBoanwULIQN" name="Lie色々">
     <mxGraphModel dx="1941" dy="1277" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
@@ -421,7 +421,7 @@
           <mxGeometry x="-696" y="4870" width="330" height="55" as="geometry" />
         </mxCell>
         <mxCell id="oqxru3ryfWRNUX-cAXBb-4" value="\( \mathcal{M} = G = SO(3) \) or some manifold&lt;br&gt;上の図の曲面を、Manifoldとして表現することが多い&lt;br&gt;実際にこのような形状になっているわけではないので注意" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
-          <mxGeometry x="-820" y="4965" width="270" height="40" as="geometry" />
+          <mxGeometry x="-810" y="4970" width="270" height="40" as="geometry" />
         </mxCell>
         <mxCell id="oqxru3ryfWRNUX-cAXBb-5" value="" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;gradientColor=none;fontSize=10;fontColor=#030203;fillColor=none;dashed=1;dashPattern=1 1;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
           <mxGeometry x="-820" y="4800" width="570" height="50" as="geometry" />
@@ -468,8 +468,8 @@
         <mxCell id="oqxru3ryfWRNUX-cAXBb-21" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#121212;gradientColor=none;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
           <mxGeometry x="-390" y="4915" width="10" height="10" as="geometry" />
         </mxCell>
-        <mxCell id="oqxru3ryfWRNUX-cAXBb-22" value="&lt;span style=&quot;&quot;&gt;\( \xi^\wedge \in \mathcal{T}_a \mathcal{M}\)&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
-          <mxGeometry x="-330" y="4925" width="210" height="20" as="geometry" />
+        <mxCell id="oqxru3ryfWRNUX-cAXBb-22" value="&lt;span&gt;\(^a\xi^\wedge \in \mathcal{T}_a \mathcal{M}\)&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
+          <mxGeometry x="-330" y="4925" width="220" height="20" as="geometry" />
         </mxCell>
         <mxCell id="oqxru3ryfWRNUX-cAXBb-23" value="" style="endArrow=none;html=1;fontSize=10;fontColor=#030203;entryX=0.05;entryY=0.55;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.4;exitY=0.6;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="emrZmxg8Dp6l0Uu8u_TT-1" source="oqxru3ryfWRNUX-cAXBb-21" target="oqxru3ryfWRNUX-cAXBb-10">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -480,23 +480,27 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="oqxru3ryfWRNUX-cAXBb-24" value="\( a \exp{(\xi^\wedge)} \in G \)" style="text;html=1;align=right;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
-          <mxGeometry x="-530" y="4965" width="140" height="20" as="geometry" />
+        <mxCell id="oqxru3ryfWRNUX-cAXBb-24" value="\(a\oplus\xi= a\oplus {^a\xi} = a \exp{(^a\xi^\wedge)} \in G \)&lt;br&gt;\(\oplus\)演算子が登場するとき、右辺(\(\xi\))は断りなくLocal座標系であることが多い" style="text;html=1;align=right;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
+          <mxGeometry x="-748" y="5040" width="400" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="oqxru3ryfWRNUX-cAXBb-25" value="" style="endArrow=classic;html=1;fontSize=10;fontColor=#030203;entryX=0.93;entryY=0.72;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.685;exitY=-0.017;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="emrZmxg8Dp6l0Uu8u_TT-1" source="oqxru3ryfWRNUX-cAXBb-24" target="oqxru3ryfWRNUX-cAXBb-2">
+        <mxCell id="oqxru3ryfWRNUX-cAXBb-25" value="" style="endArrow=classic;html=1;fontSize=10;fontColor=#030203;entryX=0.924;entryY=0.687;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.685;exitY=-0.017;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="emrZmxg8Dp6l0Uu8u_TT-1" source="oqxru3ryfWRNUX-cAXBb-24" target="oqxru3ryfWRNUX-cAXBb-2">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="-420" y="5000" as="sourcePoint" />
             <mxPoint x="-370" y="4950" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-460" y="4950" />
+            </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="oqxru3ryfWRNUX-cAXBb-26" value="&lt;span&gt;\( \tau^\wedge \in \mathcal{T}_\varepsilon \mathcal{M} = \mathfrak{g}\)&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
-          <mxGeometry x="-481" y="4760" width="330" height="20" as="geometry" />
+        <mxCell id="oqxru3ryfWRNUX-cAXBb-26" value="&lt;span&gt;\( ^\varepsilon \tau^\wedge \in \mathcal{T}_\varepsilon \mathcal{M} = \mathfrak{g}\)&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=10;fontColor=#030203;" vertex="1" parent="emrZmxg8Dp6l0Uu8u_TT-1">
+          <mxGeometry x="-481" y="4760" width="380" height="20" as="geometry" />
         </mxCell>
         <mxCell id="oqxru3ryfWRNUX-cAXBb-27" value="" style="endArrow=none;html=1;fontSize=10;fontColor=#030203;entryX=0.673;entryY=0.267;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="emrZmxg8Dp6l0Uu8u_TT-1" target="oqxru3ryfWRNUX-cAXBb-2">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="-535" y="4820" as="sourcePoint" />
             <mxPoint x="-410" y="4850" as="targetPoint" />
             <Array as="points">
+              <mxPoint x="-510" y="4830" />
               <mxPoint x="-500" y="4837" />
             </Array>
           </mxGeometry>
