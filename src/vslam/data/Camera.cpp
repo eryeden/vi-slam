@@ -144,9 +144,25 @@ DoubleSphereCameraModel* DoubleSphereCameraModel::Clone() {
 }
 
 vslam::Vec2_t DoubleSphereCameraModel::Project(
+    const vslam::Vec3_t& pos_camera_frame,
+    vslam::MatRC_t<2, 3>& jacobian_p3d) const {
+  Vec2_t pos_image_frame;
+  MatRC_t<2, 4> tmp_jacobian_p3d;
+  if (!ds_camera_model_ptr_->project(
+          {pos_camera_frame[0], pos_camera_frame[1], pos_camera_frame[2], 0},
+          pos_image_frame,
+          &tmp_jacobian_p3d)) {
+    spdlog::warn("{}:{} Invalid Projection.", __FILE__, __FUNCTION__);
+  }
+
+  jacobian_p3d = tmp_jacobian_p3d.block<2, 3>(0, 0);
+  return pos_image_frame;
+}
+vslam::Vec2_t DoubleSphereCameraModel::Project(
     const vslam::Vec3_t& pos_camera_frame) const {
   Vec2_t pos_image_frame;
-  if (ds_camera_model_ptr_->project(
+
+  if (!ds_camera_model_ptr_->project(
           {pos_camera_frame[0], pos_camera_frame[1], pos_camera_frame[2], 0},
           pos_image_frame)) {
     spdlog::warn("{}:{} Invalid Projection.", __FILE__, __FUNCTION__);

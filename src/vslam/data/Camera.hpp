@@ -34,6 +34,15 @@ class CameraModelBase {
    */
   virtual Vec2_t Project(const Vec3_t& pos_camera_frame) const = 0;
   /**
+   * カメラ座標系での3次元ポイントを画像座標系上に投影するとともに、3次元ポイントに関するヤコビアンを計算する
+   * @param pos_camera_frame
+   * @param jacobian_p3d
+   * @return
+   */
+  virtual Vec2_t Project(const Vec3_t& pos_camera_frame,
+                         vslam::MatRC_t<2, 3>& jacobian_p3d) const = 0;
+
+  /**
    * @brief 画像上の２Dポイントをカメラ座標系でのBearing vectorに変換する
    * @param pos_image_frame
    * @return
@@ -158,6 +167,16 @@ class DoubleSphereCameraModel : public CameraModelBase {
    * @return
    */
   Vec2_t Project(const Vec3_t& pos_camera_frame) const;
+
+  /**
+   * カメラ座標系での3次元ポイントを画像座標系上に投影するとともに、3次元ポイントに関するヤコビアンを計算する
+   * @param pos_camera_frame
+   * @param jacobian_p3d
+   * @return
+   */
+  Vec2_t Project(const Vec3_t& pos_camera_frame,
+                 vslam::MatRC_t<2, 3>& jacobian_p3d) const;
+
   /**
    * @brief 画像上の２Dポイントをカメラ座標系でのBearing vectorに変換する
    * @param pos_image_frame

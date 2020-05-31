@@ -12,6 +12,11 @@ add_executable(example_gtsam_sfm_smart_factor example_gtsam_sfm_smart_factor.cpp
 list(APPEND EXECUTABLE_TARGETS example_gtsam_sfm_smart_factor)
 add_executable(example_gtsam_isam2 example_gtsam_isam2.cpp)
 list(APPEND EXECUTABLE_TARGETS example_gtsam_isam2)
+add_executable(example_gtsam_ds_camera_model example_gtsam_ds_camera_model.cpp)
+list(APPEND EXECUTABLE_TARGETS example_gtsam_ds_camera_model)
+
+add_executable(example_ds_camera_model_projection_test example_ds_camera_model_projection_test.cpp)
+list(APPEND EXECUTABLE_TARGETS example_ds_camera_model_projection_test)
 
 add_executable(example_pangolin example_pangolin.cpp)
 list(APPEND EXECUTABLE_TARGETS example_pangolin)
