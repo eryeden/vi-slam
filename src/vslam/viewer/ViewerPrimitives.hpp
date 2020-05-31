@@ -20,7 +20,7 @@ class PrimitiveBase {
   virtual ~PrimitiveBase() = default;
 
   virtual std::string GetTag() const = 0;
-  virtual cv::viz::Widget GetWidget() const = 0;
+  virtual std::vector<cv::viz::Widget> GetWidget() const = 0;
   virtual cv::Affine3d GetPose() const = 0;
 
   virtual PrimitiveBase* Clone() const = 0;
@@ -43,7 +43,7 @@ class PointCloudPrimitive : public PrimitiveBase {
           vslam::EigenAllocatedVector<vslam::Vec3_t>());
 
   std::string GetTag() const override;
-  cv::viz::Widget GetWidget() const override;
+  std::vector<cv::viz::Widget> GetWidget() const override;
   cv::Affine3d GetPose() const override;
   PointCloudPrimitive* Clone() const override;
 
@@ -55,6 +55,34 @@ class PointCloudPrimitive : public PrimitiveBase {
  public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
+
+// class TextCloudPrimitive : public PrimitiveBase {
+// public:
+//
+//  /**
+//   * @brief Point位置にテキストを描画する
+//   * @param tag_name
+//   * @param points_world_frame
+//   * @param texts
+//   */
+//  TextCloudPrimitive(
+//      const std::string& tag_name,
+//      const vslam::EigenAllocatedVector<vslam::Vec3_t>& points_world_frame,
+//      const std::vector<std::string>& texts);
+//
+//  std::string GetTag() const override;
+//  std::vector<cv::viz::Widget> GetWidget() const override;
+//  cv::Affine3d GetPose() const override;
+//  TextCloudPrimitive* Clone() const override;
+//
+// private:
+//  const std::string tag_name_;
+//  const vslam::EigenAllocatedVector<vslam::Vec3_t> points_world_frame_;
+//  const std::vector<std::string> texts_;
+//
+// public:
+//  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+//};
 
 class CovariancePrimitive : public PrimitiveBase {
  public:
@@ -68,7 +96,7 @@ class CovariancePrimitive : public PrimitiveBase {
   );
 
   std::string GetTag() const override;
-  cv::viz::Widget GetWidget() const override;
+  std::vector<cv::viz::Widget> GetWidget() const override;
   cv::Affine3d GetPose() const override;
   CovariancePrimitive* Clone() const override;
 
@@ -100,7 +128,7 @@ class Covariance2DPrimitive : public PrimitiveBase {
                         double chi_chi = 4.61  // 9.21034
   );
   std::string GetTag() const override;
-  cv::viz::Widget GetWidget() const override;
+  std::vector<cv::viz::Widget> GetWidget() const override;
   cv::Affine3d GetPose() const override;
   Covariance2DPrimitive* Clone() const override;
 
@@ -129,7 +157,7 @@ class CameraPosePrimitive : public PrimitiveBase {
                       const vslam::Vec3_t& color);
 
   std::string GetTag() const override;
-  cv::viz::Widget GetWidget() const override;
+  std::vector<cv::viz::Widget> GetWidget() const override;
   cv::Affine3d GetPose() const override;
   CameraPosePrimitive* Clone() const override;
 
@@ -151,7 +179,7 @@ class CoordinateSystemPrimitive : public PrimitiveBase {
                             const vslam::Quat_t& orientation_world_frame);
 
   std::string GetTag() const override;
-  cv::viz::Widget GetWidget() const override;
+  std::vector<cv::viz::Widget> GetWidget() const override;
   cv::Affine3d GetPose() const override;
   CoordinateSystemPrimitive* Clone() const override;
 
@@ -173,7 +201,7 @@ class QuadricPrimitive : public PrimitiveBase {
                    const vslam::Vec3_t& color = vslam::Vec3_t());
 
   std::string GetTag() const override;
-  cv::viz::Widget GetWidget() const override;
+  std::vector<cv::viz::Widget> GetWidget() const override;
   cv::Affine3d GetPose() const override;
   QuadricPrimitive* Clone() const override;
 

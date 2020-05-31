@@ -26,15 +26,26 @@ std::string vslam::viewer::PointCloudPrimitive::GetTag() const {
   return tag_name_;
 }
 
-cv::viz::Widget vslam::viewer::PointCloudPrimitive::GetWidget() const {
+std::vector<cv::viz::Widget> vslam::viewer::PointCloudPrimitive::GetWidget()
+    const {
   std::vector<cv::Point3d> point_cloud;
   point_cloud.reserve(points_world_frame_.size());
   for (const auto& p : points_world_frame_) {
     point_cloud.emplace_back(cv::Point3d(p[0], p[1], p[2]));
   }
 
+  std::vector<cv::viz::Widget> widgets;
+
+  // add text widgets
+  int32_t id_count = 0;
+  for (const auto& p : points_world_frame_) {
+    widgets.emplace_back(cv::viz::WText3D(std::to_string(id_count++),
+                                          cv::Point3d(p[0], p[1], p[2])));
+  }
+
   if (colors_.empty()) {
-    return cv::viz::WCloud(point_cloud);
+    widgets.emplace_back(cv::viz::WCloud(point_cloud));
+    return widgets;
   } else {
     std::vector<cv::Vec3i> color_cloud;
     color_cloud.reserve(colors_.size());
@@ -42,7 +53,7 @@ cv::viz::Widget vslam::viewer::PointCloudPrimitive::GetWidget() const {
       color_cloud.emplace_back(cv::Vec3i(c[0], c[1], c[2]));
       //      color_cloud.emplace_back(cv::viz::Color);
     }
-    return cv::viz::WCloud(point_cloud, color_cloud);
+    return {cv::viz::WCloud(point_cloud, color_cloud)};
   }
 }
 
@@ -53,6 +64,10 @@ cv::Affine3d vslam::viewer::PointCloudPrimitive::GetPose() const {
 vslam::viewer::PointCloudPrimitive* vslam::viewer::PointCloudPrimitive::Clone()
     const {
   return new PointCloudPrimitive(*this);
+}
+
+Covariance2DPrimitive* Covariance2DPrimitive::Clone() const {
+  return new Covariance2DPrimitive(*this);
 }
 
 vslam::viewer::CameraPosePrimitive::CameraPosePrimitive(
@@ -72,12 +87,13 @@ std::string vslam::viewer::CameraPosePrimitive::GetTag() const {
   return tag_name_;
 }
 
-cv::viz::Widget vslam::viewer::CameraPosePrimitive::GetWidget() const {
+std::vector<cv::viz::Widget> vslam::viewer::CameraPosePrimitive::GetWidget()
+    const {
   cv::Matx33d cv_intrinsic_matrix;
   cv::eigen2cv(intrinsic_, cv_intrinsic_matrix);
   cv::viz::WCameraPosition w_camera_position(
       cv_intrinsic_matrix, 1.0, cv::Scalar(color_[0], color_[1], color_[2]));
-  return w_camera_position;
+  return {w_camera_position};
 }
 
 cv::Affine3d vslam::viewer::CameraPosePrimitive::GetPose() const {
@@ -108,8 +124,9 @@ vslam::viewer::CoordinateSystemPrimitive::CoordinateSystemPrimitive(
 std::string vslam::viewer::CoordinateSystemPrimitive::GetTag() const {
   return tag_name_;
 }
-cv::viz::Widget vslam::viewer::CoordinateSystemPrimitive::GetWidget() const {
-  return cv::viz::WCoordinateSystem();
+std::vector<cv::viz::Widget>
+vslam::viewer::CoordinateSystemPrimitive::GetWidget() const {
+  return {cv::viz::WCoordinateSystem()};
 }
 cv::Affine3d vslam::viewer::CoordinateSystemPrimitive::GetPose() const {
   cv::Mat tmp_camera_attitude;
@@ -140,8 +157,9 @@ QuadricPrimitive::QuadricPrimitive(const std::string& tag_name,
       color_(color) {}
 
 std::string QuadricPrimitive::GetTag() const { return tag_name_; }
-cv::viz::Widget QuadricPrimitive::GetWidget() const {
-  return WQuadric(quadric_scale_, cv::Scalar(color_[0], color_[1], color_[2]));
+std::vector<cv::viz::Widget> QuadricPrimitive::GetWidget() const {
+  return {
+      WQuadric(quadric_scale_, cv::Scalar(color_[0], color_[1], color_[2]))};
 
   //  return cv::viz::WSphere({0,0,0}, 1);
 }
@@ -217,13 +235,13 @@ CovariancePrimitive::CovariancePrimitive(
 }
 
 std::string CovariancePrimitive::GetTag() const { return tag_name_; }
-cv::viz::Widget CovariancePrimitive::GetWidget() const {
+std::vector<cv::viz::Widget> CovariancePrimitive::GetWidget() const {
   auto widget =
       WQuadric(ellipsoid_scale_, cv::Scalar(color_[0], color_[1], color_[2]));
   widget.setRenderingProperty(cv::viz::OPACITY, opacity_);
   //  widget.setRenderingProperty(cv::viz::REPRESENTATION,
   //  cv::viz::REPRESENTATION_POINTS);
-  return widget;
+  return {widget};
 }
 cv::Affine3d CovariancePrimitive::GetPose() const {
   cv::Mat tmp_camera_attitude;
@@ -304,11 +322,11 @@ Covariance2DPrimitive::Covariance2DPrimitive(
 
 std::string Covariance2DPrimitive::GetTag() const { return tag_name_; }
 
-cv::viz::Widget Covariance2DPrimitive::GetWidget() const {
+std::vector<cv::viz::Widget> Covariance2DPrimitive::GetWidget() const {
   auto widget =
       WQuadric(ellipsoid_scale_, cv::Scalar(color_[0], color_[1], color_[2]));
   widget.setRenderingProperty(cv::viz::OPACITY, opacity_);
-  return widget;
+  return {widget};
 }
 
 cv::Affine3d Covariance2DPrimitive::GetPose() const {
@@ -324,8 +342,4 @@ cv::Affine3d Covariance2DPrimitive::GetPose() const {
                                       position_world_frame_[1],
                                       position_world_frame_[2]));
   return tmp_cam_pose;
-}
-
-Covariance2DPrimitive* Covariance2DPrimitive::Clone() const {
-  return new Covariance2DPrimitive(*this);
 }

@@ -72,8 +72,14 @@ void vslam::viewer::ViewerViz::InitializeViewer(const std::string& window_name,
       spdlog::info("Queue empty.");
       break;
     }
-    primitive_database_[(*widget_ptr)->GetTag()] =
-        PrimitiveInfo{(*widget_ptr)->GetWidget(), (*widget_ptr)->GetPose()};
+    int32_t count = 0;
+    for (const auto& w : (*widget_ptr)->GetWidget()) {
+      primitive_database_[(*widget_ptr)->GetTag() + std::to_string(count++)] =
+          PrimitiveInfo{w, (*widget_ptr)->GetPose()};
+    }
+    //    primitive_database_[(*widget_ptr)->GetTag()] =
+    //        PrimitiveInfo{(*widget_ptr)->GetWidget(),
+    //        (*widget_ptr)->GetPose()};
     //    primitive_database_[widget_ptr->GetTag()] =
     //    PrimitiveInfo{widget_ptr->GetWidget(), widget_ptr->GetPose()};
   }
@@ -92,8 +98,14 @@ void vslam::viewer::ViewerViz::ViewerLoop() {
         //        spdlog::info("Queue empty.");
         break;
       }
-      primitive_database_[(*widget_ptr)->GetTag()] =
-          PrimitiveInfo{(*widget_ptr)->GetWidget(), (*widget_ptr)->GetPose()};
+      int32_t count = 0;
+      for (const auto& w : (*widget_ptr)->GetWidget()) {
+        primitive_database_[(*widget_ptr)->GetTag() + std::to_string(count++)] =
+            PrimitiveInfo{w, (*widget_ptr)->GetPose()};
+      }
+      //      primitive_database_[(*widget_ptr)->GetTag()] =
+      //          PrimitiveInfo{(*widget_ptr)->GetWidget(),
+      //          (*widget_ptr)->GetPose()};
       //      primitive_database_[widget_ptr->GetTag()] =
       //      PrimitiveInfo{widget_ptr->GetWidget(), widget_ptr->GetPose()};
     }
