@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-05-30T08:44:26.984Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="SL0ZF4E7_bv50sGHwlNq" version="13.1.3" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2020-05-31T08:27:45.248Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="qU9XTTVXyJsatzCj3G9S" version="13.1.3" type="github" pages="2">
   <diagram id="0TtTwTlx6nBoanwULIQN" name="Lie色々">
     <mxGraphModel dx="1941" dy="1277" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
@@ -215,7 +215,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="82YK6IcJMe_yEpqKBeib" name="Lieと最適化">
-    <mxGraphModel dx="1764" dy="-4059" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="1960" dy="-4008" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="emrZmxg8Dp6l0Uu8u_TT-0" />
         <mxCell id="emrZmxg8Dp6l0Uu8u_TT-1" parent="emrZmxg8Dp6l0Uu8u_TT-0" />
@@ -250,7 +250,7 @@
           <mxGeometry x="130" y="130" width="40" height="20" as="geometry" />
         </mxCell>
         <mxCell id="bAVVKh86TftxAyrHU9fY-11" value="&lt;div&gt;&lt;div style=&quot;font-size: 14px&quot;&gt;&lt;b&gt;&lt;br class=&quot;Apple-interchange-newline&quot;&gt;\( a \in \mathcal{M} = G \) の場合(Lie group)&lt;/b&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;演算子\( \oplus \)は？：\( a \oplus \xi := a \exp{ \xi^\wedge } \)&lt;/div&gt;&lt;div&gt;ここで、\( a \in G, \xi^{\wedge} \in \mathfrak{g} \)、\(\xi \)はLie代数の成分表示&lt;/div&gt;&lt;div&gt;SO(3)での意味合い：&lt;/div&gt;&lt;div&gt;\( a \oplus \xi = R \exp{((\boldsymbol{\omega}&amp;nbsp;t)^\wedge}) \)となる。&lt;/div&gt;&lt;div&gt;つまり\( q = R p \)であるベクトルqをGlobal座標系で、\( \exp{...} \)だけ回転させたものになる。&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Local座標系とTangent Vectorの関係&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;" parent="emrZmxg8Dp6l0Uu8u_TT-1" vertex="1">
-          <mxGeometry x="14" y="5841" width="530" height="170" as="geometry" />
+          <mxGeometry x="14" y="5850" width="530" height="170" as="geometry" />
         </mxCell>
         <mxCell id="NOBKckiZPFQ1AzJ3iUCi-1" value="" style="endArrow=classic;html=1;jumpStyle=gap;" parent="emrZmxg8Dp6l0Uu8u_TT-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
