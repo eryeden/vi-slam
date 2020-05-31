@@ -14,6 +14,8 @@ add_executable(example_gtsam_isam2 example_gtsam_isam2.cpp)
 list(APPEND EXECUTABLE_TARGETS example_gtsam_isam2)
 add_executable(example_gtsam_ds_camera_model example_gtsam_ds_camera_model.cpp)
 list(APPEND EXECUTABLE_TARGETS example_gtsam_ds_camera_model)
+add_executable(example_gtsam_ds_camera_model2 example_gtsam_ds_camera_model2.cpp)
+list(APPEND EXECUTABLE_TARGETS example_gtsam_ds_camera_model2)
 
 add_executable(example_ds_camera_model_projection_test example_ds_camera_model_projection_test.cpp)
 list(APPEND EXECUTABLE_TARGETS example_ds_camera_model_projection_test)

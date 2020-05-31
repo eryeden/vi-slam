@@ -155,6 +155,8 @@ class DoubleSphereCameraModel : public CameraModelBase {
   DoubleSphereCameraModel(
       const DoubleSphereCameraModel& double_sphere_camera_model);
 
+  ~DoubleSphereCameraModel() = default;
+
   /**
    * @brief For deep copy
    * @return

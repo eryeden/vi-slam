@@ -33,9 +33,9 @@ target_include_directories(${VSLAM_PROJECT_NAME}
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/utility>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/dataprovider>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/viewer>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/factor>
         /usr/include/vtk-6.3/  # TODO : VTKバージョンに依存しないようにする。
         )
-
 
 # Link to required libraries
 target_link_libraries(${VSLAM_PROJECT_NAME}
@@ -60,10 +60,6 @@ target_link_libraries(${VSLAM_PROJECT_NAME}
         ${VTK_LIBRARIES}
         )
 
-
-#ocv_target_link_libraries(${VSLAM_PROJECT_NAME} PRIVATE ${VTK_LIBRARIES})
-
-
 add_subdirectory(frontend)
 add_subdirectory(backend)
 add_subdirectory(data)
@@ -71,9 +67,4 @@ add_subdirectory(feature)
 add_subdirectory(utility)
 add_subdirectory(dataprovider)
 add_subdirectory(viewer)
-
-#add_subdirectory(data)
-#add_subdirectory(feature)
-#add_subdirectory(initialize)
-#add_subdirectory(bundle_adjustment)
-#add_subdirectory(utils)
+add_subdirectory(factor)

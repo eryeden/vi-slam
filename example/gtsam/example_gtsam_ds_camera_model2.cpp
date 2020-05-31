@@ -53,236 +53,29 @@
 #include <vector>
 
 #include "Camera.hpp"
+#include "DoubleSphereProjectionFactor.hpp"
+#include "GeneralProjectionFactor.hpp"
 #include "ViewerViz.hpp"
 
 using namespace std;
 using namespace gtsam;
 
-/**
- * @brief Define new GTSAM factor
- **/
-#include <gtsam/nonlinear/NonlinearFactor.h>
-#include <boost/optional.hpp>
-
-template <class POSE, class LANDMARK>
-class DoubleSphereProjectionFactor : public NoiseModelFactor2<POSE, LANDMARK> {
- protected:
-  // Keep a copy of measurement and calibration for I/O
-  Point2 measured_;  ///< 2D measurement
-  boost::shared_ptr<vslam::data::DoubleSphereCameraModel>
-      K_;  ///< shared pointer to calibration object
-  boost::optional<POSE>
-      body_P_sensor_;  ///< The pose of the sensor in the body frame
-
-  // verbosity handling for Cheirality Exceptions
-  bool throwCheirality_;  ///< If true, rethrows Cheirality exceptions (default:
-                          ///< false)
-  bool verboseCheirality_;  ///< If true, prints text for Cheirality exceptions
-                            ///< (default: false)
-
- public:
-  /// shorthand for base class type
-  typedef NoiseModelFactor2<POSE, LANDMARK> Base;
-
-  /// shorthand for this class
-  typedef DoubleSphereProjectionFactor<POSE, LANDMARK> This;
-
-  /// shorthand for a smart pointer to a factor
-  typedef boost::shared_ptr<This> shared_ptr;
-
-  /// Default constructor
-  DoubleSphereProjectionFactor()
-      : measured_(0, 0), throwCheirality_(false), verboseCheirality_(false) {}
-
-  /**
-   * Constructor
-   * TODO: Mark argument order standard (keys, measurement, parameters)
-   * @param measured is the 2 dimensional location of point in image (the
-   * measurement)
-   * @param model is the standard deviation
-   * @param poseKey is the index of the camera
-   * @param pointKey is the index of the landmark
-   * @param K shared pointer to the constant calibration
-   * @param body_P_sensor is the transform from body to sensor frame (default
-   * identity)
-   */
-  DoubleSphereProjectionFactor(
-      const Point2& measured,
-      const SharedNoiseModel& model,
-      Key poseKey,
-      Key pointKey,
-      vslam::data::DoubleSphereCameraModel K,
-      boost::optional<POSE> body_P_sensor = boost::none)
-      : Base(model, poseKey, pointKey),
-        measured_(measured),
-        K_(K.Clone()),
-        body_P_sensor_(body_P_sensor),
-        throwCheirality_(false),
-        verboseCheirality_(false) {}
-
-  /**
-   * Constructor with exception-handling flags
-   * TODO: Mark argument order standard (keys, measurement, parameters)
-   * @param measured is the 2 dimensional location of point in image (the
-   * measurement)
-   * @param model is the standard deviation
-   * @param poseKey is the index of the camera
-   * @param pointKey is the index of the landmark
-   * @param K shared pointer to the constant calibration
-   * @param throwCheirality determines whether Cheirality exceptions are
-   * rethrown
-   * @param verboseCheirality determines whether exceptions are printed for
-   * Cheirality
-   * @param body_P_sensor is the transform from body to sensor frame  (default
-   * identity)
-   */
-  DoubleSphereProjectionFactor(
-      const Point2& measured,
-      const SharedNoiseModel& model,
-      Key poseKey,
-      Key pointKey,
-      const boost::shared_ptr<vslam::data::DoubleSphereCameraModel>& K,
-      bool throwCheirality,
-      bool verboseCheirality,
-      boost::optional<POSE> body_P_sensor = boost::none)
-      : Base(model, poseKey, pointKey),
-        measured_(measured),
-        K_(K),
-        body_P_sensor_(body_P_sensor),
-        throwCheirality_(throwCheirality),
-        verboseCheirality_(verboseCheirality) {}
-
-  /** Virtual destructor */
-  virtual ~DoubleSphereProjectionFactor() {}
-
-  /// @return a deep copy of this factor
-  virtual gtsam::NonlinearFactor::shared_ptr clone() const {
-    return boost::static_pointer_cast<gtsam::NonlinearFactor>(
-        gtsam::NonlinearFactor::shared_ptr(new This(*this)));
-  }
-
-  /**
-   * print
-   * @param s optional string naming the factor
-   * @param keyFormatter optional formatter useful for printing Symbols
-   */
-  void print(const std::string& s = "",
-             const KeyFormatter& keyFormatter = DefaultKeyFormatter) const {
-    std::cout << s << "GenericProjectionFactor, z = ";
-    traits<Point2>::Print(measured_);
-    if (this->body_P_sensor_)
-      this->body_P_sensor_->print("  sensor pose in body frame: ");
-    Base::print("", keyFormatter);
-  }
-
-  /// equals
-  virtual bool equals(const NonlinearFactor& p, double tol = 1e-9) const {
-    const This* e = dynamic_cast<const This*>(&p);
-    return e && Base::equals(p, tol) &&
-           traits<Point2>::Equals(this->measured_, e->measured_, tol)
-           //&& this->K_->equals(*e->K_, tol)
-           && ((!body_P_sensor_ && !e->body_P_sensor_) ||
-               (body_P_sensor_ && e->body_P_sensor_ &&
-                body_P_sensor_->equals(*e->body_P_sensor_)));
-  }
-
-  /// Evaluate error h(x)-z and optionally derivatives
-  Vector evaluateError(const Pose3& pose,
-                       const Point3& point,
-                       boost::optional<Matrix&> H1 = boost::none,
-                       boost::optional<Matrix&> H2 = boost::none) const {
-    try {
-      //      if(body_P_sensor_) {
-      //        if(H1) {
-      //          gtsam::Matrix H0;
-      //          PinholeCamera<CALIBRATION>
-      //          camera(pose.compose(*body_P_sensor_, H0), *K_); Point2
-      //          reprojectionError(camera.project(point, H1, H2, boost::none) -
-      //          measured_); *H1 = *H1 * H0; return reprojectionError;
-      //        } else {
-      //          PinholeCamera<CALIBRATION>
-      //          camera(pose.compose(*body_P_sensor_), *K_); return
-      //          camera.project(point, H1, H2, boost::none) - measured_;
-      //        }
-      //      } else {
-      //        PinholeCamera<CALIBRATION> camera(pose, *K_);
-      //        return camera.project(point, H1, H2, boost::none) - measured_;
-      //      }
-
-      // Compute reprojection error and jacobian
-      Matrix J_pose, J_point;
-      Point3 p_camera_frame = pose.transformTo(point, J_pose, J_point);
-      vslam::MatRC_t<2, 3> J_projection;
-      vslam::Vec2_t project_point = K_->Project(p_camera_frame, J_projection);
-
-      if (H1) {
-        *H1 = J_projection * J_pose;
-      }
-      if (H2) {
-        *H2 = J_projection * J_point;
-      }
-      return project_point - measured_;
-
-    } catch (CheiralityException& e) {
-      if (H1) *H1 = Matrix::Zero(2, 6);
-      if (H2) *H2 = Matrix::Zero(2, 3);
-      if (verboseCheirality_)
-        std::cout << e.what() << ": Landmark "
-                  << DefaultKeyFormatter(this->key2())
-                  << " moved behind camera "
-                  << DefaultKeyFormatter(this->key1()) << std::endl;
-      if (throwCheirality_) throw CheiralityException(this->key2());
-    }
-    return Vector2::Constant(2.0 * K_->fx_);
-  }
-
-  /** return the measurement */
-  const Point2& measured() const { return measured_; }
-
-  /** return the calibration object */
-  inline const boost::shared_ptr<vslam::data::DoubleSphereCameraModel>
-  calibration() const {
-    return K_;
-  }
-
-  /** return verbosity */
-  inline bool verboseCheirality() const { return verboseCheirality_; }
-
-  /** return flag for throwing cheirality exceptions */
-  inline bool throwCheirality() const { return throwCheirality_; }
-
- private:
-  /// Serialization function
-  friend class boost::serialization::access;
-  template <class ARCHIVE>
-  void serialize(ARCHIVE& ar, const unsigned int /*version*/) {
-    ar& BOOST_SERIALIZATION_BASE_OBJECT_NVP(Base);
-    ar& BOOST_SERIALIZATION_NVP(measured_);
-    // ar & BOOST_SERIALIZATION_NVP(K_);
-    ar& BOOST_SERIALIZATION_NVP(body_P_sensor_);
-    ar& BOOST_SERIALIZATION_NVP(throwCheirality_);
-    ar& BOOST_SERIALIZATION_NVP(verboseCheirality_);
-  }
-
- public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-};
-
 int main(int argc, char* argv[]) {
   /**
    * @brief DSカメラモデルの準備
    */
-  vslam::data::DoubleSphereCameraModel double_sphere_camera_model(
-      0,
-      512,
-      512,
-      30,
-      157.59754538879774,
-      157.5796622580977,
-      254.99794156627608,
-      256.87518673272509,
-      -0.17520352912129096,
-      0.5924447685008596);
+  auto double_sphere_camera_model_ptr =
+      std::make_shared<vslam::data::DoubleSphereCameraModel>(
+          0,
+          512,
+          512,
+          30,
+          157.59754538879774,
+          157.5796622580977,
+          254.99794156627608,
+          256.87518673272509,
+          -0.17520352912129096,
+          0.5924447685008596);
 
   /**
    * @brief 観測モデルの定義
@@ -312,7 +105,7 @@ int main(int argc, char* argv[]) {
     for (const auto& point : points) {
       // project
       current_measurements.emplace_back(
-          double_sphere_camera_model.Project(pose.transformTo(point)));
+          double_sphere_camera_model_ptr->Project(pose.transformTo(point)));
     }
     measurements.emplace_back(pose, current_measurements);
   }
@@ -342,12 +135,13 @@ int main(int argc, char* argv[]) {
     const auto& current_pose = measurements[i].first;
     const auto& current_observations = measurements[i].second;
     for (size_t j = 0; j < current_observations.size(); j++) {
-      graph.emplace_shared<DoubleSphereProjectionFactor<Pose3, Point3>>(
+      graph.emplace_shared<
+          vslam::factor::GeneralProjectionFactor<Pose3, Point3>>(
           current_observations[j],
           measurementNoise,
           Symbol('x', i),
           Symbol('l', j),
-          double_sphere_camera_model);
+          double_sphere_camera_model_ptr);
     }
   }
 
