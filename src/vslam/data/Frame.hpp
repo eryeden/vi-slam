@@ -38,10 +38,10 @@ class Frame {
 
   Frame(const Frame& frame);
 
-  void SetCameraPose(const Vec3_t& position, const Quat_t& orientation);
+  void SetCameraPose(const Pose_t& pose);
   Vec3_t GetCameraPosition() const;
-  Quat_t GetCameraOrientation() const;
-  void GetCameraPose(Vec3_t& position, Quat_t& orientation) const;
+  Rot_t GetCameraOrientation() const;
+  Pose_t GetCameraPose() const;
 
   //! 観測したLandmarkを登録する。初見のIDなら登録、もし登録済みのIDならReplaceになる。
   void SetLandmark(const LandmarkSharedPtr& landmark);
@@ -85,10 +85,8 @@ class Frame {
   //! @note mutex lockされる変数は、Read/WriteともにmutexのLockが必要になる。
   //! @note ここで、Readの場合はconstの修飾をして
   mutable std::mutex mutex_camera_pose_;
-  //! カメラ位置
-  Vec3_t camera_position_;
-  //! カメラ姿勢
-  Quat_t camera_orientation_;
+  //! カメラPose
+  Pose_t camera_pose_;
 
   //! Landmark関係のMutex
   mutable std::mutex mutex_landmark_;

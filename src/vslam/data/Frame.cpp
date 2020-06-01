@@ -44,30 +44,25 @@ Frame::Frame(const Frame& frame)
             frame.observing_feature_point_in_device_,
             frame.observing_feature_bearing_in_camera_frame_,
             frame.feature_point_age_) {
-  camera_position_ = frame.camera_position_;
-  camera_orientation_ = frame.camera_orientation_;
+  camera_pose_ = frame.camera_pose_;
   landmarks_ = frame.landmarks_;
 }
 
-void Frame::SetCameraPose(const vslam::Vec3_t& position,
-                          const vslam::Quat_t& orientation) {
+void Frame::SetCameraPose(const Pose_t& pose) {
   std::lock_guard<std::mutex> lock(mutex_camera_pose_);
-  camera_position_ = position;
-  camera_orientation_ = orientation;
+  camera_pose_ = pose;
 }
-vslam::Vec3_t Frame::GetCameraPosition() const {
+Vec3_t Frame::GetCameraPosition() const {
   std::lock_guard<std::mutex> lock(mutex_camera_pose_);
-  return camera_position_;
+  return camera_pose_.translation();
 }
-vslam::Quat_t Frame::GetCameraOrientation() const {
+Rot_t Frame::GetCameraOrientation() const {
   std::lock_guard<std::mutex> lock(mutex_camera_pose_);
-  return camera_orientation_;
+  return camera_pose_.rotationMatrix();
 }
-void Frame::GetCameraPose(vslam::Vec3_t& position,
-                          vslam::Quat_t& orientation) const {
+Pose_t Frame::GetCameraPose() const {
   std::lock_guard<std::mutex> lock(mutex_camera_pose_);
-  position = camera_position_;
-  orientation = camera_orientation_;
+  return camera_pose_;
 }
 
 void Frame::SetLandmark(const LandmarkSharedPtr& landmark) {

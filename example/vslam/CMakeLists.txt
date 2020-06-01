@@ -6,6 +6,8 @@ add_executable(example_feature_detection_and_tracking example_feature_detection_
 list(APPEND EXECUTABLE_TARGETS example_feature_detection_and_tracking)
 add_executable(example_kimera_frontend_detection_and_tracking example_kimera_frontend_detection_and_tracking.cpp)
 list(APPEND EXECUTABLE_TARGETS example_kimera_frontend_detection_and_tracking)
+add_executable(example_kimera_backend example_kimera_backend.cpp)
+list(APPEND EXECUTABLE_TARGETS example_kimera_backend)
 
 foreach (EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
 

@@ -1,13 +1,14 @@
 #pragma once
 
+#include <Eigen/Core>
+#include <Eigen/Geometry>
 #include <map>
 #include <set>
+#include <sophus/se3.hpp>
+#include <sophus/so3.hpp>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-
-#include <Eigen/Core>
-#include <Eigen/Geometry>
 
 namespace vslam {
 
@@ -59,6 +60,10 @@ using VecX_t = Eigen::VectorXd;
 // Eigen Quaternion type
 
 using Quat_t = Eigen::Quaterniond;
+
+// Sophus
+using Pose_t = Sophus::SE3d;
+using Rot_t = Sophus::SO3d;
 
 // STL with Eigen custom allocator
 template <typename T>
