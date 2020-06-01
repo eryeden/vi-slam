@@ -27,6 +27,8 @@ class FrontendBase {
  public:
   explicit FrontendBase(
       const std::shared_ptr<data::ThreadsafeMapDatabase>& map_database);
+  virtual ~FrontendBase() = default;
+
   //  virtual FrontendStatus FeedImage(const cv::Mat& image) = 0;
 
  protected:

@@ -119,10 +119,11 @@ find_package(fmt)
 # opengv
 find_package(opengv REQUIRED)
 
-# basalt-headers
+# basalt-headers, バンドルされたSophusも利用
 include_directories(3rd/basalt-headers/thirdparty/Sophus)
 include_directories(3rd/basalt-headers/thirdparty/cereal/include)
 include_directories(3rd/basalt-headers/include)
+add_subdirectory(3rd/basalt-headers)
 
 # json
 include_directories(3rd/json/include/)
