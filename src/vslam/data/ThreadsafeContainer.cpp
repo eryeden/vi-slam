@@ -6,7 +6,7 @@
 using namespace vslam::data;
 
 ThreadsafeMapDatabase::ThreadsafeMapDatabase()
-    : latest_frame_id_(0), latest_key_frame_id_(0) {
+    : latest_frame_id_(0), latest_key_frame_id_(0), max_landmark_id_(0) {
   ;
 }
 
@@ -57,6 +57,10 @@ FrameWeakPtr ThreadsafeMapDatabase::GetFrame(
 void ThreadsafeMapDatabase::AddLandmark(LandmarkUniquePtr& landmark_ptr) {
   std::lock_guard<std::mutex> lock(mutex_map_access_);
 
+  if (max_landmark_id_ < landmark_ptr->landmark_id_) {
+    max_landmark_id_ = landmark_ptr->landmark_id_;
+  }
+
   std::shared_ptr tmp_landmark_ptr{std::move(landmark_ptr)};
   landmark_database_[tmp_landmark_ptr->landmark_id_] = tmp_landmark_ptr;
 }
@@ -90,6 +94,17 @@ LandmarkWeakPtr ThreadsafeMapDatabase::GetLandmark(
     return LandmarkSharedPtr();
   }
 }
+bool ThreadsafeMapDatabase::IsExistLandmark(
+    database_index_t landmark_id) const {
+  std::lock_guard<std::mutex> lock(mutex_map_access_);
+
+  if (landmark_database_.count(landmark_id) != 0) {  // 登録済みかチェック
+    return true;
+  } else {
+    return false;
+  }
+}
+
 void ThreadsafeMapDatabase::Clear() {
   // 全Frameの所有権を開放する
   for (auto [id, frame_ptr] : frame_database_) {

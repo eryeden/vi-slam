@@ -27,6 +27,16 @@ class iSAM2Backend : public BackendBase {
   database_index_t latest_key_frame_id_;
 
   BackendState backend_state_;
+
+  /**
+   * @brief
+   * Landmarkの被観測情報を更新する。Landmarkが存在しない場合は新規登録し、被観測情報を追加する。
+   * @param map_database
+   * @param input_frame
+   */
+  void RegisterLandmarkObservation(
+      std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
+      const data::FrameWeakPtr& input_frame);
 };
 
 }  // namespace vslam::backend
