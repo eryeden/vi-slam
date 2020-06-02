@@ -12,6 +12,7 @@
 #include "FeatureTrackerLucasKanade.hpp"
 #include "KimeraFrontend.hpp"
 #include "Verification.hpp"
+#include "ViewerViz.hpp"
 #include "iSAM2Backend.hpp"
 
 int main() {
@@ -22,29 +23,29 @@ int main() {
   //      euroc_kimera_data_provider(path_to_euroc);
 
   // EUROC
-  //    std::string path_to_euroc =
-  //        "/home/ery/subspace/docker_work/dataset/V1_01_easy";
-  //    std::string path_to_calibfile =
-  //        "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
-  //        "calib_results/calibration.json";
-
   std::string path_to_euroc =
-      "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+      "/home/ery/subspace/docker_work/dataset/V1_01_easy";
   std::string path_to_calibfile =
-      "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
-      "results/calibration.json";
+      "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
+      "calib_results/calibration.json";
+
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+  //  std::string path_to_calibfile =
+  //      "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
+  //      "results/calibration.json";
 
   vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
       path_to_euroc, path_to_calibfile);
 
-  //  std::string path_to_euroc =
-  //      "/e/subspace/docker_work/dataset/fukuroi/camlog_2020-05-13-21-09-39/";
-  //  std::string path_to_calibfile =
-  //      "/e/subspace/docker_work/dataset/fukuroi/calib_result/calibration.json";
-  //  std::string path_to_mask =
-  //      "/e/subspace/docker_work/dataset/fukuroi/calib_result/vingette_0.png";
-  //  vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
-  //      path_to_euroc, path_to_calibfile, path_to_mask);
+  //    std::string path_to_euroc =
+  //        "/e/subspace/docker_work/dataset/fukuroi/camlog_2020-05-13-21-09-39/";
+  //    std::string path_to_calibfile =
+  //        "/e/subspace/docker_work/dataset/fukuroi/calib_result/calibration.json";
+  //    std::string path_to_mask =
+  //        "/e/subspace/docker_work/dataset/fukuroi/calib_result/vingette_0.png";
+  //    vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
+  //        path_to_euroc, path_to_calibfile, path_to_mask);
 
   // Map database
   auto threadsafe_map_database_ptr =
@@ -104,35 +105,21 @@ int main() {
 
   bool is_reach_the_last = false;
   uint64_t counter = 0;
+
+  // Generate viewer
+  auto viewer = vslam::viewer::ViewerViz();
+  // Feed drawing primitives
+  viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
+      "world_origin", vslam::Vec3_t(0, 0, 0), vslam::Quat_t::Identity()));
+  // Create a window and render primitives.
+  viewer.LaunchViewer();
+
   while (!is_reach_the_last) {
     auto input = euroc_kimera_data_provider.GetInput();
     if (input == std::nullopt) {
       is_reach_the_last = true;
       continue;
     }
-
-    //    if (counter > 100) {
-    //      is_reach_the_last = true;
-    //      continue;
-    //    }
-
-    //    // detect
-    //    if (!is_initialized) {
-    //      shi_tomasi_detector.UpdateDetection(
-    //          prev_feature_position, prev_feature_age, input.value().frame_);
-    //      is_initialized = true;
-    //    } else {
-    //      // 10 Frameごとに特徴点を追加する
-    //      if (counter++ % 10 == 0) {
-    //        shi_tomasi_detector.UpdateDetection(
-    //            prev_feature_position, prev_feature_age,
-    //            input.value().frame_);
-    //      }
-    //      kl_tracker.Track(prev_feature_position,
-    //                       prev_feature_age,
-    //                       prev_input.frame_,
-    //                       input.value().frame_);
-    //    }
 
     kimera_frontend.Feed(input.value());
     i_sam_2_backend.SpinOnce();
@@ -172,14 +159,40 @@ int main() {
                 cv::Scalar(0, 0, 0),
                 1,
                 CV_AA);
-    //
-    //    prev_input = input.value();
+
+    // Draw points
+    vslam::EigenAllocatedVector<vslam::Vec3_t> pc_source;
+    auto lms = threadsafe_map_database_ptr->GetAllLandmarks();
+    for (const auto& [id, lm_ptr] : lms) {
+      auto lm = lm_ptr.lock();
+      if (lm) {
+        if (lm->is_initialized_) {
+          pc_source.emplace_back(lm->GetLandmarkPosition());
+        }
+      }
+    }
+    if (!pc_source.empty()) {
+      vslam::viewer::PointCloudPrimitive pcp("pc", pc_source);
+      viewer.PushPrimitive(pcp);
+    }
+
+    // Draw camera position
+    auto frame_ptr =
+        threadsafe_map_database_ptr
+            ->GetFrame(threadsafe_map_database_ptr->latest_frame_id_)
+            .lock();
+    if (frame_ptr) {
+      //      viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
+      //          "world_origin"+std::to_string(frame_ptr->frame_id_),
+      //          frame_ptr->GetCameraPose()));
+      viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
+          "current_cam", frame_ptr->GetCameraPose()));
+    }
 
     counter++;
 
     cv::imshow("First", vis);
-    //    video_writer << vis;
-    cv::waitKey(20);
+    cv::waitKey(0);
   }
 
   return 0;
