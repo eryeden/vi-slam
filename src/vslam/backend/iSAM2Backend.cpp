@@ -16,6 +16,7 @@ vslam::backend::iSAM2Backend::iSAM2Backend(
       latest_key_frame_id_(std::numeric_limits<database_index_t>::max()) {
   ;
 }
+
 vslam::backend::BackendState vslam::backend::iSAM2Backend::SpinOnce() {
   // 更新があるときのみ以下を実行する。
   if (latest_frame_id_ == map_database_->latest_frame_id_) {
@@ -40,6 +41,12 @@ vslam::backend::BackendState vslam::backend::iSAM2Backend::SpinOnce() {
         outpose,
         output_landmark_position,
         0.5);
+
+    auto ref_frame_ptr =
+        map_database_->GetFrame(map_database_->latest_frame_id_).lock();
+    if (ref_frame_ptr) {
+      ref_frame_ptr->SetCameraPose(outpose);
+    }
 
   } else if (backend_state_ == BackendState::Nominal) {
     // KeyFrameの時：
