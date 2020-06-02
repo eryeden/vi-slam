@@ -39,6 +39,7 @@ class PointCloudPrimitive : public PrimitiveBase {
   PointCloudPrimitive(
       const std::string& tag_name,
       const vslam::EigenAllocatedVector<vslam::Vec3_t>& points_world_frame,
+      bool draw_point_id = false,
       const vslam::EigenAllocatedVector<vslam::Vec3_t>& colors =
           vslam::EigenAllocatedVector<vslam::Vec3_t>());
 
@@ -51,6 +52,7 @@ class PointCloudPrimitive : public PrimitiveBase {
   const std::string tag_name_;
   const vslam::EigenAllocatedVector<vslam::Vec3_t> points_world_frame_;
   const vslam::EigenAllocatedVector<vslam::Vec3_t> colors_;
+  bool draw_point_id_;
 
  public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -177,6 +179,8 @@ class CoordinateSystemPrimitive : public PrimitiveBase {
   CoordinateSystemPrimitive(const std::string& tag_name,
                             const vslam::Vec3_t& position_world_frame,
                             const vslam::Quat_t& orientation_world_frame);
+  CoordinateSystemPrimitive(const std::string& tag_name,
+                            const vslam::Pose_t& pose_world_to_current);
 
   std::string GetTag() const override;
   std::vector<cv::viz::Widget> GetWidget() const override;

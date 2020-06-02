@@ -16,11 +16,13 @@ using namespace vslam::viewer;
 vslam::viewer::PointCloudPrimitive::PointCloudPrimitive(
     const std::string& tag_name,
     const vslam::EigenAllocatedVector<vslam::Vec3_t>& points_world_frame,
+    bool draw_point_id,
     const vslam::EigenAllocatedVector<vslam::Vec3_t>& colors)
     : PrimitiveBase(),
       tag_name_(tag_name),
       points_world_frame_(points_world_frame),
-      colors_(colors) {}
+      colors_(colors),
+      draw_point_id_(draw_point_id) {}
 
 std::string vslam::viewer::PointCloudPrimitive::GetTag() const {
   return tag_name_;
@@ -37,10 +39,12 @@ std::vector<cv::viz::Widget> vslam::viewer::PointCloudPrimitive::GetWidget()
   std::vector<cv::viz::Widget> widgets;
 
   // add text widgets
-  int32_t id_count = 0;
-  for (const auto& p : points_world_frame_) {
-    widgets.emplace_back(cv::viz::WText3D(std::to_string(id_count++),
-                                          cv::Point3d(p[0], p[1], p[2])));
+  if (draw_point_id_) {
+    int32_t id_count = 0;
+    for (const auto& p : points_world_frame_) {
+      widgets.emplace_back(cv::viz::WText3D(std::to_string(id_count++),
+                                            cv::Point3d(p[0], p[1], p[2])));
+    }
   }
 
   if (colors_.empty()) {
@@ -120,6 +124,14 @@ vslam::viewer::CoordinateSystemPrimitive::CoordinateSystemPrimitive(
       tag_name_(tag_name),
       position_world_frame_(position_world_frame),
       orientation_world_frame_(orientation_world_frame) {}
+
+vslam::viewer::CoordinateSystemPrimitive::CoordinateSystemPrimitive(
+    const std::string& tag_name,
+    const vslam::Pose_t& pose_world_to_current)
+    : PrimitiveBase(),
+      tag_name_(tag_name),
+      position_world_frame_(pose_world_to_current.translation()),
+      orientation_world_frame_(pose_world_to_current.rotationMatrix()) {}
 
 std::string vslam::viewer::CoordinateSystemPrimitive::GetTag() const {
   return tag_name_;
