@@ -195,16 +195,21 @@ class GeneralProjectionFactor
         return project_point - measured_;
       }
 
-    } catch (gtsam::CheiralityException& e) {
-      //      if (H1) *H1 = gtsam::Matrix::Zero(2, 6);
-      //      if (H2) *H2 = gtsam::Matrix::Zero(2, 3);
-      //      if (verboseCheirality_)
-      //        std::cout << e.what() << ": Landmark "
-      //                  << DefaultKeyFormatter(this->key2())
-      //                  << " moved behind camera "
-      //                  << DefaultKeyFormatter(this->key1()) << std::endl;
-      //      if (throwCheirality_) throw CheiralityException(this->key2());
+    } catch (std::exception& e) {
+      ;
     }
+    // catch (gtsam::CheiralityException& e) {
+    //      //      if (H1) *H1 = gtsam::Matrix::Zero(2, 6);
+    //      //      if (H2) *H2 = gtsam::Matrix::Zero(2, 3);
+    //      //      if (verboseCheirality_)
+    //      //        std::cout << e.what() << ": Landmark "
+    //      //                  << DefaultKeyFormatter(this->key2())
+    //      //                  << " moved behind camera "
+    //      //                  << DefaultKeyFormatter(this->key1()) <<
+    //      std::endl;
+    //      //      if (throwCheirality_) throw
+    //      CheiralityException(this->key2());
+    //    }
     return gtsam::Vector2::Constant(1);
   }
 
