@@ -153,6 +153,8 @@ vslam::Vec2_t DoubleSphereCameraModel::Project(
           pos_image_frame,
           &tmp_jacobian_p3d)) {
     spdlog::warn("{}:{} Invalid Projection.", __FILE__, __FUNCTION__);
+    jacobian_p3d = MatRC_t<2, 3>::Zero();
+    return {0, 0};
   }
 
   jacobian_p3d = tmp_jacobian_p3d.block<2, 3>(0, 0);
