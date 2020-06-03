@@ -25,15 +25,17 @@ int main() {
   // EUROC
   std::string path_to_euroc =
       "/home/ery/subspace/docker_work/dataset/V1_01_easy";
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/V2_01_easy";
   std::string path_to_calibfile =
       "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
       "calib_results/calibration.json";
 
-  //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
-  //  std::string path_to_calibfile =
-  //      "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
-  //      "results/calibration.json";
+  //    std::string path_to_euroc =
+  //        "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+  //    std::string path_to_calibfile =
+  //        "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
+  //        "results/calibration.json";
 
   vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
       path_to_euroc, path_to_calibfile);
@@ -182,17 +184,21 @@ int main() {
             ->GetFrame(threadsafe_map_database_ptr->latest_frame_id_)
             .lock();
     if (frame_ptr) {
-      //      viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
-      //          "world_origin"+std::to_string(frame_ptr->frame_id_),
-      //          frame_ptr->GetCameraPose()));
       viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
-          "current_cam", frame_ptr->GetCameraPose()));
+          "world_origin" + std::to_string(frame_ptr->frame_id_),
+          frame_ptr->GetCameraPose()));
+      //      viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
+      //          "current_cam", frame_ptr->GetCameraPose()));
+    }
+
+    cv::imshow("First", vis);
+    if (counter == 0) {
+      cv::waitKey(0);
+    } else {
+      cv::waitKey(30);
     }
 
     counter++;
-
-    cv::imshow("First", vis);
-    cv::waitKey(0);
   }
 
   return 0;
