@@ -82,10 +82,12 @@ bool TryInitialize(const data::FrameWeakPtr& reference_frame,
 
   // 初めに視差チェック
   if (mean_parallax < parallax_threshold) {
+#ifdef SHOWDEBUG
     spdlog::warn("{}:{} Insufficient parallax {}[px]",
                  __FILE__,
                  __FUNCTION__,
                  mean_parallax);
+#endif
     return false;
   }
 
@@ -109,18 +111,22 @@ bool TryInitialize(const data::FrameWeakPtr& reference_frame,
   double inlier_rate = static_cast<double>(mono_ransac_.inliers_.size()) /
                        static_cast<double>(intersection_indices.size());
   if (inlier_rate < inlier_rate_threshold) {
+#ifdef SHOWDEBUG
     spdlog::warn("{}:{} Insufficient inliers. {}%[{}/{}]",
                  __FILE__,
                  __FUNCTION__,
                  inlier_rate * 100,
                  mono_ransac_.inliers_.size(),
                  intersection_indices.size());
+#endif
     return false;
   } else {
+#ifdef SHOWDEBUG
     spdlog::info("Inliers found: {}%[{}/{}]",
                  inlier_rate * 100,
                  mono_ransac_.inliers_.size(),
                  intersection_indices.size());
+#endif
   }
 
   // Output InlierのLandmark IDを抽出する。
@@ -142,14 +148,42 @@ bool TryInitialize(const data::FrameWeakPtr& reference_frame,
   opengv::relative_pose::CentralRelativeAdapter tri_adapter(
       bearings_reference, bearings_current, translation, rotation.matrix());
   vslam::EigenAllocatedUnorderedMap<database_index_t, Vec3_t> landmark_position;
+  std::vector<double> landmark_observation_angle;
   for (auto inlier_array_idx : mono_ransac_.inliers_) {
     //    opengv::point_t point =
     //        opengv::triangulation::triangulate(tri_adapter, inlier_array_idx);
     opengv::point_t point =
         opengv::triangulation::triangulate2(tri_adapter, inlier_array_idx);
-    landmark_position[intersection_indices[inlier_array_idx]] = point;
-    //    spdlog::info("TR:{}, {},{},{}",
-    //    intersection_indices[inlier_array_idx], point[0], point[1], point[2]);
+
+    Vec3_t ref_to_lm = (point - Vec3_t::Zero()).normalized();
+    Vec3_t current_to_lm = (point - translation).normalized();
+    double angle = std::acos(ref_to_lm.dot(current_to_lm));
+    landmark_observation_angle.emplace_back(angle);
+
+    if (angle > 0.01) {
+      landmark_position[intersection_indices[inlier_array_idx]] = point;
+    } else {
+      //      spdlog::warn("Too few parallax, rejected. {} [deg]", angle * 180.0
+      //      / M_PI);
+    }
+  }
+
+  double parallax_inlier_rate =
+      static_cast<double>(landmark_position.size()) /
+      static_cast<double>(intersection_indices.size());
+  if (parallax_inlier_rate < inlier_rate_threshold) {
+#ifdef SHOWDEBUG
+    spdlog::info("Final inliers : {}% [{}/{}]",
+                 parallax_inlier_rate * 100.0,
+                 landmark_position.size(),
+                 intersection_indices.size());
+    // 求めた点の視線交差角度を計算
+    auto min = std::min_element(landmark_observation_angle.begin(),
+                                landmark_observation_angle.end());
+    spdlog::info("Min angle : {}", (*min) * 180.0 / M_PI);
+    spdlog::warn("Too few parallax, abort.");
+#endif
+    return false;
   }
 
   estimated_landmark_position = landmark_position;
@@ -239,23 +273,34 @@ bool RefineInitializedMap(const data::FrameWeakPtr& reference_frame,
   /**
    * @brief 最適化の実施
    */
-  /* Optimize the graph and print results */
-  Values result = DoglegOptimizer(graph, initial_estimate).optimize();
-  //  result.print("Final results:\n");
-  //  cout << "initial error = " << graph.error(initial_estimate) << endl;
-  //  cout << "final error = " << graph.error(result) << endl;
+  try {
+    /* Optimize the graph and print results */
+    Values result = DoglegOptimizer(graph, initial_estimate).optimize();
+    //  result.print("Final results:\n");
+    //  cout << "initial error = " << graph.error(initial_estimate) << endl;
+    //  cout << "final error = " << graph.error(result) << endl;
 
-  /**
-   * @brief 結果の出力
-   */
+    /**
+     * @brief 結果の出力
+     */
 
-  auto reference_pose = result.at(Symbol('x', 0)).cast<Pose3>();
-  auto current_pose = result.at(Symbol('x', 1)).cast<Pose3>();
-  reference_frame_ptr->SetCameraPose(Pose_t(reference_pose.matrix()));
-  current_frame_ptr->SetCameraPose(Pose_t(current_pose.matrix()));
-  for (auto& [id, pos] : estimated_landmark_position) {
-    auto lm_pos = result.at(Symbol('l', id)).cast<Point3>();
-    pos = lm_pos;
+    auto reference_pose = result.at(Symbol('x', 0)).cast<Pose3>();
+    auto current_pose = result.at(Symbol('x', 1)).cast<Pose3>();
+    reference_frame_ptr->SetCameraPose(Pose_t(reference_pose.matrix()));
+    current_frame_ptr->SetCameraPose(Pose_t(current_pose.matrix()));
+    for (auto& [id, pos] : estimated_landmark_position) {
+      auto lm_pos = result.at(Symbol('l', id)).cast<Point3>();
+      pos = lm_pos;
+    }
+  } catch (gtsam::IndeterminantLinearSystemException& e) {
+    spdlog::error("{}:{} IndeterminantLinearSystemException: {}",
+                  __FILE__,
+                  __FUNCTION__,
+                  e.what());
+    return false;
+  } catch (std::exception& e) {
+    spdlog::error("{}:{} Solver error: {}", __FILE__, __FUNCTION__, e.what());
+    return false;
   }
 
   return true;
