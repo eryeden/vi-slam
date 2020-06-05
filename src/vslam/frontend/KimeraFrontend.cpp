@@ -257,6 +257,11 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
   bool features_low_number = false;
   features_low_number =
       (aged_landmark_number < keyframe_feature_number_threshold_);
+
+  if ((frontend_input.timestamp_ - last_keyframe->timestamp_) < 0.5) {
+    features_low_number = false;
+  }
+
   //    features_low_number = (feature_position_database.size() <
   //    keyframe_feature_number_threshold_);
 
