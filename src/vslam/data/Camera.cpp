@@ -127,7 +127,11 @@ DoubleSphereCameraModel::DoubleSphereCameraModel()
 
 DoubleSphereCameraModel::DoubleSphereCameraModel(
     const DoubleSphereCameraModel& double_sphere_camera_model)
-    : fx_(double_sphere_camera_model.fx_),
+    : CameraModelBase(double_sphere_camera_model.id_,
+                      double_sphere_camera_model.width_,
+                      double_sphere_camera_model.height_,
+                      double_sphere_camera_model.rate_),
+      fx_(double_sphere_camera_model.fx_),
       fy_(double_sphere_camera_model.fy_),
       cx_(double_sphere_camera_model.cx_),
       cy_(double_sphere_camera_model.cy_),
