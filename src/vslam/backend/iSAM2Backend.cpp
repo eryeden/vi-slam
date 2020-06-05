@@ -12,6 +12,8 @@
 #include <gtsam/nonlinear/Values.h>
 #include <gtsam/slam/PriorFactor.h>
 
+#include <opencv2/opencv.hpp>
+
 #include "GeneralProjectionFactor.hpp"
 #include "Initialization.hpp"
 #include "PoseInitialization.hpp"
@@ -84,6 +86,12 @@ vslam::backend::BackendState vslam::backend::iSAM2Backend::SpinOnce() {
           prev_frame->GetCameraPose());
       if (estimated_pose != std::nullopt) {
         current_frame->SetCameraPose(estimated_pose.value());
+        auto refined_pose = initialization::RefinePose(
+            map_database_->GetFrame(map_database_->latest_frame_id_),
+            map_database_);
+        if (refined_pose != std::nullopt) {
+          current_frame->SetCameraPose(refined_pose.value());
+        }
       } else {
         return backend_state_;
       }
@@ -96,9 +104,7 @@ vslam::backend::BackendState vslam::backend::iSAM2Backend::SpinOnce() {
         if (previous_key_frame) {
           TriangulateKeyFrame(map_database_, current_frame, previous_key_frame);
           ////          // ISAM2のUpdateを実施
-          //          UpdateISAMObservation(isam_2_ptr_,
-          //                                map_database_,
-          //                                current_frame);
+          UpdateISAMObservation(isam_2_ptr_, map_database_, current_frame);
         }
       }
     }
@@ -389,8 +395,11 @@ bool vslam::backend::iSAM2Backend::TriangulateKeyFrame(
     bearings_previous.emplace_back(
         previous_ptr->observing_feature_bearing_in_camera_frame_.at(id));
   }
+  //  Pose_t pose_previous_to_current =
+  //      current_ptr->GetCameraPose().inverse() *
+  //      previous_ptr->GetCameraPose();
   Pose_t pose_previous_to_current =
-      current_ptr->GetCameraPose().inverse() * previous_ptr->GetCameraPose();
+      previous_ptr->GetCameraPose().inverse() * current_ptr->GetCameraPose();
   //  Pose_t pose_previous_to_current =  previous_ptr->GetCameraPose().inverse()
   //  * current_ptr->GetCameraPose();
 
@@ -404,6 +413,14 @@ bool vslam::backend::iSAM2Backend::TriangulateKeyFrame(
 
   vslam::EigenAllocatedUnorderedMap<database_index_t, Vec3_t> landmark_position;
   std::vector<double> landmark_observation_angle;
+  cv::Mat debug_frame_prev(cv::Size(previous_ptr->camera_model_->width_,
+                                    previous_ptr->camera_model_->height_),
+                           CV_8UC3);
+  cv::Mat debug_frame_current(cv::Size(previous_ptr->camera_model_->width_,
+                                       previous_ptr->camera_model_->height_),
+                              CV_8UC3);
+  debug_frame_prev = 0;
+  debug_frame_current = 0;
   for (size_t i = 0; i < uninitialized_lm_lds.size(); i++) {
     opengv::point_t point = opengv::triangulation::triangulate2(tri_adapter, i);
 
@@ -414,25 +431,49 @@ bool vslam::backend::iSAM2Backend::TriangulateKeyFrame(
     landmark_observation_angle.emplace_back(angle);
 
     // measure reprojeciton error
-    auto projected = current_ptr->camera_model_->Project(point);
-    auto measured = current_ptr->observing_feature_point_in_device_.at(
+    auto projected = previous_ptr->camera_model_->Project(point);
+    auto measured = previous_ptr->observing_feature_point_in_device_.at(
         uninitialized_lm_lds[i]);
+    auto measured_current = current_ptr->observing_feature_point_in_device_.at(
+        uninitialized_lm_lds[i]);
+    cv::circle(debug_frame_prev,
+               cv::Point(measured[0], measured[1]),
+               2,
+               cv::Scalar(255, 255, 0));
+    cv::putText(debug_frame_prev,
+                std::to_string(uninitialized_lm_lds[i]),
+                cv::Point(measured[0], measured[1]),
+                cv::FONT_HERSHEY_PLAIN,
+                0.5,
+                cv::Scalar(0, 255, 0));
+    cv::circle(debug_frame_current,
+               cv::Point(measured_current[0], measured_current[1]),
+               2,
+               cv::Scalar(255, 255, 0));
+    cv::putText(debug_frame_current,
+                std::to_string(uninitialized_lm_lds[i]),
+                cv::Point(measured_current[0], measured_current[1]),
+                cv::FONT_HERSHEY_PLAIN,
+                0.5,
+                cv::Scalar(0, 255, 0));
     auto error = (measured - projected).norm();
-    if (error < 20.0) {
+    if ((error < 50.0) && (angle > 0.01)) {
       landmark_position[uninitialized_lm_lds[i]] =
           previous_ptr->GetCameraPose() * point;
     } else {
       spdlog::warn("Too large error, rejected. {} [px]", error);
+      cv::circle(debug_frame_prev,
+                 cv::Point(measured[0], measured[1]),
+                 2,
+                 cv::Scalar(0, 0, 255));
+      cv::circle(debug_frame_current,
+                 cv::Point(measured_current[0], measured_current[1]),
+                 2,
+                 cv::Scalar(0, 0, 255));
     }
-
-    //    if(angle > 0.01){
-    //
-    //    }else{
-    //      spdlog::warn("Too few parallax, rejected. {} [deg]", angle * 180.0 /
-    //      M_PI);
-    //    }
   }
-
+  cv::imshow("debug_prev", debug_frame_prev);
+  cv::imshow("debug_current", debug_frame_current);
   // output
   for (const auto& [id, pos] : landmark_position) {
     auto lm_ptr = lm_database.at(id).lock();
@@ -462,18 +503,13 @@ bool vslam::backend::iSAM2Backend::UpdateISAMObservation(
    * は円形の分布となっている。普通の二次元分布のように楕円状の分布ではない。
    */
   noiseModel::Isotropic::shared_ptr measurement_noise =
-      noiseModel::Isotropic::Sigma(2, 1.0);  // one pixel in u and v
+      noiseModel::Isotropic::Sigma(2, 1.8);  // one pixel in u and v
 
   /**
    * @brief Factor graphの生成
    */
   NonlinearFactorGraph graph;
   Values initial_estimate;
-
-  // Add a prior on pose x1. This indirectly specifies where the origin is.
-  noiseModel::Diagonal::shared_ptr poseNoise = noiseModel::Diagonal::Sigmas(
-      (Vector(6) << Vector3::Constant(0.1), Vector3::Constant(0.1))
-          .finished());  // 30cm std on x,y,z 0.1 rad on roll,pitch,yaw
 
   /**
    * @brief　観測情報の追加
@@ -507,23 +543,35 @@ bool vslam::backend::iSAM2Backend::UpdateISAMObservation(
       Symbol('x', current_frame_ptr->frame_id_),
       gtsam::Pose3(current_frame_ptr->GetCameraPose().matrix()));
 
-  /**
-   * @brief Setup ISAM2 and run optimization
-   */
-  isam_2->update(graph, initial_estimate);
-  //  Values currentEstimate = isam_2->calculateEstimate();
-  //  spdlog::info("Opt[{}]", 0);
-  //  isam_2->print("ISAM2 State");
-  //  currentEstimate.print("Current estimate: ");
+  try {
+    /**
+     * @brief Setup ISAM2 and run optimization
+     */
+    isam_2->update(graph, initial_estimate);
+
+  } catch (gtsam::IndeterminantLinearSystemException& e) {
+    spdlog::error("{}:{} Solver IndeterminantLinearSystemException error: {}",
+                  __FILE__,
+                  __FUNCTION__,
+                  e.what());
+  } catch (std::exception& e) {
+    spdlog::error("{}:{} Solver error: {}", __FILE__, __FUNCTION__, e.what());
+  }
+
   for (size_t i = 0; i < 1; i++) {
     /**
      * @brief Additional Optimization
      */
-    isam_2->update();
-    //    spdlog::info("Opt[{}]", i);
-    //    currentEstimate = isam_2->calculateEstimate();
-    //    isam_2->print("ISAM2 State");
-    //    currentEstimate.print("Current estimate: ");
+    try {
+      isam_2->update();
+    } catch (gtsam::IndeterminantLinearSystemException& e) {
+      spdlog::error("{}:{} Solver IndeterminantLinearSystemException error: {}",
+                    __FILE__,
+                    __FUNCTION__,
+                    e.what());
+    } catch (std::exception& e) {
+      spdlog::error("{}:{} Solver error: {}", __FILE__, __FUNCTION__, e.what());
+    }
   }
 
   /**
@@ -544,6 +592,26 @@ bool vslam::backend::iSAM2Backend::UpdateISAMObservation(
       if (lm_ptr) {
         lm_ptr->SetLandmarkPosition(data.cast<Point3>());
         lm_ptr->is_added_ = true;
+      }
+    }
+  }
+
+  /**
+   * @brief Outlier elimination
+   */
+  for (const auto id : current_frame_ptr->observing_feature_id_) {
+    auto lm_ptr = map_database->GetLandmark(id).lock();
+    if (lm_ptr) {
+      if (lm_ptr->is_added_ && !lm_ptr->is_outlier_) {
+        auto measured =
+            current_frame_ptr->observing_feature_point_in_device_.at(id);
+        auto projected = camera_model_ptr->Project(
+            current_frame_ptr->GetCameraPose().inverse() *
+            lm_ptr->GetLandmarkPosition());
+        auto error = (projected - measured).norm();
+        if (error > 3) {
+          lm_ptr->is_outlier_ = true;
+        }
       }
     }
   }
