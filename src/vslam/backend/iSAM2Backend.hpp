@@ -67,7 +67,8 @@ class iSAM2Backend : public BackendBase {
   bool UpdateISAMObservation(
       std::shared_ptr<gtsam::ISAM2>& isam_2,
       std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
-      data::FrameWeakPtr&& current_frame);
+      data::FrameWeakPtr&& current_frame,
+      data::FrameWeakPtr&& previous_key_frame);
 };
 
 }  // namespace vslam::backend
