@@ -139,7 +139,7 @@ bool TryInitialize(const data::FrameWeakPtr& reference_frame,
       mono_ransac_.model_coefficients_;
   Rot_t rotation(best_transformation.block<3, 3>(0, 0));
   Vec3_t translation = best_transformation.block<3, 1>(0, 3);
-  //  translation.normalize();
+  translation.normalize();
   Pose_t outpose(rotation, translation);
   current_frame_pose = outpose;
   //  spdlog::info("Initialized : T:{}", translation.norm());
