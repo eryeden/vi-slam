@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-06-06T15:04:33.626Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="ODNwqv4jXJPTam5p-4tQ" version="13.1.11" type="github" pages="4">
+<mxfile host="app.diagrams.net" modified="2020-06-06T17:18:12.993Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="Js2Kuqc-gThI0N0uKf7_" version="13.1.11" type="github" pages="4">
   <diagram id="mYV5fHMhs3SO6_IcKCSN" name="Top">
     <mxGraphModel dx="1359" dy="801" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -573,23 +573,12 @@
     
   </diagram>
   <diagram id="rxRwFc9iUt_cTfEsLqZz" name="Proposed-Backend">
-    <mxGraphModel dx="6184" dy="4149" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="8449" dy="5639" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="wGwapt1zrAfcY-FxFDx9-0" />
         <mxCell id="wGwapt1zrAfcY-FxFDx9-1" parent="wGwapt1zrAfcY-FxFDx9-0" />
         <mxCell id="GIy5xliaLUDgyUYNqGpI-0" value="BackendState : Bootstrap" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;fontColor=#000000;fontStyle=1;fontSize=23;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="30" y="-190" width="300" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="GIy5xliaLUDgyUYNqGpI-1" value="BackendState : Nominal" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="70" y="575" width="140" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="Zr_EwkMS2fTBts2OmuxF-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;endFill=1;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" source="GIy5xliaLUDgyUYNqGpI-3" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="390" y="630" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="GIy5xliaLUDgyUYNqGpI-3" value="- Add Visual measurement&lt;br&gt;- Do optimization" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="90" y="610" width="160" height="40" as="geometry" />
+          <mxGeometry x="-10" y="-180" width="300" height="30" as="geometry" />
         </mxCell>
         <mxCell id="GIy5xliaLUDgyUYNqGpI-4" value="" style="endArrow=none;dashed=1;html=1;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -597,95 +586,67 @@
             <mxPoint x="-30" y="-120" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Zr_EwkMS2fTBts2OmuxF-0" value="&lt;h1&gt;Proposed Backend v0.2&lt;/h1&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="-790" y="-320" width="360" height="40" as="geometry" />
+        <mxCell id="Zr_EwkMS2fTBts2OmuxF-0" value="&lt;h1&gt;&lt;font style=&quot;font-size: 60px&quot;&gt;Backend v0.2&lt;/font&gt;&lt;/h1&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;fontSize=33;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
+          <mxGeometry x="-1040" y="-370" width="490" height="140" as="geometry" />
         </mxCell>
         <mxCell id="Zr_EwkMS2fTBts2OmuxF-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;endFill=1;fontColor=#000000;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="wGwapt1zrAfcY-FxFDx9-1" source="Zr_EwkMS2fTBts2OmuxF-1" edge="1" target="1qP3F_WB5jPUnqhCblQz-0">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="-710" y="390" as="targetPoint" />
+            <mxPoint x="-550" y="150" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="-1030" y="405" />
+              <mxPoint x="-870" y="165" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="Zr_EwkMS2fTBts2OmuxF-1" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="-1160" y="200" width="260" height="110" as="geometry" />
+          <mxGeometry x="-1000" y="-40" width="260" height="110" as="geometry" />
         </mxCell>
         <mxCell id="Zr_EwkMS2fTBts2OmuxF-2" value="Database&lt;br&gt;Frame" style="shape=datastore;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="-1000" y="220" width="70" height="60" as="geometry" />
+          <mxGeometry x="-840" y="-20" width="70" height="60" as="geometry" />
         </mxCell>
         <mxCell id="Zr_EwkMS2fTBts2OmuxF-6" value="Database&lt;br&gt;Map Point" style="shape=datastore;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="-1130" y="220" width="70" height="60" as="geometry" />
+          <mxGeometry x="-970" y="-20" width="70" height="60" as="geometry" />
         </mxCell>
         <mxCell id="Zr_EwkMS2fTBts2OmuxF-8" value="MapDatabase" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="-1160" y="180" width="90" height="20" as="geometry" />
+          <mxGeometry x="-1000" y="-60" width="90" height="20" as="geometry" />
         </mxCell>
         <mxCell id="Zr_EwkMS2fTBts2OmuxF-12" value="" style="endArrow=none;dashed=1;html=1;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="430" y="845" as="sourcePoint" />
-            <mxPoint x="430" y="615" as="targetPoint" />
+            <mxPoint x="1240" y="930" as="sourcePoint" />
+            <mxPoint x="1240" y="380" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Zr_EwkMS2fTBts2OmuxF-13" value="Latest Frame : KeyFrame" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="455" y="610" width="150" height="20" as="geometry" />
+        <mxCell id="Zr_EwkMS2fTBts2OmuxF-13" value="KeyFrame" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
+          <mxGeometry x="1260" y="510" width="70" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="Zr_EwkMS2fTBts2OmuxF-14" value="Latest Frame : Non-KeyFrame" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="455" y="770" width="180" height="20" as="geometry" />
+        <mxCell id="Zr_EwkMS2fTBts2OmuxF-14" value="Non-KeyFrame" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
+          <mxGeometry x="1260" y="380" width="100" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="Zr_EwkMS2fTBts2OmuxF-30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;endFill=1;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" source="Zr_EwkMS2fTBts2OmuxF-15" target="Zr_EwkMS2fTBts2OmuxF-29" edge="1">
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=23;" edge="1" parent="wGwapt1zrAfcY-FxFDx9-1" source="Zr_EwkMS2fTBts2OmuxF-21" target="1qP3F_WB5jPUnqhCblQz-31">
           <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="Zr_EwkMS2fTBts2OmuxF-15" value="- Do Motion only BA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="670" y="820" width="160" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="Zr_EwkMS2fTBts2OmuxF-29" value="- Update DB" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="910" y="820" width="160" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="Zr_EwkMS2fTBts2OmuxF-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=classic;endFill=1;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" source="Zr_EwkMS2fTBts2OmuxF-16" target="Zr_EwkMS2fTBts2OmuxF-23" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="Zr_EwkMS2fTBts2OmuxF-16" value="- Do BA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="670" y="665" width="160" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="Zr_EwkMS2fTBts2OmuxF-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=classic;endFill=1;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" source="Zr_EwkMS2fTBts2OmuxF-17" target="Zr_EwkMS2fTBts2OmuxF-16" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="Zr_EwkMS2fTBts2OmuxF-17" value="初期化&lt;br&gt;- 新規観測のLandmark位置&lt;br&gt;- 入力FrameのPose" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="455" y="650" width="160" height="70" as="geometry" />
-        </mxCell>
-        <mxCell id="Zr_EwkMS2fTBts2OmuxF-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=classic;endFill=1;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" source="Zr_EwkMS2fTBts2OmuxF-18" target="Zr_EwkMS2fTBts2OmuxF-15" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="Zr_EwkMS2fTBts2OmuxF-18" value="初期化&lt;br&gt;- 入力FrameのPose" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="455" y="805" width="160" height="70" as="geometry" />
         </mxCell>
         <mxCell id="Zr_EwkMS2fTBts2OmuxF-21" value="&lt;b&gt;iSAM2初期化：&lt;/b&gt;&lt;br&gt;初期化済みのReference frame、Current frame、&lt;br&gt;位置初期化に成功したLandmark観測情報をProjection factorとして登録" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
           <mxGeometry x="2220" y="110" width="335" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="Zr_EwkMS2fTBts2OmuxF-28" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;endFill=1;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" source="Zr_EwkMS2fTBts2OmuxF-23" target="Zr_EwkMS2fTBts2OmuxF-27" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="Zr_EwkMS2fTBts2OmuxF-23" value="- Outlier rejection" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="880" y="665" width="160" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="Zr_EwkMS2fTBts2OmuxF-27" value="- Update DB" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="1120" y="665" width="160" height="40" as="geometry" />
-        </mxCell>
         <mxCell id="Iiumq8NnN7KaLzQg69bI-0" value="&lt;h1&gt;Camera modelの問題&lt;/h1&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="-1640" y="-690" width="260" height="40" as="geometry" />
+          <mxGeometry x="-1060" y="-880" width="260" height="40" as="geometry" />
         </mxCell>
         <mxCell id="Iiumq8NnN7KaLzQg69bI-1" value="GTSAMには、Pinholeベースの平面に一旦投影するタイプの&lt;br&gt;カメラモデルは準備されているが、180度以上の画角を扱える&lt;br&gt;球面投影モデル（VINS-Monoみたいなやつ）は実装されていない。&lt;br&gt;ここをどうするか？？？&lt;br&gt;&lt;br&gt;１ヶ月以内にFisheyeのFactorが追加されたので、これを参考に自分仕様の&lt;br&gt;Fisheyeを考えてみる。=&amp;gt; Basaltが神なのでできたよ！" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fontColor=#000000;" parent="wGwapt1zrAfcY-FxFDx9-1" vertex="1">
-          <mxGeometry x="-1635" y="-640" width="420" height="100" as="geometry" />
+          <mxGeometry x="-1055" y="-830" width="420" height="100" as="geometry" />
         </mxCell>
         <mxCell id="1qP3F_WB5jPUnqhCblQz-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="wGwapt1zrAfcY-FxFDx9-1" source="1qP3F_WB5jPUnqhCblQz-0" target="Zr_EwkMS2fTBts2OmuxF-1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="-563" y="255" />
+              <mxPoint x="-403" y="15" />
             </Array>
           </mxGeometry>
         </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=23;" edge="1" parent="wGwapt1zrAfcY-FxFDx9-1" source="1qP3F_WB5jPUnqhCblQz-0">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-50" y="165" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="1qP3F_WB5jPUnqhCblQz-0" value="新規観測Frameから、&lt;br&gt;Landmark databaseを更新する&lt;br&gt;・追加済みLandmarkは被観測FrameとしてFrameIDを追加&lt;br&gt;・Databaseに存在していないLandmarkの場合は新規追加" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;verticalAlign=top;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
-          <mxGeometry x="-735" y="370" width="343" height="70" as="geometry" />
+          <mxGeometry x="-575" y="130" width="343" height="70" as="geometry" />
         </mxCell>
         <mxCell id="1qP3F_WB5jPUnqhCblQz-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="wGwapt1zrAfcY-FxFDx9-1" source="1qP3F_WB5jPUnqhCblQz-5" target="1qP3F_WB5jPUnqhCblQz-11">
           <mxGeometry relative="1" as="geometry">
@@ -744,7 +705,79 @@
           <mxGeometry x="1680" y="92" width="410" height="126" as="geometry" />
         </mxCell>
         <mxCell id="1qP3F_WB5jPUnqhCblQz-26" value="BackendState : Nominal" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;fontColor=#000000;fontStyle=1;fontSize=23;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
-          <mxGeometry x="30" y="470" width="280" height="30" as="geometry" />
+          <mxGeometry x="-10" y="446.87" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-31" value="BackendStateをMoninalに変更" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="2630" y="145" width="180" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=23;entryX=0.003;entryY=0.45;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="wGwapt1zrAfcY-FxFDx9-1" source="1qP3F_WB5jPUnqhCblQz-33" target="1qP3F_WB5jPUnqhCblQz-41">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="360" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;" edge="1" parent="wGwapt1zrAfcY-FxFDx9-1" source="1qP3F_WB5jPUnqhCblQz-33" target="1qP3F_WB5jPUnqhCblQz-34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-33" value="&lt;b&gt;InitializePose：3point RansacでFrameのPose推定&lt;br&gt;&lt;br&gt;&lt;/b&gt;入力：&lt;br&gt;Current frame(CF)&lt;br&gt;前回FrameのPose&lt;br&gt;&lt;br&gt;処理内容&lt;br&gt;1. 3point Ransac(OpenGV, KNEIP)&lt;br&gt;&lt;br&gt;Pose初期化成功基準:&lt;br&gt;1. 3point Ransacに成功&lt;br&gt;&lt;br&gt;MapDatabaseの更新なし" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry y="535" width="330" height="205" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;entryX=0;entryY=0.333;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="wGwapt1zrAfcY-FxFDx9-1" source="1qP3F_WB5jPUnqhCblQz-34" target="1qP3F_WB5jPUnqhCblQz-45">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="870" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-48" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="wGwapt1zrAfcY-FxFDx9-1" source="1qP3F_WB5jPUnqhCblQz-34" target="1qP3F_WB5jPUnqhCblQz-50">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="950" y="637" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-34" value="&lt;b&gt;RefinePose：InitializePoseを初期値にしてMotion only BAを実施&lt;br&gt;Pose推定精度を向上させる&lt;br&gt;&lt;br&gt;&lt;/b&gt;入力：&lt;br&gt;Pose初期化済みCurrent frame(CF)&lt;br&gt;MapDatabase&lt;br&gt;&lt;br&gt;対象Landmark条件&lt;br&gt;1. 入力Frameで観測されている&lt;br&gt;2. 最適化済み(is_added_ == true)&lt;br&gt;3. Outlierでない(is_outlier == false)&lt;br&gt;&lt;br&gt;処理内容&lt;br&gt;1. 入力Frameの観測Landmark位置をPrior Factorとして設定&lt;br&gt;2. Frame観測情報をGeneral Projeciton Factorとして設定&lt;br&gt;3. 最適化実施&lt;br&gt;&lt;br&gt;PoseRefine成功条件&lt;br&gt;1. 最適化時例外が発生しない&lt;br&gt;&lt;br&gt;MapDatabaseの更新なし" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="440" y="476.87" width="380" height="321.25" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-39" value="失敗" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=12;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="374" y="552.5" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-41" value="FramePoseの更新なしで終了？&lt;br&gt;これでSLAMが成り立つか？" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=12;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="420" y="410" width="190" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-42" value="成功" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=12;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="374" y="645" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-45" value="FramePoseの更新なしで終了？&lt;br&gt;これでSLAMが成り立つか？" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=12;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="880" y="420" width="190" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-46" value="失敗" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=12;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="850" y="515" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-49" value="成功" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=12;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="870" y="645" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;" edge="1" parent="wGwapt1zrAfcY-FxFDx9-1" source="1qP3F_WB5jPUnqhCblQz-50">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1210" y="637.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-50" value="&lt;b&gt;MapDatabseを更新：&lt;/b&gt;&lt;br&gt;RefineしたPoseを設定" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="960" y="607.5" width="170" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-52" value="終了、次Frameへ" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="1310" y="410" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-57" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;" edge="1" parent="wGwapt1zrAfcY-FxFDx9-1" source="1qP3F_WB5jPUnqhCblQz-53" target="1qP3F_WB5jPUnqhCblQz-56">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-53" value="&lt;b&gt;TriangulateKeyFrame：前回KeyFrameと今回KeyFrameでLandmarkをTriangulateする&lt;br&gt;&lt;/b&gt;&lt;br&gt;入力：&lt;br&gt;Current Key Frame(CKF)&lt;br&gt;Previous Key Frame(PKF)&lt;br&gt;MapDatabase&lt;br&gt;&lt;br&gt;対象Landmark条件&lt;br&gt;1. CKFとPKFで共通して観測されている&lt;br&gt;2. 初期化されていない(is_initialized == false)&lt;br&gt;&lt;br&gt;&lt;br&gt;処理内容&lt;br&gt;1. 対象Landmark選定&lt;br&gt;2. Triangulate(OpenGV: triangulate2)&lt;br&gt;3. Outlier除去&lt;br&gt;4. Mapdatabase更新（Triangulateできたものは初期化済みとなる）&lt;br&gt;&lt;br&gt;&lt;br&gt;Outlier条件；以下条件を満たすLandmarkはOutlierとしてMapDatabaseの更新はなしで未初期化のままとなる&lt;br&gt;1. PKFへのReprojetion error が5px以内&lt;br&gt;2. CKF. PKC. Landmarkの成す角度（視差）が1.0deg以内&lt;br&gt;3. Projection errorが発生&lt;br&gt;&lt;br&gt;成功条件&lt;br&gt;1. Triangulate対象のLandmarkが存在する" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="1310" y="552.5" width="610" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;" edge="1" parent="wGwapt1zrAfcY-FxFDx9-1" source="1qP3F_WB5jPUnqhCblQz-56" target="1qP3F_WB5jPUnqhCblQz-58">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-56" value="&lt;b&gt;UpdateISAMObservation：iSAMに今回KeyFrameの観測情報を追加、最適化を実施する&lt;/b&gt;&lt;br&gt;&lt;br&gt;入力：&lt;br&gt;Current Key Frame(CKF)&lt;br&gt;Previous Key Frame(PKF)&lt;br&gt;MapDatabase&lt;br&gt;&lt;br&gt;対象Landmark条件&lt;br&gt;1. CKFとPKFで共通して観測されている&lt;br&gt;2. 初期化されていない(is_initialized == false)&lt;br&gt;&lt;br&gt;&lt;br&gt;処理内容&lt;br&gt;1. CKFとPKFに関するProjection factorの追加&lt;br&gt;2. 新規追加LandmarkのPositon初期値設定&lt;br&gt;3. 新規追加FrameのPose初期値設定&lt;br&gt;4. iSAM2Update + 最適化１Step&lt;br&gt;5. 追加最適化実行&lt;br&gt;6. iSAM2内から最適化後のFrame Pose、Landmark Positionの抽出、MapDatabaseの更新&lt;br&gt;7. MapDatabaseからOutlier除去を実施&lt;br&gt;&lt;br&gt;Projection Factorの追加対象（現状の実装）&lt;br&gt;1. CKF: CKFで観測したLandmarkのうち、Initializeに成功しているLandmark&lt;br&gt;2. PKF: PKFとCKFで観測し、PKFでのProjection factorをまだ追加していないLandmark&lt;br&gt;&lt;br&gt;（修正）&lt;br&gt;ここで追加すべきProjeciton Factorは、&lt;br&gt;1. 今回KeyFrame（CKF）で観測していて、初期化済みのLandmarkについてのProjection Factor&lt;br&gt;2. Triangulationで新規追加されたLandmarkを観測しているFrameからのProjection Factor&lt;br&gt;　PKFに限った話ではなくLandmarkを観測している全てのFrameからのProjection Factorを追加できる&lt;br&gt;　しかし、視差が十分でないFrameからのProjeciton factorも追加されうるので必ずしも良い影響があるとも限らない　&lt;br&gt;&lt;br&gt;最適化後、Outlier判定条件&lt;br&gt;1. CKFへのReproection errorが3px以上&lt;br&gt;2. Projection errorが発生" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;align=left;fontColor=#000000;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="2110" y="446.87" width="660" height="611.25" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-58" value="終了、次Frameへ" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="2900" y="742.5" width="110" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
