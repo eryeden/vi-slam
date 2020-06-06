@@ -157,6 +157,7 @@ vslam::Vec2_t DoubleSphereCameraModel::Project(
           pos_image_frame,
           &tmp_jacobian_p3d)) {
     spdlog::warn("{}:{} Invalid Projection.", __FILE__, __FUNCTION__);
+    throw(ProjectionErrorException());
     jacobian_p3d = MatRC_t<2, 3>::Zero();
     return {0, 0};
   }
@@ -172,6 +173,7 @@ vslam::Vec2_t DoubleSphereCameraModel::Project(
           {pos_camera_frame[0], pos_camera_frame[1], pos_camera_frame[2], 0},
           pos_image_frame)) {
     spdlog::warn("{}:{} Invalid Projection.", __FILE__, __FUNCTION__);
+    throw(ProjectionErrorException());
   }
   return pos_image_frame;
 }
@@ -181,6 +183,7 @@ vslam::Vec3_t DoubleSphereCameraModel::Unproject(
   Vec4_t pos_camera_frame;
   if (!(ds_camera_model_ptr_->unproject(pos_image_frame, pos_camera_frame))) {
     spdlog::warn("{}:{} Invalid Unprojection.", __FILE__, __FUNCTION__);
+    throw(ProjectionErrorException());
   }
   return {pos_camera_frame[0], pos_camera_frame[1], pos_camera_frame[2]};
 }
@@ -189,4 +192,9 @@ vslam::Mat33_t DoubleSphereCameraModel::IntrinsicMatrix() const {
   Mat33_t out;
   out << fx_, 0, cx_, 0, fy_, cy_, 0, 0, 1.0;
   return out;
+}
+
+ProjectionErrorException::ProjectionErrorException() : std::exception() { ; }
+const char* ProjectionErrorException::what() const throw() {
+  return "Projection error.";
 }

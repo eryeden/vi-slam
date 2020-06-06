@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <gtsam/geometry/Cal3_S2.h>
+#include <gtsam/geometry/PinholeCamera.h>
 #include <gtsam/geometry/Point2.h>
 #include <gtsam/inference/Key.h>
 #include <gtsam/inference/Symbol.h>
@@ -195,8 +197,9 @@ class GeneralProjectionFactor
         return project_point - measured_;
       }
 
+    } catch (data::ProjectionErrorException& exception) {
+      //      if (throwCheirality_) throw CheiralityException(this->key2());
     } catch (std::exception& e) {
-      ;
     }
     // catch (gtsam::CheiralityException& e) {
     //      //      if (H1) *H1 = gtsam::Matrix::Zero(2, 6);

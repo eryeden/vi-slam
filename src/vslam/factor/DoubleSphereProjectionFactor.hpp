@@ -201,6 +201,8 @@ class DoubleSphereProjectionFactor
       //                  << " moved behind camera "
       //                  << DefaultKeyFormatter(this->key1()) << std::endl;
       //      if (throwCheirality_) throw CheiralityException(this->key2());
+    } catch (data::ProjectionErrorException& exception) {
+      if (throwCheirality_) throw CheiralityException(this->key2());
     }
     return gtsam::Vector2::Constant(2.0 * K_->fx_);
   }

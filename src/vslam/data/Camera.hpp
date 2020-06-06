@@ -5,11 +5,20 @@
 #pragma once
 
 #include <basalt/camera/double_sphere_camera.hpp>
+#include <exception>
 #include <memory>
 
 #include "type_defines.hpp"
 
 namespace vslam::data {
+
+class ProjectionErrorException : public std::exception {
+ public:
+  ProjectionErrorException();
+  const char* what() const throw();
+
+ private:
+};
 
 class CameraModelBase {
  public:
