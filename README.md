@@ -1,6 +1,7 @@
 # vi-slam
 Try to make Visual Inertial SLAM
 
+![v0.2](docs/figs/v0.2:2020-06-06%2011-21-24_small.png)
 
 ## Docs
 - [__Setup__](docs/setup.md)
