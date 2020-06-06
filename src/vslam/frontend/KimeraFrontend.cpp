@@ -191,8 +191,15 @@ Frame KimeraFrontend::ProcessFirstFrame(
   // Update Observed id and feature bearing information
   for (const auto& [id, pos] : feature_position_database) {
     feature_id_database.insert(id);
-    feature_bearing_database[id] =
-        frontend_input.camera_model_ptr_->Unproject(pos);
+    //    feature_bearing_database[id] =
+    //        frontend_input.camera_model_ptr_->Unproject(pos);
+    try {
+      feature_bearing_database[id] =
+          frontend_input.camera_model_ptr_->Unproject(pos);
+    } catch (data::ProjectionErrorException& exception) {
+      spdlog::warn("Unprojection error: {}", exception.what());
+      feature_bearing_database[id] = {0, 0, 1};
+    }
   }
 
   return Frame(0,
@@ -243,8 +250,13 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
   // update id list and feature bearing vector
   for (const auto& [id, pos] : feature_position_database) {
     feature_id_database.insert(id);
-    feature_bearing_database[id] =
-        frontend_input.camera_model_ptr_->Unproject(pos);
+    try {
+      feature_bearing_database[id] =
+          frontend_input.camera_model_ptr_->Unproject(pos);
+    } catch (data::ProjectionErrorException& exception) {
+      spdlog::warn("Unprojection error: {}", exception.what());
+      feature_bearing_database[id] = {0, 0, 1};
+    }
   }
 
   // landmark ageが2歳以上のものをカウントする
@@ -257,6 +269,11 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
   bool features_low_number = false;
   features_low_number =
       (aged_landmark_number < keyframe_feature_number_threshold_);
+
+  if ((frontend_input.timestamp_ - last_keyframe->timestamp_) < 0.5) {
+    features_low_number = false;
+  }
+
   //    features_low_number = (feature_position_database.size() <
   //    keyframe_feature_number_threshold_);
 
@@ -305,8 +322,16 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
                                        frontend_input.mask_);
     for (const auto& [id, pos] : feature_position_database) {
       feature_id_database.insert(id);
-      feature_bearing_database[id] =
-          frontend_input.camera_model_ptr_->Unproject(pos);
+      //      feature_bearing_database[id] =
+      //          frontend_input.camera_model_ptr_->Unproject(pos);
+
+      try {
+        feature_bearing_database[id] =
+            frontend_input.camera_model_ptr_->Unproject(pos);
+      } catch (data::ProjectionErrorException& exception) {
+        spdlog::warn("Unprojection error: {}", exception.what());
+        feature_bearing_database[id] = {0, 0, 1};
+      }
     }
 
     return Frame(last_frame_->frame_id_ + 1,

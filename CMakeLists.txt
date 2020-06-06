@@ -75,6 +75,19 @@ endif ()
 
 # ----- Find dependenies -----
 
+# Boost needed for GTSAM
+find_package(Boost REQUIRED COMPONENTS
+        filesystem serialization regex timer date_time thread)
+if (NOT TARGET Boost::boost)
+    add_library(Boost::boost INTERFACE IMPORTED)
+    set_target_properties(Boost::boost PROPERTIES
+            INTERFACE_LINK_LIBRARIES "${Boost_LIBRARIES}"
+            INTERFACE_INCLUDE_DIRECTORIES "${Boost_INCLUDE_DIRS}")
+endif ()
+
+# GTSAM
+find_package(GTSAM REQUIRED)
+
 # Eigen
 find_package(Eigen3 3.3 REQUIRED)
 
@@ -106,13 +119,21 @@ find_package(fmt)
 # opengv
 find_package(opengv REQUIRED)
 
-# basalt-headers
+# basalt-headers, バンドルされたSophusも利用
 include_directories(3rd/basalt-headers/thirdparty/Sophus)
 include_directories(3rd/basalt-headers/thirdparty/cereal/include)
 include_directories(3rd/basalt-headers/include)
+add_subdirectory(3rd/basalt-headers)
 
 # json
 include_directories(3rd/json/include/)
+
+# Pangolin
+find_package(Pangolin REQUIRED)
+
+# VTK
+#find_package(VTK REQUIRED)
+
 
 # ----- Build selection -----
 add_subdirectory(src)

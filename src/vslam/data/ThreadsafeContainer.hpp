@@ -49,11 +49,13 @@ class ThreadsafeMapDatabase {
   void EraseLandmark(database_index_t landmark_id);
   LandmarkDatabaseWeak GetAllLandmarks() const;
   LandmarkWeakPtr GetLandmark(database_index_t landmark_id) const;
+  bool IsExistLandmark(database_index_t landmark_id) const;
 
   void Clear();
 
   std::atomic<database_index_t> latest_frame_id_;
   std::atomic<database_index_t> latest_key_frame_id_;
+  std::atomic<database_index_t> max_landmark_id_;
 
  private:
   // Frame database; key : Frame id, value : Pointer to the related frame.

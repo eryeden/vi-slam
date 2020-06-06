@@ -36,6 +36,7 @@ class Landmark {
 
   //! atomicで用意する
   std::atomic_bool is_initialized_;
+  std::atomic_bool is_added_;
   std::atomic_bool is_outlier_;
 
  private:

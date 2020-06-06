@@ -32,7 +32,13 @@ target_include_directories(${VSLAM_PROJECT_NAME}
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/feature>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/utility>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/dataprovider>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/viewer>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/factor>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/initialization>
+        /usr/include/vtk-6.3/  # TODO : VTKバージョンに依存しないようにする。
         )
+
+#target_link_options(${VSLAM_PROJECT_NAME} PUBLIC -fPIC)
 
 # Link to required libraries
 target_link_libraries(${VSLAM_PROJECT_NAME}
@@ -45,12 +51,17 @@ target_link_libraries(${VSLAM_PROJECT_NAME}
         opencv_features2d
         opencv_xfeatures2d
         opencv_calib3d
+        opencv_viz
         pthread
         spdlog::spdlog
         fmt::fmt
         opengv
+        Boost::boost
+        gtsam
+        gtsam_unstable
+        ${Pangolin_LIBRARIES}
+        ${VTK_LIBRARIES}
         )
-
 
 add_subdirectory(frontend)
 add_subdirectory(backend)
@@ -58,9 +69,6 @@ add_subdirectory(data)
 add_subdirectory(feature)
 add_subdirectory(utility)
 add_subdirectory(dataprovider)
-
-#add_subdirectory(data)
-#add_subdirectory(feature)
-#add_subdirectory(initialize)
-#add_subdirectory(bundle_adjustment)
-#add_subdirectory(utils)
+add_subdirectory(viewer)
+add_subdirectory(factor)
+add_subdirectory(initialization)

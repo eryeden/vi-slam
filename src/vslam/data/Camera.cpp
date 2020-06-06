@@ -127,7 +127,11 @@ DoubleSphereCameraModel::DoubleSphereCameraModel()
 
 DoubleSphereCameraModel::DoubleSphereCameraModel(
     const DoubleSphereCameraModel& double_sphere_camera_model)
-    : fx_(double_sphere_camera_model.fx_),
+    : CameraModelBase(double_sphere_camera_model.id_,
+                      double_sphere_camera_model.width_,
+                      double_sphere_camera_model.height_,
+                      double_sphere_camera_model.rate_),
+      fx_(double_sphere_camera_model.fx_),
       fy_(double_sphere_camera_model.fy_),
       cx_(double_sphere_camera_model.cx_),
       cy_(double_sphere_camera_model.cy_),
@@ -144,12 +148,32 @@ DoubleSphereCameraModel* DoubleSphereCameraModel::Clone() {
 }
 
 vslam::Vec2_t DoubleSphereCameraModel::Project(
+    const vslam::Vec3_t& pos_camera_frame,
+    vslam::MatRC_t<2, 3>& jacobian_p3d) const {
+  Vec2_t pos_image_frame;
+  MatRC_t<2, 4> tmp_jacobian_p3d;
+  if (!ds_camera_model_ptr_->project(
+          {pos_camera_frame[0], pos_camera_frame[1], pos_camera_frame[2], 0},
+          pos_image_frame,
+          &tmp_jacobian_p3d)) {
+    spdlog::warn("{}:{} Invalid Projection.", __FILE__, __FUNCTION__);
+    throw(ProjectionErrorException());
+    jacobian_p3d = MatRC_t<2, 3>::Zero();
+    return {0, 0};
+  }
+
+  jacobian_p3d = tmp_jacobian_p3d.block<2, 3>(0, 0);
+  return pos_image_frame;
+}
+vslam::Vec2_t DoubleSphereCameraModel::Project(
     const vslam::Vec3_t& pos_camera_frame) const {
   Vec2_t pos_image_frame;
-  if (ds_camera_model_ptr_->project(
+
+  if (!ds_camera_model_ptr_->project(
           {pos_camera_frame[0], pos_camera_frame[1], pos_camera_frame[2], 0},
           pos_image_frame)) {
     spdlog::warn("{}:{} Invalid Projection.", __FILE__, __FUNCTION__);
+    throw(ProjectionErrorException());
   }
   return pos_image_frame;
 }
@@ -159,6 +183,7 @@ vslam::Vec3_t DoubleSphereCameraModel::Unproject(
   Vec4_t pos_camera_frame;
   if (!(ds_camera_model_ptr_->unproject(pos_image_frame, pos_camera_frame))) {
     spdlog::warn("{}:{} Invalid Unprojection.", __FILE__, __FUNCTION__);
+    throw(ProjectionErrorException());
   }
   return {pos_camera_frame[0], pos_camera_frame[1], pos_camera_frame[2]};
 }
@@ -167,4 +192,9 @@ vslam::Mat33_t DoubleSphereCameraModel::IntrinsicMatrix() const {
   Mat33_t out;
   out << fx_, 0, cx_, 0, fy_, cy_, 0, 0, 1.0;
   return out;
+}
+
+ProjectionErrorException::ProjectionErrorException() : std::exception() { ; }
+const char* ProjectionErrorException::what() const throw() {
+  return "Projection error.";
 }

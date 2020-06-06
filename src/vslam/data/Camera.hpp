@@ -5,11 +5,20 @@
 #pragma once
 
 #include <basalt/camera/double_sphere_camera.hpp>
+#include <exception>
 #include <memory>
 
 #include "type_defines.hpp"
 
 namespace vslam::data {
+
+class ProjectionErrorException : public std::exception {
+ public:
+  ProjectionErrorException();
+  const char* what() const throw();
+
+ private:
+};
 
 class CameraModelBase {
  public:
@@ -18,6 +27,8 @@ class CameraModelBase {
                   uint32_t image_height_pixel,
                   double rate);
   CameraModelBase();  //:CameraModelBase(0,0,0,0){}
+
+  virtual ~CameraModelBase() = default;
 
   /**
    * @brief Deep copy 用
@@ -31,6 +42,15 @@ class CameraModelBase {
    * @return
    */
   virtual Vec2_t Project(const Vec3_t& pos_camera_frame) const = 0;
+  /**
+   * カメラ座標系での3次元ポイントを画像座標系上に投影するとともに、3次元ポイントに関するヤコビアンを計算する
+   * @param pos_camera_frame
+   * @param jacobian_p3d
+   * @return
+   */
+  virtual Vec2_t Project(const Vec3_t& pos_camera_frame,
+                         vslam::MatRC_t<2, 3>& jacobian_p3d) const = 0;
+
   /**
    * @brief 画像上の２Dポイントをカメラ座標系でのBearing vectorに変換する
    * @param pos_image_frame
@@ -144,6 +164,8 @@ class DoubleSphereCameraModel : public CameraModelBase {
   DoubleSphereCameraModel(
       const DoubleSphereCameraModel& double_sphere_camera_model);
 
+  ~DoubleSphereCameraModel() = default;
+
   /**
    * @brief For deep copy
    * @return
@@ -156,6 +178,16 @@ class DoubleSphereCameraModel : public CameraModelBase {
    * @return
    */
   Vec2_t Project(const Vec3_t& pos_camera_frame) const;
+
+  /**
+   * カメラ座標系での3次元ポイントを画像座標系上に投影するとともに、3次元ポイントに関するヤコビアンを計算する
+   * @param pos_camera_frame
+   * @param jacobian_p3d
+   * @return
+   */
+  Vec2_t Project(const Vec3_t& pos_camera_frame,
+                 vslam::MatRC_t<2, 3>& jacobian_p3d) const;
+
   /**
    * @brief 画像上の２Dポイントをカメラ座標系でのBearing vectorに変換する
    * @param pos_image_frame
