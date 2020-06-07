@@ -64,11 +64,29 @@ class iSAM2Backend : public BackendBase {
       data::FrameWeakPtr&& current_key_frame,
       data::FrameWeakPtr&& previous_key_frame);
 
+  bool TriangulateKeyFrame(
+      std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
+      const data::FrameWeakPtr& current_key_frame,
+      const data::FrameWeakPtr& previous_key_frame,
+      vslam::EigenAllocatedUnorderedMap<database_index_t,
+                                        vslam::data::LandmarkWeakPtr>&
+          triangulated_landmarks,
+      double reprojection_error_threshold,
+      double minimum_parallax_threshold);
+
   bool UpdateISAMObservation(
       std::shared_ptr<gtsam::ISAM2>& isam_2,
       std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
       data::FrameWeakPtr&& current_frame,
       data::FrameWeakPtr&& previous_key_frame);
+
+  bool UpdateISAMObservation(
+      std::shared_ptr<gtsam::ISAM2>& isam_2,
+      std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
+      vslam::EigenAllocatedUnorderedMap<database_index_t,
+                                        vslam::data::LandmarkWeakPtr>&
+          triangulated_landmarks,
+      double reprojection_error_threshold);
 };
 
 }  // namespace vslam::backend
