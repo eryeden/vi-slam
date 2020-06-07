@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-06-06T17:19:45.308Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="1Mh0gE97rH28yTV3J1Nv" version="13.1.11" type="github" pages="4">
+<mxfile host="app.diagrams.net" modified="2020-06-07T01:34:51.149Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="iQpT_6Uq9f4u_vCeO6tw" version="13.1.11" type="github" pages="4">
   <diagram id="mYV5fHMhs3SO6_IcKCSN" name="Top">
     <mxGraphModel dx="1359" dy="801" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -573,7 +573,7 @@
     
   </diagram>
   <diagram id="rxRwFc9iUt_cTfEsLqZz" name="Proposed-Backend">
-    <mxGraphModel dx="5537" dy="3723" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="3919" dy="2659" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="wGwapt1zrAfcY-FxFDx9-0" />
         <mxCell id="wGwapt1zrAfcY-FxFDx9-1" parent="wGwapt1zrAfcY-FxFDx9-0" />
@@ -784,6 +784,12 @@
             <mxPoint x="10" y="400" as="sourcePoint" />
             <mxPoint x="2930" y="400" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-86" value="&lt;h1&gt;&lt;font style=&quot;font-size: 60px&quot;&gt;Backend v0.1&lt;/font&gt;&lt;/h1&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;fontSize=33;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="-1040" y="-600" width="490" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="1qP3F_WB5jPUnqhCblQz-88" value="0.1はGN法の自前実装のやつ" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="-550" y="-530" width="170" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
