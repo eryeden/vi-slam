@@ -120,6 +120,28 @@ void vslam::feature::FeatureDetectorANMS::Detect(
   cv::imshow("Kp", kpvis);
   cv::waitKey(1);
 
+  //  /**
+  //   * @brief Refine Keypoint
+  //   */
+  //  //@{
+  //  std::vector<cv::Point2f> detected_points;
+  //  for(const auto pk : detected_keypoints){
+  //    detected_points.emplace_back(cv::Point2f(pk.pt.x, pk.pt.y));
+  //  }
+  //  auto criteria = cv::TermCriteria(cv::TermCriteria::COUNT +
+  //  cv::TermCriteria::EPS,
+  //                                   30,
+  //                                   0.1);
+  //  cv::cornerSubPix(frame_mono,
+  //                   detected_points,
+  //                   {24,24},
+  //                   {-1,1},
+  //                   criteria);
+  //  for(size_t i = 0; i < detected_keypoints.size(); i++){
+  //    detected_keypoints[i].pt = detected_points[i];
+  //  }
+  //  //@}
+
   // ANMS
   int32_t need_n_corners = max_feature_number - feature_position.size();
   need_n_corners = (need_n_corners > 0) ? need_n_corners : 0;
@@ -145,13 +167,18 @@ void vslam::feature::FeatureDetectorANMS::Detect(
   FeatureAgeDatabase& feature_point_age = feature_age;
 
   uint64_t feature_index = max_feature_index + 1;
-  // 最近傍特徴点からの距離がmin_feature_distance以上かチェック
   for (const auto& kp : max_suppressed_keypoints) {
     observing_feature_points_in_device[feature_index] =
         Vec2_t{kp.pt.x, kp.pt.y};
     feature_point_age[feature_index] = 1;
     feature_index++;
   }
+  //  for (const auto& pt : max_suppressed_points) {
+  //    observing_feature_points_in_device[feature_index] =
+  //        Vec2_t{pt.x, pt.y};
+  //    feature_point_age[feature_index] = 1;
+  //    feature_index++;
+  //  }
   max_feature_index = feature_index - 1;
 }
 
