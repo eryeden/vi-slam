@@ -241,6 +241,12 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
                                  // last_frame->observing_feature_bearing_in_camera_frame_;
   std::set<database_index_t> feature_id_database;
   //      last_frame->observing_feature_id_;
+
+  spdlog::info("########### Feature Tracking ###########");
+  int32_t input_feature_number = feature_position_database.size();
+  spdlog::info(
+      "{} : Input feature number {}", __FUNCTION__, input_feature_number);
+
   // Track feature
   feature_tracker_lucas_kanade_->Track(feature_position_database,
                                        feature_age_database,
@@ -254,10 +260,17 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
       feature_bearing_database[id] =
           frontend_input.camera_model_ptr_->Unproject(pos);
     } catch (data::ProjectionErrorException& exception) {
-      spdlog::warn("Unprojection error: {}", exception.what());
+      spdlog::warn(
+          "{} : Unprojection error: {}", __FUNCTION__, exception.what());
       feature_bearing_database[id] = {0, 0, 1};
     }
   }
+  int32_t tracked_feature_number = feature_position_database.size();
+  spdlog::info("{} : Tracked feature number {}, PassRate {}",
+               __FUNCTION__,
+               tracked_feature_number,
+               static_cast<double>(tracked_feature_number) /
+                   static_cast<double>(input_feature_number) * 100.0);
 
   // landmark ageが2歳以上のものをカウントする
   uint32_t aged_landmark_number = 0;
@@ -315,6 +328,13 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
         verified_frame.observing_feature_bearing_in_camera_frame_;
     feature_age_database = verified_frame.feature_point_age_;
 
+    int32_t verified_feature_number = feature_position_database.size();
+    spdlog::info("{} : Verified feature number {}, PassRate {}",
+                 __FUNCTION__,
+                 verified_feature_number,
+                 static_cast<double>(verified_feature_number) /
+                     static_cast<double>(input_feature_number) * 100.0);
+
     // Feature detection
     feature_detector_->UpdateDetection(feature_position_database,
                                        feature_age_database,
@@ -333,6 +353,13 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
         feature_bearing_database[id] = {0, 0, 1};
       }
     }
+
+    int32_t detected_feature_number = feature_position_database.size();
+    spdlog::info("{} : Detected feature number {}, PassRate {}",
+                 __FUNCTION__,
+                 detected_feature_number,
+                 static_cast<double>(detected_feature_number) /
+                     static_cast<double>(input_feature_number) * 100.0);
 
     return Frame(last_frame_->frame_id_ + 1,
                  frontend_input.timestamp_,
