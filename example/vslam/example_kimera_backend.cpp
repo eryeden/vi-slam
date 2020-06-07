@@ -22,20 +22,22 @@ int main() {
   //  vslam::dataprovider::EurocKimeraDataProviderRadialTangentialCameraModel
   //      euroc_kimera_data_provider(path_to_euroc);
 
-  //  // EUROC
+  //  //  // EUROC
   std::string path_to_euroc =
       "/home/ery/subspace/docker_work/dataset/V1_01_easy";
-  //    std::string path_to_euroc =
-  //        "/home/ery/subspace/docker_work/dataset/V2_01_easy";
+  //      std::string path_to_euroc =
+  //          "/home/ery/subspace/docker_work/dataset/V2_01_easy";
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/MH_01_easy";
   std::string path_to_calibfile =
       "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
       "calib_results/calibration.json";
 
-  //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
-  //  std::string path_to_calibfile =
-  //      "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
-  //      "results/calibration.json";
+  //    std::string path_to_euroc =
+  //        "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+  //    std::string path_to_calibfile =
+  //        "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
+  //        "results/calibration.json";
 
   vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
       path_to_euroc, path_to_calibfile);
@@ -96,10 +98,13 @@ int main() {
       anms_detector_ptr,
       kl_tracker_ptr,
       verification_ptr,
-      10.0,
+      5.0,
       250);
 
   vslam::backend::iSAM2Backend i_sam_2_backend(threadsafe_map_database_ptr);
+  vslam::backend::BackendState backend_state =
+      vslam::backend::BackendState::BootStrap;
+  auto previous_backend_state = backend_state;
 
   vslam::data::FrameSharedPtr prev_frame = nullptr;
   vslam::FeatureAgeDatabase prev_feature_age;
@@ -129,7 +134,7 @@ int main() {
       }
 
       kimera_frontend.Feed(input.value());
-      i_sam_2_backend.SpinOnce();
+      backend_state = i_sam_2_backend.SpinOnce();
     }
 
     // visualize
@@ -220,7 +225,7 @@ int main() {
 
     cv::imshow("First", vis);
     //    if ((counter == 0) || (frame_ptr->is_keyframe_)) {
-    if ((counter == 0)) {
+    if ((counter == 0) || (previous_backend_state != backend_state)) {
       cv::waitKey(0);
     } else {
       auto c = cv::waitKey(30);
@@ -229,6 +234,7 @@ int main() {
       }
     }
 
+    previous_backend_state = backend_state;
     counter++;
   }
 
