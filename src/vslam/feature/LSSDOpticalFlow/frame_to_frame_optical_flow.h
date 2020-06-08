@@ -45,6 +45,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "optical_flow.h"
 #include "patch.h"
+#include "spdlog/spdlog.h"
 #include "utils/keypoints.h"
 
 namespace basalt {
@@ -88,6 +89,8 @@ class FrameToFrameOpticalFlow : public OpticalFlowBase {
   ~FrameToFrameOpticalFlow() { processing_thread->join(); }
 
   void processingLoop() {
+    spdlog::info("{} : Enter ProcessingLoop", __FUNCTION__);
+
     OpticalFlowInput::Ptr input_ptr;
 
     while (true) {
@@ -98,8 +101,10 @@ class FrameToFrameOpticalFlow : public OpticalFlowBase {
         break;
       }
 
+      spdlog::info("{} Got Frame", __FUNCTION__);
       processFrame(input_ptr->t_ns, input_ptr);
     }
+    spdlog::info("{} : Leave ProcessingLoop", __FUNCTION__);
   }
 
   void processFrame(int64_t curr_t_ns, OpticalFlowInput::Ptr& new_img_vec) {
@@ -167,6 +172,7 @@ class FrameToFrameOpticalFlow : public OpticalFlowBase {
     }
 
     if (output_queue && frame_counter % config.optical_flow_skip_frames == 0) {
+      spdlog::info("{} Push frame", __FUNCTION__);
       output_queue->push(transforms);
     }
 

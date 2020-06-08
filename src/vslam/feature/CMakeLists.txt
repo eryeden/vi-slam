@@ -14,16 +14,20 @@ target_sources(${VSLAM_PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/kdtree/KDTree.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/FeatureTrackerLucasKanade.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/FeatureTrackerLucasKanade.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/FeatureTrackerLSSDLucasKanade.cpp
 
         # Codes from basalt project
         ${CMAKE_CURRENT_SOURCE_DIR}/LSSDOpticalFlow/frame_to_frame_optical_flow.h
         ${CMAKE_CURRENT_SOURCE_DIR}/LSSDOpticalFlow/optical_flow.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/LSSDOpticalFlow/optical_flow.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LSSDOpticalFlow/patch.h
         ${CMAKE_CURRENT_SOURCE_DIR}/LSSDOpticalFlow/patch_optical_flow.h
         ${CMAKE_CURRENT_SOURCE_DIR}/LSSDOpticalFlow/patterns.h
         ${CMAKE_CURRENT_SOURCE_DIR}/LSSDOpticalFlow/utils/common_types.h
         ${CMAKE_CURRENT_SOURCE_DIR}/LSSDOpticalFlow/utils/keypoints.h
         ${CMAKE_CURRENT_SOURCE_DIR}/LSSDOpticalFlow/utils/vio_config.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/LSSDOpticalFlow/utils/keypoints.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/LSSDOpticalFlow/utils/vio_config.cpp
         )
 
 add_subdirectory(NonMaximumSuppression/anms)

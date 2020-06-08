@@ -35,7 +35,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 
 #include <basalt/image/image.h>
-#include <feature/LSSDOpticalFlow/utilis/common_types.h>
 
 #include <Eigen/Dense>
 #include <basalt/camera/generic_camera.hpp>
@@ -43,6 +42,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <bitset>
 #include <set>
 #include <sophus/se3.hpp>
+
+#include "common_types.h"
 
 namespace basalt {
 

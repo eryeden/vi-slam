@@ -11,7 +11,8 @@ vslam::feature::FeatureTrackerLucasKanade::FeatureTrackerLucasKanade(
     int32_t klt_window_size,
     int32_t klt_max_level,
     double backtrack_distance_threshold)
-    : termination_criteria_(
+    : FeatureTrackerBase(),
+      termination_criteria_(
           cv::TermCriteria(cv::TermCriteria::COUNT + cv::TermCriteria::EPS,
                            klt_max_iteration,
                            klt_epsilon)),
