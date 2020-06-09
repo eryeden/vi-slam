@@ -89,7 +89,7 @@ class FrameToFrameOpticalFlow : public OpticalFlowBase {
   ~FrameToFrameOpticalFlow() { processing_thread->join(); }
 
   void processingLoop() {
-    spdlog::info("{} : Enter ProcessingLoop", __FUNCTION__);
+    //    spdlog::info("{} : Enter ProcessingLoop", __FUNCTION__);
 
     OpticalFlowInput::Ptr input_ptr;
 
@@ -101,10 +101,10 @@ class FrameToFrameOpticalFlow : public OpticalFlowBase {
         break;
       }
 
-      spdlog::info("{} Got Frame", __FUNCTION__);
+      //      spdlog::info("{} Got Frame", __FUNCTION__);
       processFrame(input_ptr->t_ns, input_ptr);
     }
-    spdlog::info("{} : Leave ProcessingLoop", __FUNCTION__);
+    //    spdlog::info("{} : Leave ProcessingLoop", __FUNCTION__);
   }
 
   void processFrame(int64_t curr_t_ns, OpticalFlowInput::Ptr& new_img_vec) {
@@ -167,18 +167,53 @@ class FrameToFrameOpticalFlow : public OpticalFlowBase {
       transforms = new_transforms;
       transforms->input_images = new_img_vec;
 
+      //      if(transforms->observations[0].size() < 100){
+      //        for(size_t i = 0; i < 100; i++){
+      //
+      //          spdlog::info("Loop : {}  Num : {}", i,
+      //          transforms->observations[0].size());
+      //          if(transforms->observations[0].size() > 300) {
+      //            break;
+      //          }
+      //        }
+      //      }
+      //      spdlog::info("Feature number : {}",
+      //      transforms->observations[0].size());
+
+      //      double estimated_max_feature_number =
+      //          static_cast<double>(calib.resolution[0][0] *
+      //          calib.resolution[0][1]) /
+      //          static_cast<double>(config.optical_flow_detection_grid_size *
+      //          config.optical_flow_detection_grid_size);
+      //      double low_feature_rate_threshold = 0.5;
+      //      if(transforms->observations[0].size() <
+      //      estimated_max_feature_number * low_feature_rate_threshold){
+      //        addPoints();
+      //        spdlog::info("Feature number : {}",
+      //        transforms->observations[0].size());
+      //      }
+
       addPoints();
       filterPoints();
     }
 
     if (output_queue && frame_counter % config.optical_flow_skip_frames == 0) {
-      spdlog::info("{} Push frame", __FUNCTION__);
+      //      spdlog::info("{} Push frame", __FUNCTION__);
       output_queue->push(transforms);
     }
 
     frame_counter++;
   }
 
+  /**
+   * @brief
+   * 前回のImagePyramidにおける特徴点から、今回のImagePyramidの特徴点位置を推定する。
+   * @details Recover trackingによるOutlier排除も実施!!!
+   * @param pyr_1[in] : Previous image pyramid
+   * @param pyr_2[in] : Current image pyramid
+   * @param transform_map_1[in] : Previous feature points
+   * @param transform_map_2[out] : Estimated feature points
+   */
   void trackPoints(const basalt::ManagedImagePyr<u_int16_t>& pyr_1,
                    const basalt::ManagedImagePyr<u_int16_t>& pyr_2,
                    const Eigen::aligned_map<KeypointId, Eigen::AffineCompact2f>&
@@ -307,6 +342,10 @@ class FrameToFrameOpticalFlow : public OpticalFlowBase {
 
     KeypointsData kd;
 
+    /**
+     * @brief SHIFTでKeyPopintを検出、Bucketing approachを利用、1 feaure /
+     * cellの検出を行っている
+     */
     detectKeypoints(pyramid->at(0).lvl(0),
                     kd,
                     config.optical_flow_detection_grid_size,
@@ -390,6 +429,7 @@ class FrameToFrameOpticalFlow : public OpticalFlowBase {
   basalt::Calibration<Scalar> calib;
 
   OpticalFlowResult::Ptr transforms;
+
   std::shared_ptr<std::vector<basalt::ManagedImagePyr<u_int16_t>>> old_pyramid,
       pyramid;
 

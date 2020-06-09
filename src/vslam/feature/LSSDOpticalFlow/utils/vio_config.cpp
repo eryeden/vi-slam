@@ -42,7 +42,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 namespace basalt {
 
 VioConfig::VioConfig() {
-  // optical_flow_type = "patch";
+  //   optical_flow_type = "patch";
   optical_flow_type = "frame_to_frame";
   optical_flow_detection_grid_size = 50;
   optical_flow_max_recovered_dist2 = 0.09f;
