@@ -11,7 +11,6 @@
 
 #include <sophus/se2.hpp>
 
-#include "FrontendParameters.hpp"
 #include "optical_flow.h"
 #include "patch.h"
 #include "spdlog/spdlog.h"
