@@ -78,7 +78,7 @@ int main() {
   // Build verification
   auto verification_ptr =
       std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
-          0.1 * M_PI / 180.0, 150, 0.9);
+          0.5 * M_PI / 180.0, 150, 0.9);
   //  auto verification_ptr =
   //      std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
   //          0.1 * M_PI / 180.0, 150, 0.9);
@@ -167,18 +167,21 @@ int main() {
             vis, cv::Point(pos[0], pos[1]), 3, cv::Scalar(0, 255, 0), 1, CV_AA);
       }
 
-      if (id == 215) {
-        cv::circle(
-            vis, cv::Point(pos[0], pos[1]), 5, cv::Scalar(0, 255, 0), 1, CV_AA);
-      }
-      if (id == 227) {
-        cv::circle(
-            vis, cv::Point(pos[0], pos[1]), 5, cv::Scalar(0, 255, 0), 1, CV_AA);
-      }
-      if (id == 301) {
-        cv::circle(
-            vis, cv::Point(pos[0], pos[1]), 5, cv::Scalar(0, 255, 0), 1, CV_AA);
-      }
+      //      if (id == 215) {
+      //        cv::circle(
+      //            vis, cv::Point(pos[0], pos[1]), 5, cv::Scalar(0, 255, 0), 1,
+      //            CV_AA);
+      //      }
+      //      if (id == 227) {
+      //        cv::circle(
+      //            vis, cv::Point(pos[0], pos[1]), 5, cv::Scalar(0, 255, 0), 1,
+      //            CV_AA);
+      //      }
+      //      if (id == 301) {
+      //        cv::circle(
+      //            vis, cv::Point(pos[0], pos[1]), 5, cv::Scalar(0, 255, 0), 1,
+      //            CV_AA);
+      //      }
     }
 
     // draw feature point number
@@ -206,7 +209,8 @@ int main() {
       }
     }
     if (!pc_source.empty()) {
-      vslam::viewer::PointCloudPrimitive pcp("pc", pc_source);
+      vslam::viewer::PointCloudPrimitive pcp(
+          "pc", pc_source, false, {{255, 255, 255}});
       viewer.PushPrimitive(pcp);
     }
 
@@ -228,7 +232,7 @@ int main() {
           frame_ptr->GetCameraPose().translation());
     }
     vslam::viewer::PointCloudPrimitive trajectory_primitive(
-        "traj", estimated_trajectory);
+        "traj", estimated_trajectory, false, {vslam::Vec3_t(0, 0, 255)});
     viewer.PushPrimitive(trajectory_primitive);
 
     cv::imshow("First", vis);
