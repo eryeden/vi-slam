@@ -66,8 +66,7 @@ KimeraFrontendInput& KimeraFrontendInput::operator=(
 KimeraFrontend::KimeraFrontend(
     const std::shared_ptr<data::ThreadsafeMapDatabase>& threadsafe_map_database,
     const std::shared_ptr<feature::FeatureDetectorBase>& feature_detector,
-    const std::shared_ptr<feature::FeatureTrackerLucasKanade>&
-        feature_tracker_lucas_kanade,
+    const std::shared_ptr<feature::FeatureTrackerBase>& feature_tracker,
     const std::shared_ptr<verification::FeatureVerification5PointRANSAC>&
         feature_verification,
     double keyframe_interval_threshold,
@@ -77,11 +76,11 @@ KimeraFrontend::KimeraFrontend(
       keyframe_interval_threshold_(keyframe_interval_threshold),
       keyframe_feature_number_threshold_(keyframe_feature_number_threshold) {
   feature_detector_ = feature_detector;
-  feature_tracker_lucas_kanade_ = feature_tracker_lucas_kanade;
+  feature_tracker_ = feature_tracker;
   feature_verification_ = feature_verification;
 
   // input check
-  if (feature_tracker_lucas_kanade_ == nullptr) {
+  if (feature_tracker_ == nullptr) {
     spdlog::warn(
         "{}:{} Null input of feature tracker.", __FILE__, __FUNCTION__);
   }
@@ -248,10 +247,12 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
       "{} : Input feature number {}", __FUNCTION__, input_feature_number);
 
   // Track feature
-  feature_tracker_lucas_kanade_->Track(feature_position_database,
-                                       feature_age_database,
-                                       last_input_.frame_,
-                                       frontend_input.frame_);
+  //  feature_tracker_->Track(feature_position_database,
+  //                                       feature_age_database,
+  //                                       last_input_.frame_,
+  //                                       frontend_input.frame_);
+  feature_tracker_->Track(
+      feature_position_database, feature_age_database, frontend_input.frame_);
 
   // update id list and feature bearing vector
   for (const auto& [id, pos] : feature_position_database) {
