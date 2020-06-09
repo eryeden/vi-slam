@@ -20,7 +20,7 @@ vslam::feature::FeatureDetectorANMS::FeatureDetectorANMS(
 
   // Feature detector params
   int32_t detector_max_feature_number = max_feature_number_ * 10;
-  double detector_quality_level = 0.01;
+  double detector_quality_level = 0.001;
   double detector_min_distance = min_feature_distance_;
   int32_t detector_block_size = 3;
   bool detector_use_harris_corner = false;
@@ -120,27 +120,27 @@ void vslam::feature::FeatureDetectorANMS::Detect(
   cv::imshow("Kp", kpvis);
   cv::waitKey(1);
 
-  //  /**
-  //   * @brief Refine Keypoint
-  //   */
-  //  //@{
-  //  std::vector<cv::Point2f> detected_points;
-  //  for(const auto pk : detected_keypoints){
-  //    detected_points.emplace_back(cv::Point2f(pk.pt.x, pk.pt.y));
-  //  }
-  //  auto criteria = cv::TermCriteria(cv::TermCriteria::COUNT +
-  //  cv::TermCriteria::EPS,
-  //                                   30,
-  //                                   0.1);
-  //  cv::cornerSubPix(frame_mono,
-  //                   detected_points,
-  //                   {24,24},
-  //                   {-1,1},
-  //                   criteria);
-  //  for(size_t i = 0; i < detected_keypoints.size(); i++){
-  //    detected_keypoints[i].pt = detected_points[i];
-  //  }
-  //  //@}
+  /**
+   * @brief Refine Keypoint
+   */
+  //@{
+  //    std::vector<cv::Point2f> detected_points;
+  //    for(const auto pk : detected_keypoints){
+  //      detected_points.emplace_back(cv::Point2f(pk.pt.x, pk.pt.y));
+  //    }
+  //    auto criteria = cv::TermCriteria(cv::TermCriteria::COUNT +
+  //    cv::TermCriteria::EPS,
+  //                                     30,
+  //                                     0.1);
+  //    cv::cornerSubPix(frame_mono,
+  //                     detected_points,
+  //                     {5,5},
+  //                     {-1,1},
+  //                     criteria);
+  //    for(size_t i = 0; i < detected_keypoints.size(); i++){
+  //      detected_keypoints[i].pt = detected_points[i];
+  //    }
+  //@}
 
   // ANMS
   int32_t need_n_corners = max_feature_number - feature_position.size();
