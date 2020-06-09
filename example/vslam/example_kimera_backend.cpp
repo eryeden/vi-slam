@@ -9,6 +9,7 @@
 #include "EurocKimeraDataProviderRadialTangentialCameraModel.hpp"
 #include "FeatureDetectorANMS.hpp"
 #include "FeatureDetectorShiTomasiBucketing.hpp"
+#include "FeatureTrackerLSSDLucasKanade.hpp"
 #include "FeatureTrackerLucasKanade.hpp"
 #include "KimeraFrontend.hpp"
 #include "Verification.hpp"
@@ -27,29 +28,30 @@ int main() {
       "/home/ery/subspace/docker_work/dataset/V1_01_easy";
   //      std::string path_to_euroc =
   //          "/home/ery/subspace/docker_work/dataset/V2_01_easy";
-  //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/MH_01_easy";
+  //    std::string path_to_euroc =
+  //        "/home/ery/subspace/docker_work/dataset/MH_01_easy";
   std::string path_to_calibfile =
       "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
       "calib_results/calibration.json";
 
-  //    std::string path_to_euroc =
-  //        "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
-  //    std::string path_to_calibfile =
-  //        "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
-  //        "results/calibration.json";
+  //      std::string path_to_euroc =
+  //          "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+  //      std::string path_to_calibfile =
+  //          "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
+  //          "results/calibration.json";
 
   vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
       path_to_euroc, path_to_calibfile);
 
-  //    std::string path_to_euroc =
-  //        "/e/subspace/docker_work/dataset/fukuroi/camlog_2020-05-13-21-09-39/";
-  //    std::string path_to_calibfile =
-  //        "/e/subspace/docker_work/dataset/fukuroi/calib_result/calibration.json";
-  //    std::string path_to_mask =
-  //        "/e/subspace/docker_work/dataset/fukuroi/calib_result/vingette_0.png";
-  //    vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
-  //        path_to_euroc, path_to_calibfile, path_to_mask);
+  //      std::string path_to_euroc =
+  //          "/e/subspace/docker_work/dataset/fukuroi/camlog_2020-05-13-21-09-39/";
+  //      std::string path_to_calibfile =
+  //          "/e/subspace/docker_work/dataset/fukuroi/calib_result/calibration.json";
+  //      std::string path_to_mask =
+  //          "/e/subspace/docker_work/dataset/fukuroi/calib_result/vingette_0.png";
+  //      vslam::dataprovider::EurocKimeraDataProvider
+  //      euroc_kimera_data_provider(
+  //          path_to_euroc, path_to_calibfile, path_to_mask);
 
   // Map database
   auto threadsafe_map_database_ptr =
@@ -61,17 +63,22 @@ int main() {
           2, 2, 200, 5.0);
 
   auto anms_detector_ptr =
-      std::make_shared<vslam::feature::FeatureDetectorANMS>(300, 15.0);
+      std::make_shared<vslam::feature::FeatureDetectorANMS>(300, 10.0);
 
   // Build tracker
   auto kl_tracker_ptr =
       std::make_shared<vslam::feature::FeatureTrackerLucasKanade>(
           30, 0.1, 24, 4, 1);
 
+  auto lssd_params = vslam::feature::FeatureTrackerLSSDLucasKanade::Parameter();
+  auto lssd_tracker_ptr =
+      std::make_shared<vslam::feature::FeatureTrackerLSSDLucasKanade>(
+          lssd_params);
+
   // Build verification
   auto verification_ptr =
       std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
-          1 * M_PI / 180.0, 150, 0.9);
+          0.1 * M_PI / 180.0, 150, 0.9);
   //  auto verification_ptr =
   //      std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
   //          0.1 * M_PI / 180.0, 150, 0.9);
@@ -96,10 +103,11 @@ int main() {
       threadsafe_map_database_ptr,
       //                                                  shi_tomasi_detector_ptr,
       anms_detector_ptr,
-      kl_tracker_ptr,
+      //      kl_tracker_ptr,
+      lssd_tracker_ptr,
       verification_ptr,
       5.0,
-      250);
+      200);
 
   vslam::backend::iSAM2Backend i_sam_2_backend(threadsafe_map_database_ptr);
   vslam::backend::BackendState backend_state =

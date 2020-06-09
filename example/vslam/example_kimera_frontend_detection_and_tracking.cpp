@@ -9,6 +9,7 @@
 #include "EurocKimeraDataProviderRadialTangentialCameraModel.hpp"
 #include "FeatureDetectorANMS.hpp"
 #include "FeatureDetectorShiTomasiBucketing.hpp"
+#include "FeatureTrackerLSSDLucasKanade.hpp"
 #include "FeatureTrackerLucasKanade.hpp"
 #include "KimeraFrontend.hpp"
 #include "Verification.hpp"
@@ -75,6 +76,11 @@ int main() {
       std::make_shared<vslam::feature::FeatureTrackerLucasKanade>(
           30, 0.1, 24, 4, 1.0);
 
+  auto lssd_params = vslam::feature::FeatureTrackerLSSDLucasKanade::Parameter();
+  auto lssd_tracker_ptr =
+      std::make_shared<vslam::feature::FeatureTrackerLSSDLucasKanade>(
+          lssd_params);
+
   // Build verification
   auto verification_ptr =
       std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
@@ -100,7 +106,8 @@ int main() {
       threadsafe_map_database_ptr,
       //                                                  shi_tomasi_detector_ptr,
       anms_detector_ptr,
-      kl_tracker_ptr,
+      // kl_tracker_ptr,
+      lssd_tracker_ptr,
       verification_ptr,
       10.0,
       250);
@@ -193,7 +200,7 @@ int main() {
 
     cv::imshow("First", vis);
     //    video_writer << vis;
-    auto c = cv::waitKey(0);
+    auto c = cv::waitKey(30);
     if (c == 32) {
       is_update = !is_update;
     }
