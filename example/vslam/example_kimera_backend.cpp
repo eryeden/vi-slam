@@ -24,22 +24,22 @@ int main() {
   //  vslam::dataprovider::EurocKimeraDataProviderRadialTangentialCameraModel
   //      euroc_kimera_data_provider(path_to_euroc);
 
-  //  //  // EUROC
+  // EUROC
   std::string path_to_euroc =
       "/home/ery/subspace/docker_work/dataset/V1_01_easy";
   //  std::string path_to_euroc =
   //            "/home/ery/subspace/docker_work/dataset/V2_01_easy";
-  //      std::string path_to_euroc =
-  //          "/home/ery/subspace/docker_work/dataset/MH_01_easy";
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/MH_01_easy";
   std::string path_to_calibfile =
       "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
       "calib_results/calibration.json";
 
-  //      std::string path_to_euroc =
-  //          "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
-  //      std::string path_to_calibfile =
-  //          "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
-  //          "results/calibration.json";
+  //        std::string path_to_euroc =
+  //            "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+  //        std::string path_to_calibfile =
+  //            "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
+  //            "results/calibration.json";
 
   vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
       path_to_euroc, path_to_calibfile);
@@ -68,8 +68,11 @@ int main() {
       std::make_shared<vslam::feature::FeatureDetectorShiTomasiBucketing>(
           2, 2, 200, 5.0);
 
+  auto detector_param = vslam::feature::FeatureDetectorANMS::Parameter();
+  detector_param.max_feature_number_ = 300;
+  detector_param.min_feature_distance_ = 10.0;
   auto anms_detector_ptr =
-      std::make_shared<vslam::feature::FeatureDetectorANMS>(300, 10.0);
+      std::make_shared<vslam::feature::FeatureDetectorANMS>(detector_param);
 
   // Build tracker
   auto kl_tracker_ptr =
@@ -83,9 +86,12 @@ int main() {
           lssd_params);
 
   // Build verification
+  auto verification_params =
+      vslam::verification::FeatureVerification5PointRANSAC::Parameter();
+  verification_params.ransac_threshold_angle_rad_ = 1 * M_PI / 180.0;
   auto verification_ptr =
       std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
-          0.5 * M_PI / 180.0, 150, 0.9);
+          verification_params);
   //  auto verification_ptr =
   //      std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
   //          0.1 * M_PI / 180.0, 150, 0.9);
