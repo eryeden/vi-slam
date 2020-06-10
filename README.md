@@ -1,7 +1,7 @@
 # vi-slam
 Try to make Visual Inertial SLAM
 
-![v0.2](docs/figs/v0.21:2020-06-09 14-42-43_small.png)
+![v0.21](docs/figs/v0.21_2020-06-09 14-42-43_small.png)
 ![ate](docs/results/euroc_v1_01_20200610/v1_01_ate.png)
 
 | metric | value[m] |
