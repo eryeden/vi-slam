@@ -31,7 +31,7 @@ target_include_directories(${VSLAM_PROJECT_NAME}
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/backend>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/feature>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/utility>
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/dataprovider>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/io>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/viewer>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/factor>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/initialization>
@@ -68,7 +68,7 @@ add_subdirectory(backend)
 add_subdirectory(data)
 add_subdirectory(feature)
 add_subdirectory(utility)
-add_subdirectory(dataprovider)
+add_subdirectory(io)
 add_subdirectory(viewer)
 add_subdirectory(factor)
 add_subdirectory(initialization)

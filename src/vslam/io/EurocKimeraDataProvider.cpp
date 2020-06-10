@@ -5,6 +5,8 @@
 #include "EurocKimeraDataProvider.hpp"
 
 #include <spdlog/spdlog.h>
+#include <yaml-cpp/yaml.h>
+
 #include "DataProviderBase.hpp"
 #include "nlohmann/json.hpp"
 
@@ -25,6 +27,9 @@ EurocKimeraDataProvider::EurocKimeraDataProvider(
       last_index_(0) {
   // Parse CSV
   log_stored_ = LogParser(path_to_dataset_root + "/mav0/cam0/data.csv");
+  // Parse sensor pose
+  pose_body_T_sensor_ =
+      ParseSensorPose(path_to_dataset_root + "/mav0/cam0/sensor.yaml");
   // Load camera parameters
   camera_model_ = ParseCameraParameters(path_to_calibration_file_);
   // Load mask image
@@ -161,3 +166,44 @@ EurocKimeraDataProvider::ParseCameraParameters(
     return std::unique_ptr<data::CameraModelBase>();
   }
 }
+vslam::Pose_t EurocKimeraDataProvider::ParseSensorPose(
+    const std::string& path_to_sensor_parameter_file) {
+  auto node = YAML::LoadFile(path_to_sensor_parameter_file);
+  auto pose_matrix = node["T_BS"]["data"].as<std::vector<double>>();
+  auto pose_mat = (Mat44_t() << pose_matrix[0],
+                   pose_matrix[1],
+                   pose_matrix[2],
+                   pose_matrix[3],
+                   pose_matrix[4],
+                   pose_matrix[5],
+                   pose_matrix[5],
+                   pose_matrix[7],
+                   pose_matrix[8],
+                   pose_matrix[9],
+                   pose_matrix[10],
+                   pose_matrix[11],
+                   pose_matrix[12],
+                   pose_matrix[13],
+                   pose_matrix[14],
+                   pose_matrix[15])
+                      .finished();
+  //  std::cout << pose_mat << std::endl;
+  //  std::cout << pose_mat.block<3,3>(0,0) << std::endl;
+  //  std::cout << pose_mat.block<3,1>(0,3) << std::endl;
+  //  std::cout << pose_mat.block<3,3>(0,0) *
+  //  pose_mat.block<3,3>(0,0).transpose() << std::endl;
+  //
+  auto q = Quat_t(pose_mat.block<3, 3>(0, 0));
+  q.normalize();
+  auto normed_rot_mat = q.toRotationMatrix();
+  //  std::cout << normed_rot_mat << std::endl;
+  //  std::cout << normed_rot_mat.transpose() * normed_rot_mat << std::endl;
+
+  //  vslam::Pose_t  pose(pose_mat);
+  Pose_t pose;
+  pose.setRotationMatrix(normed_rot_mat);
+  pose.translation() = pose_mat.block<3, 1>(0, 3);
+
+  return pose;
+}
+Pose_t EurocKimeraDataProvider::GetSensorPose() { return pose_body_T_sensor_; }

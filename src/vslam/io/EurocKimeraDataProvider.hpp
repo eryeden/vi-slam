@@ -42,6 +42,8 @@ class EurocKimeraDataProvider : public KimeraDataProviderBase {
   std::optional<frontend::KimeraFrontendInput> GetInput(
       uint64_t index) override;
 
+  Pose_t GetSensorPose();
+
  private:
   std::string GetPathToImageByIndexAndZeroFillNum(
       const std::string& path_to_image_prefix,
@@ -54,6 +56,9 @@ class EurocKimeraDataProvider : public KimeraDataProviderBase {
   std::unique_ptr<data::CameraModelBase> ParseCameraParameters(
       const std::string& path_to_calibration_file);
 
+  vslam::Pose_t ParseSensorPose(
+      const std::string& path_to_sensor_parameter_file);
+
   std::string path_to_dataset_root_;
   std::string path_to_calibration_file_;
 
@@ -62,6 +67,8 @@ class EurocKimeraDataProvider : public KimeraDataProviderBase {
   uint64_t last_index_;
   std::unique_ptr<data::CameraModelBase> camera_model_;
   std::vector<LogPack> log_stored_;
+
+  vslam::Pose_t pose_body_T_sensor_;
 };
 
 }  // namespace vslam::dataprovider
