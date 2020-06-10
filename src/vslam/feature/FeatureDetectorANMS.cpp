@@ -10,33 +10,46 @@
 
 namespace vslam::feature {
 
+FeatureDetectorANMS::Parameter::Parameter() {
+  /**
+   * @brief 最終的に出力するFeatureの設定
+   */
+  max_feature_number_ = 300;
+  min_feature_distance_ = 10.0;
+
+  /**
+   * @brief Internal detector
+   */
+  detection_feature_number_ = max_feature_number_ * 2;
+  detection_min_feature_distance_ = 1.0;
+  detection_quality_level_ = 0.001;
+  detection_block_size_ = 4;
+  detection_use_harris_corner_ = false;
+  detection_k_ = 0.04;
+  detection_ignore_edge_ = 20;
+
+  /**
+   * @brief ANMS
+   */
+  non_max_suppression_tolerance_ = 0.1;  // 0.1;
+}
+
 vslam::feature::FeatureDetectorANMS::FeatureDetectorANMS(
-    int32_t max_feature_number,
-    double min_feature_distance)
-    : max_feature_index_(0),
-      max_feature_number_(max_feature_number),
-      min_feature_distance_(min_feature_distance) {
-  ;
-
-  // Feature detector params
-  int32_t detector_max_feature_number = max_feature_number_ * 10;
-  double detector_quality_level = 0.001;
-  double detector_min_distance = min_feature_distance_;
-  int32_t detector_block_size = 3;
-  bool detector_use_harris_corner = false;
-  double detector_k = 0.04;
-
+    const Parameter parameter)
+    : max_feature_index_(0), parameter_(parameter) {
   // Generate feature detector
-  feature_detector_ = cv::GFTTDetector::create(detector_max_feature_number,
-                                               detector_quality_level,
-                                               detector_min_distance,
-                                               detector_block_size,
-                                               detector_use_harris_corner,
-                                               detector_k);
+  feature_detector_ =
+      cv::GFTTDetector::create(parameter_.detection_feature_number_,
+                               parameter_.detection_quality_level_,
+                               parameter_.detection_min_feature_distance_,
+                               parameter_.detection_block_size_,
+                               parameter_.detection_use_harris_corner_,
+                               parameter_.detection_k_);
 
   // generate ANMS handler
   non_max_suppression_ =
-      std::make_unique<AdaptiveNonMaximumSuppression>(AnmsAlgorithmType::SDC);
+      //      std::make_unique<AdaptiveNonMaximumSuppression>(AnmsAlgorithmType::SDC);
+      std::make_unique<AdaptiveNonMaximumSuppression>(AnmsAlgorithmType::Ssc);
 }
 
 void vslam::feature::FeatureDetectorANMS::UpdateDetection(
@@ -47,8 +60,8 @@ void vslam::feature::FeatureDetectorANMS::UpdateDetection(
   Detect(feature_position,
          feature_age,
          current_image,
-         max_feature_number_,
-         min_feature_distance_,
+         parameter_.max_feature_number_,
+         parameter_.min_feature_distance_,
          max_feature_index_,
          mask_image);
 }
@@ -90,6 +103,15 @@ void vslam::feature::FeatureDetectorANMS::Detect(
   auto image_size = frame_mono.size();
 
   // 特徴点位置マクス、観測済み位置のマスクを生成する
+
+  cv::Rect edge_roi(parameter_.detection_ignore_edge_,
+                    parameter_.detection_ignore_edge_,
+                    image_size.width - 2 * parameter_.detection_ignore_edge_,
+                    image_size.height - 2 * parameter_.detection_ignore_edge_);
+  cv::Mat edge_mask(image_size, CV_8UC1);
+  edge_mask = 0;
+  cv::rectangle(edge_mask, edge_roi, cv::Scalar(1), CV_FILLED);
+
   cv::Mat flag_img;  // = cv::Mat::zeros(image_size, CV_8UC1);
   if (mask_image.empty()) {
     flag_img = cv::Mat(image_size, CV_8UC1, 1);
@@ -102,11 +124,12 @@ void vslam::feature::FeatureDetectorANMS::Detect(
         pos[1] < image_size.height) {
       cv::circle(flag_img,
                  cv::Point(pos[0], pos[1]),
-                 static_cast<int>(min_feature_distance_),
+                 static_cast<int>(min_feature_distance),
                  cv::Scalar(0),
                  cv::FILLED);
     }
   }
+  cv::bitwise_and(flag_img, edge_mask, flag_img);
 
   // Feature pointを抽出する
   std::vector<cv::KeyPoint> detected_keypoints;
@@ -142,20 +165,26 @@ void vslam::feature::FeatureDetectorANMS::Detect(
   //    }
   //@}
 
-  // ANMS
+  /**
+   * @brief ANMS
+   * @details
+   * SSCを利用する場合、必要な特徴点数よりも入力特徴点数が少ないと内部でZero割が発生するので注意。
+   */
+  //@{
   int32_t need_n_corners = max_feature_number - feature_position.size();
   need_n_corners = (need_n_corners > 0) ? need_n_corners : 0;
   std::vector<cv::KeyPoint>& max_suppressed_keypoints = detected_keypoints;
-  if (non_max_suppression_) {
-    static constexpr float tolerance = 0.1;
-    //      static constexpr float tolerance = 0.001;
-    max_suppressed_keypoints =
-        non_max_suppression_->suppressNonMax(detected_keypoints,
-                                             need_n_corners,
-                                             tolerance,
-                                             frame_mono.cols,
-                                             frame_mono.rows);
+  if (non_max_suppression_ && (need_n_corners < detected_keypoints.size())) {
+    max_suppressed_keypoints = non_max_suppression_->suppressNonMax(
+        detected_keypoints,
+        need_n_corners,
+        static_cast<float>(parameter_.non_max_suppression_tolerance_),
+        frame_mono.cols,
+        frame_mono.rows);
+  } else {
+    max_suppressed_keypoints = detected_keypoints;
   }
+  //@}
   spdlog::info("sup/det : {}/{} , need : {}",
                max_suppressed_keypoints.size(),
                n_detected_point,
