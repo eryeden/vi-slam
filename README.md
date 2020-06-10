@@ -2,6 +2,17 @@
 Try to make Visual Inertial SLAM
 
 ![v0.2](docs/figs/v0.21:2020-06-09 14-42-43_small.png)
+![ate](docs/results/euroc_v1_01_20200610/v1_01_ate.png)
+
+| metric | value[m] |
+| --- | --- |
+|max|0.235777|
+|mean| 0.106478|
+|median| 0.096209|
+|min| 0.010383|
+|rmse| 0.118428|
+|sse| 40.280377|
+|std| 0.051843|
 
 ## Docs
 - [__Setup__](docs/setup.md)
