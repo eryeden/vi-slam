@@ -21,9 +21,17 @@ namespace vslam::verification {
 
 class FeatureVerification5PointRANSAC {
  public:
-  FeatureVerification5PointRANSAC(double ransac_threshold_angle_rad,
-                                  int32_t ransac_max_iterations,
-                                  double ransac_probability);
+  class Parameter {
+   public:
+    Parameter();
+
+    double ransac_threshold_angle_rad_;
+    int32_t ransac_max_iterations_;
+    double ransac_probability_;
+  };
+
+ public:
+  explicit FeatureVerification5PointRANSAC(const Parameter& parameter);
 
   data::Frame RemoveOutlier(const data::Frame& frame_reference,
                             const data::Frame& frame_current);
