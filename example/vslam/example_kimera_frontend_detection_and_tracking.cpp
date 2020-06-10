@@ -9,6 +9,7 @@
 #include "EurocKimeraDataProviderRadialTangentialCameraModel.hpp"
 #include "FeatureDetectorANMS.hpp"
 #include "FeatureDetectorShiTomasiBucketing.hpp"
+#include "FeatureTrackerLSSDLucasKanade.hpp"
 #include "FeatureTrackerLucasKanade.hpp"
 #include "KimeraFrontend.hpp"
 #include "Verification.hpp"
@@ -21,11 +22,11 @@ int main() {
   //      euroc_kimera_data_provider(path_to_euroc);
 
   // EUROC
-  //    std::string path_to_euroc =
-  //        "/home/ery/subspace/docker_work/dataset/V1_01_easy";
-  //    std::string path_to_calibfile =
-  //        "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
-  //        "calib_results/calibration.json";
+  std::string path_to_euroc =
+      "/home/ery/subspace/docker_work/dataset/V1_01_easy";
+  std::string path_to_calibfile =
+      "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
+      "calib_results/calibration.json";
 
   //  std::string path_to_euroc =
   //      "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
@@ -33,17 +34,17 @@ int main() {
   //      "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
   //      "results/calibration.json";
   //
-  //  vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
-  //      path_to_euroc, path_to_calibfile);
-
-  std::string path_to_euroc =
-      "/e/subspace/docker_work/dataset/fukuroi/camlog_2020-05-13-21-09-39/";
-  std::string path_to_calibfile =
-      "/e/subspace/docker_work/dataset/fukuroi/calib_result/calibration.json";
-  std::string path_to_mask =
-      "/e/subspace/docker_work/dataset/fukuroi/calib_result/vingette_0.png";
   vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
-      path_to_euroc, path_to_calibfile, path_to_mask);
+      path_to_euroc, path_to_calibfile);
+
+  //  std::string path_to_euroc =
+  //      "/e/subspace/docker_work/dataset/fukuroi/camlog_2020-05-13-21-09-39/";
+  //  std::string path_to_calibfile =
+  //      "/e/subspace/docker_work/dataset/fukuroi/calib_result/calibration.json";
+  //  std::string path_to_mask =
+  //      "/e/subspace/docker_work/dataset/fukuroi/calib_result/vingette_0.png";
+  //  vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
+  //      path_to_euroc, path_to_calibfile, path_to_mask);
   //
   //  spdlog::info(
   //      "Load dataset from:\n"
@@ -68,17 +69,22 @@ int main() {
           2, 2, 200, 5.0);
 
   auto anms_detector_ptr =
-      std::make_shared<vslam::feature::FeatureDetectorANMS>(100, 20.0);
+      std::make_shared<vslam::feature::FeatureDetectorANMS>(300, 15.0);
 
   // Build tracker
   auto kl_tracker_ptr =
       std::make_shared<vslam::feature::FeatureTrackerLucasKanade>(
-          30, 0.01, 15, 3, 1.0);
+          30, 0.1, 24, 4, 1.0);
+
+  auto lssd_params = vslam::feature::FeatureTrackerLSSDLucasKanade::Parameter();
+  auto lssd_tracker_ptr =
+      std::make_shared<vslam::feature::FeatureTrackerLSSDLucasKanade>(
+          lssd_params);
 
   // Build verification
   auto verification_ptr =
       std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
-          5 * M_PI / 180.0, 150, 0.9);
+          0.1 * M_PI / 180.0, 150, 0.9);
 
   /**
    * @note
@@ -100,10 +106,11 @@ int main() {
       threadsafe_map_database_ptr,
       //                                                  shi_tomasi_detector_ptr,
       anms_detector_ptr,
-      kl_tracker_ptr,
+      // kl_tracker_ptr,
+      lssd_tracker_ptr,
       verification_ptr,
       10.0,
-      50);
+      250);
 
   vslam::data::FrameSharedPtr prev_frame = nullptr;
   vslam::FeatureAgeDatabase prev_feature_age;
@@ -112,39 +119,44 @@ int main() {
   vslam::frontend::KimeraFrontendInputRadialTangentialCameraModel prev_input;
   bool is_initialized = false;
 
+  bool is_update = false;
+
   bool is_reach_the_last = false;
   uint64_t counter = 0;
   while (!is_reach_the_last) {
-    auto input = euroc_kimera_data_provider.GetInput();
-    if (input == std::nullopt) {
-      is_reach_the_last = true;
-      continue;
-    }
+    if (!is_update) {
+      auto input = euroc_kimera_data_provider.GetInput();
+      if (input == std::nullopt) {
+        is_reach_the_last = true;
+        continue;
+      }
 
-    //    if (counter > 100) {
-    //      is_reach_the_last = true;
-    //      continue;
-    //    }
+      //    if (counter > 100) {
+      //      is_reach_the_last = true;
+      //      continue;
+      //    }
 
-    //    // detect
-    //    if (!is_initialized) {
-    //      shi_tomasi_detector.UpdateDetection(
-    //          prev_feature_position, prev_feature_age, input.value().frame_);
-    //      is_initialized = true;
+      //    // detect
+      //    if (!is_initialized) {
+      //      shi_tomasi_detector.UpdateDetection(
+      //          prev_feature_position, prev_feature_age,
+      //          input.value().frame_);
+      //      is_initialized = true;
     //    } else {
     //      // 10 Frameごとに特徴点を追加する
     //      if (counter++ % 10 == 0) {
-    //        shi_tomasi_detector.UpdateDetection(
-    //            prev_feature_position, prev_feature_age,
-    //            input.value().frame_);
-    //      }
-    //      kl_tracker.Track(prev_feature_position,
-    //                       prev_feature_age,
-    //                       prev_input.frame_,
-    //                       input.value().frame_);
-    //    }
+      //        shi_tomasi_detector.UpdateDetection(
+      //            prev_feature_position, prev_feature_age,
+      //            input.value().frame_);
+      //      }
+      //      kl_tracker.Track(prev_feature_position,
+      //                       prev_feature_age,
+      //                       prev_input.frame_,
+      //                       input.value().frame_);
+      //    }
 
-    kimera_frontend.Feed(input.value());
+      kimera_frontend.Feed(input.value());
+    }
 
     // visualize
     cv::Mat vis;
@@ -188,7 +200,10 @@ int main() {
 
     cv::imshow("First", vis);
     //    video_writer << vis;
-    cv::waitKey(20);
+    auto c = cv::waitKey(30);
+    if (c == 32) {
+      is_update = !is_update;
+    }
   }
 
   return 0;

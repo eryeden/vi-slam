@@ -4,6 +4,9 @@
 
 #pragma once
 
+#include "Camera.hpp"
+#include "Frame.hpp"
+#include "Landmark.hpp"
 #include "ThreadsafeContainer.hpp"
 #include "opencv2/opencv.hpp"
 
@@ -13,6 +16,25 @@ class FrontendStatus {
  public:
   FrontendStatus() : dummy_(false) {}
   bool dummy_;
+
+ private:
+};
+
+class FrontendInput {
+ public:
+  FrontendInput();
+  FrontendInput(double timestamp,
+                const cv::Mat& frame,
+                const cv::Mat& mask,
+                const std::unique_ptr<data::CameraModelBase>& camera_model);
+  FrontendInput(const FrontendInput& frontend_input);
+
+  FrontendInput& operator=(const FrontendInput& frontend_input);
+
+  double timestamp_;
+  cv::Mat frame_;
+  cv::Mat mask_;
+  std::unique_ptr<data::CameraModelBase> camera_model_ptr_;
 
  private:
 };

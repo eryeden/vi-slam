@@ -29,7 +29,7 @@ void vslam::viewer::ViewerViz::InitializeViewer(const std::string& window_name,
                                                 int32_t window_width,
                                                 int32_t window_height) {
   window_ = cv::viz::Viz3d(window_name);
-  //  window_.setBackgroundColor(cv::viz::Color::white());
+  //    window_.setBackgroundColor(cv::viz::Color::white());
   window_.setBackgroundColor(cv::viz::Color::gray(), cv::viz::Color::black());
   //  window_.addLight(cv::Vec3d(100,100,100),
   //                   cv::Vec3d(0,0,0),

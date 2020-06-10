@@ -39,7 +39,7 @@ bool TryInitialize(const data::FrameWeakPtr& reference_frame,
   opengv::sac::Ransac<ProblemMono> mono_ransac_;
 
   // set ransac parameters
-  double threshold = 1.0 - std::cos(0.0001 * 180.0 / M_PI);
+  double threshold = 1.0 - std::cos(0.001 * 180.0 / M_PI);
   mono_ransac_.threshold_ = threshold;
   mono_ransac_.max_iterations_ = 100;
   mono_ransac_.probability_ = 0.99;
@@ -82,12 +82,8 @@ bool TryInitialize(const data::FrameWeakPtr& reference_frame,
 
   // 初めに視差チェック
   if (mean_parallax < parallax_threshold) {
-#ifdef SHOWDEBUG
-    spdlog::warn("{}:{} Insufficient parallax {}[px]",
-                 __FILE__,
-                 __FUNCTION__,
-                 mean_parallax);
-#endif
+    spdlog::warn(
+        "{} : Insufficient parallax {}[px]", __FUNCTION__, mean_parallax);
     return false;
   }
 
@@ -101,8 +97,7 @@ bool TryInitialize(const data::FrameWeakPtr& reference_frame,
 
   // Solve.
   if (!mono_ransac_.computeModel(0)) {
-    spdlog::warn("{}:{} Failure: 5pt RANSAC could not find a solution.",
-                 __FILE__,
+    spdlog::warn("{} : Failure: 5pt RANSAC could not find a solution.",
                  __FUNCTION__);
     return false;
   }
@@ -111,14 +106,11 @@ bool TryInitialize(const data::FrameWeakPtr& reference_frame,
   double inlier_rate = static_cast<double>(mono_ransac_.inliers_.size()) /
                        static_cast<double>(intersection_indices.size());
   if (inlier_rate < inlier_rate_threshold) {
-#ifdef SHOWDEBUG
-    spdlog::warn("{}:{} Insufficient inliers. {}%[{}/{}]",
-                 __FILE__,
+    spdlog::warn("{} : Insufficient 5p Ransac inliers. {}%[{}/{}]",
                  __FUNCTION__,
                  inlier_rate * 100,
                  mono_ransac_.inliers_.size(),
                  intersection_indices.size());
-#endif
     return false;
   } else {
 #ifdef SHOWDEBUG
@@ -160,7 +152,7 @@ bool TryInitialize(const data::FrameWeakPtr& reference_frame,
     double angle = std::acos(ref_to_lm.dot(current_to_lm));
     landmark_observation_angle.emplace_back(angle);
 
-    if (angle > 0.01) {
+    if (angle > 1.0 * M_PI / 180.0) {  // 0.01
       landmark_position[intersection_indices[inlier_array_idx]] = point;
     } else {
       //      spdlog::warn("Too few parallax, rejected. {} [deg]", angle * 180.0
@@ -172,7 +164,6 @@ bool TryInitialize(const data::FrameWeakPtr& reference_frame,
       static_cast<double>(landmark_position.size()) /
       static_cast<double>(intersection_indices.size());
   if (parallax_inlier_rate < inlier_rate_threshold) {
-#ifdef SHOWDEBUG
     spdlog::info("Final inliers : {}% [{}/{}]",
                  parallax_inlier_rate * 100.0,
                  landmark_position.size(),
@@ -181,8 +172,8 @@ bool TryInitialize(const data::FrameWeakPtr& reference_frame,
     auto min = std::min_element(landmark_observation_angle.begin(),
                                 landmark_observation_angle.end());
     spdlog::info("Min angle : {}", (*min) * 180.0 / M_PI);
-    spdlog::warn("Too few parallax, abort.");
-#endif
+    spdlog::warn("{} : Too few parallax of triangulated landmarks.",
+                 __FUNCTION__);
     return false;
   }
 

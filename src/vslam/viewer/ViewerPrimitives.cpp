@@ -51,11 +51,17 @@ std::vector<cv::viz::Widget> vslam::viewer::PointCloudPrimitive::GetWidget()
     widgets.emplace_back(cv::viz::WCloud(point_cloud));
     return widgets;
   } else {
-    std::vector<cv::Vec3i> color_cloud;
+    std::vector<cv::Vec3b> color_cloud;
     color_cloud.reserve(colors_.size());
-    for (const auto& c : colors_) {
-      color_cloud.emplace_back(cv::Vec3i(c[0], c[1], c[2]));
-      //      color_cloud.emplace_back(cv::viz::Color);
+    if (colors_.size() == points_world_frame_.size()) {
+      for (const auto& c : colors_) {
+        color_cloud.emplace_back(cv::Vec3b(c[0], c[1], c[2]));
+      }
+    } else {
+      for (size_t i = 0; i < point_cloud.size(); i++) {
+        color_cloud.emplace_back(
+            cv::Vec3b(colors_[0][0], colors_[0][1], colors_[0][2]));
+      }
     }
     return {cv::viz::WCloud(point_cloud, color_cloud)};
   }

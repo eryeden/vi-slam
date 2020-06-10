@@ -11,7 +11,8 @@ vslam::feature::FeatureTrackerLucasKanade::FeatureTrackerLucasKanade(
     int32_t klt_window_size,
     int32_t klt_max_level,
     double backtrack_distance_threshold)
-    : termination_criteria_(
+    : FeatureTrackerBase(),
+      termination_criteria_(
           cv::TermCriteria(cv::TermCriteria::COUNT + cv::TermCriteria::EPS,
                            klt_max_iteration,
                            klt_epsilon)),
@@ -24,17 +25,36 @@ vslam::feature::FeatureTrackerLucasKanade::FeatureTrackerLucasKanade(
 void vslam::feature::FeatureTrackerLucasKanade::Track(
     vslam::FeaturePositionDatabase& feature_position,
     vslam::FeatureAgeDatabase& feature_age,
-    const cv::Mat& prev_image,
     const cv::Mat& current_frame) {
+  if (old_image_.empty()) {
+    old_image_ = current_frame;
+    return;
+  }
+
+  int32_t input_feature_number = feature_position.size();
+
   // Forward track
   vslam::FeaturePositionDatabase forward_feature_position = feature_position;
   vslam::FeatureAgeDatabase forward_feature_age = feature_age;
   TrackByLucasKanade(forward_feature_position,
                      forward_feature_age,
-                     prev_image,
+                     old_image_,
                      current_frame,
                      termination_criteria_,
                      tracker_window_size_);
+
+  int32_t forward_feature_number = forward_feature_position.size();
+  double through_rate = static_cast<double>(forward_feature_number) /
+                        static_cast<double>(input_feature_number);
+  //  if(through_rate < 0.7){
+  //    spdlog::warn("{} : Low Feature Tracking {}[{}/{}]", __FUNCTION__ ,
+  //                 through_rate,
+  //                 forward_feature_number,
+  //                 input_feature_number);
+  //    feature_position = forward_feature_position;
+  //    feature_age = forward_feature_age;
+  //    return;
+  //  }
 
   // Back track
   vslam::FeaturePositionDatabase back_feature_position =
@@ -43,9 +63,11 @@ void vslam::feature::FeatureTrackerLucasKanade::Track(
   TrackByLucasKanade(back_feature_position,
                      back_feature_age,
                      current_frame,
-                     prev_image,
+                     old_image_,
                      termination_criteria_,
                      tracker_window_size_);
+
+  int32_t back_feature_number = back_feature_position.size();
 
   // Perform back track verification
   vslam::FeaturePositionDatabase verified_feature_position;
@@ -59,6 +81,107 @@ void vslam::feature::FeatureTrackerLucasKanade::Track(
 
   feature_position = verified_feature_position;
   feature_age = verified_feature_age;
+
+  int32_t verified_feature_number = verified_feature_position.size();
+
+  spdlog::info("{} : Forward {}[{}/{}]",
+               __FUNCTION__,
+               static_cast<double>(forward_feature_number) /
+                   static_cast<double>(input_feature_number),
+               forward_feature_number,
+               input_feature_number);
+  spdlog::info("{} : Backward {}[{}/{}]",
+               __FUNCTION__,
+               static_cast<double>(back_feature_number) /
+                   static_cast<double>(forward_feature_number),
+               back_feature_number,
+               forward_feature_number);
+  spdlog::info("{} : Verification {}[{}/{}]",
+               __FUNCTION__,
+               static_cast<double>(verified_feature_number) /
+                   static_cast<double>(back_feature_number),
+               verified_feature_number,
+               back_feature_number);
+
+  old_image_ = current_frame;
+}
+
+void vslam::feature::FeatureTrackerLucasKanade::Track(
+    vslam::FeaturePositionDatabase& feature_position,
+    vslam::FeatureAgeDatabase& feature_age,
+    const cv::Mat& prev_image,
+    const cv::Mat& current_frame) {
+  int32_t input_feature_number = feature_position.size();
+
+  // Forward track
+  vslam::FeaturePositionDatabase forward_feature_position = feature_position;
+  vslam::FeatureAgeDatabase forward_feature_age = feature_age;
+  TrackByLucasKanade(forward_feature_position,
+                     forward_feature_age,
+                     prev_image,
+                     current_frame,
+                     termination_criteria_,
+                     tracker_window_size_);
+
+  int32_t forward_feature_number = forward_feature_position.size();
+  double through_rate = static_cast<double>(forward_feature_number) /
+                        static_cast<double>(input_feature_number);
+  //  if(through_rate < 0.7){
+  //    spdlog::warn("{} : Low Feature Tracking {}[{}/{}]", __FUNCTION__ ,
+  //                 through_rate,
+  //                 forward_feature_number,
+  //                 input_feature_number);
+  //    feature_position = forward_feature_position;
+  //    feature_age = forward_feature_age;
+  //    return;
+  //  }
+
+  // Back track
+  vslam::FeaturePositionDatabase back_feature_position =
+      forward_feature_position;
+  vslam::FeatureAgeDatabase back_feature_age = forward_feature_age;
+  TrackByLucasKanade(back_feature_position,
+                     back_feature_age,
+                     current_frame,
+                     prev_image,
+                     termination_criteria_,
+                     tracker_window_size_);
+
+  int32_t back_feature_number = back_feature_position.size();
+
+  // Perform back track verification
+  vslam::FeaturePositionDatabase verified_feature_position;
+  vslam::FeatureAgeDatabase verified_feature_age;
+  for (const auto& [id, pos] : back_feature_position) {
+    if ((pos - feature_position[id]).norm() <= backtrack_distance_threshold_) {
+      verified_feature_position[id] = forward_feature_position[id];
+      verified_feature_age[id] = forward_feature_age[id];
+    }
+  }
+
+  feature_position = verified_feature_position;
+  feature_age = verified_feature_age;
+
+  int32_t verified_feature_number = verified_feature_position.size();
+
+  spdlog::info("{} : Forward {}[{}/{}]",
+               __FUNCTION__,
+               static_cast<double>(forward_feature_number) /
+                   static_cast<double>(input_feature_number),
+               forward_feature_number,
+               input_feature_number);
+  spdlog::info("{} : Backward {}[{}/{}]",
+               __FUNCTION__,
+               static_cast<double>(back_feature_number) /
+                   static_cast<double>(forward_feature_number),
+               back_feature_number,
+               forward_feature_number);
+  spdlog::info("{} : Verification {}[{}/{}]",
+               __FUNCTION__,
+               static_cast<double>(verified_feature_number) /
+                   static_cast<double>(back_feature_number),
+               verified_feature_number,
+               back_feature_number);
 }
 
 void vslam::feature::FeatureTrackerLucasKanade::TrackByLucasKanade(

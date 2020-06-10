@@ -9,6 +9,7 @@ list(APPEND EXECUTABLE_TARGETS example_kimera_frontend_detection_and_tracking)
 add_executable(example_kimera_backend example_kimera_backend.cpp)
 list(APPEND EXECUTABLE_TARGETS example_kimera_backend)
 
+
 foreach (EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
 
     target_link_libraries(${EXECUTABLE_TARGET}

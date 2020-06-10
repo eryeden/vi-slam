@@ -78,7 +78,7 @@ std::optional<Pose_t> vslam::initialization::InitializePose(
               adapter,
               sac_problems::absolute_pose::AbsolutePoseSacProblem::KNEIP));
   ransac.sac_model_ = absposeproblem_ptr;
-  ransac.threshold_ = 1.0 - cos(0.01 * M_PI / 180.0);
+  ransac.threshold_ = 1.0 - cos(0.0001 * M_PI / 180.0);
   ransac.max_iterations_ = 100;
   ransac.probability_ = 0.99;
 
@@ -129,7 +129,8 @@ std::optional<Pose_t> vslam::initialization::RefinePose(
   for (const auto& [id, pos] : frame_ptr->observing_feature_point_in_device_) {
     auto lm_ptr = map_database->GetLandmark(id).lock();
     if (lm_ptr) {
-      if (lm_ptr->is_added_ && !lm_ptr->is_outlier_) {
+      // if (lm_ptr->is_added_ && !lm_ptr->is_outlier_)
+      if (lm_ptr->is_initialized_ && !lm_ptr->is_outlier_) {
         // Frame観測情報を追加
         graph.emplace_shared<
             vslam::factor::GeneralProjectionFactor<Pose3, Point3>>(
@@ -148,6 +149,16 @@ std::optional<Pose_t> vslam::initialization::RefinePose(
       }
     }
   }
+
+  //  auto previous_frame_ptr =
+  //  map_database->GetFrame(map_database->latest_frame_id_-1).lock();
+  //  if(previous_frame_ptr){
+  //    initial_estimate.insert(Symbol('x', 0),
+  //                            gtsam::Pose3(previous_frame_ptr->GetCameraPose().matrix()));
+  //  }else{
+  //    initial_estimate.insert(Symbol('x', 0),
+  //                            gtsam::Pose3(frame_ptr->GetCameraPose().matrix()));
+  //  }
   initial_estimate.insert(Symbol('x', 0),
                           gtsam::Pose3(frame_ptr->GetCameraPose().matrix()));
 
