@@ -12,6 +12,7 @@
 #include "FeatureTrackerLSSDLucasKanade.hpp"
 #include "FeatureTrackerLucasKanade.hpp"
 #include "KimeraFrontend.hpp"
+#include "TumDataOutput.hpp"
 #include "Verification.hpp"
 #include "ViewerViz.hpp"
 #include "iSAM2Backend.hpp"
@@ -26,10 +27,10 @@ int main() {
   //  //  // EUROC
   std::string path_to_euroc =
       "/home/ery/subspace/docker_work/dataset/V1_01_easy";
+  //  std::string path_to_euroc =
+  //            "/home/ery/subspace/docker_work/dataset/V2_01_easy";
   //      std::string path_to_euroc =
-  //          "/home/ery/subspace/docker_work/dataset/V2_01_easy";
-  //    std::string path_to_euroc =
-  //        "/home/ery/subspace/docker_work/dataset/MH_01_easy";
+  //          "/home/ery/subspace/docker_work/dataset/MH_01_easy";
   std::string path_to_calibfile =
       "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
       "calib_results/calibration.json";
@@ -42,6 +43,7 @@ int main() {
 
   vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
       path_to_euroc, path_to_calibfile);
+  vslam::Pose_t pose_body_T_sensor = euroc_kimera_data_provider.GetSensorPose();
 
   //      std::string path_to_euroc =
   //          "/e/subspace/docker_work/dataset/fukuroi/camlog_2020-05-13-21-09-39/";
@@ -52,6 +54,10 @@ int main() {
   //      vslam::dataprovider::EurocKimeraDataProvider
   //      euroc_kimera_data_provider(
   //          path_to_euroc, path_to_calibfile, path_to_mask);
+
+  std::string path_to_output_trajectory =
+      "/home/ery/subspace/docker_work/dataset/result/out1.tum";
+  vslam::dataoutput::TumDataOutput tum_data_output(path_to_output_trajectory);
 
   // Map database
   auto threadsafe_map_database_ptr =
@@ -71,6 +77,7 @@ int main() {
           30, 0.1, 24, 4, 1);
 
   auto lssd_params = vslam::feature::FeatureTrackerLSSDLucasKanade::Parameter();
+  lssd_params.optical_flow_max_recovered_dist_ = 1.0;
   auto lssd_tracker_ptr =
       std::make_shared<vslam::feature::FeatureTrackerLSSDLucasKanade>(
           lssd_params);
@@ -197,6 +204,35 @@ int main() {
                 1,
                 CV_AA);
 
+    // Draw camera position
+    auto frame_ptr =
+        threadsafe_map_database_ptr
+            ->GetFrame(threadsafe_map_database_ptr->latest_frame_id_)
+            .lock();
+    if (frame_ptr) {
+      auto pose_world_T_body =
+          pose_body_T_sensor.inverse() * frame_ptr->GetCameraPose();
+      tum_data_output.SavePose(frame_ptr->timestamp_, pose_world_T_body);
+      if (frame_ptr->is_keyframe_) {
+        //        viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
+        //            "kf" + std::to_string(frame_ptr->frame_id_),
+        //            frame_ptr->GetCameraPose()));
+        viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
+            "kf" + std::to_string(frame_ptr->frame_id_), pose_world_T_body));
+      } else {
+        //        viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
+        //            "current_cam", frame_ptr->GetCameraPose()));
+        viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
+            "current_cam", pose_world_T_body));
+      }
+      //      estimated_trajectory.emplace_back(
+      //          frame_ptr->GetCameraPose().translation());
+      estimated_trajectory.emplace_back(pose_world_T_body.translation());
+    }
+    vslam::viewer::PointCloudPrimitive trajectory_primitive(
+        "traj", estimated_trajectory, false, {vslam::Vec3_t(0, 0, 255)});
+    viewer.PushPrimitive(trajectory_primitive);
+
     // Draw points
     vslam::EigenAllocatedVector<vslam::Vec3_t> pc_source;
     auto lms = threadsafe_map_database_ptr->GetAllLandmarks();
@@ -204,7 +240,9 @@ int main() {
       auto lm = lm_ptr.lock();
       if (lm) {
         if (lm->is_initialized_) {
-          pc_source.emplace_back(lm->GetLandmarkPosition());
+          pc_source.emplace_back(pose_body_T_sensor.inverse() *
+                                 lm->GetLandmarkPosition());
+          //          pc_source.emplace_back(lm->GetLandmarkPosition());
         }
       }
     }
@@ -213,27 +251,6 @@ int main() {
           "pc", pc_source, false, {{255, 255, 255}});
       viewer.PushPrimitive(pcp);
     }
-
-    // Draw camera position
-    auto frame_ptr =
-        threadsafe_map_database_ptr
-            ->GetFrame(threadsafe_map_database_ptr->latest_frame_id_)
-            .lock();
-    if (frame_ptr) {
-      if (frame_ptr->is_keyframe_) {
-        viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
-            "kf" + std::to_string(frame_ptr->frame_id_),
-            frame_ptr->GetCameraPose()));
-      } else {
-        viewer.PushPrimitive(vslam::viewer::CoordinateSystemPrimitive(
-            "current_cam", frame_ptr->GetCameraPose()));
-      }
-      estimated_trajectory.emplace_back(
-          frame_ptr->GetCameraPose().translation());
-    }
-    vslam::viewer::PointCloudPrimitive trajectory_primitive(
-        "traj", estimated_trajectory, false, {vslam::Vec3_t(0, 0, 255)});
-    viewer.PushPrimitive(trajectory_primitive);
 
     cv::imshow("First", vis);
     //    if ((counter == 0) || (frame_ptr->is_keyframe_)) {
