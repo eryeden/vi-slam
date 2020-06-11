@@ -13,13 +13,12 @@ namespace vslam::data {
 class InternalMaterials {
  public:
   InternalMaterials() = default;
+  //  InternalMaterials(const InternalMaterials& internal_materials);
 
   /// Dataset index of frame
   database_index_t frame_index_;
   /// Internal frame id
   database_index_t frame_id_;
-
-  std::unique_ptr<CameraModelBase> camera_model_;
 
   /**
    * @brief Observations
@@ -30,9 +29,13 @@ class InternalMaterials {
   FeatureBearingDatabase observing_feature_bearing_in_camera_frame_;
   FeatureAgeDatabase feature_point_age_;
 
-  /**
-   * @brief Pose
-   */
+  Pose_t camera_pose_;
+  std::unordered_map<database_index_t, Landmark> landmarks_;
+
+  /// Internals
+  FeaturePositionDatabase features_pre_frame_;
+  FeaturePositionDatabase features_after_tracking_;
+  FeaturePositionDatabase features_after_verification_;
   Pose_t camera_pose_initial_;
   Pose_t camera_pose_optimized_;
   Pose_t camera_pose_isam2_;
