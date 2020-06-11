@@ -10,4 +10,6 @@ target_sources(${VSLAM_PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/Frame.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Landmark.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Landmark.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Internals.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Internals.hpp
         )
