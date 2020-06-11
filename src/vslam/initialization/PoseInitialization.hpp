@@ -35,6 +35,7 @@ std::optional<Pose_t> InitializePose(
  */
 std::optional<Pose_t> RefinePose(
     data::FrameWeakPtr&& input_frame,
-    std::shared_ptr<data::ThreadsafeMapDatabase>& map_database);
+    std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
+    bool use_previous_pose_factor = true);
 
 }  // namespace vslam::initialization

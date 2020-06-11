@@ -10,6 +10,7 @@
 #include <gtsam/nonlinear/Marginals.h>
 #include <gtsam/nonlinear/NonlinearFactorGraph.h>
 #include <gtsam/nonlinear/Values.h>
+#include <gtsam/slam/BetweenFactor.h>
 #include <gtsam/slam/PriorFactor.h>
 #include <gtsam/slam/ProjectionFactor.h>
 #include <spdlog/spdlog.h>
@@ -95,7 +96,8 @@ std::optional<Pose_t> vslam::initialization::InitializePose(
 }
 std::optional<Pose_t> vslam::initialization::RefinePose(
     FrameWeakPtr&& input_frame,
-    std::shared_ptr<data::ThreadsafeMapDatabase>& map_database) {
+    std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
+    bool use_previous_pose_factor) {
   auto frame_ptr = input_frame.lock();
   if (!frame_ptr) {
     return std::nullopt;
@@ -150,15 +152,26 @@ std::optional<Pose_t> vslam::initialization::RefinePose(
     }
   }
 
-  //  auto previous_frame_ptr =
-  //  map_database->GetFrame(map_database->latest_frame_id_-1).lock();
-  //  if(previous_frame_ptr){
-  //    initial_estimate.insert(Symbol('x', 0),
-  //                            gtsam::Pose3(previous_frame_ptr->GetCameraPose().matrix()));
-  //  }else{
-  //    initial_estimate.insert(Symbol('x', 0),
-  //                            gtsam::Pose3(frame_ptr->GetCameraPose().matrix()));
-  //  }
+  if (use_previous_pose_factor) {
+    auto previous_frame_ptr =
+        map_database->GetFrame(map_database->latest_frame_id_ - 1).lock();
+    if (previous_frame_ptr) {
+      noiseModel::Diagonal::shared_ptr poseNoise = noiseModel::Diagonal::Sigmas(
+          (Vector(6) << Vector3::Constant(0.1), Vector3::Constant(0.1))
+              .finished());
+      graph.emplace_shared<PriorFactor<Pose3>>(
+          Symbol('x', 1),
+          gtsam::Pose3(previous_frame_ptr->GetCameraPose().matrix()),
+          poseNoise);
+      Pose3 btw_pose = Pose3::identity();
+      graph.emplace_shared<BetweenFactor<Pose3>>(
+          Symbol('x', 0), Symbol('x', 1), btw_pose, poseNoise);
+      initial_estimate.insert(
+          Symbol('x', 1),
+          gtsam::Pose3(previous_frame_ptr->GetCameraPose().matrix()));
+    }
+  }
+
   initial_estimate.insert(Symbol('x', 0),
                           gtsam::Pose3(frame_ptr->GetCameraPose().matrix()));
 
