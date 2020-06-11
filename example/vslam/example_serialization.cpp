@@ -1,5 +1,5 @@
 //
-// Created by ery on 2020/05/06.
+// Created by ery on 2020/06/11.
 //
 
 #include <fmt/format.h>
@@ -12,6 +12,7 @@
 #include "FeatureTrackerLSSDLucasKanade.hpp"
 #include "FeatureTrackerLucasKanade.hpp"
 #include "KimeraFrontend.hpp"
+#include "Serializations.hpp"
 #include "TumDataOutput.hpp"
 #include "Verification.hpp"
 #include "ViewerViz.hpp"
