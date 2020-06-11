@@ -14,6 +14,7 @@
 
 #include <opencv2/opencv.hpp>
 
+#include "DataUtilities.hpp"
 #include "GeneralProjectionFactor.hpp"
 #include "Initialization.hpp"
 #include "PoseInitialization.hpp"
