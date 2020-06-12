@@ -23,7 +23,10 @@ namespace vslam::initialization {
 std::optional<Pose_t> InitializePose(
     data::FrameWeakPtr&& input_frame,
     std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
-    const Pose_t& previous_frame_pose);
+    const Pose_t& previous_frame_pose,
+    double ransac_threshold,
+    int32_t ransac_max_iterations,
+    double ransac_probability);
 
 /**
  * @brief Motion only BAを実施
@@ -36,6 +39,10 @@ std::optional<Pose_t> InitializePose(
 std::optional<Pose_t> RefinePose(
     data::FrameWeakPtr&& input_frame,
     std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
-    bool use_previous_pose_factor = true);
+    double reprojection_noise_sigma,
+    double landmark_position_sigma,
+    bool use_previous_pose_factor,
+    double previous_position_sigma,
+    double previous_orientation_sigma);
 
 }  // namespace vslam::initialization

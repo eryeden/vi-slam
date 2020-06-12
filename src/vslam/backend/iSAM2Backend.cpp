@@ -22,28 +22,31 @@
 #include "type_defines.hpp"
 
 vslam::backend::iSAM2Backend::iSAM2Backend(
-    const std::shared_ptr<data::ThreadsafeMapDatabase>& map_database)
+    const std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
+    const Parameter& parameter)
     : BackendBase(map_database),
+      parameter_(parameter),
       backend_state_(BackendState::BootStrap),
       latest_frame_id_(std::numeric_limits<database_index_t>::max()),
       latest_key_frame_id_(std::numeric_limits<database_index_t>::max()) {
   /**
    * @brief Initialize ISAM2
    */
-  gtsam::ISAM2Params isam_2_params;
+  gtsam::ISAM2Params isam_2_params = parameter.isam2_params_;
 
-  gtsam::ISAM2GaussNewtonParams gauss_newton_params;
-  gauss_newton_params.wildfireThreshold = 0.001;
-  isam_2_params.optimizationParams = gauss_newton_params;
-
-  isam_2_params.setCacheLinearizedFactors(true);
-  isam_2_params.relinearizeThreshold = 0.01;
-  isam_2_params.relinearizeSkip = 1;
-  isam_2_params.findUnusedFactorSlots = true;
-  // isam_param->enablePartialRelinearizationCheck = true;
-  //  isam_2_params.setEvaluateNonlinearError(false);  // only for debugging
-  //  isam_2_params.enableDetailedResults = false;     // only for debugging.
-  isam_2_params.factorization = gtsam::ISAM2Params::CHOLESKY;  // QR
+  //  gtsam::ISAM2GaussNewtonParams gauss_newton_params;
+  //  gauss_newton_params.wildfireThreshold = 0.001;
+  //  isam_2_params.optimizationParams = gauss_newton_params;
+  //
+  //  isam_2_params.setCacheLinearizedFactors(true);
+  //  isam_2_params.relinearizeThreshold = 0.01;
+  //  isam_2_params.relinearizeSkip = 1;
+  //  isam_2_params.findUnusedFactorSlots = true;
+  //  // isam_param->enablePartialRelinearizationCheck = true;
+  //  //  isam_2_params.setEvaluateNonlinearError(false);  // only for debugging
+  //  //  isam_2_params.enableDetailedResults = false;     // only for
+  //  debugging. isam_2_params.factorization = gtsam::ISAM2Params::CHOLESKY;  //
+  //  QR
 
   isam_2_ptr_ = std::make_shared<gtsam::ISAM2>(isam_2_params);
 }
@@ -53,20 +56,6 @@ vslam::backend::BackendState vslam::backend::iSAM2Backend::SpinOnce() {
   if (latest_frame_id_ == map_database_->latest_frame_id_) {
     return backend_state_;
   }
-
-  //  // Landmarkの被観測情報を更新・存在しないLandmarkは更新する
-  //  RegisterLandmarkObservation(
-  //      map_database_,
-  //      map_database_->GetFrame(map_database_->latest_frame_id_));
-  // Landmarkの被観測情報を更新・存在しないLandmarkは更新する
-  // KeyFrameの場合のみ被観測情報を更新する
-  //  if(map_database_->latest_key_frame_id_ ==
-  //  map_database_->latest_frame_id_){
-  //    spdlog::info("{} : KeyFrame Input detected. Frame ID {}", __FUNCTION__
-  //    ,map_database_->latest_key_frame_id_); RegisterLandmarkObservation(
-  //        map_database_,
-  //        map_database_->GetFrame(map_database_->latest_key_frame_id_));
-  //  }
 
   // 0 Frame 目初期Frameに単位元の姿勢を設定。
   if (map_database_->latest_frame_id_ == 0) {
@@ -90,21 +79,27 @@ vslam::backend::BackendState vslam::backend::iSAM2Backend::SpinOnce() {
       }
     }
 
-    //////////////////// Initialzie Map //////////////////////////////
+    //////////////////// Initialize Map //////////////////////////////
+    database_index_t reference_frame_id = parameter_.reference_frame_id_;
     bool is_initialization_success = MapInitialization(
         map_database_,
-        map_database_->GetFrame(0),
-        map_database_->GetFrame(map_database_->latest_frame_id_));
+        map_database_->GetFrame(reference_frame_id),
+        map_database_->GetFrame(map_database_->latest_frame_id_),
+        parameter_);
     if (is_initialization_success) {
       //
       InitializeISAM2(isam_2_ptr_,
                       map_database_,
-                      map_database_->GetFrame(0),
-                      map_database_->GetFrame(map_database_->latest_frame_id_));
+                      map_database_->GetFrame(reference_frame_id),
+                      map_database_->GetFrame(map_database_->latest_frame_id_),
+                      parameter_.isam2_reprojection_noise_sigma_,
+                      parameter_.isam2_prior_pose_position_sigma_,
+                      parameter_.isam2_prior_pose_orientation_sigma_,
+                      parameter_.isam2_iteration_number_);
 
       spdlog::info("{} : Succeed in initializing Map. Reference:{}, Current:{}",
                    __FUNCTION__,
-                   0,
+                   reference_frame_id,
                    map_database_->latest_frame_id_);
       backend_state_ = BackendState::Nominal;
 
@@ -136,13 +131,24 @@ vslam::backend::BackendState vslam::backend::iSAM2Backend::SpinOnce() {
       auto estimated_pose = initialization::InitializePose(
           map_database_->GetFrame(map_database_->latest_frame_id_),
           map_database_,
-          prev_frame->GetCameraPose());
+          prev_frame->GetCameraPose(),
+          parameter_.pose_initialization_ransac_threshold_,
+          parameter_.pose_initialization_ransac_max_iterations_,
+          parameter_.pose_initialization_ransac_probability_);
+
       if (estimated_pose != std::nullopt) {
         spdlog::info("{} : Succeed in p3p pose initialization.", __FUNCTION__);
         current_frame->SetCameraPose(estimated_pose.value());
+
         auto refined_pose = initialization::RefinePose(
             map_database_->GetFrame(map_database_->latest_frame_id_),
-            map_database_);
+            map_database_,
+            parameter_.pose_refinement_reprojection_noise_sigma_,
+            parameter_.pose_refinement_landmark_position_sigma_,
+            parameter_.pose_refinement_use_previous_pose_factor_,
+            parameter_.pose_refinement_previous_position_sigma_,
+            parameter_.pose_refinement_previous_orientation_sigma_);
+
         if (refined_pose != std::nullopt) {
           spdlog::info("{} : Succeed in Pose Optimization.", __FUNCTION__);
           current_frame->SetCameraPose(refined_pose.value());
@@ -162,22 +168,25 @@ vslam::backend::BackendState vslam::backend::iSAM2Backend::SpinOnce() {
           vslam::EigenAllocatedUnorderedMap<database_index_t,
                                             vslam::data::LandmarkWeakPtr>
               triangulated_landmarks;
-          //          TriangulateKeyFrame(map_database_, current_frame,
-          //          previous_key_frame);
-          TriangulateKeyFrame(map_database_,
-                              current_frame,
-                              previous_key_frame,
-                              triangulated_landmarks,
-                              5.0,
-                              1.0 * M_PI / 180.0);
+
+          TriangulateKeyFrame(
+              map_database_,
+              current_frame,
+              previous_key_frame,
+              triangulated_landmarks,
+              parameter_.triangulation_reprojection_error_threshold_,
+              parameter_.triangulation_minimum_parallax_threshold_);
 
           spdlog::info("{} : ########## Update iSAM2 Observation ##########",
                        __FUNCTION__);
-          //          UpdateISAMObservation(
-          //              isam_2_ptr_, map_database_, current_frame,
-          //              previous_key_frame);
+
           UpdateISAMObservation(
-              isam_2_ptr_, map_database_, triangulated_landmarks, 3);
+              isam_2_ptr_,
+              map_database_,
+              triangulated_landmarks,
+              parameter_.isam2_reprojection_noise_sigma_,
+              parameter_.isam2_iteration_number_,
+              parameter_.optimization_reprojection_error_threshold_);
         }
       }
     }
@@ -238,7 +247,8 @@ void vslam::backend::iSAM2Backend::RegisterLandmarkObservation(
 bool vslam::backend::iSAM2Backend::MapInitialization(
     std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
     vslam::data::FrameWeakPtr&& reference_frame,
-    vslam::data::FrameWeakPtr&& current_frame) {
+    vslam::data::FrameWeakPtr&& current_frame,
+    const Parameter& parameter) {
   // Mapの初期化を実施
   Pose_t outpose;
   vslam::EigenAllocatedUnorderedMap<database_index_t, Vec3_t>
@@ -315,7 +325,11 @@ bool vslam::backend::iSAM2Backend::InitializeISAM2(
     std::shared_ptr<gtsam::ISAM2>& isam_2,
     std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
     vslam::data::FrameWeakPtr&& reference_frame,
-    vslam::data::FrameWeakPtr&& current_frame) {
+    vslam::data::FrameWeakPtr&& current_frame,
+    double isam2_reprojection_noise_sigma,
+    double isam2_prior_pose_position_sigma,
+    double isam2_prior_pose_orientation_sigma,
+    int32_t isam2_iteration_number) {
   auto reference_frame_ptr = reference_frame.lock();
   auto current_frame_ptr = current_frame.lock();
   if (!(reference_frame_ptr && current_frame_ptr)) {
@@ -330,7 +344,8 @@ bool vslam::backend::iSAM2Backend::InitializeISAM2(
    * は円形の分布となっている。普通の二次元分布のように楕円状の分布ではない。
    */
   noiseModel::Isotropic::shared_ptr measurement_noise =
-      noiseModel::Isotropic::Sigma(2, 1.0);  // one pixel in u and v
+      noiseModel::Isotropic::Sigma(
+          2, isam2_reprojection_noise_sigma);  // one pixel in u and v
 
   /**
    * @brief Factor graphの生成
@@ -343,7 +358,8 @@ bool vslam::backend::iSAM2Backend::InitializeISAM2(
    */
   // Add a prior on pose x1. This indirectly specifies where the origin is.
   noiseModel::Diagonal::shared_ptr poseNoise = noiseModel::Diagonal::Sigmas(
-      (Vector(6) << Vector3::Constant(0.1), Vector3::Constant(0.1))
+      (Vector(6) << Vector3::Constant(isam2_prior_pose_position_sigma),
+       Vector3::Constant(isam2_prior_pose_orientation_sigma))
           .finished());  // 30cm std on x,y,z 0.1 rad on roll,pitch,yaw
   gtsam::Pose3 identity_pose(Rot3::identity(), {0, 0, 0});
   graph.emplace_shared<PriorFactor<Pose3>>(
@@ -403,7 +419,7 @@ bool vslam::backend::iSAM2Backend::InitializeISAM2(
   //  spdlog::info("Opt[{}]", 0);
   //  isam_2->print("ISAM2 State");
   //  currentEstimate.print("Current estimate: ");
-  for (size_t i = 0; i < 1; i++) {
+  for (size_t i = 0; i < isam2_iteration_number; i++) {
     /**
      * @brief Additional Optimization
      */
@@ -561,6 +577,8 @@ bool vslam::backend::iSAM2Backend::UpdateISAMObservation(
     vslam::EigenAllocatedUnorderedMap<database_index_t,
                                       vslam::data::LandmarkWeakPtr>&
         triangulated_landmarks,
+    double isam2_reprojection_noise_sigma,
+    int32_t isam2_iteration_number,
     double reprojection_error_threshold) {
   auto current_frame_ptr =
       map_database->GetFrame(map_database->latest_key_frame_id_).lock();
@@ -579,7 +597,8 @@ bool vslam::backend::iSAM2Backend::UpdateISAMObservation(
   //  noiseModel::Isotropic::shared_ptr measurement_noise =
   //      noiseModel::Isotropic::Sigma(2, 0.1);  // one pixel in u and v
   noiseModel::Isotropic::shared_ptr measurement_noise =
-      noiseModel::Isotropic::Sigma(2, 0.1);  // one pixel in u and v
+      noiseModel::Isotropic::Sigma(
+          2, isam2_reprojection_noise_sigma);  // one pixel in u and v
 
   /**
    * @brief Factor graphの生成
@@ -669,7 +688,7 @@ bool vslam::backend::iSAM2Backend::UpdateISAMObservation(
     spdlog::error("{}:{} Solver error: {}", __FILE__, __FUNCTION__, e.what());
   }
 
-  for (size_t i = 0; i < 10; i++) {
+  for (size_t i = 0; i < isam2_iteration_number; i++) {
     /**
      * @brief Additional Optimization
      */
