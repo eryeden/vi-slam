@@ -88,25 +88,39 @@ void serialize(Archive& ar, const vslam::feature::FeatureDetectorANMS::Parameter
 }
 
 template <class Archive>
-void serialize(Archive& ar, const vslam::feature::FeatureTrackerLSSDLucasKanade::Parameter& p) {
-  ar(
-      cereal::make_nvp("optical_flow_type", p.optical_flow_type_),
-      cereal::make_nvp("optical_flow_detection_grid_size", p.optical_flow_detection_grid_size_),
-      cereal::make_nvp("optical_flow_max_recovered_dist", p.optical_flow_max_recovered_dist_),
-      cereal::make_nvp("optical_flow_pattern", p.optical_flow_pattern_),
-      cereal::make_nvp("optical_flow_max_iterations", p.optical_flow_max_iterations_),
-      cereal::make_nvp("optical_flow_levels", p.optical_flow_levels_)
-  );
+void serialize(
+    Archive& ar,
+    const vslam::feature::FeatureTrackerLSSDLucasKanade::Parameter& p) {
+  ar(cereal::make_nvp("optical_flow_type", p.optical_flow_type_),
+     cereal::make_nvp("optical_flow_detection_grid_size",
+                      p.optical_flow_detection_grid_size_),
+     cereal::make_nvp("optical_flow_max_recovered_dist",
+                      p.optical_flow_max_recovered_dist_),
+     cereal::make_nvp("optical_flow_pattern", p.optical_flow_pattern_),
+     cereal::make_nvp("optical_flow_max_iterations",
+                      p.optical_flow_max_iterations_),
+     cereal::make_nvp("optical_flow_levels", p.optical_flow_levels_));
 }
 
 template <class Archive>
-void serialize(Archive& ar, const vslam::frontend::KimeraFrontend::Parameter& p) {
-  ar(
-      cereal::make_nvp("keyframe_interval", p.keyframe_interval_),
-      cereal::make_nvp("minimum_keyframe_interval", p.minimum_keyframe_interval_),
-      cereal::make_nvp("low_keyframe_feature_number", p.low_keyframe_feature_number_),
-      cereal::make_nvp("counting_feature_age", p.counting_feature_age_)
-  );
+void serialize(
+    Archive& ar,
+    const vslam::verification::FeatureVerification5PointRANSAC::Parameter& p) {
+  ar(cereal::make_nvp("ransac_threshold_angle_rad",
+                      p.ransac_threshold_angle_rad_),
+     cereal::make_nvp("ransac_max_iterations", p.ransac_max_iterations_),
+     cereal::make_nvp("ransac_probability", p.ransac_probability_));
+}
+
+template <class Archive>
+void serialize(Archive& ar,
+               const vslam::frontend::KimeraFrontend::Parameter& p) {
+  ar(cereal::make_nvp("keyframe_interval", p.keyframe_interval_),
+     cereal::make_nvp("minimum_keyframe_interval",
+                      p.minimum_keyframe_interval_),
+     cereal::make_nvp("low_keyframe_feature_number",
+                      p.low_keyframe_feature_number_),
+     cereal::make_nvp("counting_feature_age", p.counting_feature_age_));
 }
 
 template <class Archive>
@@ -130,8 +144,9 @@ void serialize(Archive& ar, const vslam::backend::iSAM2Backend::Parameter& p) {
       cereal::make_nvp("optimization_reprojection_error_threshold_", p.optimization_reprojection_error_threshold_),
 
       cereal::make_nvp("isam2_cacheLinearizedFactors", p.isam2_params_.cacheLinearizedFactors),
-      cereal::make_nvp("isam2_relinearizeThreshold", p.isam2_params_.relinearizeThreshold),
-      cereal::make_nvp("isam2_relinearizeSkip", p.isam2_params_.relinearizeSkip),
+     //      cereal::make_nvp("isam2_relinearizeThreshold",
+     //      p.isam2_params_.getRelinearizeThreshold()),
+     cereal::make_nvp("isam2_relinearizeSkip", p.isam2_params_.relinearizeSkip),
       cereal::make_nvp("isam2_findUnusedFactorSlots", p.isam2_params_.findUnusedFactorSlots),
       cereal::make_nvp("isam2_enablePartialRelinearizationCheck", p.isam2_params_.enablePartialRelinearizationCheck),
       cereal::make_nvp("isam2_evaluateNonlinearError", p.isam2_params_.evaluateNonlinearError),
@@ -139,6 +154,5 @@ void serialize(Archive& ar, const vslam::backend::iSAM2Backend::Parameter& p) {
       cereal::make_nvp("isam2_factorization", p.isam2_params_.factorization)
   );
 }
-
 
 }  // namespace cereal

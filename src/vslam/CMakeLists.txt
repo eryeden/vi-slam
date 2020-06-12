@@ -1,4 +1,8 @@
 # ----- Create vslam library -----
+set(CMAKE_C_COMPILER /usr/bin/gcc-10)
+set(CMAKE_CXX_COMPILER /usr/bin/g++-10)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_library(${VSLAM_PROJECT_NAME}
         SHARED
