@@ -95,20 +95,19 @@ int main() {
   /**
    * @brief Frontend
    */
-  vslam::frontend::KimeraFrontend kimera_frontend(
-      threadsafe_map_database_ptr,
-      //                                                  shi_tomasi_detector_ptr,
-      anms_detector_ptr,
-      //      kl_tracker_ptr,
-      lssd_tracker_ptr,
-      verification_ptr,
-      5.0,
-      200);
+  vslam::frontend::KimeraFrontend::Parameter frontend_param;
+  vslam::frontend::KimeraFrontend kimera_frontend(threadsafe_map_database_ptr,
+                                                  anms_detector_ptr,
+                                                  lssd_tracker_ptr,
+                                                  verification_ptr,
+                                                  frontend_param);
 
   /**
    * @brief Backend
    */
-  vslam::backend::iSAM2Backend i_sam_2_backend(threadsafe_map_database_ptr);
+  vslam::backend::iSAM2Backend::Parameter isam2_backend_paramter;
+  vslam::backend::iSAM2Backend i_sam_2_backend(threadsafe_map_database_ptr,
+                                               isam2_backend_paramter);
   vslam::backend::BackendState backend_state =
       vslam::backend::BackendState::BootStrap;
 
