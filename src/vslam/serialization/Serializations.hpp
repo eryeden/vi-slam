@@ -111,7 +111,6 @@ void serialize(Archive& ar, const vslam::frontend::KimeraFrontend::Parameter& p)
 
 template <class Archive>
 void serialize(Archive& ar, const vslam::backend::iSAM2Backend::Parameter& p) {
-
   ar(
       cereal::make_nvp("reference_frame_id", p.reference_frame_id_),
       cereal::make_nvp("pose_initialization_ransac_threshold", p.pose_initialization_ransac_threshold_),
@@ -130,14 +129,14 @@ void serialize(Archive& ar, const vslam::backend::iSAM2Backend::Parameter& p) {
       cereal::make_nvp("isam2_iteration_number", p.isam2_iteration_number_),
       cereal::make_nvp("optimization_reprojection_error_threshold_", p.optimization_reprojection_error_threshold_),
 
-      cereal::make_nvp("optimization_reprojection_error_threshold_", p.isam2_params_.cacheLinearizedFactors),
-      cereal::make_nvp("optimization_reprojection_error_threshold_", p.isam2_params_.relinearizeThreshold),
-      cereal::make_nvp("optimization_reprojection_error_threshold_", p.isam2_params_.relinearizeSkip),
-      cereal::make_nvp("optimization_reprojection_error_threshold_", p.isam2_params_.findUnusedFactorSlots),
-      cereal::make_nvp("optimization_reprojection_error_threshold_", p.isam2_params_.enablePartialRelinearizationCheck),
-      cereal::make_nvp("optimization_reprojection_error_threshold_", p.isam2_params_.evaluateNonlinearError),
-      cereal::make_nvp("optimization_reprojection_error_threshold_", p.isam2_params_.enableDetailedResults),
-      cereal::make_nvp("optimization_reprojection_error_threshold_", p.isam2_params_.factorization)
+      cereal::make_nvp("isam2_cacheLinearizedFactors", p.isam2_params_.cacheLinearizedFactors),
+      cereal::make_nvp("isam2_relinearizeThreshold", p.isam2_params_.relinearizeThreshold),
+      cereal::make_nvp("isam2_relinearizeSkip", p.isam2_params_.relinearizeSkip),
+      cereal::make_nvp("isam2_findUnusedFactorSlots", p.isam2_params_.findUnusedFactorSlots),
+      cereal::make_nvp("isam2_enablePartialRelinearizationCheck", p.isam2_params_.enablePartialRelinearizationCheck),
+      cereal::make_nvp("isam2_evaluateNonlinearError", p.isam2_params_.evaluateNonlinearError),
+      cereal::make_nvp("isam2_enableDetailedResults", p.isam2_params_.enableDetailedResults),
+      cereal::make_nvp("isam2_factorization", p.isam2_params_.factorization)
   );
 }
 
