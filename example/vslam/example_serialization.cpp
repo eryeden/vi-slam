@@ -2,8 +2,11 @@
 // Created by ery on 2020/06/11.
 //
 
+#include <fmt/chrono.h>
 #include <fmt/format.h>
 #include <spdlog/spdlog.h>
+
+#include <filesystem>
 
 #include "DataUtilities.hpp"
 #include "EurocKimeraDataProvider.hpp"
@@ -13,6 +16,7 @@
 #include "FeatureTrackerLSSDLucasKanade.hpp"
 #include "FeatureTrackerLucasKanade.hpp"
 #include "KimeraFrontend.hpp"
+#include "LogDataOutput.hpp"
 #include "Serializations.hpp"
 #include "TumDataOutput.hpp"
 #include "Verification.hpp"
@@ -115,6 +119,20 @@ int main() {
    * @brief Log dumps
    */
   std::vector<vslam::data::InternalMaterials> internals;
+  std::time_t current_time = std::time(nullptr);
+  std::string current_log_directory_name =
+      fmt::format("{:%Y-%m-%d-%H-%M-%S}", *std::localtime(&current_time));
+  std::string current_log_output_directory =
+      path_to_output_log_dir + "/" + current_log_directory_name;
+  auto mkdir_result =
+      std::filesystem::create_directory(current_log_output_directory);
+  vslam::dataoutput::LogDataOutput log_data_output(
+      current_log_output_directory);
+  log_data_output.Dump(detector_param);
+  log_data_output.Dump(lssd_params);
+  log_data_output.Dump(frontend_param);
+  log_data_output.Dump(isam2_backend_paramter);
+  log_data_output.Dump(verification_params);
 
   /**
    * @brief For visualization
@@ -163,14 +181,17 @@ int main() {
       latest_frame_ptr->internal_materials_ =
           vslam::utility::GenerateInternalsFromFrame(
               *latest_frame_ptr, threadsafe_map_database_ptr);
-      //      internals.emplace_back(latest_frame_ptr->internal_materials_);
-      std::string path_to_output_log =
-          fmt::format("{}/frame_{}.json", path_to_output_log_dir, counter);
-      std::ofstream log_output_stream(path_to_output_log, std::ios::out);
-      {
-        cereal::JSONOutputArchive json_output_archive(log_output_stream);
-        json_output_archive(latest_frame_ptr->internal_materials_);
-      }
+      log_data_output.Dump(counter, latest_frame_ptr->internal_materials_);
+      //      std::string path_to_output_log =
+      //          fmt::format("{}/frame_{}.json", path_to_output_log_dir,
+      //          counter);
+      //      std::ofstream log_output_stream(path_to_output_log,
+      //      std::ios::out);
+      //      {
+      //        cereal::JSONOutputArchive
+      //        json_output_archive(log_output_stream);
+      //        json_output_archive(latest_frame_ptr->internal_materials_);
+      //      }
 
       /**
        * @brief Visualize
