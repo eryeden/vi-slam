@@ -43,6 +43,17 @@ class KimeraFrontendInput {
 
 class KimeraFrontend : public FrontendBase {
  public:
+  class Parameter {
+   public:
+    Parameter();
+
+    double keyframe_interval_;
+    double minimum_keyframe_interval_;
+    uint32_t low_keyframe_feature_number_;
+    int32_t counting_feature_age_;
+  };
+
+ public:
   KimeraFrontend(
       const std::shared_ptr<data::ThreadsafeMapDatabase>&
           threadsafe_map_database,
@@ -50,8 +61,7 @@ class KimeraFrontend : public FrontendBase {
       const std::shared_ptr<feature::FeatureTrackerBase>& feature_tracker,
       const std::shared_ptr<verification::FeatureVerification5PointRANSAC>&
           feature_verification,
-      double keyframe_interval_threshold,
-      uint32_t keyframe_feature_number_threshold);
+      Parameter parameter);
 
   FrontendStatus Feed(const KimeraFrontendInput& frontend_input);
 
@@ -83,8 +93,7 @@ class KimeraFrontend : public FrontendBase {
       feature_verification_;
 
   // Parameter
-  double keyframe_interval_threshold_;
-  uint32_t keyframe_feature_number_threshold_;
+  Parameter parameter_;
 };
 
 }  // namespace vslam::frontend
