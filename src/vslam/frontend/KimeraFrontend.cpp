@@ -32,15 +32,6 @@ KimeraFrontendInput::KimeraFrontendInput(
   }
 }
 
-// KimeraFrontendInput::KimeraFrontendInput(
-//    const KimeraFrontendInput& kimera_frontend_input)
-//    : timestamp_(kimera_frontend_input.timestamp_),
-//      frame_(kimera_frontend_input.frame_){
-//  if (kimera_frontend_input.camera_model_ptr_ != nullptr) {
-//    camera_model_ptr_.reset(kimera_frontend_input.camera_model_ptr_->Clone());
-//  }
-//}
-
 KimeraFrontendInput::KimeraFrontendInput(
     const KimeraFrontendInput& kimera_frontend_input)
     : KimeraFrontendInput(kimera_frontend_input.timestamp_,
@@ -69,12 +60,10 @@ KimeraFrontend::KimeraFrontend(
     const std::shared_ptr<feature::FeatureTrackerBase>& feature_tracker,
     const std::shared_ptr<verification::FeatureVerification5PointRANSAC>&
         feature_verification,
-    double keyframe_interval_threshold,
-    uint32_t keyframe_feature_number_threshold)
+    Parameter parameter)
     : FrontendBase(threadsafe_map_database),
       is_first_frame_(true),
-      keyframe_interval_threshold_(keyframe_interval_threshold),
-      keyframe_feature_number_threshold_(keyframe_feature_number_threshold) {
+      parameter_(parameter) {
   feature_detector_ = feature_detector;
   feature_tracker_ = feature_tracker;
   feature_verification_ = feature_verification;
@@ -276,15 +265,18 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
   // landmark ageが2歳以上のものをカウントする
   uint32_t aged_landmark_number = 0;
   for (const auto& itr : feature_age_database) {
-    if (itr.second >= 2) aged_landmark_number++;
+    if (itr.second >= parameter_.counting_feature_age_) aged_landmark_number++;
   }
 
   // check the number of landmark
   bool features_low_number = false;
+  //  features_low_number =
+  //      (aged_landmark_number < keyframe_feature_number_threshold_);
   features_low_number =
-      (aged_landmark_number < keyframe_feature_number_threshold_);
+      (aged_landmark_number < parameter_.low_keyframe_feature_number_);
 
-  if ((frontend_input.timestamp_ - last_keyframe->timestamp_) < 0.5) {
+  if ((frontend_input.timestamp_ - last_keyframe->timestamp_) <
+      parameter_.minimum_keyframe_interval_) {
     features_low_number = false;
   }
 
@@ -298,13 +290,13 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
   //       keyframe_interval_threshold_))
   if (features_low_number ||
       ((frontend_input.timestamp_ - last_keyframe->timestamp_) >
-       keyframe_interval_threshold_)) {
+       parameter_.keyframe_interval_)) {
     spdlog::info(
         "Keyframe detected. Feature[qty] : {}/{}, Interval[s] : {:.3}/{:.3}",
         feature_position_database.size(),
-        keyframe_feature_number_threshold_,
+        parameter_.low_keyframe_feature_number_,
         (frontend_input.timestamp_ - last_keyframe->timestamp_),
-        keyframe_interval_threshold_);
+        parameter_.keyframe_interval_);
 
     // Increment feature age
     for (auto& itr : feature_age_database) {

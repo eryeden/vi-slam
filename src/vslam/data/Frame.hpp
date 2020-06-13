@@ -5,6 +5,7 @@
 #include <mutex>
 
 #include "Camera.hpp"
+#include "Internals.hpp"
 #include "Landmark.hpp"
 #include "type_defines.hpp"
 
@@ -75,6 +76,12 @@ class Frame {
   const FeatureBearingDatabase observing_feature_bearing_in_camera_frame_;
   //! 観測した画像上のFeature positionを保持する
   const FeatureAgeDatabase feature_point_age_;
+
+  /**
+   * @brief For debugging
+   */
+  mutable std::mutex mutex_debugging_;
+  InternalMaterials internal_materials_;
 
  private:
   //! @note

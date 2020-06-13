@@ -5,5 +5,6 @@ target_sources(${VSLAM_PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/BackendBase.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/BackendBase.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/iSAM2Backend.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/iSAM2BackendParameter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/iSAM2Backend.hpp
         )

@@ -5,6 +5,7 @@ target_sources(${VSLAM_PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/FrontendBase.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/FrontendBase.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/KimeraFrontend.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/KimeraFrontendParameter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/KimeraFrontend.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Verification.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Verification.hpp

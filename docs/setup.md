@@ -2,6 +2,16 @@
 うまく行かなかったら[Issue投稿](https://github.com/eryeden/vi-slam/issues/new)頼みます。😊
 
 ### 必要なもの
+
+- gcc/g++ > 8
+
+現状、gcc/g++ 10を利用。理屈上、8以上ならばOK。
+```bash
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt install g++-10-multilib
+```
+
+
 - Eigen
 
 ``` bash

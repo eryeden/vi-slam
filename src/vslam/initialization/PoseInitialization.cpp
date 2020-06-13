@@ -10,6 +10,7 @@
 #include <gtsam/nonlinear/Marginals.h>
 #include <gtsam/nonlinear/NonlinearFactorGraph.h>
 #include <gtsam/nonlinear/Values.h>
+#include <gtsam/slam/BetweenFactor.h>
 #include <gtsam/slam/PriorFactor.h>
 #include <gtsam/slam/ProjectionFactor.h>
 #include <spdlog/spdlog.h>
@@ -31,7 +32,10 @@ using namespace gtsam;
 std::optional<Pose_t> vslam::initialization::InitializePose(
     vslam::data::FrameWeakPtr&& input_frame,
     std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
-    const Pose_t& previous_frame_pose) {
+    const Pose_t& previous_frame_pose,
+    double ransac_threshold,
+    int32_t ransac_max_iterations,
+    double ransac_probability) {
   bearingVectors_t bearings;
   points_t points;
 
@@ -78,9 +82,9 @@ std::optional<Pose_t> vslam::initialization::InitializePose(
               adapter,
               sac_problems::absolute_pose::AbsolutePoseSacProblem::KNEIP));
   ransac.sac_model_ = absposeproblem_ptr;
-  ransac.threshold_ = 1.0 - cos(0.0001 * M_PI / 180.0);
-  ransac.max_iterations_ = 100;
-  ransac.probability_ = 0.99;
+  ransac.threshold_ = 1.0 - cos(ransac_threshold);
+  ransac.max_iterations_ = ransac_max_iterations;
+  ransac.probability_ = ransac_probability;
 
   if (!ransac.computeModel()) {
     return std::nullopt;
@@ -93,9 +97,15 @@ std::optional<Pose_t> vslam::initialization::InitializePose(
 
   return std::optional<Pose_t>(outpose);
 }
+
 std::optional<Pose_t> vslam::initialization::RefinePose(
     FrameWeakPtr&& input_frame,
-    std::shared_ptr<data::ThreadsafeMapDatabase>& map_database) {
+    std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
+    double reprojection_noise_sigma,
+    double landmark_position_sigma,
+    bool use_previous_pose_factor,
+    double previous_position_sigma,
+    double previous_orientation_sigma) {
   auto frame_ptr = input_frame.lock();
   if (!frame_ptr) {
     return std::nullopt;
@@ -109,7 +119,8 @@ std::optional<Pose_t> vslam::initialization::RefinePose(
    * は円形の分布となっている。普通の二次元分布のように楕円状の分布ではない。
    */
   noiseModel::Isotropic::shared_ptr measurement_noise =
-      noiseModel::Isotropic::Sigma(2, 1.0);  // one pixel in u and v
+      noiseModel::Isotropic::Sigma(
+          2, reprojection_noise_sigma);  // one pixel in u and v
 
   /**
    * @brief Factor graphの生成
@@ -123,7 +134,7 @@ std::optional<Pose_t> vslam::initialization::RefinePose(
    * frameで観測されており、最適化済みのLandmarkをPriorFactorとして設定する
    */
   noiseModel::Diagonal::shared_ptr point_noise = noiseModel::Diagonal::Sigmas(
-      (Vector(3) << Vector3::Constant(0.1)).finished());
+      (Vector(3) << Vector3::Constant(landmark_position_sigma)).finished());
   auto camera_model_ptr = std::shared_ptr<vslam::data::CameraModelBase>(
       frame_ptr->camera_model_->Clone());
   for (const auto& [id, pos] : frame_ptr->observing_feature_point_in_device_) {
@@ -150,15 +161,27 @@ std::optional<Pose_t> vslam::initialization::RefinePose(
     }
   }
 
-  //  auto previous_frame_ptr =
-  //  map_database->GetFrame(map_database->latest_frame_id_-1).lock();
-  //  if(previous_frame_ptr){
-  //    initial_estimate.insert(Symbol('x', 0),
-  //                            gtsam::Pose3(previous_frame_ptr->GetCameraPose().matrix()));
-  //  }else{
-  //    initial_estimate.insert(Symbol('x', 0),
-  //                            gtsam::Pose3(frame_ptr->GetCameraPose().matrix()));
-  //  }
+  if (use_previous_pose_factor) {
+    auto previous_frame_ptr =
+        map_database->GetFrame(map_database->latest_frame_id_ - 1).lock();
+    if (previous_frame_ptr) {
+      noiseModel::Diagonal::shared_ptr poseNoise = noiseModel::Diagonal::Sigmas(
+          (Vector(6) << Vector3::Constant(previous_position_sigma),
+           Vector3::Constant(previous_orientation_sigma))
+              .finished());
+      graph.emplace_shared<PriorFactor<Pose3>>(
+          Symbol('x', 1),
+          gtsam::Pose3(previous_frame_ptr->GetCameraPose().matrix()),
+          poseNoise);
+      Pose3 btw_pose = Pose3::identity();
+      graph.emplace_shared<BetweenFactor<Pose3>>(
+          Symbol('x', 0), Symbol('x', 1), btw_pose, poseNoise);
+      initial_estimate.insert(
+          Symbol('x', 1),
+          gtsam::Pose3(previous_frame_ptr->GetCameraPose().matrix()));
+    }
+  }
+
   initial_estimate.insert(Symbol('x', 0),
                           gtsam::Pose3(frame_ptr->GetCameraPose().matrix()));
 

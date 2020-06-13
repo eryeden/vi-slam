@@ -385,7 +385,7 @@ std::vector<cv::KeyPoint> Ssc(const std::vector<cv::KeyPoint>& keyPoints,
       break;
     }
     result.clear();
-    double c = width / 2;  // initializing Grid
+    double c = static_cast<double>(width) / 2.0;  // initializing Grid
     int numCellCols = floor(cols / c);
     int numCellRows = floor(rows / c);
     std::vector<std::vector<bool> > coveredVec(

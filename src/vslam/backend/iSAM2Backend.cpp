@@ -14,6 +14,7 @@
 
 #include <opencv2/opencv.hpp>
 
+#include "DataUtilities.hpp"
 #include "GeneralProjectionFactor.hpp"
 #include "Initialization.hpp"
 #include "PoseInitialization.hpp"
@@ -21,28 +22,31 @@
 #include "type_defines.hpp"
 
 vslam::backend::iSAM2Backend::iSAM2Backend(
-    const std::shared_ptr<data::ThreadsafeMapDatabase>& map_database)
+    const std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
+    const Parameter& parameter)
     : BackendBase(map_database),
+      parameter_(parameter),
       backend_state_(BackendState::BootStrap),
       latest_frame_id_(std::numeric_limits<database_index_t>::max()),
       latest_key_frame_id_(std::numeric_limits<database_index_t>::max()) {
   /**
    * @brief Initialize ISAM2
    */
-  gtsam::ISAM2Params isam_2_params;
+  gtsam::ISAM2Params isam_2_params = parameter_.AsISAM2Params();
 
-  gtsam::ISAM2GaussNewtonParams gauss_newton_params;
-  gauss_newton_params.wildfireThreshold = 0.001;
-  isam_2_params.optimizationParams = gauss_newton_params;
-
-  isam_2_params.setCacheLinearizedFactors(true);
-  isam_2_params.relinearizeThreshold = 0.01;
-  isam_2_params.relinearizeSkip = 1;
-  isam_2_params.findUnusedFactorSlots = true;
-  // isam_param->enablePartialRelinearizationCheck = true;
-  //  isam_2_params.setEvaluateNonlinearError(false);  // only for debugging
-  //  isam_2_params.enableDetailedResults = false;     // only for debugging.
-  isam_2_params.factorization = gtsam::ISAM2Params::CHOLESKY;  // QR
+  //  gtsam::ISAM2GaussNewtonParams gauss_newton_params;
+  //  gauss_newton_params.wildfireThreshold = 0.001;
+  //  isam_2_params.optimizationParams = gauss_newton_params;
+  //
+  //  isam_2_params.setCacheLinearizedFactors(true);
+  //  isam_2_params.relinearizeThreshold = 0.01;
+  //  isam_2_params.relinearizeSkip = 1;
+  //  isam_2_params.findUnusedFactorSlots = true;
+  //  // isam_param->enablePartialRelinearizationCheck = true;
+  //  //  isam_2_params.setEvaluateNonlinearError(false);  // only for debugging
+  //  //  isam_2_params.enableDetailedResults = false;     // only for
+  //  debugging. isam_2_params.factorization = gtsam::ISAM2Params::CHOLESKY;  //
+  //  QR
 
   isam_2_ptr_ = std::make_shared<gtsam::ISAM2>(isam_2_params);
 }
@@ -52,20 +56,6 @@ vslam::backend::BackendState vslam::backend::iSAM2Backend::SpinOnce() {
   if (latest_frame_id_ == map_database_->latest_frame_id_) {
     return backend_state_;
   }
-
-  //  // Landmarkの被観測情報を更新・存在しないLandmarkは更新する
-  //  RegisterLandmarkObservation(
-  //      map_database_,
-  //      map_database_->GetFrame(map_database_->latest_frame_id_));
-  // Landmarkの被観測情報を更新・存在しないLandmarkは更新する
-  // KeyFrameの場合のみ被観測情報を更新する
-  //  if(map_database_->latest_key_frame_id_ ==
-  //  map_database_->latest_frame_id_){
-  //    spdlog::info("{} : KeyFrame Input detected. Frame ID {}", __FUNCTION__
-  //    ,map_database_->latest_key_frame_id_); RegisterLandmarkObservation(
-  //        map_database_,
-  //        map_database_->GetFrame(map_database_->latest_key_frame_id_));
-  //  }
 
   // 0 Frame 目初期Frameに単位元の姿勢を設定。
   if (map_database_->latest_frame_id_ == 0) {
@@ -89,21 +79,27 @@ vslam::backend::BackendState vslam::backend::iSAM2Backend::SpinOnce() {
       }
     }
 
-    //////////////////// Initialzie Map //////////////////////////////
+    //////////////////// Initialize Map //////////////////////////////
+    database_index_t reference_frame_id = parameter_.reference_frame_id_;
     bool is_initialization_success = MapInitialization(
         map_database_,
-        map_database_->GetFrame(0),
-        map_database_->GetFrame(map_database_->latest_frame_id_));
+        map_database_->GetFrame(reference_frame_id),
+        map_database_->GetFrame(map_database_->latest_frame_id_),
+        parameter_);
     if (is_initialization_success) {
       //
       InitializeISAM2(isam_2_ptr_,
                       map_database_,
-                      map_database_->GetFrame(0),
-                      map_database_->GetFrame(map_database_->latest_frame_id_));
+                      map_database_->GetFrame(reference_frame_id),
+                      map_database_->GetFrame(map_database_->latest_frame_id_),
+                      parameter_.isam2_reprojection_noise_sigma_,
+                      parameter_.isam2_prior_pose_position_sigma_,
+                      parameter_.isam2_prior_pose_orientation_sigma_,
+                      parameter_.isam2_iteration_number_);
 
       spdlog::info("{} : Succeed in initializing Map. Reference:{}, Current:{}",
                    __FUNCTION__,
-                   0,
+                   reference_frame_id,
                    map_database_->latest_frame_id_);
       backend_state_ = BackendState::Nominal;
 
@@ -135,13 +131,24 @@ vslam::backend::BackendState vslam::backend::iSAM2Backend::SpinOnce() {
       auto estimated_pose = initialization::InitializePose(
           map_database_->GetFrame(map_database_->latest_frame_id_),
           map_database_,
-          prev_frame->GetCameraPose());
+          prev_frame->GetCameraPose(),
+          parameter_.pose_initialization_ransac_threshold_,
+          parameter_.pose_initialization_ransac_max_iterations_,
+          parameter_.pose_initialization_ransac_probability_);
+
       if (estimated_pose != std::nullopt) {
         spdlog::info("{} : Succeed in p3p pose initialization.", __FUNCTION__);
         current_frame->SetCameraPose(estimated_pose.value());
+
         auto refined_pose = initialization::RefinePose(
             map_database_->GetFrame(map_database_->latest_frame_id_),
-            map_database_);
+            map_database_,
+            parameter_.pose_refinement_reprojection_noise_sigma_,
+            parameter_.pose_refinement_landmark_position_sigma_,
+            parameter_.pose_refinement_use_previous_pose_factor_,
+            parameter_.pose_refinement_previous_position_sigma_,
+            parameter_.pose_refinement_previous_orientation_sigma_);
+
         if (refined_pose != std::nullopt) {
           spdlog::info("{} : Succeed in Pose Optimization.", __FUNCTION__);
           current_frame->SetCameraPose(refined_pose.value());
@@ -161,22 +168,25 @@ vslam::backend::BackendState vslam::backend::iSAM2Backend::SpinOnce() {
           vslam::EigenAllocatedUnorderedMap<database_index_t,
                                             vslam::data::LandmarkWeakPtr>
               triangulated_landmarks;
-          //          TriangulateKeyFrame(map_database_, current_frame,
-          //          previous_key_frame);
-          TriangulateKeyFrame(map_database_,
-                              current_frame,
-                              previous_key_frame,
-                              triangulated_landmarks,
-                              5.0,
-                              1.0 * M_PI / 180.0);
+
+          TriangulateKeyFrame(
+              map_database_,
+              current_frame,
+              previous_key_frame,
+              triangulated_landmarks,
+              parameter_.triangulation_reprojection_error_threshold_,
+              parameter_.triangulation_minimum_parallax_threshold_);
 
           spdlog::info("{} : ########## Update iSAM2 Observation ##########",
                        __FUNCTION__);
-          //          UpdateISAMObservation(
-          //              isam_2_ptr_, map_database_, current_frame,
-          //              previous_key_frame);
+
           UpdateISAMObservation(
-              isam_2_ptr_, map_database_, triangulated_landmarks, 3);
+              isam_2_ptr_,
+              map_database_,
+              triangulated_landmarks,
+              parameter_.isam2_reprojection_noise_sigma_,
+              parameter_.isam2_iteration_number_,
+              parameter_.optimization_reprojection_error_threshold_);
         }
       }
     }
@@ -237,7 +247,8 @@ void vslam::backend::iSAM2Backend::RegisterLandmarkObservation(
 bool vslam::backend::iSAM2Backend::MapInitialization(
     std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
     vslam::data::FrameWeakPtr&& reference_frame,
-    vslam::data::FrameWeakPtr&& current_frame) {
+    vslam::data::FrameWeakPtr&& current_frame,
+    const Parameter& parameter) {
   // Mapの初期化を実施
   Pose_t outpose;
   vslam::EigenAllocatedUnorderedMap<database_index_t, Vec3_t>
@@ -314,7 +325,11 @@ bool vslam::backend::iSAM2Backend::InitializeISAM2(
     std::shared_ptr<gtsam::ISAM2>& isam_2,
     std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
     vslam::data::FrameWeakPtr&& reference_frame,
-    vslam::data::FrameWeakPtr&& current_frame) {
+    vslam::data::FrameWeakPtr&& current_frame,
+    double isam2_reprojection_noise_sigma,
+    double isam2_prior_pose_position_sigma,
+    double isam2_prior_pose_orientation_sigma,
+    int32_t isam2_iteration_number) {
   auto reference_frame_ptr = reference_frame.lock();
   auto current_frame_ptr = current_frame.lock();
   if (!(reference_frame_ptr && current_frame_ptr)) {
@@ -329,7 +344,8 @@ bool vslam::backend::iSAM2Backend::InitializeISAM2(
    * は円形の分布となっている。普通の二次元分布のように楕円状の分布ではない。
    */
   noiseModel::Isotropic::shared_ptr measurement_noise =
-      noiseModel::Isotropic::Sigma(2, 1.0);  // one pixel in u and v
+      noiseModel::Isotropic::Sigma(
+          2, isam2_reprojection_noise_sigma);  // one pixel in u and v
 
   /**
    * @brief Factor graphの生成
@@ -342,7 +358,8 @@ bool vslam::backend::iSAM2Backend::InitializeISAM2(
    */
   // Add a prior on pose x1. This indirectly specifies where the origin is.
   noiseModel::Diagonal::shared_ptr poseNoise = noiseModel::Diagonal::Sigmas(
-      (Vector(6) << Vector3::Constant(0.1), Vector3::Constant(0.1))
+      (Vector(6) << Vector3::Constant(isam2_prior_pose_position_sigma),
+       Vector3::Constant(isam2_prior_pose_orientation_sigma))
           .finished());  // 30cm std on x,y,z 0.1 rad on roll,pitch,yaw
   gtsam::Pose3 identity_pose(Rot3::identity(), {0, 0, 0});
   graph.emplace_shared<PriorFactor<Pose3>>(
@@ -402,7 +419,7 @@ bool vslam::backend::iSAM2Backend::InitializeISAM2(
   //  spdlog::info("Opt[{}]", 0);
   //  isam_2->print("ISAM2 State");
   //  currentEstimate.print("Current estimate: ");
-  for (size_t i = 0; i < 1; i++) {
+  for (size_t i = 0; i < isam2_iteration_number; i++) {
     /**
      * @brief Additional Optimization
      */
@@ -433,118 +450,6 @@ bool vslam::backend::iSAM2Backend::InitializeISAM2(
         lm_ptr->SetLandmarkPosition(lm_pos);
         lm_ptr->is_added_ = true;
       }
-    }
-  }
-
-  return true;
-}
-bool vslam::backend::iSAM2Backend::TriangulateKeyFrame(
-    shared_ptr<data::ThreadsafeMapDatabase>& map_database,
-    vslam::data::FrameWeakPtr&& current_key_frame,
-    vslam::data::FrameWeakPtr&& previous_key_frame) {
-  /**
-   * @brief
-   * 2つのKeyFrame間で共通して観測されていて、初期化されていないLandmarkをTriangulateする
-   */
-  auto current_ptr = current_key_frame.lock();
-  auto previous_ptr = previous_key_frame.lock();
-  auto lm_database = map_database->GetAllLandmarks();
-
-  if (!current_ptr || !previous_ptr) {
-    return false;
-  }
-
-  // 共通観測Landmarkを抽出
-  std::vector<database_index_t> intersection_lm_ids, uninitialized_lm_lds;
-  std::set_intersection(current_ptr->observing_feature_id_.begin(),
-                        current_ptr->observing_feature_id_.end(),
-                        previous_ptr->observing_feature_id_.begin(),
-                        previous_ptr->observing_feature_id_.end(),
-                        std::back_inserter(intersection_lm_ids));
-  // 未初期化のLandmarkを抽出
-  for (const auto id : intersection_lm_ids) {
-    auto lm_ptr = lm_database[id].lock();
-    if (lm_ptr) {
-      if (!lm_ptr->is_initialized_) {
-        uninitialized_lm_lds.emplace_back(id);
-      }
-    }
-  }
-  if (uninitialized_lm_lds.empty()) {
-    spdlog::warn("{} : No landmarks to triangulate.", __FUNCTION__);
-    return false;
-  }
-
-  // Triangulate
-  opengv::bearingVectors_t bearings_current, bearings_previous;
-  for (const auto id : uninitialized_lm_lds) {
-    bearings_current.emplace_back(
-        current_ptr->observing_feature_bearing_in_camera_frame_.at(id));
-    bearings_previous.emplace_back(
-        previous_ptr->observing_feature_bearing_in_camera_frame_.at(id));
-  }
-  //  Pose_t pose_previous_to_current =
-  //      current_ptr->GetCameraPose().inverse() *
-  //      previous_ptr->GetCameraPose();
-  Pose_t pose_previous_to_current =
-      previous_ptr->GetCameraPose().inverse() * current_ptr->GetCameraPose();
-  //  Pose_t pose_previous_to_current =  previous_ptr->GetCameraPose().inverse()
-  //  * current_ptr->GetCameraPose();
-
-  //  opengv::rotation_t p2c_rot(pose_previous_to_current.rotationMatrix());
-  //  opengv::translation_t p2c_trans(pose_previous_to_current.translation());
-  opengv::relative_pose::CentralRelativeAdapter tri_adapter(
-      bearings_previous,
-      bearings_current,
-      pose_previous_to_current.translation(),
-      pose_previous_to_current.rotationMatrix());
-
-  vslam::EigenAllocatedUnorderedMap<database_index_t, Vec3_t> landmark_position;
-  std::vector<double> landmark_observation_angle;
-
-  for (size_t i = 0; i < uninitialized_lm_lds.size(); i++) {
-    opengv::point_t point = opengv::triangulation::triangulate2(tri_adapter, i);
-
-    Vec3_t ref_to_lm = (point - Vec3_t::Zero()).normalized();
-    Vec3_t current_to_lm =
-        (point - pose_previous_to_current.translation()).normalized();
-    double angle = std::acos(ref_to_lm.dot(current_to_lm));
-    landmark_observation_angle.emplace_back(angle);
-
-    // measure reprojeciton error
-    try {
-      auto projected = previous_ptr->camera_model_->Project(point);
-      auto measured = previous_ptr->observing_feature_point_in_device_.at(
-          uninitialized_lm_lds[i]);
-      auto measured_current =
-          current_ptr->observing_feature_point_in_device_.at(
-              uninitialized_lm_lds[i]);
-
-      auto error = (measured - projected).norm();
-      if ((error < 5.0) && (angle > 1.0 * M_PI / 180.0)) {
-        landmark_position[uninitialized_lm_lds[i]] =
-            previous_ptr->GetCameraPose() * point;
-      } else {
-        spdlog::info("{} : Outlier detected LM:{}, {} [px], {} [deg]",
-                     __FUNCTION__,
-                     uninitialized_lm_lds[i],
-                     error,
-                     angle * 180.0 / M_PI);
-      }
-    } catch (vslam::data::ProjectionErrorException& exception) {
-      spdlog::warn("{} : Projection failed LM:{} \nMessage: \n{}",
-                   __FUNCTION__,
-                   uninitialized_lm_lds[i],
-                   exception.what());
-    }
-  }
-
-  // output
-  for (const auto& [id, pos] : landmark_position) {
-    auto lm_ptr = lm_database.at(id).lock();
-    if (lm_ptr) {
-      lm_ptr->SetLandmarkPosition(pos);
-      lm_ptr->is_initialized_ = true;
     }
   }
 
@@ -665,207 +570,6 @@ bool vslam::backend::iSAM2Backend::TriangulateKeyFrame(
   return true;
 }
 
-bool vslam::backend::iSAM2Backend::UpdateISAMObservation(
-    shared_ptr<gtsam::ISAM2>& isam_2,
-    shared_ptr<data::ThreadsafeMapDatabase>& map_database,
-    vslam::data::FrameWeakPtr&& current_frame,
-    vslam::data::FrameWeakPtr&& previous_key_frame) {
-  auto current_frame_ptr = current_frame.lock();
-  auto previous_frame_prt = previous_key_frame.lock();
-  if (!current_frame_ptr && previous_frame_prt) {
-    return false;
-  }
-
-  /**
-   * @brief 観測モデルの定義
-   * @note
-   * Define the camera observation noise model
-   * Isotropic error model
-   * は円形の分布となっている。普通の二次元分布のように楕円状の分布ではない。
-   */
-  //  noiseModel::Isotropic::shared_ptr measurement_noise =
-  //      noiseModel::Isotropic::Sigma(2, 0.1);  // one pixel in u and v
-  noiseModel::Isotropic::shared_ptr measurement_noise =
-      noiseModel::Isotropic::Sigma(2, 0.1);  // one pixel in u and v
-
-  /**
-   * @brief Factor graphの生成
-   */
-  NonlinearFactorGraph graph;
-  Values initial_estimate;
-
-  /**
-   * @brief　観測情報の追加
-   */
-  auto camera_model_ptr = std::shared_ptr<vslam::data::CameraModelBase>(
-      current_frame_ptr->camera_model_->Clone());
-  for (const auto id : current_frame_ptr->observing_feature_id_) {
-    auto lm_ptr = map_database->GetLandmark(id).lock();
-    if (lm_ptr) {
-      if (lm_ptr->is_initialized_ && !lm_ptr->is_outlier_) {
-        //        spdlog::info("Add x:{},l:{}", current_frame_ptr->frame_id_,
-        //        id);
-        graph.emplace_shared<
-            vslam::factor::GeneralProjectionFactor<Pose3, Point3>>(
-            current_frame_ptr->observing_feature_point_in_device_.at(id),
-            measurement_noise,
-            Symbol('x', current_frame_ptr->frame_id_),
-            Symbol('l', id),
-            camera_model_ptr);
-
-        if (!lm_ptr->is_added_) {
-          graph.emplace_shared<
-              vslam::factor::GeneralProjectionFactor<Pose3, Point3>>(
-              previous_frame_prt->observing_feature_point_in_device_.at(id),
-              measurement_noise,
-              Symbol('x', previous_frame_prt->frame_id_),
-              Symbol('l', id),
-              camera_model_ptr);
-
-          gtsam::Point3 lm_point(lm_ptr->GetLandmarkPosition());
-          initial_estimate.insert<gtsam::Point3>(Symbol('l', id), lm_point);
-        }
-      }
-    }
-  }
-
-  auto lms_ptr = map_database->GetAllLandmarks();
-  for (const auto& [id, lm_weak] : lms_ptr) {
-    auto lm_ptr = lm_weak.lock();
-    if (lm_ptr) {
-      auto ob_size = lm_ptr->GetAllObservedFrameIndex().size();
-      if (lm_ptr->is_initialized_ && !(lm_ptr->is_outlier_)) {
-        if (ob_size <= 1) {
-          spdlog::error("Single or non observed LM : {}:{}", id, ob_size);
-        }
-      }
-    }
-  }
-
-  /**
-   * @brief Frameの初期Poseを設定
-   */
-  initial_estimate.insert(
-      Symbol('x', current_frame_ptr->frame_id_),
-      gtsam::Pose3(current_frame_ptr->GetCameraPose().matrix()));
-
-  try {
-    /**
-     * @brief Setup ISAM2 and run optimization
-     */
-    isam_2->update(graph, initial_estimate);
-
-  } catch (gtsam::IndeterminantLinearSystemException& e) {
-    spdlog::error("{}:{} Solver IndeterminantLinearSystemException error: {}",
-                  __FILE__,
-                  __FUNCTION__,
-                  e.what());
-  } catch (std::exception& e) {
-    spdlog::error("{}:{} Solver error: {}", __FILE__, __FUNCTION__, e.what());
-  }
-
-  for (size_t i = 0; i < 10; i++) {
-    /**
-     * @brief Additional Optimization
-     */
-    try {
-      isam_2->update();
-    } catch (gtsam::IndeterminantLinearSystemException& e) {
-      spdlog::error(
-          "{}:{} Re calling Solver IndeterminantLinearSystemException error: "
-          "{}",
-          __FILE__,
-          __FUNCTION__,
-          e.what());
-    } catch (std::exception& e) {
-      spdlog::error("{}:{} Re calling Solver error: {}",
-                    __FILE__,
-                    __FUNCTION__,
-                    e.what());
-    }
-  }
-
-  /**
-   * @brief Update map_database
-   */
-  Values current_estimate = isam_2->calculateEstimate();
-  for (const auto& [id, data] : current_estimate) {
-    Symbol symbol(id);
-    Key key = symbol.chr();
-    if (key == 'x') {
-      auto frame_ptr = map_database->GetFrame(symbol.index()).lock();
-      if (frame_ptr) {
-        auto pose = Pose_t(data.cast<Pose3>().matrix());
-        frame_ptr->SetCameraPose(pose);
-      }
-    } else if (key == 'l') {
-      auto lm_ptr = map_database->GetLandmark(symbol.index()).lock();
-      if (lm_ptr) {
-        lm_ptr->SetLandmarkPosition(data.cast<Point3>());
-        lm_ptr->is_added_ = true;
-      }
-    }
-  }
-
-  /**
-   * @brief Outlier elimination
-   */
-  //  for (const auto& [id, data] : current_estimate) {
-  //    Symbol symbol(id);
-  //    Key key = symbol.chr();
-  //    if (key == 'x') {
-  //      auto frame_id = symbol.index();
-  //      auto frame_ptr = map_database->GetFrame(frame_id).lock();
-  //      if(frame_ptr){
-  //        for (const auto id : frame_ptr->observing_feature_id_) {
-  //          auto lm_ptr = map_database->GetLandmark(id).lock();
-  //          if (lm_ptr) {
-  //            if (lm_ptr->is_added_ && !lm_ptr->is_outlier_) {
-  //              try{
-  //                auto measured =
-  //                    frame_ptr->observing_feature_point_in_device_.at(id);
-  //                auto projected = camera_model_ptr->Project(
-  //                    frame_ptr->GetCameraPose().inverse() *
-  //                        lm_ptr->GetLandmarkPosition());
-  //                auto error = (projected - measured).norm();
-  //                if (error > 3) {
-  //                  lm_ptr->is_outlier_ = true;
-  //                }
-  //              } catch (data::ProjectionErrorException& exception) {
-  //                lm_ptr->is_outlier_ = true;
-  //                spdlog::warn("Projection error: {}", exception.what());
-  //              }
-  //            }
-  //          }
-  //        }
-  //      }
-  //    }
-  //  }
-
-  for (const auto id : current_frame_ptr->observing_feature_id_) {
-    auto lm_ptr = map_database->GetLandmark(id).lock();
-    if (lm_ptr) {
-      if (lm_ptr->is_added_ && !lm_ptr->is_outlier_) {
-        try {
-          auto measured =
-              current_frame_ptr->observing_feature_point_in_device_.at(id);
-          auto projected = camera_model_ptr->Project(
-              current_frame_ptr->GetCameraPose().inverse() *
-              lm_ptr->GetLandmarkPosition());
-          auto error = (projected - measured).norm();
-          if (error > 3) {
-            lm_ptr->is_outlier_ = true;
-          }
-        } catch (data::ProjectionErrorException& exception) {
-          lm_ptr->is_outlier_ = true;
-          spdlog::warn("Projection error: {}", exception.what());
-        }
-      }
-    }
-  }
-
-  return true;
-}
 
 bool vslam::backend::iSAM2Backend::UpdateISAMObservation(
     std::shared_ptr<gtsam::ISAM2>& isam_2,
@@ -873,6 +577,8 @@ bool vslam::backend::iSAM2Backend::UpdateISAMObservation(
     vslam::EigenAllocatedUnorderedMap<database_index_t,
                                       vslam::data::LandmarkWeakPtr>&
         triangulated_landmarks,
+    double isam2_reprojection_noise_sigma,
+    int32_t isam2_iteration_number,
     double reprojection_error_threshold) {
   auto current_frame_ptr =
       map_database->GetFrame(map_database->latest_key_frame_id_).lock();
@@ -891,7 +597,8 @@ bool vslam::backend::iSAM2Backend::UpdateISAMObservation(
   //  noiseModel::Isotropic::shared_ptr measurement_noise =
   //      noiseModel::Isotropic::Sigma(2, 0.1);  // one pixel in u and v
   noiseModel::Isotropic::shared_ptr measurement_noise =
-      noiseModel::Isotropic::Sigma(2, 0.1);  // one pixel in u and v
+      noiseModel::Isotropic::Sigma(
+          2, isam2_reprojection_noise_sigma);  // one pixel in u and v
 
   /**
    * @brief Factor graphの生成
@@ -981,7 +688,7 @@ bool vslam::backend::iSAM2Backend::UpdateISAMObservation(
     spdlog::error("{}:{} Solver error: {}", __FILE__, __FUNCTION__, e.what());
   }
 
-  for (size_t i = 0; i < 10; i++) {
+  for (size_t i = 0; i < isam2_iteration_number; i++) {
     /**
      * @brief Additional Optimization
      */

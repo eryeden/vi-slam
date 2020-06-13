@@ -1,3 +1,8 @@
+set(CMAKE_C_COMPILER /usr/bin/gcc-10)
+set(CMAKE_CXX_COMPILER /usr/bin/g++-10)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 add_executable(example_hello example_hello.cpp)
 list(APPEND EXECUTABLE_TARGETS example_hello)
 add_executable(example_feature_detector example_feature_detector.cpp)
@@ -8,6 +13,8 @@ add_executable(example_kimera_frontend_detection_and_tracking example_kimera_fro
 list(APPEND EXECUTABLE_TARGETS example_kimera_frontend_detection_and_tracking)
 add_executable(example_kimera_backend example_kimera_backend.cpp)
 list(APPEND EXECUTABLE_TARGETS example_kimera_backend)
+add_executable(example_serialization example_serialization.cpp)
+list(APPEND EXECUTABLE_TARGETS example_serialization)
 
 
 foreach (EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)

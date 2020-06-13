@@ -6,15 +6,19 @@
 
 #include <spdlog/spdlog.h>
 
+vslam::verification::FeatureVerification5PointRANSAC::Parameter::Parameter() {
+  ransac_threshold_angle_rad_ = 1.0 * M_PI / 180.0;
+  ransac_max_iterations_ = 150;
+  ransac_probability_ = 0.9;
+}
+
 vslam::verification::FeatureVerification5PointRANSAC::
-    FeatureVerification5PointRANSAC(double ransac_threshold_angle_rad,
-                                    int32_t ransac_max_iterations,
-                                    double ransac_probability) {
+    FeatureVerification5PointRANSAC(const Parameter& parameter) {
   // set ransac threshold
-  double threshold = 1.0 - std::cos(ransac_threshold_angle_rad);
+  double threshold = 1.0 - std::cos(parameter.ransac_threshold_angle_rad_);
   mono_ransac_.threshold_ = threshold;
-  mono_ransac_.max_iterations_ = ransac_max_iterations;
-  mono_ransac_.probability_ = ransac_probability;
+  mono_ransac_.max_iterations_ = parameter.ransac_max_iterations_;
+  mono_ransac_.probability_ = parameter.ransac_probability_;
 }
 vslam::data::Frame
 vslam::verification::FeatureVerification5PointRANSAC::RemoveOutlier(

@@ -1,4 +1,8 @@
 # ----- Create vslam library -----
+set(CMAKE_C_COMPILER /usr/bin/gcc-10)
+set(CMAKE_CXX_COMPILER /usr/bin/g++-10)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_library(${VSLAM_PROJECT_NAME}
         SHARED
@@ -35,6 +39,7 @@ target_include_directories(${VSLAM_PROJECT_NAME}
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/viewer>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/factor>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/initialization>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/vslam/serialization>
         /usr/include/vtk-6.3/  # TODO : VTKバージョンに依存しないようにする。
         )
 
@@ -72,3 +77,4 @@ add_subdirectory(io)
 add_subdirectory(viewer)
 add_subdirectory(factor)
 add_subdirectory(initialization)
+add_subdirectory(serialization)
