@@ -32,7 +32,7 @@ vslam::backend::iSAM2Backend::iSAM2Backend(
   /**
    * @brief Initialize ISAM2
    */
-  gtsam::ISAM2Params isam_2_params = parameter.isam2_params_;
+  gtsam::ISAM2Params isam_2_params = parameter_.AsISAM2Params();
 
   //  gtsam::ISAM2GaussNewtonParams gauss_newton_params;
   //  gauss_newton_params.wildfireThreshold = 0.001;

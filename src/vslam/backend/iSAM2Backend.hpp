@@ -16,6 +16,8 @@ class iSAM2Backend : public BackendBase {
    public:
     Parameter();
 
+    gtsam::ISAM2Params AsISAM2Params();
+
     /// Initialization
     database_index_t reference_frame_id_;
     //  5point ransac
@@ -34,7 +36,17 @@ class iSAM2Backend : public BackendBase {
     double triangulation_reprojection_error_threshold_;
     double triangulation_minimum_parallax_threshold_;
     // isam2 params
-    gtsam::ISAM2Params isam2_params_;
+    double isam2_wildfire_threshold_;
+    bool isam2_cache_linearized_factors_;
+    double isam2_relinearize_threshold_;
+    double isam2_relinearize_skip_;
+    bool isam2_find_unused_factor_slots_;
+    bool isam2_enable_partial_relinearization_check_;
+    bool isam2_set_evaluate_nonlinear_error_;  // only for debugging
+    bool isam2_enable_detailed_results_;       // only for debugging.
+    gtsam::ISAM2Params::Factorization isam2_factorization_;
+
+    // factor graph params
     double isam2_reprojection_noise_sigma_;
     double isam2_prior_pose_position_sigma_;
     double isam2_prior_pose_orientation_sigma_;

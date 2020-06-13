@@ -27,7 +27,7 @@
 namespace cereal {
 
 template <class Archive>
-void serialize(Archive& ar, const vslam::data::Landmark& p) {
+void serialize(Archive& ar, vslam::data::Landmark& p) {
   ar(cereal::make_nvp("landmark_id", p.landmark_id_),
 
      cereal::make_nvp("is_initialized", p.is_initialized_),
@@ -39,7 +39,7 @@ void serialize(Archive& ar, const vslam::data::Landmark& p) {
 }
 
 template <class Archive>
-void serialize(Archive& ar, const vslam::data::InternalMaterials& p) {
+void serialize(Archive& ar, vslam::data::InternalMaterials& p) {
   ar(cereal::make_nvp("frame_index", p.frame_index_),
      cereal::make_nvp("frame_id", p.frame_id_),
 
@@ -73,24 +73,23 @@ void serialize(Archive& ar, const vslam::data::InternalMaterials& p) {
 }
 
 template <class Archive>
-void serialize(Archive& ar, const vslam::feature::FeatureDetectorANMS::Parameter& p) {
-  ar(
-      cereal::make_nvp("max_feature_number", p.max_feature_number_),
-      cereal::make_nvp("min_feature_distance", p.min_feature_distance_),
-      cereal::make_nvp("detection_feature_number", p.detection_feature_number_),
-      cereal::make_nvp("detection_min_feature_distance", p.detection_min_feature_distance_),
-      cereal::make_nvp("detection_quality_level", p.detection_quality_level_),
-      cereal::make_nvp("detection_block_size", p.detection_block_size_),
-      cereal::make_nvp("detection_use_harris_corner", p.detection_use_harris_corner_),
-      cereal::make_nvp("detection_k", p.detection_k_),
-      cereal::make_nvp("detection_ignore_edge", p.detection_ignore_edge_)
-  );
+void serialize(Archive& ar, vslam::feature::FeatureDetectorANMS::Parameter& p) {
+  ar(cereal::make_nvp("max_feature_number", p.max_feature_number_),
+     cereal::make_nvp("min_feature_distance", p.min_feature_distance_),
+     cereal::make_nvp("detection_feature_number", p.detection_feature_number_),
+     cereal::make_nvp("detection_min_feature_distance",
+                      p.detection_min_feature_distance_),
+     cereal::make_nvp("detection_quality_level", p.detection_quality_level_),
+     cereal::make_nvp("detection_block_size", p.detection_block_size_),
+     cereal::make_nvp("detection_use_harris_corner",
+                      p.detection_use_harris_corner_),
+     cereal::make_nvp("detection_k", p.detection_k_),
+     cereal::make_nvp("detection_ignore_edge", p.detection_ignore_edge_));
 }
 
 template <class Archive>
-void serialize(
-    Archive& ar,
-    const vslam::feature::FeatureTrackerLSSDLucasKanade::Parameter& p) {
+void serialize(Archive& ar,
+               vslam::feature::FeatureTrackerLSSDLucasKanade::Parameter& p) {
   ar(cereal::make_nvp("optical_flow_type", p.optical_flow_type_),
      cereal::make_nvp("optical_flow_detection_grid_size",
                       p.optical_flow_detection_grid_size_),
@@ -105,7 +104,7 @@ void serialize(
 template <class Archive>
 void serialize(
     Archive& ar,
-    const vslam::verification::FeatureVerification5PointRANSAC::Parameter& p) {
+    vslam::verification::FeatureVerification5PointRANSAC::Parameter& p) {
   ar(cereal::make_nvp("ransac_threshold_angle_rad",
                       p.ransac_threshold_angle_rad_),
      cereal::make_nvp("ransac_max_iterations", p.ransac_max_iterations_),
@@ -113,8 +112,7 @@ void serialize(
 }
 
 template <class Archive>
-void serialize(Archive& ar,
-               const vslam::frontend::KimeraFrontend::Parameter& p) {
+void serialize(Archive& ar, vslam::frontend::KimeraFrontend::Parameter& p) {
   ar(cereal::make_nvp("keyframe_interval", p.keyframe_interval_),
      cereal::make_nvp("minimum_keyframe_interval",
                       p.minimum_keyframe_interval_),
@@ -124,35 +122,53 @@ void serialize(Archive& ar,
 }
 
 template <class Archive>
-void serialize(Archive& ar, const vslam::backend::iSAM2Backend::Parameter& p) {
-  ar(
-      cereal::make_nvp("reference_frame_id", p.reference_frame_id_),
-      cereal::make_nvp("pose_initialization_ransac_threshold", p.pose_initialization_ransac_threshold_),
-      cereal::make_nvp("pose_initialization_ransac_max_iterations", p.pose_initialization_ransac_max_iterations_),
-      cereal::make_nvp("pose_initialization_ransac_probability", p.pose_initialization_ransac_probability_),
-      cereal::make_nvp("pose_refinement_reprojection_noise_sigma", p.pose_refinement_reprojection_noise_sigma_),
-      cereal::make_nvp("pose_refinement_landmark_position_sigma", p.pose_refinement_landmark_position_sigma_),
-      cereal::make_nvp("pose_refinement_use_previous_pose_factor", p.pose_refinement_use_previous_pose_factor_),
-      cereal::make_nvp("pose_refinement_previous_position_sigma", p.pose_refinement_previous_position_sigma_),
-      cereal::make_nvp("pose_refinement_previous_orientation_sigma", p.pose_refinement_previous_orientation_sigma_),
-      cereal::make_nvp("triangulation_reprojection_error_threshold", p.triangulation_reprojection_error_threshold_),
-      cereal::make_nvp("triangulation_minimum_parallax_threshold", p.triangulation_minimum_parallax_threshold_),
-      cereal::make_nvp("isam2_reprojection_noise_sigma", p.isam2_reprojection_noise_sigma_),
-      cereal::make_nvp("isam2_prior_pose_position_sigma", p.isam2_prior_pose_position_sigma_),
-      cereal::make_nvp("isam2_prior_pose_orientation_sigma", p.isam2_prior_pose_orientation_sigma_),
-      cereal::make_nvp("isam2_iteration_number", p.isam2_iteration_number_),
-      cereal::make_nvp("optimization_reprojection_error_threshold_", p.optimization_reprojection_error_threshold_),
+void serialize(Archive& ar, vslam::backend::iSAM2Backend::Parameter& p) {
+  ar(cereal::make_nvp("reference_frame_id", p.reference_frame_id_),
+     cereal::make_nvp("pose_initialization_ransac_threshold",
+                      p.pose_initialization_ransac_threshold_),
+     cereal::make_nvp("pose_initialization_ransac_max_iterations",
+                      p.pose_initialization_ransac_max_iterations_),
+     cereal::make_nvp("pose_initialization_ransac_probability",
+                      p.pose_initialization_ransac_probability_),
+     cereal::make_nvp("pose_refinement_reprojection_noise_sigma",
+                      p.pose_refinement_reprojection_noise_sigma_),
+     cereal::make_nvp("pose_refinement_landmark_position_sigma",
+                      p.pose_refinement_landmark_position_sigma_),
+     cereal::make_nvp("pose_refinement_use_previous_pose_factor",
+                      p.pose_refinement_use_previous_pose_factor_),
+     cereal::make_nvp("pose_refinement_previous_position_sigma",
+                      p.pose_refinement_previous_position_sigma_),
+     cereal::make_nvp("pose_refinement_previous_orientation_sigma",
+                      p.pose_refinement_previous_orientation_sigma_),
+     cereal::make_nvp("triangulation_reprojection_error_threshold",
+                      p.triangulation_reprojection_error_threshold_),
+     cereal::make_nvp("triangulation_minimum_parallax_threshold",
+                      p.triangulation_minimum_parallax_threshold_),
+     cereal::make_nvp("isam2_reprojection_noise_sigma",
+                      p.isam2_reprojection_noise_sigma_),
+     cereal::make_nvp("isam2_prior_pose_position_sigma",
+                      p.isam2_prior_pose_position_sigma_),
+     cereal::make_nvp("isam2_prior_pose_orientation_sigma",
+                      p.isam2_prior_pose_orientation_sigma_),
+     cereal::make_nvp("isam2_iteration_number", p.isam2_iteration_number_),
+     cereal::make_nvp("optimization_reprojection_error_threshold_",
+                      p.optimization_reprojection_error_threshold_),
 
-      cereal::make_nvp("isam2_cacheLinearizedFactors", p.isam2_params_.cacheLinearizedFactors),
-     //      cereal::make_nvp("isam2_relinearizeThreshold",
-     //      p.isam2_params_.getRelinearizeThreshold()),
-     cereal::make_nvp("isam2_relinearizeSkip", p.isam2_params_.relinearizeSkip),
-      cereal::make_nvp("isam2_findUnusedFactorSlots", p.isam2_params_.findUnusedFactorSlots),
-      cereal::make_nvp("isam2_enablePartialRelinearizationCheck", p.isam2_params_.enablePartialRelinearizationCheck),
-      cereal::make_nvp("isam2_evaluateNonlinearError", p.isam2_params_.evaluateNonlinearError),
-      cereal::make_nvp("isam2_enableDetailedResults", p.isam2_params_.enableDetailedResults),
-      cereal::make_nvp("isam2_factorization", p.isam2_params_.factorization)
-  );
+     cereal::make_nvp("isam2_wildfire_threshold", p.isam2_wildfire_threshold_),
+     cereal::make_nvp("isam2_cache_linearized_factors",
+                      p.isam2_cache_linearized_factors_),
+     cereal::make_nvp("isam2_relinearize_threshold",
+                      p.isam2_relinearize_threshold_),
+     cereal::make_nvp("isam2_relinearize_skip", p.isam2_relinearize_skip_),
+     cereal::make_nvp("isam2_find_unused_factor_slots",
+                      p.isam2_find_unused_factor_slots_),
+     cereal::make_nvp("isam2_enable_partial_relinearization_check",
+                      p.isam2_enable_partial_relinearization_check_),
+     cereal::make_nvp("isam2_set_evaluate_nonlinear_error",
+                      p.isam2_set_evaluate_nonlinear_error_),
+     cereal::make_nvp("isam2_enable_detailed_results_",
+                      p.isam2_enable_detailed_results_),
+     cereal::make_nvp("isam2_factorization", p.isam2_factorization_));
 }
 
 }  // namespace cereal
