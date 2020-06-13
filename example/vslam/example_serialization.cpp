@@ -61,12 +61,6 @@ int main() {
   //      euroc_kimera_data_provider(
   //          path_to_euroc, path_to_calibfile, path_to_mask);
 
-  std::string path_to_output_trajectory =
-      "/home/ery/subspace/docker_work/dataset/result/out1.tum";
-  std::string path_to_output_log_dir =
-      "/home/ery/subspace/docker_work/dataset/result/logs/";
-  vslam::dataoutput::TumDataOutput tum_data_output(path_to_output_trajectory);
-
   /**
    * @brief Generate primitive instances
    */
@@ -118,6 +112,9 @@ int main() {
   /**
    * @brief Log dumps
    */
+  // Dump detailed log
+  std::string path_to_output_log_dir =
+      "/home/ery/subspace/docker_work/dataset/result/logs/";
   std::vector<vslam::data::InternalMaterials> internals;
   std::time_t current_time = std::time(nullptr);
   std::string current_log_directory_name =
@@ -133,6 +130,10 @@ int main() {
   log_data_output.Dump(frontend_param);
   log_data_output.Dump(isam2_backend_paramter);
   log_data_output.Dump(verification_params);
+  // Dump trajectory
+  std::string path_to_output_trajectory =
+      current_log_output_directory + "/trajectory_body_frame.tum";
+  vslam::dataoutput::TumDataOutput tum_data_output(path_to_output_trajectory);
 
   /**
    * @brief For visualization
@@ -182,16 +183,6 @@ int main() {
           vslam::utility::GenerateInternalsFromFrame(
               *latest_frame_ptr, threadsafe_map_database_ptr);
       log_data_output.Dump(counter, latest_frame_ptr->internal_materials_);
-      //      std::string path_to_output_log =
-      //          fmt::format("{}/frame_{}.json", path_to_output_log_dir,
-      //          counter);
-      //      std::ofstream log_output_stream(path_to_output_log,
-      //      std::ios::out);
-      //      {
-      //        cereal::JSONOutputArchive
-      //        json_output_archive(log_output_stream);
-      //        json_output_archive(latest_frame_ptr->internal_materials_);
-      //      }
 
       /**
        * @brief Visualize
