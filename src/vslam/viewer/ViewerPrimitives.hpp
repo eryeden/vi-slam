@@ -58,6 +58,34 @@ class PointCloudPrimitive : public PrimitiveBase {
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
+class TrajectoryPrimitive : public PrimitiveBase {
+ public:
+  /**
+   * @brief
+   * @param tag_name
+   * @param points_world_frame
+   * @param colors
+   */
+  TrajectoryPrimitive(
+      const std::string& tag_name,
+      const vslam::EigenAllocatedVector<vslam::Pose_t>& trajectory_world_frame,
+      const vslam::Vec3_t& color = vslam::Vec3_t());
+
+  std::string GetTag() const override;
+  std::vector<cv::viz::Widget> GetWidget() const override;
+  cv::Affine3d GetPose() const override;
+  TrajectoryPrimitive* Clone() const override;
+
+ private:
+  const std::string tag_name_;
+  const vslam::EigenAllocatedVector<vslam::Pose_t> trajectory_world_frame_;
+  const vslam::Vec3_t color_;
+  std::vector<cv::Affine3d> trajectory_affine;
+
+ public:
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+};
+
 // class TextCloudPrimitive : public PrimitiveBase {
 // public:
 //
