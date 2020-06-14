@@ -23,6 +23,7 @@ class InternalMaterials {
   /**
    * @brief Observations
    */
+  double timestamp_;
   bool is_keyframe_;
   std::set<database_index_t> observing_feature_id_;
   FeaturePositionDatabase observing_feature_point_in_device_;
@@ -30,6 +31,7 @@ class InternalMaterials {
   FeatureAgeDatabase feature_point_age_;
 
   Pose_t camera_pose_;
+  Pose_t body_pose_;
   std::unordered_map<database_index_t, Landmark> landmarks_;
 
   /// Internals

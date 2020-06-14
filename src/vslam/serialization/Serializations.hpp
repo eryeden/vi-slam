@@ -42,6 +42,7 @@ template <class Archive>
 void serialize(Archive& ar, vslam::data::InternalMaterials& p) {
   ar(cereal::make_nvp("frame_index", p.frame_index_),
      cereal::make_nvp("frame_id", p.frame_id_),
+     cereal::make_nvp("timestamp", p.timestamp_),
 
      cereal::make_nvp("is_keyframe", p.is_keyframe_),
      cereal::make_nvp("observing_feature_id", p.observing_feature_id_),
@@ -53,6 +54,7 @@ void serialize(Archive& ar, vslam::data::InternalMaterials& p) {
      cereal::make_nvp("observing_feature_number",
                       p.observing_feature_point_in_device_.size()),
      cereal::make_nvp("camera_pose", p.camera_pose_),
+     cereal::make_nvp("body_pose", p.body_pose_),
      cereal::make_nvp("landmarks", p.landmarks_),
 
      /// Internals

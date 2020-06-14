@@ -15,6 +15,7 @@ data::InternalMaterials vslam::utility::GenerateInternalsFromFrame(
 
   materials.frame_id_ = frame.frame_id_;
   materials.is_keyframe_ = frame.is_keyframe_;
+  materials.timestamp_ = frame.timestamp_;
   materials.observing_feature_id_ = frame.observing_feature_id_;
   materials.observing_feature_point_in_device_ =
       frame.observing_feature_point_in_device_;
