@@ -157,8 +157,8 @@ vslam::Vec2_t DoubleSphereCameraModel::Project(
           pos_image_frame,
           &tmp_jacobian_p3d)) {
     spdlog::warn("{}:{} Invalid Projection.", __FILE__, __FUNCTION__);
-    throw(ProjectionErrorException());
     jacobian_p3d = MatRC_t<2, 3>::Zero();
+    throw(ProjectionErrorException());
     return {0, 0};
   }
 
@@ -197,4 +197,86 @@ vslam::Mat33_t DoubleSphereCameraModel::IntrinsicMatrix() const {
 ProjectionErrorException::ProjectionErrorException() : std::exception() { ; }
 const char* ProjectionErrorException::what() const throw() {
   return "Projection error.";
+}
+
+PinholeCameraModel::PinholeCameraModel(uint8_t camera_id,
+                                       uint32_t image_width_pixel,
+                                       uint32_t image_height_pixel,
+                                       double rate,
+                                       double fx,
+                                       double fy,
+                                       double cx,
+                                       double cy)
+    : CameraModelBase(camera_id, image_width_pixel, image_height_pixel, rate),
+      fx_(fx),
+      fy_(fy),
+      cx_(cx),
+      cy_(cy) {
+  Eigen::Matrix<double, 4, 1> pinhole_parameters;
+  pinhole_parameters << fx_, fy_, cx_, cy_;
+  pinhole_camera_model_ptr_ =
+      std::make_unique<basalt::PinholeCamera<double>>(pinhole_parameters);
+}
+PinholeCameraModel::PinholeCameraModel()
+    : PinholeCameraModel(0, 0, 0, 0, 0, 0, 0, 0) {}
+
+PinholeCameraModel::PinholeCameraModel(
+    const PinholeCameraModel& pinhole_camera_model)
+    : PinholeCameraModel(pinhole_camera_model.id_,
+                         pinhole_camera_model.width_,
+                         pinhole_camera_model.height_,
+                         pinhole_camera_model.rate_,
+                         pinhole_camera_model.fx_,
+                         pinhole_camera_model.fy_,
+                         pinhole_camera_model.cx_,
+                         pinhole_camera_model.cy_) {
+  Eigen::Matrix<double, 4, 1> pinhole_parameters;
+  pinhole_parameters << fx_, fy_, cx_, cy_;
+  pinhole_camera_model_ptr_ =
+      std::make_unique<basalt::PinholeCamera<double>>(pinhole_parameters);
+}
+
+PinholeCameraModel* PinholeCameraModel::Clone() {
+  return new PinholeCameraModel(*this);
+}
+
+vslam::Vec2_t PinholeCameraModel::Project(
+    const vslam::Vec3_t& pos_camera_frame) const {
+  Vec2_t pos_image_frame;
+
+  if (!pinhole_camera_model_ptr_->project(
+          {pos_camera_frame[0], pos_camera_frame[1], pos_camera_frame[2], 0},
+          pos_image_frame)) {
+    spdlog::warn("{}:{} Invalid Projection.", __FILE__, __FUNCTION__);
+    throw(ProjectionErrorException());
+  }
+  return pos_image_frame;
+}
+vslam::Vec2_t PinholeCameraModel::Project(
+    const vslam::Vec3_t& pos_camera_frame,
+    vslam::MatRC_t<2, 3>& jacobian_p3d) const {
+  Vec2_t pos_image_frame;
+  MatRC_t<2, 4> tmp_jacobian_p3d;
+  if (!pinhole_camera_model_ptr_->project(
+          {pos_camera_frame[0], pos_camera_frame[1], pos_camera_frame[2], 0},
+          pos_image_frame,
+          &tmp_jacobian_p3d)) {
+    spdlog::warn("{}:{} Invalid Projection.", __FILE__, __FUNCTION__);
+    throw(ProjectionErrorException());
+  }
+  jacobian_p3d = tmp_jacobian_p3d.block<2, 3>(0, 0);
+  return pos_image_frame;
+}
+vslam::Vec3_t PinholeCameraModel::Unproject(
+    const vslam::Vec2_t& pos_image_frame) const {
+  Vec4_t pos_camera_frame;
+  if (!(pinhole_camera_model_ptr_->unproject(pos_image_frame,
+                                             pos_camera_frame))) {
+    spdlog::warn("{}:{} Invalid Unprojection.", __FILE__, __FUNCTION__);
+    throw(ProjectionErrorException());
+  }
+  return {pos_camera_frame[0], pos_camera_frame[1], pos_camera_frame[2]};
+}
+vslam::Mat33_t PinholeCameraModel::IntrinsicMatrix() const {
+  return (vslam::Mat33_t() << fx_, 0, cx_, 0, fy_, cy_, 0, 0, 1).finished();
 }
