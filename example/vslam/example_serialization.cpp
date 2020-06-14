@@ -34,10 +34,10 @@ int main() {
   // EUROC
   //  std::string path_to_euroc =
   //      "/home/ery/subspace/docker_work/dataset/V1_01_easy";
-  //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/V1_02_medium";
   std::string path_to_euroc =
-      "/home/ery/subspace/docker_work/dataset/V1_03_difficult";
+      "/home/ery/subspace/docker_work/dataset/V1_02_medium";
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/V1_03_difficult";
   //  std::string path_to_euroc =
   //      "/home/ery/subspace/docker_work/dataset/V2_01_easy";
   //      std::string path_to_euroc =
@@ -66,11 +66,11 @@ int main() {
   //      euroc_kimera_data_provider(
   //          path_to_euroc, path_to_calibfile, path_to_mask);
 
-  std::string path_to_kitti =
-      "/home/ery/subspace/docker_work/dataset/data_odometry_gray/dataset/"
-      "sequences/00";
-  vslam::dataprovider::KittiKimeraDataProvider kitti_kimera_data_provider(
-      path_to_kitti);
+  //  std::string path_to_kitti =
+  //      "/home/ery/subspace/docker_work/dataset/data_odometry_gray/dataset/"
+  //      "sequences/00";
+  //  vslam::dataprovider::KittiKimeraDataProvider kitti_kimera_data_provider(
+  //      path_to_kitti);
 
   /**
    * @brief Generate primitive instances
@@ -107,7 +107,7 @@ int main() {
    */
   vslam::frontend::KimeraFrontend::Parameter frontend_param;
   frontend_param.minimum_keyframe_interval_ = 0.1;
-  frontend_param.low_keyframe_feature_number_ = 250;
+  frontend_param.low_keyframe_feature_number_ = 100;  // 250;
   vslam::frontend::KimeraFrontend kimera_frontend(threadsafe_map_database_ptr,
                                                   anms_detector_ptr,
                                                   lssd_tracker_ptr,
@@ -188,6 +188,24 @@ int main() {
       }
       kimera_frontend.Feed(input.value());
       backend_state = i_sam_2_backend.SpinOnce();
+
+      /**
+       * @brief Log
+       */
+      auto latest_frame_ptr =
+          threadsafe_map_database_ptr
+              ->GetFrame(threadsafe_map_database_ptr->latest_frame_id_)
+              .lock();
+      if (latest_frame_ptr) {
+        /// Update internals
+        latest_frame_ptr->internal_materials_ =
+            vslam::utility::GenerateInternalsFromFrame(
+                *latest_frame_ptr, threadsafe_map_database_ptr);
+        latest_frame_ptr->internal_materials_.body_pose_ =
+            pose_body_T_sensor.inverse() * latest_frame_ptr->GetCameraPose();
+        log_data_output.Dump(counter, latest_frame_ptr->internal_materials_);
+      }
+      counter++;
     }
 
     auto latest_frame_ptr =
@@ -195,15 +213,6 @@ int main() {
             ->GetFrame(threadsafe_map_database_ptr->latest_frame_id_)
             .lock();
     if (latest_frame_ptr) {
-      /**
-       * @brief Log
-       */
-      /// Update internals
-      latest_frame_ptr->internal_materials_ =
-          vslam::utility::GenerateInternalsFromFrame(
-              *latest_frame_ptr, threadsafe_map_database_ptr);
-      log_data_output.Dump(counter, latest_frame_ptr->internal_materials_);
-
       /**
        * @brief Visualize
        */
@@ -234,6 +243,18 @@ int main() {
                      cv::Scalar(0, 255, 0),
                      1,
                      CV_AA);
+        }
+
+        auto lm_ptr = threadsafe_map_database_ptr->GetLandmark(id).lock();
+        if (lm_ptr) {
+          if (lm_ptr->is_initialized_ && !(lm_ptr->is_outlier_)) {
+            cv::circle(vis,
+                       cv::Point(pos[0], pos[1]),
+                       5,
+                       cv::Scalar(0, 255, 0),
+                       1,
+                       CV_AA);
+          }
         }
       }
       /// draw feature point number
@@ -296,6 +317,25 @@ int main() {
             "traj_initial", {}, vslam::Vec3_t(0, 255, 255)));
       }
 
+      /// Draw estimated landmark position
+      vslam::EigenAllocatedVector<vslam::Vec3_t> pc_source;
+      auto lms = threadsafe_map_database_ptr->GetAllLandmarks();
+      for (const auto& [id, lm_ptr] : lms) {
+        auto lm = lm_ptr.lock();
+        if (lm) {
+          if (lm->is_initialized_) {
+            pc_source.emplace_back(pose_body_T_sensor.inverse() *
+                                   lm->GetLandmarkPosition());
+            // pc_source.emplace_back(lm->GetLandmarkPosition());
+          }
+        }
+      }
+      if (!pc_source.empty()) {
+        vslam::viewer::PointCloudPrimitive pcp(
+            "pc", pc_source, false, {{255, 255, 255}});
+        viewer.PushPrimitive(pcp);
+      }
+
       /// Draw in-use landmark position
       vslam::EigenAllocatedVector<vslam::Vec3_t> pc_source_inuse;
       for (const auto id : latest_frame_ptr->observing_feature_id_) {
@@ -309,28 +349,9 @@ int main() {
       }
       if (!pc_source_inuse.empty()) {
         vslam::viewer::PointCloudPrimitive pcp(
-            "pc", pc_source_inuse, false, {{255, 255, 255}});
+            "pc_inuse", pc_source_inuse, false, {{255, 0, 255}});
         viewer.PushPrimitive(pcp);
       }
-
-      //      /// Draw estimated landmark position
-      //      vslam::EigenAllocatedVector<vslam::Vec3_t> pc_source;
-      //      auto lms = threadsafe_map_database_ptr->GetAllLandmarks();
-      //      for (const auto& [id, lm_ptr] : lms) {
-      //        auto lm = lm_ptr.lock();
-      //        if (lm) {
-      //          if (lm->is_initialized_) {
-      //            pc_source.emplace_back(pose_body_T_sensor.inverse() *
-      //                                   lm->GetLandmarkPosition());
-      //            // pc_source.emplace_back(lm->GetLandmarkPosition());
-      //          }
-      //        }
-      //      }
-      //      if (!pc_source.empty()) {
-      //        vslam::viewer::PointCloudPrimitive pcp(
-      //            "pc", pc_source, false, {{255, 255, 255}});
-      //        viewer.PushPrimitive(pcp);
-      //      }
 
       /// Wait
       if ((counter == 0) || (previous_backend_state != backend_state)) {
@@ -348,7 +369,6 @@ int main() {
     }
 
     previous_backend_state = backend_state;
-    counter++;
   }
 
   return 0;
