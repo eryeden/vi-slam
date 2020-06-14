@@ -654,10 +654,10 @@ bool vslam::backend::iSAM2Backend::UpdateISAMObservation(
     auto lm_ptr = map_database->GetLandmark(id).lock();
     if (lm_ptr) {
       if (lm_ptr->is_initialized_ && !lm_ptr->is_outlier_) {
-        spdlog::info("{} : Add New KeyFrame Factor x:{}, l:{}",
-                     __FUNCTION__,
-                     current_frame_ptr->frame_id_,
-                     id);
+        //        spdlog::info("{} : Add New KeyFrame Factor x:{}, l:{}",
+        //                     __FUNCTION__,
+        //                     current_frame_ptr->frame_id_,
+        //                     id);
         graph.emplace_shared<
             vslam::factor::GeneralProjectionFactor<Pose3, Point3>>(
             current_frame_ptr->observing_feature_point_in_device_.at(id),
@@ -680,10 +680,11 @@ bool vslam::backend::iSAM2Backend::UpdateISAMObservation(
         auto observed_frame_ptr =
             map_database->GetFrame(observed_frame_id).lock();
         if (observed_frame_ptr) {
-          spdlog::info("{} : Add Newly Triangulated Factor x:{}, l:{}",
-                       __FUNCTION__,
-                       observed_frame_ptr->frame_id_,
-                       id);
+          //          spdlog::info("{} : Add Newly Triangulated Factor x:{},
+          //          l:{}",
+          //                       __FUNCTION__,
+          //                       observed_frame_ptr->frame_id_,
+          //                       id);
           graph.emplace_shared<
               vslam::factor::GeneralProjectionFactor<Pose3, Point3>>(
               observed_frame_ptr->observing_feature_point_in_device_.at(id),
