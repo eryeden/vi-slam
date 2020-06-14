@@ -39,10 +39,10 @@ bool TryInitialize(const data::FrameWeakPtr& reference_frame,
   opengv::sac::Ransac<ProblemMono> mono_ransac_;
 
   // set ransac parameters
-  double threshold = 1.0 - std::cos(0.001 * 180.0 / M_PI);
+  double threshold = 1.0 - std::cos(0.1 * 180.0 / M_PI);
   mono_ransac_.threshold_ = threshold;
-  mono_ransac_.max_iterations_ = 100;
-  mono_ransac_.probability_ = 0.99;
+  mono_ransac_.max_iterations_ = 1000;
+  mono_ransac_.probability_ = 0.8;
 
   // Setup bearing vectors for opengv
   auto reference_frame_ptr = reference_frame.lock();
@@ -267,6 +267,7 @@ bool RefineInitializedMap(const data::FrameWeakPtr& reference_frame,
   try {
     /* Optimize the graph and print results */
     Values result = DoglegOptimizer(graph, initial_estimate).optimize();
+
     //  result.print("Final results:\n");
     //  cout << "initial error = " << graph.error(initial_estimate) << endl;
     //  cout << "final error = " << graph.error(result) << endl;

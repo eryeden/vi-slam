@@ -11,9 +11,10 @@ vslam::backend::iSAM2Backend::Parameter::Parameter() {
   reference_frame_id_ = 0;
 
   //  5point ransac
-  pose_initialization_ransac_threshold_ = 0.0001 * M_PI / 180.0;
-  pose_initialization_ransac_max_iterations_ = 100;
-  pose_initialization_ransac_probability_ = 0.99;
+  pose_initialization_ransac_threshold_ =
+      0.1 * M_PI / 180.0;                            // 0.1 * M_PI / 180.0;
+  pose_initialization_ransac_max_iterations_ = 100;  // 100;
+  pose_initialization_ransac_probability_ = 0.99;    // 0.99;
 
   // motion only ba
   pose_refinement_reprojection_noise_sigma_ = 1.0;
