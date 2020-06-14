@@ -365,8 +365,9 @@ cv::Affine3d Covariance2DPrimitive::GetPose() const {
 TrajectoryPrimitive::TrajectoryPrimitive(
     const std::string& tag_name,
     const vslam::EigenAllocatedVector<vslam::Pose_t>& trajectory_world_frame,
-    const vslam::Vec3_t& color)
-    : tag_name_(tag_name), color_(color) {
+    const vslam::Vec3_t& color,
+    const DrawPrimitive& draw_primitive)
+    : tag_name_(tag_name), color_(color), draw_primitive_(draw_primitive) {
   trajectory_affine.reserve(trajectory_world_frame.size());
   for (const auto& pose : trajectory_world_frame) {
     //    auto affine = cv::Mat_<double>(3,4);
@@ -382,8 +383,8 @@ TrajectoryPrimitive::TrajectoryPrimitive(
 std::string TrajectoryPrimitive::GetTag() const { return tag_name_; }
 std::vector<cv::viz::Widget> TrajectoryPrimitive::GetWidget() const {
   cv::viz::Color traj_color(color_[0], color_[1], color_[2]);
-  auto widget = cv::viz::WTrajectory(
-      trajectory_affine, cv::viz::WTrajectory::PATH, 1, traj_color);
+  auto widget =
+      cv::viz::WTrajectory(trajectory_affine, draw_primitive_, 1, traj_color);
   return {widget};
 }
 cv::Affine3d TrajectoryPrimitive::GetPose() const {

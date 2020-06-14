@@ -60,6 +60,7 @@ class PointCloudPrimitive : public PrimitiveBase {
 
 class TrajectoryPrimitive : public PrimitiveBase {
  public:
+  enum DrawPrimitive { FRAMES = 1, PATH = 2, BOTH = FRAMES + PATH };
   /**
    * @brief
    * @param tag_name
@@ -69,7 +70,8 @@ class TrajectoryPrimitive : public PrimitiveBase {
   TrajectoryPrimitive(
       const std::string& tag_name,
       const vslam::EigenAllocatedVector<vslam::Pose_t>& trajectory_world_frame,
-      const vslam::Vec3_t& color = vslam::Vec3_t());
+      const vslam::Vec3_t& color = vslam::Vec3_t(),
+      const DrawPrimitive& draw_primitive = DrawPrimitive::PATH);
 
   std::string GetTag() const override;
   std::vector<cv::viz::Widget> GetWidget() const override;
@@ -81,6 +83,7 @@ class TrajectoryPrimitive : public PrimitiveBase {
   const vslam::EigenAllocatedVector<vslam::Pose_t> trajectory_world_frame_;
   const vslam::Vec3_t color_;
   std::vector<cv::Affine3d> trajectory_affine;
+  DrawPrimitive draw_primitive_;
 
  public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
