@@ -97,7 +97,10 @@ if __name__ == "__main__":
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-14-14-25-56/'
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-14-14-17-08/'
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-14-16-01-05/'
-    path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-14-17-13-11/'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-14-17-13-11/'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-14-22-48-04'
+    path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-14-22-54-34'
+
     path_to_reference_trajectory = "/e/subspace/docker_work/dataset/V1_02_medium/mav0/state_groundtruth_estimate0/data.csv"
 
     frame_list = glob.glob(path_to_frame_dir + "/frames/frame_*.json")
