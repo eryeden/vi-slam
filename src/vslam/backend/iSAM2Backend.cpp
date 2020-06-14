@@ -187,10 +187,17 @@ vslam::backend::BackendState vslam::backend::iSAM2Backend::SpinOnce() {
                                             vslam::data::LandmarkWeakPtr>
               triangulated_landmarks;
 
+          //          TriangulateKeyFrame(
+          //              map_database_,
+          //              current_frame,
+          //              previous_key_frame,
+          //              triangulated_landmarks,
+          //              parameter_.triangulation_reprojection_error_threshold_,
+          //              parameter_.triangulation_minimum_parallax_threshold_);
+
           TriangulateKeyFrame(
               map_database_,
               current_frame,
-              previous_key_frame,
               triangulated_landmarks,
               parameter_.triangulation_reprojection_error_threshold_,
               parameter_.triangulation_minimum_parallax_threshold_);
@@ -604,6 +611,117 @@ bool vslam::backend::iSAM2Backend::TriangulateKeyFrame(
   return true;
 }
 
+bool vslam::backend::iSAM2Backend::TriangulateKeyFrame(
+    std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
+    const data::FrameWeakPtr& current_key_frame,
+    vslam::EigenAllocatedUnorderedMap<database_index_t,
+                                      vslam::data::LandmarkWeakPtr>&
+        triangulated_landmarks,
+    double reprojection_error_threshold,
+    double minimum_parallax_threshold) {
+  /**
+   * @brief
+   * 2つのKeyFrame間で共通して観測されていて、初期化されていないLandmarkをTriangulateする
+   */
+  auto current_ptr = current_key_frame.lock();
+  auto lm_database = map_database->GetAllLandmarks();
+
+  if (!current_ptr) {
+    return false;
+  }
+
+  // TriangulateされうるLandmarkを抽出
+  std::vector<database_index_t> initializable_lm_ids;
+  opengv::bearingVectors_t bearings_current, bearings_pared;
+  EigenAllocatedVector<Pose_t> pose_current_T_pared;
+  for (const auto id : current_ptr->observing_feature_id_) {
+    auto lm_ptr = map_database->GetLandmark(id).lock();
+    if (lm_ptr) {
+      // CurrentFrameで観測されており、未初期化、２Frame以上から観測されているLandmarkを選択する
+      bool is_initialized = lm_ptr->is_initialized_;
+      int32_t observed_number = lm_ptr->GetAllObservedFrameIndex().size();
+      if (!is_initialized && (observed_number >= 2)) {
+        // 最も最初にLandmarkを観測したFrameをTriangulate対象に選ぶ
+        database_index_t pared_frame_id =
+            *(lm_ptr->GetAllObservedFrameIndex().begin());
+        auto pared_frame_ptr = map_database->GetFrame(pared_frame_id).lock();
+        if (pared_frame_ptr) {
+          initializable_lm_ids.emplace_back(id);
+          bearings_current.emplace_back(
+              current_ptr->observing_feature_bearing_in_camera_frame_.at(id));
+          bearings_pared.emplace_back(
+              pared_frame_ptr->observing_feature_bearing_in_camera_frame_.at(
+                  id));
+          //          pose_pared_T_current.emplace_back(pared_frame_ptr->GetCameraPose().inverse()
+          //          * current_ptr->GetCameraPose());
+          pose_current_T_pared.emplace_back(
+              current_ptr->GetCameraPose().inverse() *
+              pared_frame_ptr->GetCameraPose());
+        }
+      }
+    }
+  }
+
+  if (initializable_lm_ids.empty()) {
+    spdlog::warn("{} : No landmarks to triangulate.", __FUNCTION__);
+    return false;
+  }
+
+  vslam::EigenAllocatedUnorderedMap<database_index_t, Vec3_t> landmark_position;
+  std::vector<double> landmark_observation_angle;
+
+  for (size_t i = 0; i < initializable_lm_ids.size(); i++) {
+    opengv::relative_pose::CentralRelativeAdapter tri_adapter(
+        {bearings_current[i]},
+        {bearings_pared[i]},
+        pose_current_T_pared[i].translation(),
+        pose_current_T_pared[i].rotationMatrix());
+    opengv::point_t point = opengv::triangulation::triangulate2(tri_adapter, 0);
+    Vec3_t current_to_lm = (point - Vec3_t::Zero()).normalized();
+    Vec3_t pared_to_lm =
+        (point - pose_current_T_pared[i].translation()).normalized();
+    double angle = std::acos(pared_to_lm.dot(current_to_lm));
+    landmark_observation_angle.emplace_back(angle);
+
+    // measure reprojeciton error
+    try {
+      Vec3_t point_world_frame = current_ptr->GetCameraPose() * point;
+
+      auto projected = current_ptr->camera_model_->Project(point);
+      auto measured = current_ptr->observing_feature_point_in_device_.at(
+          initializable_lm_ids[i]);
+
+      auto error = (measured - projected).norm();
+      if ((error < reprojection_error_threshold) &&
+          (angle > minimum_parallax_threshold)) {
+        landmark_position[initializable_lm_ids[i]] = point_world_frame;
+      } else {
+        spdlog::info("{} : Outlier detected LM:{}, {} [px], {} [deg]",
+                     __FUNCTION__,
+                     initializable_lm_ids[i],
+                     error,
+                     angle * 180.0 / M_PI);
+      }
+    } catch (vslam::data::ProjectionErrorException& exception) {
+      spdlog::warn("{} : Projection failed LM:{} \nMessage: \n{}",
+                   __FUNCTION__,
+                   initializable_lm_ids[i],
+                   exception.what());
+    }
+  }
+
+  // Output triangulated landmarks
+  for (const auto& [id, pos] : landmark_position) {
+    auto lm_ptr = map_database->GetLandmark(id).lock();
+    if (lm_ptr) {
+      lm_ptr->SetLandmarkPosition(pos);
+      lm_ptr->is_initialized_ = true;
+      triangulated_landmarks[id] = map_database->GetLandmark(id);
+    }
+  }
+
+  return true;
+}
 
 bool vslam::backend::iSAM2Backend::UpdateISAMObservation(
     std::shared_ptr<gtsam::ISAM2>& isam_2,
