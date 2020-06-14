@@ -41,3 +41,4 @@ build
 # clion
 cmake-build-debug
 .idea
+/scripts/.python-version
