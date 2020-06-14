@@ -32,12 +32,12 @@ int main() {
   //      euroc_kimera_data_provider(path_to_euroc);
 
   // EUROC
+  //    std::string path_to_euroc =
+  //        "/home/ery/subspace/docker_work/dataset/V1_01_easy";
   //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/V1_01_easy";
+  //      "/home/ery/subspace/docker_work/dataset/V1_02_medium";
   std::string path_to_euroc =
-      "/home/ery/subspace/docker_work/dataset/V1_02_medium";
-  //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/V1_03_difficult";
+      "/home/ery/subspace/docker_work/dataset/V1_03_difficult";
   //  std::string path_to_euroc =
   //      "/home/ery/subspace/docker_work/dataset/V2_01_easy";
   //      std::string path_to_euroc =
@@ -107,7 +107,7 @@ int main() {
    */
   vslam::frontend::KimeraFrontend::Parameter frontend_param;
   frontend_param.minimum_keyframe_interval_ = 0.1;
-  frontend_param.low_keyframe_feature_number_ = 100;  // 250;
+  frontend_param.low_keyframe_feature_number_ = 250;  // 250;
   vslam::frontend::KimeraFrontend kimera_frontend(threadsafe_map_database_ptr,
                                                   anms_detector_ptr,
                                                   lssd_tracker_ptr,
