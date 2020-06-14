@@ -139,23 +139,41 @@ vslam::backend::BackendState vslam::backend::iSAM2Backend::SpinOnce() {
       if (estimated_pose != std::nullopt) {
         spdlog::info("{} : Succeed in p3p pose initialization.", __FUNCTION__);
         current_frame->SetCameraPose(estimated_pose.value());
-
-        auto refined_pose = initialization::RefinePose(
-            map_database_->GetFrame(map_database_->latest_frame_id_),
-            map_database_,
-            parameter_.pose_refinement_reprojection_noise_sigma_,
-            parameter_.pose_refinement_landmark_position_sigma_,
-            parameter_.pose_refinement_use_previous_pose_factor_,
-            parameter_.pose_refinement_previous_position_sigma_,
-            parameter_.pose_refinement_previous_orientation_sigma_);
-
-        if (refined_pose != std::nullopt) {
-          spdlog::info("{} : Succeed in Pose Optimization.", __FUNCTION__);
-          current_frame->SetCameraPose(refined_pose.value());
-        }
+        current_frame->internal_materials_.camera_pose_initial_ =
+            estimated_pose.value();
       } else {
-        return backend_state_;
+        spdlog::warn("{} : Failed in p3p pose initialization.", __FUNCTION__);
+        current_frame->SetCameraPose(prev_frame->GetCameraPose());
+        current_frame->internal_materials_.camera_pose_initial_ =
+            prev_frame->GetCameraPose();
       }
+
+      //      if (estimated_pose != std::nullopt) {
+      //        spdlog::info("{} : Succeed in p3p pose initialization.",
+      //        __FUNCTION__);
+      //        current_frame->SetCameraPose(estimated_pose.value());
+      //        current_frame->internal_materials_.camera_pose_initial_ =
+      //        estimated_pose.value();
+
+      auto refined_pose = initialization::RefinePose(
+          map_database_->GetFrame(map_database_->latest_frame_id_),
+          map_database_,
+          parameter_.pose_refinement_reprojection_noise_sigma_,
+          parameter_.pose_refinement_landmark_position_sigma_,
+          parameter_.pose_refinement_use_previous_pose_factor_,
+          parameter_.pose_refinement_previous_position_sigma_,
+          parameter_.pose_refinement_previous_orientation_sigma_);
+
+      if (refined_pose != std::nullopt) {
+        spdlog::info("{} : Succeed in Pose Optimization.", __FUNCTION__);
+        current_frame->SetCameraPose(refined_pose.value());
+        current_frame->internal_materials_.camera_pose_optimized_ =
+            refined_pose.value();
+      }
+
+      //      } else {
+      //        return backend_state_;
+      //      }
 
       //////////////////// Process KeyFrame //////////////////////////////
       // KeyFrameの時は追加でLandmarkPositionのTriangulate、iSAM2のUpdateを実行
@@ -284,13 +302,29 @@ bool vslam::backend::iSAM2Backend::MapInitialization(
   /**
    * @brief Refine
    */
-  initialization::RefineInitializedMap(
+  bool refine_status = initialization::RefineInitializedMap(
       ref_frame_ptr, current_frame_ptr, output_landmark_position);
+  if (!refine_status) {
+    return false;
+  }
 
   /**
    * @brief Landmarkを初期化
    */
   for (const auto& [id, pos] : output_landmark_position) {
+    // Chrarity check
+    if (current_frame_ptr) {
+      Vec3_t pos_current_camera_frame =
+          current_frame_ptr->GetCameraPose().inverse() * pos;
+      if (pos_current_camera_frame[2] < 0) {
+        spdlog::warn("{}:{} Landmark [{}] located behind the camera.",
+                     __FILE__,
+                     __FUNCTION__,
+                     id);
+        continue;
+      }
+    }
+
     if (map_database->IsExistLandmark(id)) {
       auto lm_ptr = map_database->GetLandmark(id).lock();
       if (lm_ptr) {
