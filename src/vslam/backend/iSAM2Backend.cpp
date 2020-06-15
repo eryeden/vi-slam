@@ -644,6 +644,27 @@ bool vslam::backend::iSAM2Backend::TriangulateKeyFrame(
         // 最も最初にLandmarkを観測したFrameをTriangulate対象に選ぶ
         database_index_t pared_frame_id =
             *(lm_ptr->GetAllObservedFrameIndex().begin());
+
+        // CurrentFrameから、横方向に最も離れているFrameをTriangulate対象に選定する
+        database_index_t max_baseline_frame_id = pared_frame_id;
+        double max_baseline_length = 0;
+        for (const auto tr_frame_id : lm_ptr->GetAllObservedFrameIndex()) {
+          auto tr_frame_ptr = map_database->GetFrame(tr_frame_id).lock();
+          if (tr_frame_ptr) {
+            auto pose_current_T_tr = current_ptr->GetCameraPose().inverse() *
+                                     tr_frame_ptr->GetCameraPose();
+            //            auto bl_vec =
+            //            Vec2_t(pose_current_T_tr.translation()[0],
+            //            pose_current_T_tr.translation()[1]);
+            auto bl_vec = pose_current_T_tr.translation();
+            auto bl_len = bl_vec.norm();
+            if (max_baseline_length < bl_len) {
+              max_baseline_length = bl_len;
+              max_baseline_frame_id = tr_frame_id;
+            }
+          }
+        }
+
         auto pared_frame_ptr = map_database->GetFrame(pared_frame_id).lock();
         if (pared_frame_ptr) {
           initializable_lm_ids.emplace_back(id);
