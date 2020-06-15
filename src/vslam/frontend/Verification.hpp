@@ -28,6 +28,7 @@ class FeatureVerification5PointRANSAC {
     double ransac_threshold_angle_rad_;
     int32_t ransac_max_iterations_;
     double ransac_probability_;
+    double max_landmark_age_;
   };
 
  public:
@@ -42,6 +43,7 @@ class FeatureVerification5PointRANSAC {
       opengv::sac_problems::relative_pose::CentralRelativePoseSacProblem;
   using AdapterMono = opengv::relative_pose::CentralRelativeAdapter;
   opengv::sac::Ransac<ProblemMono> mono_ransac_;
+  int32_t max_landmark_age_;
 };
 
 }  // namespace vslam::verification
