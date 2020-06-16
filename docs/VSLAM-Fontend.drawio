@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-06-16T14:45:23.171Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="_b-qmdbkvNRBAOAD_Sw-" version="13.2.4" type="github" pages="4">
+<mxfile host="app.diagrams.net" modified="2020-06-16T14:47:36.012Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="yepqs8diSIxQ_zFxP3Ub" version="13.2.4" type="github" pages="4">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
     <mxGraphModel dx="1462" dy="881" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -407,7 +407,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="BRkVmhdtcNGXOIdQqOX1" name="Frnotend">
-    <mxGraphModel dx="5582" dy="3404" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="4796" dy="2771" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="_SM25BSt3KOiNa4ysdSf-0" />
         <mxCell id="_SM25BSt3KOiNa4ysdSf-1" parent="_SM25BSt3KOiNa4ysdSf-0" />
@@ -688,6 +688,14 @@
         </mxCell>
         <mxCell id="Ej55bMWJHfScZJglj-DX-28" value="一番の課題&lt;br&gt;＝＞速い動きでFeatureが消えることあり" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;fontSize=20;" vertex="1" parent="_SM25BSt3KOiNa4ysdSf-1">
           <mxGeometry x="-1630" y="580" width="410" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ej55bMWJHfScZJglj-DX-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="_SM25BSt3KOiNa4ysdSf-1" source="Ej55bMWJHfScZJglj-DX-29">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-1110" y="-800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ej55bMWJHfScZJglj-DX-29" value="いまは、Feature numberベースの&lt;br&gt;&lt;div style=&quot;&quot;&gt;&lt;span&gt;KeyFrame判定&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span&gt;VIOだとこれが多いが、Basaltが何をやっているか&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span&gt;見てみたい。&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="_SM25BSt3KOiNa4ysdSf-1">
+          <mxGeometry x="-1250" y="-900" width="280" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
