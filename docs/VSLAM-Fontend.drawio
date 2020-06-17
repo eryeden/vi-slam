@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-06-16T14:47:36.012Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="yepqs8diSIxQ_zFxP3Ub" version="13.2.4" type="github" pages="4">
+<mxfile host="app.diagrams.net" modified="2020-06-17T15:07:07.058Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="ZpWfAHkMrw1-1TYWtkde" version="13.2.4" type="github" pages="4">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
-    <mxGraphModel dx="1462" dy="881" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3969" dy="1788" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -403,11 +403,20 @@
         <mxCell id="VGC260k_tyWZGbdCQ8ms-40" value="この部分は、自分が推測している部分なので実際とは違う可能性あり&lt;br&gt;・DSOのように、画像の勾配の大きい部分のみに初期特徴点位置を配置しているようにも動画が見える&lt;br&gt;・また、特徴点寿命についても言及がない、曲率ピーク探索の部分で若い特徴点が重なる可能性は十分にあるので、Landmarkの寿命管理のようなものは必要だろう" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
           <mxGeometry x="1171" y="2543.02" width="460" height="86.98" as="geometry" />
         </mxCell>
+        <mxCell id="83XYjUIYdOWNVFq03DbD-1" value="&lt;h1&gt;Basalt&lt;/h1&gt;&lt;p&gt;強そう&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="-410" y="2883" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="83XYjUIYdOWNVFq03DbD-2" value="KeyFrame Selection&lt;br&gt;&lt;br&gt;・以下の基準を満たせばKeyFrameとして選択する&lt;br&gt;・基準１：検出Featureポイントのうち、Landmarkとして利用中のものの割合が一定以下になる（EUROCの場合70%）&lt;br&gt;・基準２：前回KeyFrame生成から最小Frame間隔経過している" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="100" y="2923.0049999999997" width="360" height="82.5" as="geometry" />
+        </mxCell>
+        <mxCell id="83XYjUIYdOWNVFq03DbD-3" value="VIO" style="rounded=0;whiteSpace=wrap;html=1;align=center;rotation=-90;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=34;" vertex="1" parent="1">
+          <mxGeometry x="-195" y="2934.25" width="210" height="60" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram id="BRkVmhdtcNGXOIdQqOX1" name="Frnotend">
-    <mxGraphModel dx="4796" dy="2771" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3898" dy="2446" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="_SM25BSt3KOiNa4ysdSf-0" />
         <mxCell id="_SM25BSt3KOiNa4ysdSf-1" parent="_SM25BSt3KOiNa4ysdSf-0" />
@@ -701,7 +710,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="KfDyO8I-pmFeG0Nn9npx" name="Proposed-Frontend-draft">
-    <mxGraphModel dx="747" dy="2205" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1848" dy="2221" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="jS7kERMsJuhV1MZeAvF8-0" />
         <mxCell id="jS7kERMsJuhV1MZeAvF8-1" parent="jS7kERMsJuhV1MZeAvF8-0" />
