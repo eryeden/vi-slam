@@ -32,45 +32,54 @@ int main() {
   //      euroc_kimera_data_provider(path_to_euroc);
 
   // EUROC
-  //    std::string path_to_euroc =
-  //        "/home/ery/subspace/docker_work/dataset/V1_01_easy";
   //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/V1_02_medium";
+  //      "/home/ery/subspace/docker_work/dataset/V1_01_easy";
   std::string path_to_euroc =
-      "/home/ery/subspace/docker_work/dataset/V1_03_difficult";
+      "/home/ery/subspace/docker_work/dataset/V1_02_medium";
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/V1_03_difficult";
   //  std::string path_to_euroc =
   //      "/home/ery/subspace/docker_work/dataset/V2_01_easy";
-  //      std::string path_to_euroc =
-  //          "/home/ery/subspace/docker_work/dataset/MH_01_easy";
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/MH_01_easy";
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/MH_02_easy";
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/MH_03_medium";
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/MH_04_difficult";
+
   std::string path_to_calibfile =
       "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
       "calib_results/calibration.json";
 
-  //          std::string path_to_euroc =
-  //              "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
-  //          std::string path_to_calibfile =
-  //              "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
-  //              "results/calibration.json";
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+  //  std::string path_to_calibfile =
+  //      "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
+  //      "results/calibration.json";
 
   vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
       path_to_euroc, path_to_calibfile);
   vslam::Pose_t pose_body_T_sensor = euroc_kimera_data_provider.GetSensorPose();
 
-  //      std::string path_to_euroc =
-  //          "/e/subspace/docker_work/dataset/fukuroi/camlog_2020-05-13-21-09-39/";
-  //      std::string path_to_calibfile =
-  //          "/e/subspace/docker_work/dataset/fukuroi/calib_result/calibration.json";
-  //      std::string path_to_mask =
-  //          "/e/subspace/docker_work/dataset/fukuroi/calib_result/vingette_0.png";
-  //      vslam::dataprovider::EurocKimeraDataProvider
+  //  std::string path_to_euroc =
+  //      "/e/subspace/docker_work/dataset/fukuroi/camlog_2020-05-13-21-09-39/";
+  //  std::string path_to_calibfile =
+  //      "/e/subspace/docker_work/dataset/fukuroi/calib_result/calibration.json";
+  //  std::string path_to_mask =
+  //            "/e/subspace/docker_work/dataset/fukuroi/calib_result/vingette_0.png";
+  //  vslam::dataprovider::EurocKimeraDataProvider
   //      euroc_kimera_data_provider(
-  //          path_to_euroc, path_to_calibfile, path_to_mask);
+  //            path_to_euroc, path_to_calibfile, path_to_mask);
+  //  vslam::Pose_t pose_body_T_sensor =
+  //  euroc_kimera_data_provider.GetSensorPose();
 
-  //  std::string path_to_kitti =
-  //      "/home/ery/subspace/docker_work/dataset/data_odometry_gray/dataset/"
-  //      "sequences/00";
-  //  vslam::dataprovider::KittiKimeraDataProvider kitti_kimera_data_provider(
-  //      path_to_kitti);
+  std::string path_to_kitti =
+      "/home/ery/subspace/docker_work/dataset/data_odometry_gray/dataset/"
+      "sequences/00";
+  vslam::dataprovider::KittiKimeraDataProvider kitti_kimera_data_provider(
+      path_to_kitti);
 
   /**
    * @brief Generate primitive instances
@@ -82,7 +91,9 @@ int main() {
   /// Build detector
   auto detector_param = vslam::feature::FeatureDetectorANMS::Parameter();
   detector_param.max_feature_number_ = 300;
-  detector_param.min_feature_distance_ = 10.0;
+  detector_param.min_feature_distance_ = 10.0;  // 10.0;
+  detector_param.detection_min_feature_distance_ = 0.5;
+
   auto anms_detector_ptr =
       std::make_shared<vslam::feature::FeatureDetectorANMS>(detector_param);
 
@@ -107,7 +118,7 @@ int main() {
    */
   vslam::frontend::KimeraFrontend::Parameter frontend_param;
   frontend_param.minimum_keyframe_interval_ = 0.1;
-  frontend_param.low_keyframe_feature_number_ = 250;  // 250;
+  frontend_param.low_keyframe_feature_number_ = 150;  // 250;
   vslam::frontend::KimeraFrontend kimera_frontend(threadsafe_map_database_ptr,
                                                   anms_detector_ptr,
                                                   lssd_tracker_ptr,
