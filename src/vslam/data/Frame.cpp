@@ -46,6 +46,7 @@ Frame::Frame(const Frame& frame)
             frame.feature_point_age_) {
   camera_pose_ = frame.camera_pose_;
   landmarks_ = frame.landmarks_;
+  internal_materials_ = frame.internal_materials_;
 }
 
 void Frame::SetCameraPose(const Pose_t& pose) {

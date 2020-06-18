@@ -37,6 +37,7 @@ class InternalMaterials {
   /// Internals
   FeaturePositionDatabase features_pre_frame_;
   FeaturePositionDatabase features_after_tracking_;
+  FeaturePositionDatabase features_after_detection_;
   FeaturePositionDatabase features_after_verification_;
   Pose_t camera_pose_initial_;
   Pose_t camera_pose_optimized_;
