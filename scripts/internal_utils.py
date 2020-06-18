@@ -99,7 +99,13 @@ if __name__ == "__main__":
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-14-16-01-05/'
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-14-17-13-11/'
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-14-22-48-04'
-    path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-14-22-54-34'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-14-22-54-34'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-15-21-56-03'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-15-22-00-57'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-15-22-02-14'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-15-22-10-09'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-15-22-10-09'
+    path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-17-00-07-01'
 
     path_to_reference_trajectory = "/e/subspace/docker_work/dataset/V1_02_medium/mav0/state_groundtruth_estimate0/data.csv"
 
@@ -126,6 +132,10 @@ if __name__ == "__main__":
     traj_orientation = np.full((len(frame_internals), 4), 0.0)
     traj_timestamp = np.full((len(frame_internals), 1), 0.0)
 
+    feature_pass_rate_tracking = []
+    feature_pass_rate_verification = []
+    feature_pass_rate_vision_frontend = []
+
     count = 0
     for fi in frame_internals:
         lm_number = get_inuse_landmark_number(fi)
@@ -138,7 +148,26 @@ if __name__ == "__main__":
         traj_position[count, :] = pos
         traj_orientation[count, :] = ori
         traj_timestamp[count, :] = tstamp
+
+        if fi["features_pre_frame_number"] != 0:
+            feature_pass_rate_tracking.append(
+                float(fi["features_after_tracking_number"]) / (float(fi["features_pre_frame_number"])))
+        else:
+            feature_pass_rate_tracking.append(0)
+        if fi["is_keyframe"]:
+            if fi["features_after_tracking_number"] != 0:
+                feature_pass_rate_verification.append(
+                    float(fi["features_after_verification_number"]) / float(fi["features_after_tracking_number"]))
+                feature_pass_rate_vision_frontend.append(
+                    float(fi["features_after_verification_number"]) / float(fi["features_pre_frame_number"]))
+            else:
+                feature_pass_rate_verification.append(0)
+                feature_pass_rate_vision_frontend.append(0)
+        else:
+            feature_pass_rate_verification.append(feature_pass_rate_verification[-1])
+            feature_pass_rate_vision_frontend.append(feature_pass_rate_vision_frontend[-1])
         count = count + 1
+
     print(count)
     traj_estimated = PoseTrajectory3D(traj_position, traj_orientation, traj_orientation)
     traj_reference_raw = file_interface.read_euroc_csv_trajectory(path_to_reference_trajectory)
@@ -192,5 +221,14 @@ if __name__ == "__main__":
     plt.axhline(result.stats["median"], color="r")
     plt.axhline(result.stats["mean"], color="g")
     plt.savefig(path_to_frame_dir + "/trajectory_error.png")
+
+    fig_pass_rate = plt.figure(4)
+    plt.plot(feature_pass_rate_verification)
+    plt.plot(feature_pass_rate_tracking)
+    plt.plot(feature_pass_rate_vision_frontend)
+    plt.legend(["Verification", "Tracking", "VisionFrontend"])
+    plt.ylabel("Feature pass rate")
+    plt.xlabel("Frame number")
+    plt.savefig(path_to_frame_dir + "/feature_pass_rate.png")
 
     plt.show()
