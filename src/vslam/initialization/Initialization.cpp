@@ -168,7 +168,7 @@ bool TryInitialize(const data::FrameWeakPtr& reference_frame,
                  parallax_inlier_rate * 100.0,
                  landmark_position.size(),
                  intersection_indices.size());
-    // 求めた点の視線交差角度を計算
+    // 求めた点の最小視線交差角度を計算
     auto min = std::min_element(landmark_observation_angle.begin(),
                                 landmark_observation_angle.end());
     spdlog::info("Min angle : {}", (*min) * 180.0 / M_PI);
