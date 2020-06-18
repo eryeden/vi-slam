@@ -4,6 +4,9 @@ target_sources(${VSLAM_PROJECT_NAME}
         PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/FrontendBase.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/FrontendBase.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ContinuousDetectorFrontend.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ContinuousDetectorFrontendParameter.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ContinuousDetectorFrontend.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/KimeraFrontend.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/KimeraFrontendParameter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/KimeraFrontend.hpp
