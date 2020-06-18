@@ -10,7 +10,7 @@ vslam::backend::iSAM2Backend::Parameter::Parameter() {
   /// Initialization
   reference_frame_id_ = 0;
 
-  //  5point ransac
+  //  3point ransac
   pose_initialization_ransac_threshold_ =
       0.1 * M_PI / 180.0;                            // 0.1 * M_PI / 180.0;
   pose_initialization_ransac_max_iterations_ = 100;  // 100;

@@ -7,4 +7,9 @@ target_sources(${VSLAM_PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/iSAM2Backend.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/iSAM2BackendParameter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/iSAM2Backend.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ContinuousDetectorBackend.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ContinuousDetectorBackendParameter.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ContinuousDetectorBackend.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/BackendUtilities.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/BackendUtilities.hpp
         )
