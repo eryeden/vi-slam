@@ -129,6 +129,12 @@ void serialize(Archive& ar, vslam::frontend::KimeraFrontend::Parameter& p) {
 template <class Archive>
 void serialize(Archive& ar, vslam::backend::iSAM2Backend::Parameter& p) {
   ar(cereal::make_nvp("reference_frame_id", p.reference_frame_id_),
+
+     cereal::make_nvp("keyframe_new_kf_keypoints_threshold",
+                      p.keyframe_new_kf_keypoints_threshold_),
+     cereal::make_nvp("keyframe_min_frames_after_kf",
+                      p.keyframe_min_frames_after_kf_),
+
      cereal::make_nvp("pose_initialization_ransac_threshold",
                       p.pose_initialization_ransac_threshold_),
      cereal::make_nvp("pose_initialization_ransac_max_iterations",
@@ -145,10 +151,12 @@ void serialize(Archive& ar, vslam::backend::iSAM2Backend::Parameter& p) {
                       p.pose_refinement_previous_position_sigma_),
      cereal::make_nvp("pose_refinement_previous_orientation_sigma",
                       p.pose_refinement_previous_orientation_sigma_),
+
      cereal::make_nvp("triangulation_reprojection_error_threshold",
                       p.triangulation_reprojection_error_threshold_),
      cereal::make_nvp("triangulation_minimum_parallax_threshold",
                       p.triangulation_minimum_parallax_threshold_),
+
      cereal::make_nvp("isam2_reprojection_noise_sigma",
                       p.isam2_reprojection_noise_sigma_),
      cereal::make_nvp("isam2_prior_pose_position_sigma",
@@ -156,6 +164,7 @@ void serialize(Archive& ar, vslam::backend::iSAM2Backend::Parameter& p) {
      cereal::make_nvp("isam2_prior_pose_orientation_sigma",
                       p.isam2_prior_pose_orientation_sigma_),
      cereal::make_nvp("isam2_iteration_number", p.isam2_iteration_number_),
+
      cereal::make_nvp("optimization_reprojection_error_threshold_",
                       p.optimization_reprojection_error_threshold_),
 

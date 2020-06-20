@@ -24,6 +24,10 @@ vslam::backend::iSAM2Backend::Parameter::Parameter() {
   pose_refinement_previous_orientation_sigma_ = 0.1;
 
   /// Keyframe & ISAM2
+  // KeyFrame selection
+  keyframe_min_frames_after_kf_ = 5;
+  keyframe_new_kf_keypoints_threshold_ = 0.7;
+
   // Triangulation
   triangulation_reprojection_error_threshold_ = 5.0;
   triangulation_minimum_parallax_threshold_ = 1.0 * M_PI / 180.0;
