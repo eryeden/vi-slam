@@ -183,22 +183,24 @@ vslam::data::Frame vslam::frontend::ContinuousDetectorFrontend::ProcessFrame(
                         feature_bearing_database,
                         feature_age_database);
 
-  auto verified_frame =
-      feature_verification_->RemoveOutlier(*last_frame, tmp_frame);
-  feature_id_database = verified_frame.observing_feature_id_;
-  feature_position_database = verified_frame.observing_feature_point_in_device_;
-  feature_bearing_database =
-      verified_frame.observing_feature_bearing_in_camera_frame_;
-  feature_age_database = verified_frame.feature_point_age_;
-  // Log features after verification
-  internal_materials.features_after_verification_ = feature_position_database;
+  //  auto verified_frame =
+  //      feature_verification_->RemoveOutlier(*last_frame, tmp_frame);
+  //  feature_id_database = verified_frame.observing_feature_id_;
+  //  feature_position_database =
+  //  verified_frame.observing_feature_point_in_device_;
+  //  feature_bearing_database =
+  //      verified_frame.observing_feature_bearing_in_camera_frame_;
+  //  feature_age_database = verified_frame.feature_point_age_;
+  //  // Log features after verification
+  //  internal_materials.features_after_verification_ =
+  //  feature_position_database;
 
   /**
    * @brief Output results
    */
   auto output_frame = Frame(last_frame_->frame_id_ + 1,
                             frontend_input.timestamp_,
-                            true,
+                            false,
                             frontend_input.camera_model_ptr_,
                             feature_id_database,
                             feature_position_database,
