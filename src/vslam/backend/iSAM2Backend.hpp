@@ -32,6 +32,9 @@ class iSAM2Backend : public BackendBase {
     double pose_refinement_previous_orientation_sigma_;
 
     /// Keyframe & ISAM2
+    // KeyFrame selection
+    int32_t keyframe_min_frames_after_kf_;
+    double keyframe_new_kf_keypoints_threshold_;
     // Triangulation
     double triangulation_reprojection_error_threshold_;
     double triangulation_minimum_parallax_threshold_;
