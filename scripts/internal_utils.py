@@ -105,7 +105,8 @@ if __name__ == "__main__":
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-15-22-02-14'
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-15-22-10-09'
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-15-22-10-09'
-    path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-17-00-07-01'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-17-00-07-01'
+    path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-20-11-56-46'
 
     path_to_reference_trajectory = "/e/subspace/docker_work/dataset/V1_02_medium/mav0/state_groundtruth_estimate0/data.csv"
 
