@@ -34,8 +34,8 @@ int main() {
   // EUROC
   //    std::string path_to_euroc =
   //        "/home/ery/subspace/docker_work/dataset/V1_01_easy";
-  std::string path_to_euroc =
-      "/home/ery/subspace/docker_work/dataset/V1_02_medium";
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/V1_02_medium";
   //    std::string path_to_euroc =
   //        "/home/ery/subspace/docker_work/dataset/V1_03_difficult";
   //  std::string path_to_euroc =
@@ -44,8 +44,8 @@ int main() {
   //      "/home/ery/subspace/docker_work/dataset/MH_01_easy";
   //  std::string path_to_euroc =
   //      "/home/ery/subspace/docker_work/dataset/MH_02_easy";
-  //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/MH_03_medium";
+  std::string path_to_euroc =
+      "/home/ery/subspace/docker_work/dataset/MH_03_medium";
   //  std::string path_to_euroc =
   //      "/home/ery/subspace/docker_work/dataset/MH_04_difficult";
 
