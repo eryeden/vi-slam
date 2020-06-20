@@ -136,6 +136,10 @@ bool TryInitialize(const data::FrameWeakPtr& reference_frame,
   current_frame_pose = outpose;
   //  spdlog::info("Initialized : T:{}", translation.norm());
 
+  // カメラモデル
+  auto camera_model_ptr = std::shared_ptr<vslam::data::CameraModelBase>(
+      current_frame_ptr->camera_model_->Clone());
+
   // triangulate points
   opengv::relative_pose::CentralRelativeAdapter tri_adapter(
       bearings_reference, bearings_current, translation, rotation.matrix());
@@ -152,11 +156,20 @@ bool TryInitialize(const data::FrameWeakPtr& reference_frame,
     double angle = std::acos(ref_to_lm.dot(current_to_lm));
     landmark_observation_angle.emplace_back(angle);
 
-    if (angle > 1.0 * M_PI / 180.0) {  // 0.01
-      landmark_position[intersection_indices[inlier_array_idx]] = point;
-    } else {
-      //      spdlog::warn("Too few parallax, rejected. {} [deg]", angle * 180.0
-      //      / M_PI);
+    try {
+      // カメラにProjectできるかチェック,
+      // 失敗する場合は例外が発生するのでLandmarkに追加されない
+      auto projected = camera_model_ptr->Project(point);
+      auto measured =
+          reference_frame_ptr->observing_feature_point_in_device_.at(
+              intersection_indices[inlier_array_idx]);
+      auto reprojection_error = (projected - measured).norm();
+
+      if ((angle > 1.0 * M_PI / 180.0) && (reprojection_error < 5.0)) {  // 0.01
+        landmark_position[intersection_indices[inlier_array_idx]] = point;
+      }
+    } catch (data::ProjectionErrorException& exception) {
+      spdlog::warn("Projection error: {}", exception.what());
     }
   }
 
@@ -264,26 +277,11 @@ bool RefineInitializedMap(const data::FrameWeakPtr& reference_frame,
   /**
    * @brief 最適化の実施
    */
+  Values result;
   try {
     /* Optimize the graph and print results */
-    Values result = DoglegOptimizer(graph, initial_estimate).optimize();
+    result = DoglegOptimizer(graph, initial_estimate).optimize();
 
-    //  result.print("Final results:\n");
-    //  cout << "initial error = " << graph.error(initial_estimate) << endl;
-    //  cout << "final error = " << graph.error(result) << endl;
-
-    /**
-     * @brief 結果の出力
-     */
-
-    auto reference_pose = result.at(Symbol('x', 0)).cast<Pose3>();
-    auto current_pose = result.at(Symbol('x', 1)).cast<Pose3>();
-    reference_frame_ptr->SetCameraPose(Pose_t(reference_pose.matrix()));
-    current_frame_ptr->SetCameraPose(Pose_t(current_pose.matrix()));
-    for (auto& [id, pos] : estimated_landmark_position) {
-      auto lm_pos = result.at(Symbol('l', id)).cast<Point3>();
-      pos = lm_pos;
-    }
   } catch (gtsam::IndeterminantLinearSystemException& e) {
     spdlog::error("{}:{} IndeterminantLinearSystemException: {}",
                   __FILE__,
@@ -293,6 +291,30 @@ bool RefineInitializedMap(const data::FrameWeakPtr& reference_frame,
   } catch (std::exception& e) {
     spdlog::error("{}:{} Solver error: {}", __FILE__, __FUNCTION__, e.what());
     return false;
+  }
+
+  /**
+   * @brief Outlier rejection and output results
+   */
+  auto reference_pose =
+      Pose_t(result.at(Symbol('x', 0)).cast<Pose3>().matrix());
+  auto current_pose = Pose_t(result.at(Symbol('x', 1)).cast<Pose3>().matrix());
+  reference_frame_ptr->SetCameraPose(reference_pose);
+  current_frame_ptr->SetCameraPose(current_pose);
+  EigenAllocatedUnorderedMap<database_index_t, Vec3_t>
+      cleaned_landmark_position;
+  for (auto& [id, pos] : estimated_landmark_position) {
+    auto lm_pos = result.at(Symbol('l', id)).cast<Point3>();
+    auto projected = current_frame_ptr->camera_model_->Project(
+        current_pose.inverse() * lm_pos);
+    auto measured =
+        current_frame_ptr->observing_feature_point_in_device_.at(id);
+    auto reproejction_error = (projected - measured).norm();
+    if (reproejction_error < 2.0) {
+      pos = lm_pos;
+    } else {
+      estimated_landmark_position.erase(id);
+    }
   }
 
   return true;
