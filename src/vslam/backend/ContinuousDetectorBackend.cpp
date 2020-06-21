@@ -92,7 +92,7 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
       return backend_state_;
     }
 
-  } else if (backend_state_ == BackendState::Nominal) {
+  } else {
     //////////////////// Update Map //////////////////////////////
     //    vslam::backend::utility::RegisterLandmarkObservation(
     //        map_database_,
@@ -108,6 +108,9 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
       //////////////////// Estimate the Pose of Input Frame ///////////////////
       spdlog::info("{} : ########## Frame Pose Estimation ##########",
                    __FUNCTION__);
+
+      // For debug
+      auto frame_internals = current_frame->internal_materials_;
 
       // Initialize Frame Pose
       auto estimated_pose = initialization::InitializePose(
@@ -166,6 +169,10 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
            (inuse_features_rate <
             parameter_.keyframe_new_kf_keypoints_threshold_)) ||
           (inuse_features_rate < 0.3)) {
+        //      if (((num_frames_after_kf >
+        //      parameter_.keyframe_min_frames_after_kf_) &&
+        //          (inuse_features_rate <
+        //              parameter_.keyframe_new_kf_keypoints_threshold_))) {
         current_frame->is_keyframe_ = true;
         map_database_->latest_key_frame_id_ = current_frame->frame_id_;
 
@@ -200,26 +207,39 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
               triangulated_landmarks,
               parameter_.triangulation_reprojection_error_threshold_,
               parameter_.triangulation_minimum_parallax_threshold_);
+          spdlog::info("{} : Triangulate features {}",
+                       __FUNCTION__,
+                       triangulated_landmarks.size());
+
+          // For debug
+          // Triangulate した直後のLM位置を保存
+          for (auto& [lm_id, lm_weak] : triangulated_landmarks) {
+            auto lm_ptr = lm_weak.lock();
+            if (lm_ptr) {
+              frame_internals.triangulated_landmarks_.insert(
+                  std::pair<database_index_t, Landmark>(lm_id, *lm_ptr));
+            }
+          }
 
           spdlog::info("{} : ########## Update iSAM2 Observation ##########",
                        __FUNCTION__);
 
-          vslam::backend::utility::UpdateISAMObservation(
-              isam_2_ptr_,
-              map_database_,
-              triangulated_landmarks,
-              parameter_.isam2_reprojection_noise_sigma_,
-              parameter_.isam2_iteration_number_,
-              parameter_.optimization_reprojection_error_threshold_);
+          bool is_solver_success =
+              vslam::backend::utility::UpdateISAMObservation(
+                  isam_2_ptr_,
+                  map_database_,
+                  triangulated_landmarks,
+                  parameter_.isam2_reprojection_noise_sigma_,
+                  parameter_.isam2_iteration_number_,
+                  parameter_.optimization_reprojection_error_threshold_);
+          if (!is_solver_success) {
+            backend_state_ = BackendState::SolverException;
+          }
         }
       }
+      // for debug
+      current_frame->internal_materials_ = frame_internals;
     }
-
-  } else {
-    spdlog::warn("{}:{} Unrecognized Backend status:{}",
-                 __FILE__,
-                 __FUNCTION__,
-                 backend_state_);
   }
 
   // frame_idの更新
