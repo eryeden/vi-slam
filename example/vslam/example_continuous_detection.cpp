@@ -32,20 +32,20 @@ int main() {
   //      euroc_kimera_data_provider(path_to_euroc);
 
   // EUROC
-  //    std::string path_to_euroc =
-  //        "/home/ery/subspace/docker_work/dataset/V1_01_easy";
   //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/V1_02_medium";
+  //      "/home/ery/subspace/docker_work/dataset/V1_01_easy";
+  std::string path_to_euroc =
+      "/home/ery/subspace/docker_work/dataset/V1_02_medium";
   //    std::string path_to_euroc =
   //        "/home/ery/subspace/docker_work/dataset/V1_03_difficult";
-  //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/V2_01_easy";
+  //    std::string path_to_euroc =
+  //        "/home/ery/subspace/docker_work/dataset/V2_01_easy";
   //  std::string path_to_euroc =
   //      "/home/ery/subspace/docker_work/dataset/MH_01_easy";
   //  std::string path_to_euroc =
   //      "/home/ery/subspace/docker_work/dataset/MH_02_easy";
-  std::string path_to_euroc =
-      "/home/ery/subspace/docker_work/dataset/MH_03_medium";
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/MH_03_medium";
   //  std::string path_to_euroc =
   //      "/home/ery/subspace/docker_work/dataset/MH_04_difficult";
 
@@ -53,11 +53,11 @@ int main() {
       "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
       "calib_results/calibration.json";
 
-  //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
-  //  std::string path_to_calibfile =
-  //      "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
-  //      "results/calibration.json";
+  //    std::string path_to_euroc =
+  //        "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+  //    std::string path_to_calibfile =
+  //        "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
+  //        "results/calibration.json";
 
   vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
       path_to_euroc, path_to_calibfile);
@@ -99,7 +99,7 @@ int main() {
 
   //// Build tracker
   auto lssd_params = vslam::feature::FeatureTrackerLSSDLucasKanade::Parameter();
-  lssd_params.optical_flow_max_recovered_dist_ = 1.0;  // 1.0;
+  lssd_params.optical_flow_max_recovered_dist_ = 0.5;  // 1.0;
   auto lssd_tracker_ptr =
       std::make_shared<vslam::feature::FeatureTrackerLSSDLucasKanade>(
           lssd_params);
@@ -108,7 +108,7 @@ int main() {
   auto verification_params =
       vslam::verification::FeatureVerification5PointRANSAC::Parameter();
   verification_params.ransac_threshold_angle_rad_ =
-      5.0 * M_PI / 180.0;  // 1 * M_PI / 180.0;
+      3.0 * M_PI / 180.0;  // 1 * M_PI / 180.0;
   auto verification_ptr =
       std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
           verification_params);
@@ -179,6 +179,7 @@ int main() {
   auto previous_backend_state = backend_state;
   vslam::frontend::KimeraFrontendInputRadialTangentialCameraModel prev_input;
   bool is_update = true;
+  bool is_frame_to_frame = false;
   bool is_reach_the_last = false;
   bool is_draw_initial_pose = true;
   bool is_draw_keyframe = true;
@@ -271,6 +272,12 @@ int main() {
                      1,
                      CV_AA);
         }
+        //        cv::putText(vis,
+        //                    fmt::format("{}", id),
+        //                    cv::Point(pos[0], pos[1]),
+        //                    CV_FONT_HERSHEY_PLAIN,
+        //                    0.8,
+        //                    cv::Scalar(0, 0, 0));
 
         auto lm_ptr = threadsafe_map_database_ptr->GetLandmark(id).lock();
         if (lm_ptr) {
@@ -281,6 +288,20 @@ int main() {
                        cv::Scalar(0, 255, 0),
                        1,
                        CV_AA);
+          }
+          if (lm_ptr->is_nearby_) {
+            cv::circle(vis,
+                       cv::Point(pos[0], pos[1]),
+                       6,
+                       cv::Scalar(0, 255, 255),
+                       1,
+                       CV_AA);
+            cv::putText(vis,
+                        fmt::format("Nearby: {}", id),
+                        cv::Point(pos[0], pos[1]),
+                        CV_FONT_HERSHEY_PLAIN,
+                        0.8,
+                        cv::Scalar(0, 0, 0));
           }
         }
       }
@@ -376,22 +397,39 @@ int main() {
       }
       if (!pc_source_inuse.empty()) {
         vslam::viewer::PointCloudPrimitive pcp(
-            "pc_inuse", pc_source_inuse, false, {{255, 0, 255}});
+            "pc_inuse", pc_source_inuse, true, {{255, 0, 255}});
+        viewer.PushPrimitive(pcp);
+      }
+
+      /// Draw triangulated landmark position
+      vslam::EigenAllocatedVector<vslam::Vec3_t> pc_source_triangulated;
+      for (const auto& [lm_id, lm] :
+           latest_frame_ptr->internal_materials_.triangulated_landmarks_) {
+        pc_source_triangulated.emplace_back(pose_body_T_sensor.inverse() *
+                                            lm.GetLandmarkPosition());
+      }
+      if (!pc_source_triangulated.empty()) {
+        vslam::viewer::PointCloudPrimitive pcp(
+            "pc_triangulated", pc_source_triangulated, true, {{0, 255, 255}});
         viewer.PushPrimitive(pcp);
       }
 
       /// Wait
-      if ((counter == 0) || (previous_backend_state != backend_state)) {
-        cv::waitKey(0);
-      } else {
-        auto c = cv::waitKey(30);
-        if (c == 32) {
-          is_update = !is_update;
-        } else if (c == 'q') {
-          is_draw_initial_pose = !is_draw_initial_pose;
-        } else if (c == 'w') {
-          is_draw_keyframe = !is_draw_keyframe;
-        }
+      int32_t wait_time = 10;
+      if ((counter == 0) || (previous_backend_state != backend_state) ||
+          is_frame_to_frame) {
+        wait_time = 0;
+      }
+
+      auto c = cv::waitKey(wait_time);
+      if (c == 32) {
+        is_update = !is_update;
+      } else if (c == 'q') {
+        is_draw_initial_pose = !is_draw_initial_pose;
+      } else if (c == 'w') {
+        is_draw_keyframe = !is_draw_keyframe;
+      } else if (c == 'f') {
+        is_frame_to_frame = !is_frame_to_frame;
       }
     }
 
