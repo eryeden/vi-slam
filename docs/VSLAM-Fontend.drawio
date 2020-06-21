@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-06-21T13:46:56.224Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="4ERvNhBcBsmJRXBHOVCS" version="13.2.6" type="github" pages="4">
+<mxfile host="app.diagrams.net" modified="2020-06-21T13:48:46.807Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="E_Bbv-3rnKxD56YBeMwM" version="13.2.6" type="github" pages="4">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
     <mxGraphModel dx="2768" dy="1144" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -420,6 +420,9 @@
       <root>
         <mxCell id="_SM25BSt3KOiNa4ysdSf-0" />
         <mxCell id="_SM25BSt3KOiNa4ysdSf-1" parent="_SM25BSt3KOiNa4ysdSf-0" />
+        <mxCell id="98PMIWFrioo7txDLzC1y-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;" edge="1" parent="_SM25BSt3KOiNa4ysdSf-1" source="98PMIWFrioo7txDLzC1y-40" target="98PMIWFrioo7txDLzC1y-42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="h-dtIqrr97HdKP9V4nUP-0" value="&lt;h1 style=&quot;font-size: 20px;&quot;&gt;&lt;font style=&quot;font-size: 20px;&quot;&gt;Fronend v0.1&lt;/font&gt;&lt;/h1&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;fontSize=20;" parent="_SM25BSt3KOiNa4ysdSf-1" vertex="1">
           <mxGeometry x="-1650" y="-1150" width="170" height="40" as="geometry" />
         </mxCell>
@@ -799,11 +802,17 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="98PMIWFrioo7txDLzC1y-40" value="Verificationしないと、ひらひら動く&lt;br&gt;布に検出した点などが問題になる&lt;br&gt;ことあり" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="_SM25BSt3KOiNa4ysdSf-1">
-          <mxGeometry x="-1185" y="-110" width="210" height="50" as="geometry" />
+        <mxCell id="98PMIWFrioo7txDLzC1y-40" value="Verificationしないと、ひらひら動く&lt;br&gt;布に検出した点などが問題になる&lt;br&gt;ことあり" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="_SM25BSt3KOiNa4ysdSf-1">
+          <mxGeometry x="-1210" y="-140" width="210" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="98PMIWFrioo7txDLzC1y-41" value="ここに最新のKeyFrameとVerifyすることもできる。&lt;br&gt;特に問題なく動作している気がするが、&lt;br&gt;現状の実装だと、共通する特徴点以外は削除されてしまう。&lt;br&gt;- 削除する特徴点の条件を考える必要あり&lt;br&gt;また、Triangulate直後にOutlierを削除することも考えられる。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="_SM25BSt3KOiNa4ysdSf-1">
+        <mxCell id="98PMIWFrioo7txDLzC1y-41" value="ここに最新のKeyFrameとVerifyすることもできる。&lt;br&gt;特に問題なく動作している気がするが、&lt;br&gt;現状の実装だと、共通する特徴点以外は削除されてしまう。&lt;br&gt;- 削除する特徴点の条件を考える必要あり&lt;br&gt;また、Triangulate直後にOutlierを削除することも考えられる。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="_SM25BSt3KOiNa4ysdSf-1">
           <mxGeometry x="-1201.5" y="20" width="350" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="98PMIWFrioo7txDLzC1y-42" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://user-images.githubusercontent.com/4968978/85217679-80936680-b3ce-11ea-97e8-7ca917401ebd.png;" vertex="1" parent="_SM25BSt3KOiNa4ysdSf-1">
+          <mxGeometry x="-660" y="-280" width="269.58" height="183" as="geometry" />
+        </mxCell>
+        <mxCell id="98PMIWFrioo7txDLzC1y-44" value="黄色特徴点はひらひら舞う&lt;br&gt;布の上に検出されていて、Solverの不定性も招く" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=none;" vertex="1" parent="_SM25BSt3KOiNa4ysdSf-1">
+          <mxGeometry x="-660" y="-310" width="280" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
