@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-06-21T10:17:41.887Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="Mtutnjv_AQlGZeCMNAM4" version="13.2.6" type="github" pages="4">
+<mxfile host="app.diagrams.net" modified="2020-06-21T13:46:56.224Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="4ERvNhBcBsmJRXBHOVCS" version="13.2.6" type="github" pages="4">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
     <mxGraphModel dx="2768" dy="1144" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -416,7 +416,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="BRkVmhdtcNGXOIdQqOX1" name="Frnotend">
-    <mxGraphModel dx="2591" dy="1786" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3919" dy="2659" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="_SM25BSt3KOiNa4ysdSf-0" />
         <mxCell id="_SM25BSt3KOiNa4ysdSf-1" parent="_SM25BSt3KOiNa4ysdSf-0" />
@@ -801,6 +801,9 @@
         </mxCell>
         <mxCell id="98PMIWFrioo7txDLzC1y-40" value="Verificationしないと、ひらひら動く&lt;br&gt;布に検出した点などが問題になる&lt;br&gt;ことあり" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="_SM25BSt3KOiNa4ysdSf-1">
           <mxGeometry x="-1185" y="-110" width="210" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="98PMIWFrioo7txDLzC1y-41" value="ここに最新のKeyFrameとVerifyすることもできる。&lt;br&gt;特に問題なく動作している気がするが、&lt;br&gt;現状の実装だと、共通する特徴点以外は削除されてしまう。&lt;br&gt;- 削除する特徴点の条件を考える必要あり&lt;br&gt;また、Triangulate直後にOutlierを削除することも考えられる。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="_SM25BSt3KOiNa4ysdSf-1">
+          <mxGeometry x="-1201.5" y="20" width="350" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
