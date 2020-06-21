@@ -13,6 +13,7 @@ Landmark::Landmark(vslam::database_index_t id,
       position_in_world_(position_in_world),
       is_outlier_(is_outlier),
       is_added_(false),
+      is_nearby_(false),
       is_initialized_(is_initialized) {
   ;
 }

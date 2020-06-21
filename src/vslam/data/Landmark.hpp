@@ -38,6 +38,7 @@ class Landmark {
   std::atomic_bool is_initialized_;
   std::atomic_bool is_added_;
   std::atomic_bool is_outlier_;
+  std::atomic_bool is_nearby_;
 
  private:
   //! 観測関係のデータ

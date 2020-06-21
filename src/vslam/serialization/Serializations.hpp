@@ -33,6 +33,7 @@ void serialize(Archive& ar, vslam::data::Landmark& p) {
      cereal::make_nvp("is_initialized", p.is_initialized_),
      cereal::make_nvp("is_added", p.is_added_),
      cereal::make_nvp("is_outlier", p.is_outlier_),
+     cereal::make_nvp("is_nearby", p.is_nearby_),
 
      cereal::make_nvp("observed_frame_id", p.GetAllObservedFrameIndex()),
      cereal::make_nvp("position_in_world", p.GetLandmarkPosition()));
