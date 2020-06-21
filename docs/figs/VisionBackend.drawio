@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-06-21T15:35:25.134Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="4t27WqK4wUvzlG7lHa6g" version="13.3.0" type="github" pages="4">
+<mxfile host="app.diagrams.net" modified="2020-06-21T15:43:24.183Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="IpNEfZiQ5OxTiHBDzRTj" version="13.3.0" type="github" pages="4">
   <diagram id="mYV5fHMhs3SO6_IcKCSN" name="Top">
     <mxGraphModel dx="1359" dy="894" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -573,7 +573,7 @@
     
   </diagram>
   <diagram id="rxRwFc9iUt_cTfEsLqZz" name="Proposed-Backend">
-    <mxGraphModel dx="8449" dy="5639" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="3595" dy="2446" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="wGwapt1zrAfcY-FxFDx9-0" />
         <mxCell id="wGwapt1zrAfcY-FxFDx9-1" parent="wGwapt1zrAfcY-FxFDx9-0" />
@@ -1217,12 +1217,12 @@
           <mxGeometry x="-495" y="3180" width="300" height="30" as="geometry" />
         </mxCell>
         <mxCell id="S6k4N7ay1I1LTQ0Asotf-58" value="結構失敗することあり。&lt;br&gt;KITTIの場合は成功したことなし。&lt;br&gt;5pointの出力する値がちゃんとPoseになっているか？&lt;br&gt;Essential matrixになっていないかをチェックする。" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;align=left;strokeColor=#b85450;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
-          <mxGeometry x="335" y="3720" width="340" height="80" as="geometry" />
+          <mxGeometry x="360" y="3660" width="340" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="S6k4N7ay1I1LTQ0Asotf-61" value="FramePoseの推定に失敗する場合は、多くの場合、&lt;br&gt;3point RANSACで失敗した場合が多い。&lt;br&gt;見えているLandmarkが遠い場合は推定誤差が大きいように思う" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;align=left;strokeColor=#b85450;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+        <mxCell id="S6k4N7ay1I1LTQ0Asotf-61" value="FramePoseの推定に失敗する場合は、多くの場合、&lt;br&gt;3point RANSACで失敗した場合が多い。&lt;br&gt;見えているLandmarkが遠い場合は推定誤差が大きいように思う" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;align=left;strokeColor=#82b366;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
           <mxGeometry x="-416" y="4212.5" width="306" height="67.5" as="geometry" />
         </mxCell>
-        <mxCell id="S6k4N7ay1I1LTQ0Asotf-62" value="FrameのMotion modelを利用していないので、これの導入で良くなるかも知れない。&lt;br&gt;現状はFrameは動いていないとして同じ位置の拘束を入れている。&lt;br&gt;あまり、飛びは改善されているように見えない。" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;align=left;strokeColor=#b85450;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+        <mxCell id="S6k4N7ay1I1LTQ0Asotf-62" value="FrameのMotion modelを利用していないので、これの導入で良くなるかも知れない。&lt;br&gt;現状はFrameは動いていないとして同じ位置の拘束を入れている。&lt;br&gt;あまり、飛びは改善されているように見えない。" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;align=left;strokeColor=#82b366;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
           <mxGeometry x="45" y="4260" width="330" height="90" as="geometry" />
         </mxCell>
         <mxCell id="S6k4N7ay1I1LTQ0Asotf-64" value="v0.21との変更点：&lt;br&gt;- Fontendは常に特徴点追加を行う&lt;br&gt;- BackendでKeyFrameを選択" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
@@ -1239,6 +1239,12 @@
         </mxCell>
         <mxCell id="S6k4N7ay1I1LTQ0Asotf-70" value="前KeyFrameと十分かつ、適切な位置にある&lt;br&gt;In-useのLandmarkの感測情報を共有していないと、&lt;br&gt;Frameの位置推定に失敗、&lt;span style=&quot;font-family: , &amp;#34;consolas&amp;#34; , &amp;#34;liberation mono&amp;#34; , &amp;#34;menlo&amp;#34; , monospace ; font-size: 11.9px ; color: rgb(36 , 41 , 46)&quot;&gt;IndeterminantLinearSystemException&lt;br&gt;&lt;/span&gt;が発生している可能性あり。&lt;br&gt;前KeyFrameと共有しているLandmarkの個数を見てみても良いかも知れない。" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;align=left;strokeColor=#b85450;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
           <mxGeometry x="2530" y="4370" width="370" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="S6k4N7ay1I1LTQ0Asotf-71" value="初期化直後、TriangulateしたLandmarkの位置が、&lt;br&gt;思ったよりも前方にある場合がある。&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;align=left;strokeColor=#b85450;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="1762" y="4385" width="306" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="S6k4N7ay1I1LTQ0Asotf-72" value="初期化直後、Pose推定に失敗しているは不明だが、&lt;br&gt;最適化後にLandmarkが全て後側に移動してしまう場合あり。" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;align=left;strokeColor=#b85450;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="1762" y="4510" width="306" height="110" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
