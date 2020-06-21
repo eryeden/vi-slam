@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-06-21T13:48:46.807Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="E_Bbv-3rnKxD56YBeMwM" version="13.2.6" type="github" pages="4">
+<mxfile host="app.diagrams.net" modified="2020-06-21T15:35:51.686Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="VVTZB2aoirlMaqxQyoyN" version="13.2.6" type="github" pages="4">
   <diagram id="4V9aUl03h_kaWBGR1Yky" name="Fontend-review">
     <mxGraphModel dx="2768" dy="1144" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -788,9 +788,6 @@
         </mxCell>
         <mxCell id="98PMIWFrioo7txDLzC1y-30" value="前回Frameの検出結果" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="_SM25BSt3KOiNa4ysdSf-1">
           <mxGeometry x="-1380" y="60" width="130" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="98PMIWFrioo7txDLzC1y-34" value="いまは、Feature numberベースの&lt;br&gt;&lt;div style=&quot;&quot;&gt;&lt;span&gt;KeyFrame判定&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span&gt;VIOだとこれが多いが、Basaltが何をやっているか&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span&gt;見てみたい。&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="_SM25BSt3KOiNa4ysdSf-1">
-          <mxGeometry x="-1640" y="200" width="280" height="80" as="geometry" />
         </mxCell>
         <mxCell id="98PMIWFrioo7txDLzC1y-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="_SM25BSt3KOiNa4ysdSf-1" source="98PMIWFrioo7txDLzC1y-14" target="98PMIWFrioo7txDLzC1y-26">
           <mxGeometry relative="1" as="geometry">
