@@ -39,9 +39,9 @@ bool TryInitialize(const data::FrameWeakPtr& reference_frame,
   opengv::sac::Ransac<ProblemMono> mono_ransac_;
 
   // set ransac parameters
-  double threshold = 1.0 - std::cos(0.1 * 180.0 / M_PI);
+  double threshold = 1.0 - std::cos(0.1 * 180.0 / M_PI);  // 0.1
   mono_ransac_.threshold_ = threshold;
-  mono_ransac_.max_iterations_ = 1000;
+  mono_ransac_.max_iterations_ = 10000;
   mono_ransac_.probability_ = 0.8;
 
   // Setup bearing vectors for opengv
