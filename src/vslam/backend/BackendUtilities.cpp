@@ -484,7 +484,6 @@ bool vslam::backend::utility::UpdateISAMObservation(
   /**
    * @brief 新規観測Frameと既存観測LandmarkのProjeciton Factorを追加する
    */
-
   for (const auto id : current_frame_ptr->observing_feature_id_) {
     auto lm_ptr = map_database->GetLandmark(id).lock();
     if (lm_ptr) {
@@ -543,6 +542,8 @@ bool vslam::backend::utility::UpdateISAMObservation(
       Symbol('x', current_frame_ptr->frame_id_),
       gtsam::Pose3(current_frame_ptr->GetCameraPose().matrix()));
 
+  // Exception かとうか？
+  bool is_detect_solver_exception = false;
   try {
     /**
      * @brief Setup ISAM2 and run optimization
@@ -554,8 +555,24 @@ bool vslam::backend::utility::UpdateISAMObservation(
                   __FILE__,
                   __FUNCTION__,
                   e.what());
+
+    // detection of nearby variable
+    Symbol nearby_symbol(e.nearbyVariable());
+    Key key = nearby_symbol.chr();
+    spdlog::info("{} Set variable tag as nearby. {}{}",
+                 __FUNCTION__,
+                 nearby_symbol.chr(),
+                 nearby_symbol.index());
+    if (key == 'l') {
+      auto lm_ptr = map_database->GetLandmark(nearby_symbol.index()).lock();
+      if (lm_ptr) {
+        lm_ptr->is_nearby_ = true;
+      }
+    }
+    is_detect_solver_exception = true;
   } catch (std::exception& e) {
     spdlog::error("{}:{} Solver error: {}", __FILE__, __FUNCTION__, e.what());
+    is_detect_solver_exception = true;
   }
 
   for (size_t i = 0; i < isam2_iteration_number; i++) {
@@ -571,11 +588,27 @@ bool vslam::backend::utility::UpdateISAMObservation(
           __FILE__,
           __FUNCTION__,
           e.what());
+
+      // detection of nearby variable
+      Symbol nearby_symbol(e.nearbyVariable());
+      Key key = nearby_symbol.chr();
+      spdlog::info("{} Set variable tag as nearby. {}{}",
+                   __FUNCTION__,
+                   nearby_symbol.chr(),
+                   nearby_symbol.index());
+      if (key == 'l') {
+        auto lm_ptr = map_database->GetLandmark(nearby_symbol.index()).lock();
+        if (lm_ptr) {
+          lm_ptr->is_nearby_ = true;
+        }
+      }
+      is_detect_solver_exception = true;
     } catch (std::exception& e) {
       spdlog::error("{}:{} Re calling Solver error: {}",
                     __FILE__,
                     __FUNCTION__,
                     e.what());
+      is_detect_solver_exception = true;
     }
   }
 
@@ -623,5 +656,12 @@ bool vslam::backend::utility::UpdateISAMObservation(
     }
   }
 
-  return true;
+  /**
+   * @brief 最適化時に例外が発生した場合、Falseで返す。
+   */
+  if (is_detect_solver_exception) {
+    return false;
+  } else {
+    return true;
+  }
 }

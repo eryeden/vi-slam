@@ -13,7 +13,8 @@ namespace vslam::backend {
  */
 enum BackendState {
   BootStrap /*初期化状態*/,
-  Nominal /*通常*/
+  Nominal,        /*通常*/
+  SolverException /*Solverで例外発生*/
 };
 
 /**
