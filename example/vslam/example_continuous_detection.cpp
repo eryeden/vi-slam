@@ -90,7 +90,7 @@ int main() {
 
   /// Build detector
   auto detector_param = vslam::feature::FeatureDetectorANMS::Parameter();
-  detector_param.max_feature_number_ = 150;
+  detector_param.max_feature_number_ = 300;     // 150
   detector_param.min_feature_distance_ = 10.0;  // 10.0;
   detector_param.detection_min_feature_distance_ = 0.5;
 
