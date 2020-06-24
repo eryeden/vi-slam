@@ -221,6 +221,27 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
             }
           }
 
+          // 前回のKeyFrameと共通して観測しているLandmarkを保存しておく
+          // Current frameとPrev frameで共通して観測しており、かつ初期化済みのLM
+          // これで、Nearbyが発生する
+          std::vector<database_index_t> intersection_lm_ids;
+          std::set_intersection(
+              current_frame->observing_feature_id_.begin(),
+              current_frame->observing_feature_id_.end(),
+              previous_key_frame->observing_feature_id_.begin(),
+              previous_key_frame->observing_feature_id_.end(),
+              std::back_inserter(intersection_lm_ids));
+          for (const auto lm_id : intersection_lm_ids) {
+            auto lm_ptr = map_database_->GetLandmark(lm_id).lock();
+            if (lm_ptr) {
+              if (lm_ptr->is_initialized_ && (!lm_ptr->is_outlier_)) {
+                frame_internals.take_over_landmarks_.insert(
+                    std::pair<database_index_t, data::Landmark>(lm_id,
+                                                                *lm_ptr));
+              }
+            }
+          }
+
           spdlog::info("{} : ########## Update iSAM2 Observation ##########",
                        __FUNCTION__);
 

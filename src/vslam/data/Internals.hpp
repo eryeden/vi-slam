@@ -54,6 +54,8 @@ class InternalMaterials {
   std::unordered_map<database_index_t, Landmark> triangulated_landmarks_;
   /// このFrameでTriangulateし、最適化を行ったLandmark
   std::unordered_map<database_index_t, Landmark> optimized_landmarks_;
+  /// 前回KeyFrameと共通して観測しているLandmark
+  std::unordered_map<database_index_t, Landmark> take_over_landmarks_;
 };
 
 }  // namespace vslam::data
