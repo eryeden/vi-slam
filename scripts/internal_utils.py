@@ -123,7 +123,8 @@ if __name__ == "__main__":
         j = json.load(j_string)
         frame_internals.append(j["value0"])
 
-    inuse_lm_number = []
+    inuse_lm_number = []  # 最適化に利用さているFeatureの数
+    take_over_lm_number = []  # 前回のKeyFrameに引き続いて共通して最適化に利用されているFeatureの数
     aged_1_lm_number = []
     aged_2_lm_number = []
     aged_3_lm_number = []
