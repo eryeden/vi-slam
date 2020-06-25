@@ -106,9 +106,17 @@ if __name__ == "__main__":
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-15-22-10-09'
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-15-22-10-09'
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-17-00-07-01'
-    path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-20-11-56-46'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-20-11-56-46'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-24-22-29-31'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-25-21-44-10'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-25-21-53-28'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-25-23-50-24'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-25-23-52-05'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-25-23-57-13'
+    path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-26-00-02-27'
 
     path_to_reference_trajectory = "/e/subspace/docker_work/dataset/V1_02_medium/mav0/state_groundtruth_estimate0/data.csv"
+    # path_to_reference_trajectory = "/e/subspace/docker_work/dataset/V1_01_easy/mav0/state_groundtruth_estimate0/data.csv"
 
     frame_list = glob.glob(path_to_frame_dir + "/frames/frame_*.json")
     frame_path_list = [""] * len(frame_list)
@@ -124,11 +132,14 @@ if __name__ == "__main__":
         frame_internals.append(j["value0"])
 
     inuse_lm_number = []  # 最適化に利用さているFeatureの数
-    take_over_lm_number = []  # 前回のKeyFrameに引き続いて共通して最適化に利用されているFeatureの数
     aged_1_lm_number = []
     aged_2_lm_number = []
     aged_3_lm_number = []
     aged_4_lm_number = []
+
+    keyframe_inuse_lm_number = []
+    keyframe_takeover_lm_number = []
+    keyframe_triangulated_lm_number = []
 
     traj_position = np.full((len(frame_internals), 3), 0.0)
     traj_orientation = np.full((len(frame_internals), 4), 0.0)
@@ -165,6 +176,9 @@ if __name__ == "__main__":
             else:
                 feature_pass_rate_verification.append(0)
                 feature_pass_rate_vision_frontend.append(0)
+            keyframe_inuse_lm_number.append(lm_number)
+            keyframe_takeover_lm_number.append(int(fi["take_over_landmark_number"]))
+            keyframe_triangulated_lm_number.append(int(fi["triangulated_landmark_number"]))
         else:
             feature_pass_rate_verification.append(feature_pass_rate_verification[-1])
             feature_pass_rate_vision_frontend.append(feature_pass_rate_vision_frontend[-1])
@@ -232,5 +246,15 @@ if __name__ == "__main__":
     plt.ylabel("Feature pass rate")
     plt.xlabel("Frame number")
     plt.savefig(path_to_frame_dir + "/feature_pass_rate.png")
+
+    fig_keyframe_lm_number = plt.figure(5)
+    plt.plot(keyframe_inuse_lm_number)
+    plt.plot(keyframe_takeover_lm_number)
+    plt.plot(keyframe_triangulated_lm_number)
+    plt.legend(["Inuse", "Takeover", "Triangulated"])
+    plt.ylabel("Landmark number")
+    plt.xlabel("KeyFrame")
+    plt.title("Key Frame Landmark number")
+    plt.savefig(path_to_frame_dir + "/keyframe_lm_number.png")
 
     plt.show()
