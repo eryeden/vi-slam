@@ -70,23 +70,60 @@ vslam::verification::FeatureVerification5PointRANSAC::RemoveOutlier(
   FeatureAgeDatabase verified_feature_age_database;
   FeaturePositionDatabase verified_feature_position_database;
   FeatureBearingDatabase verified_feature_bearing_database;
+  std::unordered_map<database_index_t, bool> feature_outlier_database;
   std::set<database_index_t> verified_feature_indices;
 
+  /**
+   * @brief 出力処理
+   * @details LMのうち、Outlierのみを排除してCurrent LMを出力する
+   */
+  for (auto lm_id : frame_current.observing_feature_id_) {
+    feature_outlier_database[lm_id] = false;
+  }
+  for (auto lm_id : intersection_indices) {
+    feature_outlier_database[lm_id] = true;
+  }
   for (auto inlier_array_idx : mono_ransac_.inliers_) {
     database_index_t landmark_index = intersection_indices[inlier_array_idx];
+    feature_outlier_database[landmark_index] = false;
+  }
 
-    int32_t landmark_age = frame_current.feature_point_age_.at(landmark_index);
-    if (landmark_age < max_landmark_age_) {
-      verified_feature_indices.insert(landmark_index);
-      verified_feature_position_database[landmark_index] =
-          frame_current.observing_feature_point_in_device_.at(landmark_index);
-      verified_feature_bearing_database[landmark_index] =
-          frame_current.observing_feature_bearing_in_camera_frame_.at(
-              landmark_index);
-      verified_feature_age_database[landmark_index] =
-          frame_current.feature_point_age_.at(landmark_index);
+  for (auto lm_id : frame_current.observing_feature_id_) {
+    if (!feature_outlier_database[lm_id]) {
+      int32_t landmark_age = frame_current.feature_point_age_.at(lm_id);
+      if (landmark_age < max_landmark_age_) {
+        verified_feature_indices.insert(lm_id);
+        verified_feature_position_database[lm_id] =
+            frame_current.observing_feature_point_in_device_.at(lm_id);
+        verified_feature_bearing_database[lm_id] =
+            frame_current.observing_feature_bearing_in_camera_frame_.at(lm_id);
+        verified_feature_age_database[lm_id] =
+            frame_current.feature_point_age_.at(lm_id);
+      }
     }
   }
+
+  /**
+   * @brief 出力処理
+   * @brief LMのうち、Inlierしか出力しない。
+   */
+  //  for (auto inlier_array_idx : mono_ransac_.inliers_) {
+  //    database_index_t landmark_index =
+  //    intersection_indices[inlier_array_idx];
+  //
+  //    int32_t landmark_age =
+  //    frame_current.feature_point_age_.at(landmark_index); if (landmark_age <
+  //    max_landmark_age_) {
+  //      verified_feature_indices.insert(landmark_index);
+  //      verified_feature_position_database[landmark_index] =
+  //          frame_current.observing_feature_point_in_device_.at(landmark_index);
+  //      verified_feature_bearing_database[landmark_index] =
+  //          frame_current.observing_feature_bearing_in_camera_frame_.at(
+  //              landmark_index);
+  //      verified_feature_age_database[landmark_index] =
+  //          frame_current.feature_point_age_.at(landmark_index);
+  //    }
+  //  }
 
   data::Frame output_frame(frame_current.frame_id_,
                            frame_current.timestamp_,
