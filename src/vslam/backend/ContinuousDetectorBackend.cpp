@@ -197,29 +197,6 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
         if (previous_key_frame) {
           spdlog::info("{} : ########## Key Frame Triangulation ##########",
                        __FUNCTION__);
-          vslam::EigenAllocatedUnorderedMap<database_index_t,
-                                            vslam::data::LandmarkWeakPtr>
-              triangulated_landmarks;
-
-          vslam::backend::utility::TriangulateKeyFrame(
-              map_database_,
-              current_frame,
-              triangulated_landmarks,
-              parameter_.triangulation_reprojection_error_threshold_,
-              parameter_.triangulation_minimum_parallax_threshold_);
-          spdlog::info("{} : Triangulate features {}",
-                       __FUNCTION__,
-                       triangulated_landmarks.size());
-
-          // For debug
-          // Triangulate した直後のLM位置を保存
-          for (auto& [lm_id, lm_weak] : triangulated_landmarks) {
-            auto lm_ptr = lm_weak.lock();
-            if (lm_ptr) {
-              frame_internals.triangulated_landmarks_.insert(
-                  std::pair<database_index_t, Landmark>(lm_id, *lm_ptr));
-            }
-          }
 
           // 前回のKeyFrameと共通して観測しているLandmarkを保存しておく
           // Current frameとPrev frameで共通して観測しており、かつ初期化済みのLM
@@ -239,6 +216,29 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
                     std::pair<database_index_t, data::Landmark>(lm_id,
                                                                 *lm_ptr));
               }
+            }
+          }
+
+          vslam::EigenAllocatedUnorderedMap<database_index_t,
+                                            vslam::data::LandmarkWeakPtr>
+              triangulated_landmarks;
+          vslam::backend::utility::TriangulateKeyFrame(
+              map_database_,
+              current_frame,
+              triangulated_landmarks,
+              parameter_.triangulation_reprojection_error_threshold_,
+              parameter_.triangulation_minimum_parallax_threshold_);
+          spdlog::info("{} : Triangulate features {}",
+                       __FUNCTION__,
+                       triangulated_landmarks.size());
+
+          // For debug
+          // Triangulate した直後のLM位置を保存
+          for (auto& [lm_id, lm_weak] : triangulated_landmarks) {
+            auto lm_ptr = lm_weak.lock();
+            if (lm_ptr) {
+              frame_internals.triangulated_landmarks_.insert(
+                  std::pair<database_index_t, Landmark>(lm_id, *lm_ptr));
             }
           }
 
