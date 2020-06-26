@@ -9,6 +9,7 @@
 #include "BackendUtilities.hpp"
 #include "Initialization.hpp"
 #include "PoseInitialization.hpp"
+#include "Verification.hpp"
 
 using namespace vslam;
 using namespace vslam::data;
@@ -150,48 +151,54 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
             refined_pose.value();
       }
 
-      //////////////////// Keyframe selection //////////////////////////////
-      int32_t num_frames_after_kf =
-          current_frame->frame_id_ - latest_key_frame_id_;
-      int32_t num_inuse_features = 0;
-      for (const auto& lm_id : current_frame->observing_feature_id_) {
-        auto lm_ptr = map_database_->GetLandmark(lm_id).lock();
-        if (lm_ptr) {
-          if (lm_ptr->is_initialized_) {
-            num_inuse_features++;
-          }
-        }
-      }
-      double inuse_features_rate =
-          static_cast<double>(num_inuse_features) /
-          static_cast<double>(current_frame->observing_feature_id_.size());
-      if (((num_frames_after_kf > parameter_.keyframe_min_frames_after_kf_) &&
-           (inuse_features_rate <
-            parameter_.keyframe_new_kf_keypoints_threshold_)) ||
-          (inuse_features_rate < 0.3)) {
-        //      if (((num_frames_after_kf >
-        //      parameter_.keyframe_min_frames_after_kf_) &&
-        //          (inuse_features_rate <
-        //              parameter_.keyframe_new_kf_keypoints_threshold_))) {
-        current_frame->is_keyframe_ = true;
-        map_database_->latest_key_frame_id_ = current_frame->frame_id_;
-
-        vslam::backend::utility::RegisterLandmarkObservation(
-            map_database_,
-            map_database_->GetFrame(map_database_->latest_key_frame_id_));
-
-        spdlog::info(
-            "{} : KeyFrame detected. NumFrames: {}/{}, InuseFeatureRate: {}/{}",
-            __FUNCTION__,
-            num_frames_after_kf,
-            parameter_.keyframe_min_frames_after_kf_,
-            inuse_features_rate,
-            parameter_.keyframe_new_kf_keypoints_threshold_);
-      }
+      //      //////////////////// Keyframe selection
+      //      ////////////////////////////// int32_t num_frames_after_kf =
+      //          current_frame->frame_id_ - latest_key_frame_id_;
+      //      int32_t num_inuse_features = 0;
+      //      for (const auto& lm_id : current_frame->observing_feature_id_) {
+      //        auto lm_ptr = map_database_->GetLandmark(lm_id).lock();
+      //        if (lm_ptr) {
+      //          if (lm_ptr->is_initialized_) {
+      //            num_inuse_features++;
+      //          }
+      //        }
+      //      }
+      //      double inuse_features_rate =
+      //          static_cast<double>(num_inuse_features) /
+      //          static_cast<double>(current_frame->observing_feature_id_.size());
+      //      if (((num_frames_after_kf >
+      //      parameter_.keyframe_min_frames_after_kf_) &&
+      //           (inuse_features_rate <
+      //            parameter_.keyframe_new_kf_keypoints_threshold_)) ||
+      //          (inuse_features_rate < 0.3)) {
+      //        //      if (((num_frames_after_kf >
+      //        //      parameter_.keyframe_min_frames_after_kf_) &&
+      //        //          (inuse_features_rate <
+      //        // parameter_.keyframe_new_kf_keypoints_threshold_))) {
+      //        current_frame->is_keyframe_ = true;
+      //        map_database_->latest_key_frame_id_ = current_frame->frame_id_;
+      //
+      //        vslam::backend::utility::RegisterLandmarkObservation(
+      //            map_database_,
+      //            map_database_->GetFrame(map_database_->latest_key_frame_id_));
+      //
+      //        spdlog::info(
+      //            "{} : KeyFrame detected. NumFrames: {}/{}, InuseFeatureRate:
+      //            {}/{}",
+      //            __FUNCTION__,
+      //            num_frames_after_kf,
+      //            parameter_.keyframe_min_frames_after_kf_,
+      //            inuse_features_rate,
+      //            parameter_.keyframe_new_kf_keypoints_threshold_);
+      //      }
 
       //////////////////// Process KeyFrame //////////////////////////////
       // KeyFrameの時は追加でLandmarkPositionのTriangulate、iSAM2のUpdateを実行
       if (current_frame->is_keyframe_) {
+        vslam::backend::utility::RegisterLandmarkObservation(
+            map_database_,
+            map_database_->GetFrame(map_database_->latest_key_frame_id_));
+
         auto previous_key_frame =
             map_database_->GetFrame(latest_key_frame_id_).lock();
         if (previous_key_frame) {
@@ -200,7 +207,8 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
 
           // 前回のKeyFrameと共通して観測しているLandmarkを保存しておく
           // Current frameとPrev frameで共通して観測しており、かつ初期化済みのLM
-          // これで、Nearbyが発生する
+          // これで、Nearbyが発生しうるTakeover featureの数を見たい
+          // =>あんまりTakeover featureの数はあんまり関係ないように思える
           std::vector<database_index_t> intersection_lm_ids;
           std::set_intersection(
               current_frame->observing_feature_id_.begin(),
@@ -219,6 +227,27 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
             }
           }
 
+          //          /**
+          //           * @brief 前回KeyFrameと今回KeyFrameで5point
+          //           ransacを行い、Feature verificationを実行
+          //           */
+          //          auto verification_params =
+          //              vslam::verification::FeatureVerification5PointRANSAC::Parameter();
+          //          verification_params.ransac_threshold_angle_rad_ = 1.0 *
+          //          M_PI / 180.0;
+          //           verification::FeatureVerification5PointRANSAC
+          //           verification_5_point_ransac(verification_params);
+          //          auto verified_frame =
+          //          verification_5_point_ransac.RemoveOutlier(*previous_key_frame,
+          //          *current_frame); auto verified_frame_unique =
+          //          std::make_unique<data::Frame>(verified_frame);
+          //          map_database_->AddFrame(verified_frame_unique);
+          //          current_frame =
+          //          map_database_->GetFrame(map_database_->latest_frame_id_).lock();
+
+          /**
+           * @brief LMのTriangulate
+           */
           vslam::EigenAllocatedUnorderedMap<database_index_t,
                                             vslam::data::LandmarkWeakPtr>
               triangulated_landmarks;
@@ -283,8 +312,9 @@ bool ContinuousDetectorBackend::MapInitialization(
                                     current_frame,
                                     outpose,
                                     output_landmark_position,
-                                    0.95,  // 0.95
-                                    5);
+                                    0.99,  // 0.95
+                                    5      // 5
+      );
   if (!status_initiation) {
     return false;
   }

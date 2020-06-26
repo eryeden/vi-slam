@@ -147,36 +147,6 @@ vslam::data::Frame vslam::frontend::ContinuousDetectorFrontend::ProcessFrame(
   // Log features after tracking process
   internal_materials.features_after_tracking_ = feature_position_database;
 
-  //  /**
-  //   * @brief Feature verification
-  //   * @details
-  //   ここでのVerify対象LMは、前回のKeyFrameで観測されたLMのみ。他のLMは特にFilterしない。
-  //   */
-  //  auto latest_keyframe_ptr =
-  //      map_database_->GetFrame(map_database_->latest_key_frame_id_).lock();
-  //  if (latest_keyframe_ptr) {
-  //    data::Frame tmp_frame(0,
-  //                          0,
-  //                          true,
-  //                          frontend_input.camera_model_ptr_,
-  //                          feature_id_database,
-  //                          feature_position_database,
-  //                          feature_bearing_database,
-  //                          feature_age_database);
-  //
-  //    auto verified_frame =
-  //        feature_verification_->RemoveOutlier(*latest_keyframe_ptr,
-  //        tmp_frame);
-  //    feature_id_database = verified_frame.observing_feature_id_;
-  //    feature_position_database =
-  //        verified_frame.observing_feature_point_in_device_;
-  //    feature_bearing_database =
-  //        verified_frame.observing_feature_bearing_in_camera_frame_;
-  //    feature_age_database = verified_frame.feature_point_age_;
-  //    // Log features after verification
-  //    internal_materials.features_after_verification_ =
-  //    feature_position_database;
-  //  }
 
   /**
    * @brief Feature detection
@@ -201,6 +171,64 @@ vslam::data::Frame vslam::frontend::ContinuousDetectorFrontend::ProcessFrame(
   // Log features after detection
   internal_materials.features_after_detection_ = feature_position_database;
 
+  /**
+   * @brief KeyFrame Selection and do verification
+   */
+  auto latest_keyframe_ptr =
+      map_database_->GetFrame(map_database_->latest_key_frame_id_).lock();
+  if (latest_keyframe_ptr) {
+    int32_t num_frames_after_kf =
+        (last_frame_->frame_id_ + 1) - latest_keyframe_ptr->frame_id_;
+    int32_t num_inuse_features = 0;
+    for (const auto& lm_id : feature_id_database) {
+      auto lm_ptr = map_database_->GetLandmark(lm_id).lock();
+      if (lm_ptr) {
+        if (lm_ptr->is_initialized_) {
+          num_inuse_features++;
+        }
+      }
+    }
+    double inuse_features_rate =
+        static_cast<double>(num_inuse_features) /
+        static_cast<double>(feature_id_database.size());
+    if (((num_frames_after_kf > 5) && (inuse_features_rate < 0.5)) ||
+        (inuse_features_rate < 0.2)) {
+      data::Frame tmp_frame(0,
+                            0,
+                            true,
+                            frontend_input.camera_model_ptr_,
+                            feature_id_database,
+                            feature_position_database,
+                            feature_bearing_database,
+                            feature_age_database);
+
+      auto verified_frame =
+          feature_verification_->RemoveOutlier(*latest_keyframe_ptr, tmp_frame);
+      feature_id_database = verified_frame.observing_feature_id_;
+      feature_position_database =
+          verified_frame.observing_feature_point_in_device_;
+      feature_bearing_database =
+          verified_frame.observing_feature_bearing_in_camera_frame_;
+      feature_age_database = verified_frame.feature_point_age_;
+      // Log features after verification
+      internal_materials.features_after_verification_ =
+          feature_position_database;
+
+      /**
+       * @brief KeyFrame
+       */
+      auto output_frame = Frame(last_frame_->frame_id_ + 1,
+                                frontend_input.timestamp_,
+                                true,
+                                frontend_input.camera_model_ptr_,
+                                feature_id_database,
+                                feature_position_database,
+                                feature_bearing_database,
+                                feature_age_database);
+      output_frame.internal_materials_ = internal_materials;
+      return output_frame;
+    }
+  }
 
   /**
    * @brief Output results
