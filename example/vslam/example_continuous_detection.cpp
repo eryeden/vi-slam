@@ -32,22 +32,22 @@ int main() {
   //      euroc_kimera_data_provider(path_to_euroc);
 
   // EUROC
-  //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/V1_01_easy";
-  std::string path_to_euroc =
-      "/home/ery/subspace/docker_work/dataset/V1_02_medium";
   //    std::string path_to_euroc =
-  //        "/home/ery/subspace/docker_work/dataset/V1_03_difficult";
+  //        "/home/ery/subspace/docker_work/dataset/V1_01_easy";
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/V1_02_medium";
+  //      std::string path_to_euroc =
+  //          "/home/ery/subspace/docker_work/dataset/V1_03_difficult";
   //    std::string path_to_euroc =
   //        "/home/ery/subspace/docker_work/dataset/V2_01_easy";
-  //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/MH_01_easy";
-  //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/MH_02_easy";
-  //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/MH_03_medium";
-  //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/MH_04_difficult";
+  //    std::string path_to_euroc =
+  //        "/home/ery/subspace/docker_work/dataset/MH_01_easy";
+  //    std::string path_to_euroc =
+  //        "/home/ery/subspace/docker_work/dataset/MH_02_easy";
+  std::string path_to_euroc =
+      "/home/ery/subspace/docker_work/dataset/MH_03_medium";
+  //    std::string path_to_euroc =
+  //        "/home/ery/subspace/docker_work/dataset/MH_04_difficult";
 
   std::string path_to_calibfile =
       "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
@@ -90,7 +90,7 @@ int main() {
 
   /// Build detector
   auto detector_param = vslam::feature::FeatureDetectorANMS::Parameter();
-  detector_param.max_feature_number_ = 300;     // 150
+  detector_param.max_feature_number_ = 150;     // 150
   detector_param.min_feature_distance_ = 10.0;  // 10.0;
   detector_param.detection_min_feature_distance_ = 0.5;
 
@@ -108,7 +108,7 @@ int main() {
   auto verification_params =
       vslam::verification::FeatureVerification5PointRANSAC::Parameter();
   verification_params.ransac_threshold_angle_rad_ =
-      3.0 * M_PI / 180.0;  // 1 * M_PI / 180.0;
+      0.05 * M_PI / 180.0;  // 1 * M_PI / 180.0;
   auto verification_ptr =
       std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
           verification_params);
