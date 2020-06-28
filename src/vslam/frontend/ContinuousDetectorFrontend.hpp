@@ -22,6 +22,13 @@ class ContinuousDetectorFrontend : public FrontendBase {
   class Parameter {
    public:
     Parameter();
+
+    // KeyFrame selection
+    int32_t keyframe_min_frames_after_kf_;
+    double keyframe_new_kf_keypoints_threshold_;
+    double keyframe_new_kf_keypoints_minimum_threshold_;
+
+
   };
 
  public:

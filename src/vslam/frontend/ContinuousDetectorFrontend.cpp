@@ -191,8 +191,8 @@ vslam::data::Frame vslam::frontend::ContinuousDetectorFrontend::ProcessFrame(
     double inuse_features_rate =
         static_cast<double>(num_inuse_features) /
         static_cast<double>(feature_id_database.size());
-    if (((num_frames_after_kf > 5) && (inuse_features_rate < 0.5)) ||
-        (inuse_features_rate < 0.2)) {
+    if (((num_frames_after_kf > parameter_.keyframe_min_frames_after_kf_) && (inuse_features_rate < parameter_.keyframe_new_kf_keypoints_threshold_)) ||
+        (inuse_features_rate < parameter_.keyframe_new_kf_keypoints_minimum_threshold_)) {
       data::Frame tmp_frame(0,
                             0,
                             true,
