@@ -151,47 +151,6 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
             refined_pose.value();
       }
 
-      //      //////////////////// Keyframe selection
-      //      ////////////////////////////// int32_t num_frames_after_kf =
-      //          current_frame->frame_id_ - latest_key_frame_id_;
-      //      int32_t num_inuse_features = 0;
-      //      for (const auto& lm_id : current_frame->observing_feature_id_) {
-      //        auto lm_ptr = map_database_->GetLandmark(lm_id).lock();
-      //        if (lm_ptr) {
-      //          if (lm_ptr->is_initialized_) {
-      //            num_inuse_features++;
-      //          }
-      //        }
-      //      }
-      //      double inuse_features_rate =
-      //          static_cast<double>(num_inuse_features) /
-      //          static_cast<double>(current_frame->observing_feature_id_.size());
-      //      if (((num_frames_after_kf >
-      //      parameter_.keyframe_min_frames_after_kf_) &&
-      //           (inuse_features_rate <
-      //            parameter_.keyframe_new_kf_keypoints_threshold_)) ||
-      //          (inuse_features_rate < 0.3)) {
-      //        //      if (((num_frames_after_kf >
-      //        //      parameter_.keyframe_min_frames_after_kf_) &&
-      //        //          (inuse_features_rate <
-      //        // parameter_.keyframe_new_kf_keypoints_threshold_))) {
-      //        current_frame->is_keyframe_ = true;
-      //        map_database_->latest_key_frame_id_ = current_frame->frame_id_;
-      //
-      //        vslam::backend::utility::RegisterLandmarkObservation(
-      //            map_database_,
-      //            map_database_->GetFrame(map_database_->latest_key_frame_id_));
-      //
-      //        spdlog::info(
-      //            "{} : KeyFrame detected. NumFrames: {}/{}, InuseFeatureRate:
-      //            {}/{}",
-      //            __FUNCTION__,
-      //            num_frames_after_kf,
-      //            parameter_.keyframe_min_frames_after_kf_,
-      //            inuse_features_rate,
-      //            parameter_.keyframe_new_kf_keypoints_threshold_);
-      //      }
-
       //////////////////// Process KeyFrame //////////////////////////////
       // KeyFrameの時は追加でLandmarkPositionのTriangulate、iSAM2のUpdateを実行
       if (current_frame->is_keyframe_) {
