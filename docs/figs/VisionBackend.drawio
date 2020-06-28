@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-06-25T15:32:46.660Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="hTRHAtiMxfXi8mfw_Rzv" version="13.3.0" type="github" pages="4">
+<mxfile host="app.diagrams.net" modified="2020-06-28T11:02:10.812Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="BzeKxsxlDAuUGaQ8seH4" version="13.3.0" type="github" pages="4">
   <diagram id="mYV5fHMhs3SO6_IcKCSN" name="Top">
     <mxGraphModel dx="2140" dy="843" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -573,7 +573,7 @@
     
   </diagram>
   <diagram id="rxRwFc9iUt_cTfEsLqZz" name="Proposed-Backend">
-    <mxGraphModel dx="3727" dy="2044" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="2709" dy="1726" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="wGwapt1zrAfcY-FxFDx9-0" />
         <mxCell id="wGwapt1zrAfcY-FxFDx9-1" parent="wGwapt1zrAfcY-FxFDx9-0" />
@@ -1473,7 +1473,7 @@
           <mxGeometry x="250" y="4850" width="30" height="30" as="geometry" />
         </mxCell>
         <mxCell id="6MLSHfGje2r1yApgodgI-75" value="いくつかのIn-use LMはFeature tracking中にLostする" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=#1ba1e2;strokeColor=#006EAF;fontColor=#ffffff;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
-          <mxGeometry x="-80" y="5080" width="300" height="20" as="geometry" />
+          <mxGeometry x="-150" y="5050" width="300" height="20" as="geometry" />
         </mxCell>
         <mxCell id="6MLSHfGje2r1yApgodgI-76" value="" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;dashed=1;fillColor=#f8cecc;align=left;strokeColor=#b85450;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
           <mxGeometry x="-215" y="5140" width="155" height="20" as="geometry" />
@@ -1518,7 +1518,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="6MLSHfGje2r1yApgodgI-87" value="いくつかのNot in-use LMはFeature tracking中にLostする" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=#1ba1e2;strokeColor=#006EAF;fontColor=#ffffff;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
-          <mxGeometry x="603" y="4960" width="320" height="20" as="geometry" />
+          <mxGeometry x="650" y="4949" width="320" height="20" as="geometry" />
         </mxCell>
         <mxCell id="6MLSHfGje2r1yApgodgI-88" value="LostしたKF1のNot in-use LM" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;align=left;dashed=1;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
           <mxGeometry x="630" y="5150" width="170" height="20" as="geometry" />
@@ -1551,7 +1551,7 @@
           <mxGeometry x="390" y="5010" width="175" height="60" as="geometry" />
         </mxCell>
         <mxCell id="6MLSHfGje2r1yApgodgI-96" value="途中Trackingで消えるLMもある" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=#1ba1e2;strokeColor=#006EAF;fontColor=#ffffff;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
-          <mxGeometry x="390" y="5100" width="190" height="20" as="geometry" />
+          <mxGeometry x="490" y="5090" width="190" height="20" as="geometry" />
         </mxCell>
         <mxCell id="6MLSHfGje2r1yApgodgI-97" value="KF1でTriangulateから漏れ、かつFeature trackingでLostしたLM" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;align=left;dashed=1;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
           <mxGeometry x="220" y="5150" width="180" height="30" as="geometry" />
@@ -1569,7 +1569,7 @@
           <mxGeometry x="-195" y="4660" width="95" height="30" as="geometry" />
         </mxCell>
         <mxCell id="6MLSHfGje2r1yApgodgI-104" value="ここで消えるLMが多すぎる可能性がある。&lt;br&gt;TRできたLMのFrame間距離を利用できたらいいかも知れない" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fillColor=#1ba1e2;strokeColor=#006EAF;fontColor=#ffffff;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
-          <mxGeometry x="-245" y="5290" width="350" height="30" as="geometry" />
+          <mxGeometry x="-130" y="5246" width="350" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
