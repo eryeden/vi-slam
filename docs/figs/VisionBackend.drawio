@@ -1,4 +1,4 @@
-<mxfile host="www.draw.io" modified="2020-06-29T11:52:06.743Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="J2XRR0MpQbRziIaMDDXr" version="13.3.0" type="github" pages="4">
+<mxfile host="www.draw.io" modified="2020-06-29T11:55:05.032Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36" etag="jpSwihS3Qr1Pe2I34gEf" version="13.3.0" type="github" pages="4">
   <diagram id="mYV5fHMhs3SO6_IcKCSN" name="Top">
     <mxGraphModel dx="2190" dy="1563" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -1477,7 +1477,7 @@
           <mxGeometry x="2660" y="6629.07" width="110" height="20" as="geometry" />
         </mxCell>
         <mxCell id="dIPSMGwgpI7wshFmf5Mc-49" value="BackendState : Bootstrap" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;fontColor=#000000;fontStyle=1;fontSize=23;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
-          <mxGeometry x="-495" y="5660" width="300" height="30" as="geometry" />
+          <mxGeometry x="-512.5" y="5620" width="300" height="30" as="geometry" />
         </mxCell>
         <mxCell id="dIPSMGwgpI7wshFmf5Mc-50" value="結構失敗することあり。&lt;br&gt;KITTIの場合は成功したことなし。&lt;br&gt;5pointの出力する値がちゃんとPoseになっているか？&lt;br&gt;Essential matrixになっていないかをチェックする。" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;align=left;strokeColor=#b85450;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
           <mxGeometry x="360" y="6140" width="340" height="80" as="geometry" />
@@ -1505,6 +1505,9 @@
         </mxCell>
         <mxCell id="dIPSMGwgpI7wshFmf5Mc-59" value="初期化直後、Pose推定に失敗しているは不明だが、&lt;br&gt;最適化後にLandmarkが全て後側に移動してしまう場合あり。" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;align=left;strokeColor=#b85450;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
           <mxGeometry x="1362" y="6990" width="306" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="dIPSMGwgpI7wshFmf5Mc-60" value="Essential Matrixベースの手法では、&lt;br&gt;検出LMが平面にのみ分布する場合に初期化できない場合あり&lt;br&gt;ホモグラフィーベースの手法を併用するOrbSLAM方式&lt;br&gt;のほうが良いかも知れない。&lt;br&gt;ここのところもIMUを併用することでだいぶ良くなるはず。" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;align=left;strokeColor=#b85450;" vertex="1" parent="wGwapt1zrAfcY-FxFDx9-1">
+          <mxGeometry x="-390" y="5685" width="340" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
