@@ -39,8 +39,11 @@ class InternalMaterials {
   FeaturePositionDatabase features_after_tracking_;
   FeaturePositionDatabase features_after_detection_;
   FeaturePositionDatabase features_after_verification_;
+  /// 3point ransacによるカメラPose
   Pose_t camera_pose_initial_;
+  /// Motion only BAで推定したカメラPose
   Pose_t camera_pose_optimized_;
+  /// ISAM2で推定したカメラPose
   Pose_t camera_pose_isam2_;
 
   /**
@@ -56,6 +59,8 @@ class InternalMaterials {
   std::unordered_map<database_index_t, Landmark> optimized_landmarks_;
   /// 前回KeyFrameと共通して観測しているLandmark
   std::unordered_map<database_index_t, Landmark> take_over_landmarks_;
+  /// Nearby判定となったLandmark
+  std::unordered_map<database_index_t, Landmark> nearby_landmarks_;
 };
 
 }  // namespace vslam::data

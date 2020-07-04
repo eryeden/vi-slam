@@ -74,12 +74,19 @@ void serialize(Archive& ar, vslam::data::InternalMaterials& p) {
                       p.features_after_verification_.size()),
 
      /// iSAM2に利用しているLandmarkの数
+
+     cereal::make_nvp("pose_initialization_landmark_number",
+                      p.pose_initialization_landmarks_.size()),
+     cereal::make_nvp("pose_optimization_landmark_number",
+                      p.pose_optimization_landmarks_.size()),
      cereal::make_nvp("triangulated_landmark_number",
                       p.triangulated_landmarks_.size()),
      cereal::make_nvp("optimized_landmark_number",
                       p.optimized_landmarks_.size()),
      cereal::make_nvp("take_over_landmark_number",
                       p.take_over_landmarks_.size()),
+     cereal::make_nvp("nearby_landmark_number", p.nearby_landmarks_.size()),
+     cereal::make_nvp("nearby_landmarks", p.nearby_landmarks_),
 
      /// Frame pose
      cereal::make_nvp("frame_pose_initial", p.camera_pose_initial_),

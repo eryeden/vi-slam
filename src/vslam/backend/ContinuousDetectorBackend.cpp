@@ -122,16 +122,25 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
           parameter_.pose_initialization_ransac_max_iterations_,
           parameter_.pose_initialization_ransac_probability_);
 
+      // For debug : Store LM for pose initialization
+      for (const auto lm_id : current_frame->observing_feature_id_) {
+        auto lm_ptr = map_database_->GetLandmark(lm_id).lock();
+        if (lm_ptr) {
+          if (lm_ptr->is_initialized_ && (!lm_ptr->is_outlier_)) {
+            frame_internals.pose_initialization_landmarks_.insert(
+                std::pair<database_index_t, data::Landmark>(lm_id, *lm_ptr));
+          }
+        }
+      }
+
       if (estimated_pose != std::nullopt) {
         spdlog::info("{} : Succeed in p3p pose initialization.", __FUNCTION__);
         current_frame->SetCameraPose(estimated_pose.value());
-        current_frame->internal_materials_.camera_pose_initial_ =
-            estimated_pose.value();
+        frame_internals.camera_pose_initial_ = estimated_pose.value();
       } else {
         spdlog::warn("{} : Failed in p3p pose initialization.", __FUNCTION__);
         current_frame->SetCameraPose(prev_frame->GetCameraPose());
-        current_frame->internal_materials_.camera_pose_initial_ =
-            prev_frame->GetCameraPose();
+        frame_internals.camera_pose_initial_ = prev_frame->GetCameraPose();
       }
 
       // Estimate Frame Pose
@@ -144,11 +153,21 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
           parameter_.pose_refinement_previous_position_sigma_,
           parameter_.pose_refinement_previous_orientation_sigma_);
 
+      // For debug : Store LM for motion only ba
+      for (const auto lm_id : current_frame->observing_feature_id_) {
+        auto lm_ptr = map_database_->GetLandmark(lm_id).lock();
+        if (lm_ptr) {
+          if (lm_ptr->is_initialized_ && (!lm_ptr->is_outlier_)) {
+            frame_internals.pose_optimization_landmarks_.insert(
+                std::pair<database_index_t, data::Landmark>(lm_id, *lm_ptr));
+          }
+        }
+      }
+
       if (refined_pose != std::nullopt) {
         spdlog::info("{} : Succeed in Pose Optimization.", __FUNCTION__);
         current_frame->SetCameraPose(refined_pose.value());
-        current_frame->internal_materials_.camera_pose_optimized_ =
-            refined_pose.value();
+        frame_internals.camera_pose_optimized_ = refined_pose.value();
       }
 
       //////////////////// Process KeyFrame //////////////////////////////
@@ -220,8 +239,7 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
                        __FUNCTION__,
                        triangulated_landmarks.size());
 
-          // For debug
-          // Triangulate した直後のLM位置を保存
+          // For debug Triangulate した直後のLM位置を保存
           for (auto& [lm_id, lm_weak] : triangulated_landmarks) {
             auto lm_ptr = lm_weak.lock();
             if (lm_ptr) {
@@ -243,6 +261,30 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
                   parameter_.optimization_reprojection_error_threshold_);
           if (!is_solver_success) {
             backend_state_ = BackendState::SolverException;
+            // for debug : Store nearby landmark
+            for (const auto& [lm_id, lm_weak] :
+                 map_database_->GetAllLandmarks()) {
+              auto lm_ptr = lm_weak.lock();
+              if (lm_ptr) {
+                if (lm_ptr->is_nearby_) {
+                  frame_internals.nearby_landmarks_.insert(
+                      std::pair<database_index_t, Landmark>(lm_id, *lm_ptr));
+                }
+              }
+            }
+          }
+
+          // for debug : Store iSAM2ed frame pose.
+          frame_internals.camera_pose_isam2_ = current_frame->GetCameraPose();
+          // for debug : Store optimized triangulated lm
+          for (auto& [lm_id, lm_weak] : triangulated_landmarks) {
+            auto lm_ptr = lm_weak.lock();
+            if (lm_ptr) {
+              if (lm_ptr->is_initialized_ && (!lm_ptr->is_outlier_)) {
+                frame_internals.optimized_landmarks_.insert(
+                    std::pair<database_index_t, Landmark>(lm_id, *lm_ptr));
+              }
+            }
           }
         }
       }

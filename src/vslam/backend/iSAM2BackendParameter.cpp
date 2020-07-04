@@ -30,7 +30,7 @@ vslam::backend::iSAM2Backend::Parameter::Parameter() {
   triangulation_minimum_parallax_threshold_ = 1.0 * M_PI / 180.0;  // 1
 
   // isam2 params
-  isam2_wildfire_threshold_ = 0.001;
+  isam2_wildfire_threshold_ = 0.1;  // 0.001;
   isam2_cache_linearized_factors_ = true;
   isam2_relinearize_threshold_ = 0.01;
   isam2_relinearize_skip_ = 1;
@@ -52,7 +52,7 @@ vslam::backend::iSAM2Backend::Parameter::Parameter() {
   //  //  isam2_params_.enableDetailedResults = false;     // only for
   //  debugging. isam2_params_.factorization = gtsam::ISAM2Params::CHOLESKY;
 
-  isam2_reprojection_noise_sigma_ = 1;  // 0.1
+  isam2_reprojection_noise_sigma_ = 1;  // 1  // 0.1
   isam2_prior_pose_position_sigma_ = 0.1;
   isam2_prior_pose_orientation_sigma_ = 0.1;
   isam2_iteration_number_ = 10;
