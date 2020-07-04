@@ -1,3 +1,7 @@
 [submodule "3rd/basalt-headers"]
 	path = 3rd/basalt-headers
 	url = https://gitlab.com/VladyslavUsenko/basalt-headers.git
+[submodule "3rd/cxxopts"]
+	path = 3rd/cxxopts
+	url = https://github.com/jarro2783/cxxopts.git
+	branch = 2_1
