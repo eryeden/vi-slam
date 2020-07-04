@@ -113,7 +113,8 @@ if __name__ == "__main__":
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-25-23-50-24'
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-25-23-52-05'
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-25-23-57-13'
-    path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-26-00-02-27'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-26-00-02-27'
+    path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-29-21-38-13'
 
     path_to_reference_trajectory = "/e/subspace/docker_work/dataset/V1_02_medium/mav0/state_groundtruth_estimate0/data.csv"
     # path_to_reference_trajectory = "/e/subspace/docker_work/dataset/V1_01_easy/mav0/state_groundtruth_estimate0/data.csv"

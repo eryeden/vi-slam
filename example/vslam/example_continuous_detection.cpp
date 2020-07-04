@@ -34,8 +34,8 @@ int main() {
   // EUROC
   //    std::string path_to_euroc =
   //        "/home/ery/subspace/docker_work/dataset/V1_01_easy";
-  //  std::string path_to_euroc =
-  //      "/home/ery/subspace/docker_work/dataset/V1_02_medium";
+  std::string path_to_euroc =
+      "/home/ery/subspace/docker_work/dataset/V1_02_medium";
   //      std::string path_to_euroc =
   //          "/home/ery/subspace/docker_work/dataset/V1_03_difficult";
   //    std::string path_to_euroc =
@@ -44,8 +44,8 @@ int main() {
   //        "/home/ery/subspace/docker_work/dataset/MH_01_easy";
   //    std::string path_to_euroc =
   //        "/home/ery/subspace/docker_work/dataset/MH_02_easy";
-  std::string path_to_euroc =
-      "/home/ery/subspace/docker_work/dataset/MH_03_medium";
+  //  std::string path_to_euroc =
+  //      "/home/ery/subspace/docker_work/dataset/MH_03_medium";
   //    std::string path_to_euroc =
   //        "/home/ery/subspace/docker_work/dataset/MH_04_difficult";
 
@@ -53,11 +53,11 @@ int main() {
       "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
       "calib_results/calibration.json";
 
-  //    std::string path_to_euroc =
-  //        "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
-  //    std::string path_to_calibfile =
-  //        "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
-  //        "results/calibration.json";
+  //      std::string path_to_euroc =
+  //          "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
+  //      std::string path_to_calibfile =
+  //          "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
+  //          "results/calibration.json";
 
   vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
       path_to_euroc, path_to_calibfile);
@@ -77,7 +77,7 @@ int main() {
 
   std::string path_to_kitti =
       "/home/ery/subspace/docker_work/dataset/data_odometry_gray/dataset/"
-      "sequences/00";
+      "sequences/03";
   vslam::dataprovider::KittiKimeraDataProvider kitti_kimera_data_provider(
       path_to_kitti);
 
@@ -90,16 +90,17 @@ int main() {
 
   /// Build detector
   auto detector_param = vslam::feature::FeatureDetectorANMS::Parameter();
-  detector_param.max_feature_number_ = 150;     // 150
-  detector_param.min_feature_distance_ = 10.0;  // 10.0;
-  detector_param.detection_min_feature_distance_ = 0.5;
+  detector_param.max_feature_number_ = 300;  // 150
+  detector_param.detection_feature_number_ = 600;
+  detector_param.min_feature_distance_ = 5.0;            // 10.0;
+  detector_param.detection_min_feature_distance_ = 0.5;  // 0.5
 
   auto anms_detector_ptr =
       std::make_shared<vslam::feature::FeatureDetectorANMS>(detector_param);
 
   //// Build tracker
   auto lssd_params = vslam::feature::FeatureTrackerLSSDLucasKanade::Parameter();
-  lssd_params.optical_flow_max_recovered_dist_ = 0.5;  // 1.0;
+  lssd_params.optical_flow_max_recovered_dist_ = 1.0;  // 1.0;　0.5
   auto lssd_tracker_ptr =
       std::make_shared<vslam::feature::FeatureTrackerLSSDLucasKanade>(
           lssd_params);
@@ -108,7 +109,7 @@ int main() {
   auto verification_params =
       vslam::verification::FeatureVerification5PointRANSAC::Parameter();
   verification_params.ransac_threshold_angle_rad_ =
-      0.05 * M_PI / 180.0;  // 1 * M_PI / 180.0;
+      1.0 * M_PI / 180.0;  // 1 * M_PI / 180.0;
   auto verification_ptr =
       std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
           verification_params);
@@ -128,6 +129,10 @@ int main() {
 
   vslam::frontend::ContinuousDetectorFrontend::Parameter
       continuous_frontend_parameter;
+  continuous_frontend_parameter.keyframe_min_frames_after_kf_ = 5;
+  continuous_frontend_parameter.keyframe_new_kf_keypoints_threshold_ = 0.5;
+  continuous_frontend_parameter.keyframe_new_kf_keypoints_minimum_threshold_ =
+      0.2;
   vslam::frontend::ContinuousDetectorFrontend continuous_detector_frontend(
       threadsafe_map_database_ptr,
       anms_detector_ptr,
@@ -139,8 +144,7 @@ int main() {
    * @brief Backend
    */
   vslam::backend::iSAM2Backend::Parameter isam2_backend_paramter;
-  isam2_backend_paramter.keyframe_new_kf_keypoints_threshold_ = 0.7;
-  isam2_backend_paramter.keyframe_min_frames_after_kf_ = 5;
+  isam2_backend_paramter.isam2_iteration_number_ = 5;
   vslam::backend::ContinuousDetectorBackend continuous_detector_backend(
       threadsafe_map_database_ptr, isam2_backend_paramter);
 
@@ -196,6 +200,9 @@ int main() {
   vslam::EigenAllocatedVector<vslam::Pose_t> trajectory_keyframe;
   vslam::EigenAllocatedVector<vslam::Pose_t> trajectory_isam2;
   vslam::EigenAllocatedVector<vslam::Pose_t> trajectory_initialized;
+  vslam::EigenAllocatedVector<vslam::Pose_t> trajectory_motion_only_ba;
+  // For Frame visualization
+  cv::Mat vis, vis_pose_init, vis_triangulate, vis_takeover;
 
   // Create a window and render primitives.
   viewer.LaunchViewer();
@@ -206,7 +213,7 @@ int main() {
      */
     if (is_update) {
       auto input = euroc_kimera_data_provider.GetInput();
-      //      auto input = kitti_kimera_data_provider.GetInput();
+      //            auto input = kitti_kimera_data_provider.GetInput();
       if (input == std::nullopt) {
         is_reach_the_last = true;
         continue;
@@ -244,9 +251,14 @@ int main() {
        * @brief Visualize
        */
       /// Draw detected features
-      cv::Mat vis;
       cv::cvtColor(
           continuous_detector_frontend.last_input_.frame_, vis, CV_GRAY2BGR);
+      vis.copyTo(vis_pose_init);
+      if (latest_frame_ptr->is_keyframe_) {
+        vis.copyTo(vis_takeover);
+        vis.copyTo(vis_triangulate);
+      }
+
       for (const auto& [id, pos] :
            latest_frame_ptr->observing_feature_point_in_device_) {
         int32_t landmark_age = latest_frame_ptr->feature_point_age_.at(id);
@@ -304,6 +316,34 @@ int main() {
                         cv::Scalar(0, 0, 0));
           }
         }
+
+        if (latest_frame_ptr->internal_materials_.pose_initialization_landmarks_
+                .count(id) != 0) {
+          cv::circle(vis_pose_init,
+                     cv::Point(pos[0], pos[1]),
+                     5,
+                     cv::Scalar(0, 255, 0),
+                     1,
+                     CV_AA);
+        }
+        if (latest_frame_ptr->internal_materials_.take_over_landmarks_.count(
+                id) != 0) {
+          cv::circle(vis_takeover,
+                     cv::Point(pos[0], pos[1]),
+                     5,
+                     cv::Scalar(0, 255, 0),
+                     1,
+                     CV_AA);
+        }
+        if (latest_frame_ptr->internal_materials_.triangulated_landmarks_.count(
+                id) != 0) {
+          cv::circle(vis_triangulate,
+                     cv::Point(pos[0], pos[1]),
+                     5,
+                     cv::Scalar(0, 255, 0),
+                     1,
+                     CV_AA);
+        }
       }
       /// draw feature point number
       std::string str_feature_number = fmt::format(
@@ -335,11 +375,19 @@ int main() {
             "current_cam", pose_world_T_body));
       }
       cv::imshow("Keypoints", vis);
+      cv::imshow("Triangulated_lm", vis_triangulate);
+      cv::imshow("Takeover_lm", vis_takeover);
+      cv::imshow("Pose_init_lm", vis_pose_init);
+
       /// Draw trajectory
       trajectory_isam2.emplace_back(pose_world_T_body);
       trajectory_initialized.emplace_back(
           pose_body_T_sensor.inverse() *
           latest_frame_ptr->internal_materials_.camera_pose_initial_);
+      trajectory_motion_only_ba.emplace_back(
+          pose_body_T_sensor.inverse() *
+          latest_frame_ptr->internal_materials_.camera_pose_optimized_);
+
       if (is_draw_keyframe) {
         viewer.PushPrimitive(vslam::viewer::TrajectoryPrimitive(
             "traj_keyframe",
@@ -355,14 +403,19 @@ int main() {
       }
       viewer.PushPrimitive(vslam::viewer::TrajectoryPrimitive(
           "traj_isam2", trajectory_isam2, vslam::Vec3_t(0, 0, 255)));
+
       if (is_draw_initial_pose) {
         viewer.PushPrimitive(
             vslam::viewer::TrajectoryPrimitive("traj_initial",
                                                trajectory_initialized,
                                                vslam::Vec3_t(0, 255, 255)));
+        viewer.PushPrimitive(vslam::viewer::TrajectoryPrimitive(
+            "traj_opt", trajectory_motion_only_ba, vslam::Vec3_t(255, 0, 255)));
       } else {
         viewer.PushPrimitive(vslam::viewer::TrajectoryPrimitive(
             "traj_initial", {}, vslam::Vec3_t(0, 255, 255)));
+        viewer.PushPrimitive(vslam::viewer::TrajectoryPrimitive(
+            "traj_opt", {}, vslam::Vec3_t(255, 0, 255)));
       }
 
       /// Draw estimated landmark position
