@@ -18,6 +18,12 @@ using namespace vslam::dataprovider;
 //    const std::string& path_to_dataset_root,
 //    const std::string& path_to_calibration_file) {}
 
+EurocKimeraDataProvider::Parameter::Parameter() {
+  euroc_dataset_root_ = "/home/ery/subspace/docker_work/dataset/V1_02_medium";;
+  ds_calibration_file_ = "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/calib_results/calibration.json";
+  mask_image_ = "";
+}
+
 EurocKimeraDataProvider::EurocKimeraDataProvider(
     const std::string& path_to_dataset_root,
     const std::string& path_to_calibration_file,
@@ -39,6 +45,10 @@ EurocKimeraDataProvider::EurocKimeraDataProvider(
     cv::threshold(mask_image_raw, mask_image_, 10, 255, CV_THRESH_BINARY);
   }
 }
+
+EurocKimeraDataProvider::EurocKimeraDataProvider(const Parameter& parameter)
+:EurocKimeraDataProvider(parameter.euroc_dataset_root_, parameter.ds_calibration_file_, parameter.mask_image_)
+{}
 
 std::optional<frontend::KimeraFrontendInput>
 EurocKimeraDataProvider::GetInput() {
@@ -122,6 +132,7 @@ EurocKimeraDataProvider::ParseCameraParameters(
     const std::string& path_to_calibration_file) {
   // Read calib file
   std::fstream calib_file_input(path_to_calibration_file);
+  spdlog::info("{}: Read calibfile {}", __FUNCTION__ , path_to_calibration_file);
   nlohmann::json calib_json;
   calib_file_input >> calib_json;
 

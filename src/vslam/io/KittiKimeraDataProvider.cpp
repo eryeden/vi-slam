@@ -10,6 +10,11 @@ using namespace vslam;
 using namespace vslam::dataprovider;
 using namespace vslam::frontend;
 
+KittiKimeraDataProvider::Parameter::Parameter() {
+  kitti_dataset_root_ = "/home/ery/subspace/docker_work/dataset/data_odometry_gray/dataset/sequences/03";
+  mask_image_ = "";
+}
+
 vslam::dataprovider::KittiKimeraDataProvider::KittiKimeraDataProvider(
     const std::string& path_to_dataset_root,
     const std::string& path_to_mask_image)
@@ -30,6 +35,12 @@ vslam::dataprovider::KittiKimeraDataProvider::KittiKimeraDataProvider(
     cv::threshold(mask_image_raw, mask_image_, 10, 255, CV_THRESH_BINARY);
   }
 }
+
+vslam::dataprovider::KittiKimeraDataProvider::KittiKimeraDataProvider(const Parameter& parameter)
+: KittiKimeraDataProvider(parameter.kitti_dataset_root_, parameter.mask_image_)
+{
+}
+
 std::optional<frontend::KimeraFrontendInput>
 vslam::dataprovider::KittiKimeraDataProvider::GetInput() {
   if (last_index_ >= log_stored_.size()) {

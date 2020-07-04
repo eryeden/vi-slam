@@ -19,12 +19,24 @@ class KittiKimeraDataProvider : public KimeraDataProviderBase {
                              >;
 
  public:
+  class Parameter {
+   public:
+    Parameter();
+
+    /**
+     * @brief Path to dataset
+     */
+    std::string kitti_dataset_root_;
+    std::string mask_image_;
+  };
+
   /**
    * @param path_to_dataset_root : Specify the path to the root of Kitti. ex)
    * path/to/dataset/data_odometry_gray_dataset_sequence/00
    */
   KittiKimeraDataProvider(const std::string& path_to_dataset_root,
                           const std::string& path_to_mask_image = "");
+  KittiKimeraDataProvider(const Parameter& parameter);
 
   /**
    * @brief Get data and increment a internal line index.

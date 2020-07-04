@@ -15,6 +15,8 @@
 #include "fmt/format.h"
 #include "iSAM2Backend.hpp"
 #include "type_defines.hpp"
+#include "EurocKimeraDataProvider.hpp"
+#include "KittiKimeraDataProvider.hpp"
 
 namespace vslam::dataoutput {
 
@@ -104,6 +106,20 @@ class LogDataOutput {
       const std::string& filename = "FeatureVerification5PointRANSAC.json") {
     Dump<verification::FeatureVerification5PointRANSAC::Parameter>(parameter,
                                                                    filename);
+  }
+
+  void Dump(
+      const dataprovider::EurocKimeraDataProvider::Parameter& parameter,
+      const std::string& filename = "EurocKimeraDataProvider.json") {
+    Dump<dataprovider::EurocKimeraDataProvider::Parameter>(parameter,
+                                                           filename);
+  }
+
+  void Dump(
+      const dataprovider::KittiKimeraDataProvider::Parameter& parameter,
+      const std::string& filename = "KittiKimeraDataProvider.json") {
+    Dump<dataprovider::KittiKimeraDataProvider::Parameter>(parameter,
+                                                           filename);
   }
 
  private:

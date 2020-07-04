@@ -21,10 +21,25 @@
 #include "iSAM2Backend.hpp"
 #include "FeatureDetectorANMS.hpp"
 #include "FeatureTrackerLSSDLucasKanade.hpp"
+#include "EurocKimeraDataProvider.hpp"
+#include "KittiKimeraDataProvider.hpp"
 
 #include "basalt/serialization/eigen_io.h"
 
 namespace cereal {
+
+template <class Archive>
+void serialize(Archive& ar, vslam::dataprovider::EurocKimeraDataProvider::Parameter& p) {
+  ar(cereal::make_nvp("euroc_dataset_root", p.euroc_dataset_root_),
+     cereal::make_nvp("ds_calibration_file", p.ds_calibration_file_),
+     cereal::make_nvp("mask_image", p.mask_image_));
+}
+
+template <class Archive>
+void serialize(Archive& ar, vslam::dataprovider::KittiKimeraDataProvider::Parameter& p) {
+  ar(cereal::make_nvp("kitti_dataset_root", p.kitti_dataset_root_),
+     cereal::make_nvp("mask_image", p.mask_image_));
+}
 
 template <class Archive>
 void serialize(Archive& ar, vslam::data::Landmark& p) {

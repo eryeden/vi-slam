@@ -19,6 +19,20 @@ class EurocKimeraDataProvider : public KimeraDataProviderBase {
                              >;
 
  public:
+
+  class Parameter {
+   public:
+    Parameter();
+
+    /**
+     * @brief Path to dataset
+     */
+    std::string euroc_dataset_root_;
+    std::string ds_calibration_file_;
+    std::string mask_image_;
+  };
+
+
   /**
    * @param path_to_dataset_root : Specify the path to the root of EUROC. ex)
    * path/to/dataset/V1_01_easy
@@ -28,6 +42,7 @@ class EurocKimeraDataProvider : public KimeraDataProviderBase {
   EurocKimeraDataProvider(const std::string& path_to_dataset_root,
                           const std::string& path_to_calibration_file,
                           const std::string& path_to_mask_image = "");
+  EurocKimeraDataProvider(const Parameter& parameter);
 
   /**
    * @brief Get data and increment a internal line index.
