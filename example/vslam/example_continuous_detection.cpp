@@ -34,12 +34,12 @@ int main() {
   // EUROC
   //    std::string path_to_euroc =
   //        "/home/ery/subspace/docker_work/dataset/V1_01_easy";
-//  std::string path_to_euroc =
-//      "/home/ery/subspace/docker_work/dataset/V1_02_medium";
   std::string path_to_euroc =
-      "/home/ery/devel/dataset/V1_02_medium";
-//  std::string path_to_euroc =
-//      "/home/ery/devel/dataset/V2_02_medium";
+      "/home/ery/subspace/docker_work/dataset/V1_02_medium";
+  //  std::string path_to_euroc =
+  //      "/home/ery/devel/dataset/V1_02_medium";
+  //  std::string path_to_euroc =
+  //      "/home/ery/devel/dataset/V2_02_medium";
   //      std::string path_to_euroc =
   //          "/home/ery/subspace/docker_work/dataset/V1_03_difficult";
   //    std::string path_to_euroc =
@@ -53,11 +53,11 @@ int main() {
   //    std::string path_to_euroc =
   //        "/home/ery/subspace/docker_work/dataset/MH_04_difficult";
 
-//  std::string path_to_calibfile =
-//      "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
-//      "calib_results/calibration.json";
   std::string path_to_calibfile =
-      "/home/ery/devel/dataset/calib_data/calib_data/euroc_calib_results/calibration.json";
+      "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/"
+      "calib_results/calibration.json";
+  //  std::string path_to_calibfile =
+  //      "/home/ery/devel/dataset/calib_data/calib_data/euroc_calib_results/calibration.json";
 
   //      std::string path_to_euroc =
   //          "/home/ery/subspace/docker_work/dataset/dataset-corridor1_512_16";
@@ -65,7 +65,8 @@ int main() {
   //          "/home/ery/subspace/docker_work/dataset/basalt_calib/tumvi_calib_data/"
   //          "results/calibration.json";
 
-  vslam::dataprovider::EurocKimeraDataProvider::Parameter euroc_dataprovider_params;
+  vslam::dataprovider::EurocKimeraDataProvider::Parameter
+      euroc_dataprovider_params;
   euroc_dataprovider_params.euroc_dataset_root_ = path_to_euroc;
   euroc_dataprovider_params.ds_calibration_file_ = path_to_calibfile;
 //  vslam::dataprovider::EurocKimeraDataProvider euroc_kimera_data_provider(
@@ -177,9 +178,9 @@ int main() {
    */
   // Dump detailed log
 
-//  std::string path_to_output_log_dir =
-//      "/home/ery/subspace/docker_work/dataset/result/logs/";
-  std::string path_to_output_log_dir ="/home/ery/devel/dataset/result/logs";
+  std::string path_to_output_log_dir =
+      "/home/ery/subspace/docker_work/dataset/result/logs/";
+  //  std::string path_to_output_log_dir ="/home/ery/devel/dataset/result/logs";
   std::vector<vslam::data::InternalMaterials> internals;
   std::time_t current_time = std::time(nullptr);
   std::string current_log_directory_name =
