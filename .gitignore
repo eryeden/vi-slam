@@ -42,3 +42,6 @@ build
 cmake-build-debug
 .idea
 /scripts/.python-version
+
+# Output results
+results

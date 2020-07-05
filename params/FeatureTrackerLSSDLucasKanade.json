@@ -1,0 +1,10 @@
+{
+  "value0": {
+    "optical_flow_type": "frame_to_frame",
+    "optical_flow_detection_grid_size": 32,
+    "optical_flow_max_recovered_dist": 1.0,
+    "optical_flow_pattern": 51,
+    "optical_flow_max_iterations": 5,
+    "optical_flow_levels": 3
+  }
+}

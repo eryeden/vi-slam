@@ -1,0 +1,7 @@
+{
+  "value0": {
+    "euroc_dataset_root": "/home/ery/subspace/docker_work/dataset/V1_02_medium",
+    "ds_calibration_file": "/home/ery/subspace/docker_work/dataset/basalt_calib/euroc_calib/calib_results/calibration.json",
+    "mask_image": ""
+  }
+}

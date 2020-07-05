@@ -1,0 +1,31 @@
+{
+  "value0": {
+    "reference_frame_id": 0,
+    "keyframe_new_kf_keypoints_threshold": 6.90587098090056e-310,
+    "keyframe_min_frames_after_kf": 2024931328,
+    "pose_initialization_ransac_threshold": 0.0017453292519943296,
+    "pose_initialization_ransac_max_iterations": 100,
+    "pose_initialization_ransac_probability": 0.99,
+    "pose_refinement_reprojection_noise_sigma": 1.0,
+    "pose_refinement_landmark_position_sigma": 0.1,
+    "pose_refinement_use_previous_pose_factor": true,
+    "pose_refinement_previous_position_sigma": 0.1,
+    "pose_refinement_previous_orientation_sigma": 0.1,
+    "triangulation_reprojection_error_threshold": 5.0,
+    "triangulation_minimum_parallax_threshold": 0.017453292519943297,
+    "isam2_reprojection_noise_sigma": 1.0,
+    "isam2_prior_pose_position_sigma": 0.1,
+    "isam2_prior_pose_orientation_sigma": 0.1,
+    "isam2_iteration_number": 5,
+    "optimization_reprojection_error_threshold_": 3.0,
+    "isam2_wildfire_threshold": 0.1,
+    "isam2_cache_linearized_factors": true,
+    "isam2_relinearize_threshold": 0.01,
+    "isam2_relinearize_skip": 1.0,
+    "isam2_find_unused_factor_slots": true,
+    "isam2_enable_partial_relinearization_check": true,
+    "isam2_set_evaluate_nonlinear_error": false,
+    "isam2_enable_detailed_results_": false,
+    "isam2_factorization": 0
+  }
+}

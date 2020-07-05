@@ -1,0 +1,6 @@
+{
+  "value0": {
+    "kitti_dataset_root": "/home/ery/subspace/docker_work/dataset/data_odometry_gray/dataset/sequences/03",
+    "mask_image": ""
+  }
+}
