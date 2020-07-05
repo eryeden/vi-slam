@@ -3,6 +3,7 @@ import json
 import glob
 import re
 from tqdm import tqdm
+import argparse
 
 import numpy as np
 from evo import EvoException
@@ -94,6 +95,12 @@ def ape(traj_ref, traj_est, pose_relation, align=False, correct_scale=False,
 
 
 if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description='A evaluation script for euroc dataset.')
+
+    parser.add_argument('-r', '--result', type=str, help='Specify a path to the result directory.')
+    args = parser.parse_args()
+
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-14-14-25-56/'
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-14-14-17-08/'
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-14-16-01-05/'
@@ -114,10 +121,16 @@ if __name__ == "__main__":
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-25-23-52-05'
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-25-23-57-13'
     # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-26-00-02-27'
-    path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-29-21-38-13'
+    # path_to_frame_dir = '/e/subspace/docker_work/dataset/result/logs/2020-06-29-21-38-13'
+    path_to_frame_dir = args.result
 
-    path_to_reference_trajectory = "/e/subspace/docker_work/dataset/V1_02_medium/mav0/state_groundtruth_estimate0/data.csv"
+    # set the reference
+    dataset_config = open(path_to_frame_dir + "/EurocKimeraDataProvider.json", 'r')
+    json_dataset_config = json.load(dataset_config)
+    # path_to_reference_trajectory = "/e/subspace/docker_work/dataset/V1_02_medium/mav0/state_groundtruth_estimate0/data.csv"
     # path_to_reference_trajectory = "/e/subspace/docker_work/dataset/V1_01_easy/mav0/state_groundtruth_estimate0/data.csv"
+    path_to_reference_trajectory = json_dataset_config["value0"][
+                                       "euroc_dataset_root"] + "/mav0/state_groundtruth_estimate0/data.csv"
 
     frame_list = glob.glob(path_to_frame_dir + "/frames/frame_*.json")
     frame_path_list = [""] * len(frame_list)
@@ -150,8 +163,13 @@ if __name__ == "__main__":
     feature_pass_rate_verification = []
     feature_pass_rate_vision_frontend = []
 
+    # 0: triangulateしたLMは0, 1: triangulateしたLMとtakeoverしたLMは同じだけいる
+    # 1以上のとき: triangulateしたLMのほうが多い。
+    # １以上のとき十分に現在位置を決定できる要素となる３Frame以上で観測されたLMの比率が小さくなる。なので想定としてはこのときにiSAM2最適化でFramePoseジャンプが発生しているのではないか？
+    feature_takeover_triangulate_rate = []
+
     count = 0
-    for fi in frame_internals:
+    for fi in tqdm(frame_internals):
         lm_number = get_inuse_landmark_number(fi)
         inuse_lm_number.append(lm_number)
         aged_1_lm_number.append(get_landmark_number_by_age(fi, 1))
@@ -171,7 +189,7 @@ if __name__ == "__main__":
         if fi["is_keyframe"]:
             if fi["features_after_tracking_number"] != 0:
                 feature_pass_rate_verification.append(
-                    float(fi["features_after_verification_number"]) / float(fi["features_after_tracking_number"]))
+                    float(fi["features_after_verification_number"]) / float(fi["features_after_detection_number"]))
                 feature_pass_rate_vision_frontend.append(
                     float(fi["features_after_verification_number"]) / float(fi["features_pre_frame_number"]))
             else:
@@ -180,6 +198,13 @@ if __name__ == "__main__":
             keyframe_inuse_lm_number.append(lm_number)
             keyframe_takeover_lm_number.append(int(fi["take_over_landmark_number"]))
             keyframe_triangulated_lm_number.append(int(fi["triangulated_landmark_number"]))
+
+            if (int(fi["take_over_landmark_number"]) == 0):
+                feature_takeover_triangulate_rate.append(1)
+            else:
+                feature_takeover_triangulate_rate.append(
+                    float(fi["triangulated_landmark_number"]) / float(fi["take_over_landmark_number"]))
+
         else:
             feature_pass_rate_verification.append(feature_pass_rate_verification[-1])
             feature_pass_rate_vision_frontend.append(feature_pass_rate_vision_frontend[-1])
@@ -257,5 +282,13 @@ if __name__ == "__main__":
     plt.xlabel("KeyFrame")
     plt.title("Key Frame Landmark number")
     plt.savefig(path_to_frame_dir + "/keyframe_lm_number.png")
+
+    fig_triangulate_takeover = plt.figure(6)
+    plt.plot(feature_takeover_triangulate_rate)
+    plt.legend(["Rate"])
+    plt.ylabel("Rate(tri/takeover)")
+    plt.xlabel("KeyFrame")
+    plt.title("Triangulate and Takeover rate")
+    plt.savefig(path_to_frame_dir + "/triangulate_takeover_rate.png")
 
     plt.show()
