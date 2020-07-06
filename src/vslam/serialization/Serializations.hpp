@@ -16,15 +16,15 @@
 #include <cereal/types/unordered_set.hpp>
 #include <cereal/types/vector.hpp>
 
-#include "Internals.hpp"
-#include "KimeraFrontend.hpp"
-#include "iSAM2Backend.hpp"
+#include "EurocKimeraDataProvider.hpp"
 #include "FeatureDetectorANMS.hpp"
 #include "FeatureTrackerLSSDLucasKanade.hpp"
-#include "EurocKimeraDataProvider.hpp"
+#include "Internals.hpp"
+#include "KimeraFrontend.hpp"
 #include "KittiKimeraDataProvider.hpp"
-
+#include "ThreadsafeContainer.hpp"
 #include "basalt/serialization/eigen_io.h"
+#include "iSAM2Backend.hpp"
 
 namespace cereal {
 
@@ -49,6 +49,11 @@ void serialize(Archive& ar, vslam::data::Landmark& p) {
      cereal::make_nvp("is_added", p.is_added_),
      cereal::make_nvp("is_outlier", p.is_outlier_),
      cereal::make_nvp("is_nearby", p.is_nearby_),
+
+     cereal::make_nvp("triangulate_parallax_angle",
+                      p.triangulate_parallax_angle_),
+     cereal::make_nvp("triangulate_baseline_length",
+                      p.triangulate_baseline_length_),
 
      cereal::make_nvp("observed_frame_id", p.GetAllObservedFrameIndex()),
      cereal::make_nvp("position_in_world", p.GetLandmarkPosition()));

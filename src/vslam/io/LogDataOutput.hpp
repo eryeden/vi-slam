@@ -111,15 +111,24 @@ class LogDataOutput {
   void Dump(
       const dataprovider::EurocKimeraDataProvider::Parameter& parameter,
       const std::string& filename = "EurocKimeraDataProvider.json") {
-    Dump<dataprovider::EurocKimeraDataProvider::Parameter>(parameter,
-                                                           filename);
+    Dump<dataprovider::EurocKimeraDataProvider::Parameter>(parameter, filename);
   }
 
-  void Dump(
-      const dataprovider::KittiKimeraDataProvider::Parameter& parameter,
-      const std::string& filename = "KittiKimeraDataProvider.json") {
-    Dump<dataprovider::KittiKimeraDataProvider::Parameter>(parameter,
-                                                           filename);
+  void Dump(const dataprovider::KittiKimeraDataProvider::Parameter& parameter,
+            const std::string& filename = "KittiKimeraDataProvider.json") {
+    Dump<dataprovider::KittiKimeraDataProvider::Parameter>(parameter, filename);
+  }
+
+  /**
+   * @brief LandmarkDatabaseを保存する
+   * @param output_landmarks
+   * @param filename
+   */
+  void Dump(const std::unordered_map<vslam::database_index_t,
+                                     vslam::data::Landmark> output_landmarks,
+            const std::string& filename = "Mapdatabase.json") {
+    Dump<std::unordered_map<vslam::database_index_t, vslam::data::Landmark>>(
+        output_landmarks, filename);
   }
 
  private:
