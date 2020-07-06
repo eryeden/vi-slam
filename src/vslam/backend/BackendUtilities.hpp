@@ -64,7 +64,8 @@ bool TriangulateKeyFrame(
                                       vslam::data::LandmarkWeakPtr>&
         triangulated_landmarks,
     double reprojection_error_threshold,
-    double minimum_parallax_threshold);
+    double minimum_parallax_threshold,
+    int32_t max_triangulated_number = -1);
 
 bool UpdateISAMObservation(
     std::shared_ptr<gtsam::ISAM2>& isam_2,

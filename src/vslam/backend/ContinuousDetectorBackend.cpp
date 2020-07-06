@@ -30,10 +30,6 @@ vslam::backend::ContinuousDetectorBackend::ContinuousDetectorBackend(
   isam_2_ptr_ = std::make_shared<gtsam::ISAM2>(isam_2_params);
 }
 
-/**
- * @brief KeyFrameの判定はここで実施する
- * @return
- */
 
 vslam::backend::BackendState
 vslam::backend::ContinuousDetectorBackend::SpinOnce() {
@@ -194,6 +190,7 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
               previous_key_frame->observing_feature_id_.begin(),
               previous_key_frame->observing_feature_id_.end(),
               std::back_inserter(intersection_lm_ids));
+          int32_t takeover_lm_number = 0;
           for (const auto lm_id : intersection_lm_ids) {
             auto lm_ptr = map_database_->GetLandmark(lm_id).lock();
             if (lm_ptr) {
@@ -201,6 +198,7 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
                 frame_internals.take_over_landmarks_.insert(
                     std::pair<database_index_t, data::Landmark>(lm_id,
                                                                 *lm_ptr));
+                takeover_lm_number++;
               }
             }
           }
@@ -234,7 +232,8 @@ vslam::backend::ContinuousDetectorBackend::SpinOnce() {
               current_frame,
               triangulated_landmarks,
               parameter_.triangulation_reprojection_error_threshold_,
-              parameter_.triangulation_minimum_parallax_threshold_);
+              parameter_.triangulation_minimum_parallax_threshold_,
+              takeover_lm_number * 0.99);
           spdlog::info("{} : Triangulate features {}",
                        __FUNCTION__,
                        triangulated_landmarks.size());

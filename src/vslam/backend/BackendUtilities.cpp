@@ -13,6 +13,7 @@
 #include <gtsam/slam/PriorFactor.h>
 #include <spdlog/spdlog.h>
 
+#include <algorithm>
 #include <opencv2/opencv.hpp>
 
 #include "DataUtilities.hpp"
@@ -316,7 +317,8 @@ bool vslam::backend::utility::TriangulateKeyFrame(
     EigenAllocatedUnorderedMap<database_index_t, data::LandmarkWeakPtr>&
         triangulated_landmarks,
     double reprojection_error_threshold,
-    double minimum_parallax_threshold) {
+    double minimum_parallax_threshold,
+    int32_t max_triangulated_number) {
   /**
    * @brief
    * 2つのKeyFrame間で共通して観測されていて、初期化されていないLandmarkをTriangulateする
@@ -387,7 +389,9 @@ bool vslam::backend::utility::TriangulateKeyFrame(
   }
 
   vslam::EigenAllocatedUnorderedMap<database_index_t, Vec3_t> landmark_position;
-  std::vector<double> landmark_observation_angle;
+  vslam::EigenAllocatedUnorderedMap<database_index_t, Vec4_t>
+      landmark_position_and_baseline;  // [pos.x, pos.y, pos.z, baseline_length]
+  std::unordered_map<database_index_t, double> landmark_observation_angle;
 
   for (size_t i = 0; i < initializable_lm_ids.size(); i++) {
     opengv::relative_pose::CentralRelativeAdapter tri_adapter(
@@ -400,7 +404,6 @@ bool vslam::backend::utility::TriangulateKeyFrame(
     Vec3_t pared_to_lm =
         (point - pose_current_T_pared[i].translation()).normalized();
     double angle = std::acos(pared_to_lm.dot(current_to_lm));
-    landmark_observation_angle.emplace_back(angle);
 
     // measure reprojeciton error
     try {
@@ -414,6 +417,12 @@ bool vslam::backend::utility::TriangulateKeyFrame(
       if ((error < reprojection_error_threshold) &&
           (angle > minimum_parallax_threshold)) {
         landmark_position[initializable_lm_ids[i]] = point_world_frame;
+        landmark_position_and_baseline[initializable_lm_ids[i]] =
+            Vec4_t(point_world_frame[0],
+                   point_world_frame[1],
+                   point_world_frame[2],
+                   pose_current_T_pared[i].translation().norm());
+        landmark_observation_angle[initializable_lm_ids[i]] = angle;
       } else {
         spdlog::info("{} : Outlier detected LM:{}, {} [px], {} [deg]",
                      __FUNCTION__,
@@ -429,13 +438,54 @@ bool vslam::backend::utility::TriangulateKeyFrame(
     }
   }
 
+  // sort triangulated lm by baseline length
+  EigenAllocatedVector<std::pair<database_index_t, Vec4_t>>
+      sorted_triangulated_lm;
+  for (const auto& [id, vec] : landmark_position_and_baseline) {
+    sorted_triangulated_lm.emplace_back(
+        std::pair<database_index_t, Vec4_t>(id, vec));
+  }
+  std::sort(sorted_triangulated_lm.begin(),
+            std::end(sorted_triangulated_lm),
+            [](const std::pair<database_index_t, Vec4_t>& a,
+               const std::pair<database_index_t, Vec4_t>& b) {
+              return a.second[3] < a.second[3];
+            });
+
   // Output triangulated landmarks
-  for (const auto& [id, pos] : landmark_position) {
-    auto lm_ptr = map_database->GetLandmark(id).lock();
-    if (lm_ptr) {
-      lm_ptr->SetLandmarkPosition(pos);
-      lm_ptr->is_initialized_ = true;
-      triangulated_landmarks[id] = map_database->GetLandmark(id);
+  if (max_triangulated_number < 0) {
+    for (const auto& [id, pos] : landmark_position) {
+      auto lm_ptr = map_database->GetLandmark(id).lock();
+      if (lm_ptr) {
+        lm_ptr->SetLandmarkPosition(pos);
+        lm_ptr->is_initialized_ = true;
+        lm_ptr->triangulate_parallax_angle_ = landmark_observation_angle[id];
+        lm_ptr->triangulate_baseline_length_ =
+            landmark_position_and_baseline[id][3];
+        triangulated_landmarks[id] = map_database->GetLandmark(id);
+      }
+    }
+  } else {
+    for (size_t insert_index = 0;
+         insert_index <
+         std::min(static_cast<std::size_t>(max_triangulated_number),
+                  sorted_triangulated_lm.size());
+         insert_index++) {
+      const auto& [id, vec] = sorted_triangulated_lm[insert_index];
+      auto lm_ptr = map_database->GetLandmark(id).lock();
+      if (lm_ptr) {
+        lm_ptr->SetLandmarkPosition(vec.block<3, 1>(0, 0));
+        lm_ptr->is_initialized_ = true;
+        lm_ptr->triangulate_parallax_angle_ = landmark_observation_angle[id];
+        lm_ptr->triangulate_baseline_length_ =
+            landmark_position_and_baseline[id][3];
+        spdlog::info("{}: [{}] P:{}, L:{}",
+                     __FUNCTION__,
+                     id,
+                     lm_ptr->triangulate_parallax_angle_,
+                     lm_ptr->triangulate_baseline_length_);
+        triangulated_landmarks[id] = map_database->GetLandmark(id);
+      }
     }
   }
 
