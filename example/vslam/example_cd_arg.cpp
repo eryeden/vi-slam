@@ -20,6 +20,7 @@
 #include "FeatureTrackerLSSDLucasKanade.hpp"
 #include "FeatureTrackerLucasKanade.hpp"
 #include "KittiKimeraDataProvider.hpp"
+#include "Landmark.hpp"
 #include "LogDataOutput.hpp"
 #include "Serializations.hpp"
 #include "TumDataOutput.hpp"
@@ -108,7 +109,7 @@ int main(int argc, char** argv) {
 
   //// Build tracker
   auto lssd_params = vslam::feature::FeatureTrackerLSSDLucasKanade::Parameter();
-  lssd_params.optical_flow_max_recovered_dist_ = 1.0;  // 1.0;　0.5
+  lssd_params.optical_flow_max_recovered_dist_ = 0.5;  // 1.0;　0.5
   auto lssd_tracker_ptr =
       std::make_shared<vslam::feature::FeatureTrackerLSSDLucasKanade>(
           lssd_params);
@@ -117,7 +118,7 @@ int main(int argc, char** argv) {
   auto verification_params =
       vslam::verification::FeatureVerification5PointRANSAC::Parameter();
   verification_params.ransac_threshold_angle_rad_ =
-      1.0 * M_PI / 180.0;  // 1 * M_PI / 180.0;
+      0.1 * M_PI / 180.0;  // 1 * M_PI / 180.0;
   auto verification_ptr =
       std::make_shared<vslam::verification::FeatureVerification5PointRANSAC>(
           verification_params);
@@ -143,6 +144,8 @@ int main(int argc, char** argv) {
    */
   vslam::backend::iSAM2Backend::Parameter isam2_backend_paramter;
   isam2_backend_paramter.isam2_iteration_number_ = 5;
+  isam2_backend_paramter.triangulation_minimum_parallax_threshold_ =
+      0.03;  // 0.024
   vslam::backend::ContinuousDetectorBackend continuous_detector_backend(
       threadsafe_map_database_ptr, isam2_backend_paramter);
 
@@ -345,6 +348,16 @@ int main(int argc, char** argv) {
                      cv::Scalar(0, 255, 0),
                      1,
                      CV_AA);
+          cv::putText(vis_triangulate,
+                      fmt::format("P:{:.3},L:{:.3}",
+                                  lm_ptr->triangulate_parallax_angle_,
+                                  lm_ptr->triangulate_baseline_length_),
+                      cv::Point(pos[0], pos[1]),
+                      CV_FONT_HERSHEY_PLAIN,
+                      0.8,
+                      cv::Scalar(0, 0, 0),
+                      1,
+                      CV_AA);
         }
       }
       /// draw feature point number
@@ -489,6 +502,22 @@ int main(int argc, char** argv) {
 
       if (is_exit_when_fail) {
         if (backend_state == vslam::backend::BackendState::SolverException) {
+          /**
+           * @brief Store all LM and
+           */
+          std::unordered_map<vslam::database_index_t, vslam::data::Landmark>
+              output_landmarks;
+          for (const auto& [lm_id, lm_weak] :
+               threadsafe_map_database_ptr->GetAllLandmarks()) {
+            auto lm_ptr = lm_weak.lock();
+            if (lm_ptr) {
+              output_landmarks.insert(
+                  std::pair<vslam::database_index_t, vslam::data::Landmark>(
+                      lm_id, *lm_ptr));
+            }
+          }
+          log_data_output.Dump(output_landmarks);
+
           return 0;
         }
       }
@@ -496,6 +525,22 @@ int main(int argc, char** argv) {
 
     previous_backend_state = backend_state;
   }
+
+  /**
+   * @brief Store all LM and
+   */
+  std::unordered_map<vslam::database_index_t, vslam::data::Landmark>
+      output_landmarks;
+  for (const auto& [lm_id, lm_weak] :
+       threadsafe_map_database_ptr->GetAllLandmarks()) {
+    auto lm_ptr = lm_weak.lock();
+    if (lm_ptr) {
+      output_landmarks.insert(
+          std::pair<vslam::database_index_t, vslam::data::Landmark>(lm_id,
+                                                                    *lm_ptr));
+    }
+  }
+  log_data_output.Dump(output_landmarks);
 
   return 0;
 }
