@@ -593,6 +593,7 @@ bool vslam::backend::utility::UpdateISAMObservation(
       gtsam::Pose3(current_frame_ptr->GetCameraPose().matrix()));
 
   // Exception かとうか？
+  std::shared_ptr<gtsam::ISAM2> isam2_backup(isam_2);
   bool is_detect_solver_exception = false;
   try {
     /**
@@ -620,9 +621,46 @@ bool vslam::backend::utility::UpdateISAMObservation(
       }
     }
     is_detect_solver_exception = true;
+
   } catch (std::exception& e) {
     spdlog::error("{}:{} Solver error: {}", __FILE__, __FUNCTION__, e.what());
     is_detect_solver_exception = true;
+  }
+
+  if (is_detect_solver_exception) {
+    isam_2 = isam2_backup;
+    spdlog::error("{}:{} Retry solve the problem.");
+    try {
+      /**
+       * @brief Setup ISAM2 and run optimization
+       */
+      isam_2->update(graph, initial_estimate);
+
+    } catch (gtsam::IndeterminantLinearSystemException& e) {
+      spdlog::error("{}:{} Solver IndeterminantLinearSystemException error: {}",
+                    __FILE__,
+                    __FUNCTION__,
+                    e.what());
+
+      // detection of nearby variable
+      Symbol nearby_symbol(e.nearbyVariable());
+      Key key = nearby_symbol.chr();
+      spdlog::info("{} Set variable tag as nearby. {}{}",
+                   __FUNCTION__,
+                   nearby_symbol.chr(),
+                   nearby_symbol.index());
+      if (key == 'l') {
+        auto lm_ptr = map_database->GetLandmark(nearby_symbol.index()).lock();
+        if (lm_ptr) {
+          lm_ptr->is_nearby_ = true;
+        }
+      }
+      is_detect_solver_exception = true;
+
+    } catch (std::exception& e) {
+      spdlog::error("{}:{} Solver error: {}", __FILE__, __FUNCTION__, e.what());
+      is_detect_solver_exception = true;
+    }
   }
 
   for (size_t i = 0; i < isam2_iteration_number; i++) {
@@ -653,12 +691,55 @@ bool vslam::backend::utility::UpdateISAMObservation(
         }
       }
       is_detect_solver_exception = true;
+
+      isam_2 = isam2_backup;
+
     } catch (std::exception& e) {
       spdlog::error("{}:{} Re calling Solver error: {}",
                     __FILE__,
                     __FUNCTION__,
                     e.what());
       is_detect_solver_exception = true;
+
+      isam_2 = isam2_backup;
+    }
+
+    if (is_detect_solver_exception) {
+      isam_2 = isam2_backup;
+      spdlog::error("{}:{} Retry solve the problem.");
+      try {
+        /**
+         * @brief Setup ISAM2 and run optimization
+         */
+        isam_2->update();
+
+      } catch (gtsam::IndeterminantLinearSystemException& e) {
+        spdlog::error(
+            "{}:{} Solver IndeterminantLinearSystemException error: {}",
+            __FILE__,
+            __FUNCTION__,
+            e.what());
+
+        // detection of nearby variable
+        Symbol nearby_symbol(e.nearbyVariable());
+        Key key = nearby_symbol.chr();
+        spdlog::info("{} Set variable tag as nearby. {}{}",
+                     __FUNCTION__,
+                     nearby_symbol.chr(),
+                     nearby_symbol.index());
+        if (key == 'l') {
+          auto lm_ptr = map_database->GetLandmark(nearby_symbol.index()).lock();
+          if (lm_ptr) {
+            lm_ptr->is_nearby_ = true;
+          }
+        }
+        is_detect_solver_exception = true;
+
+      } catch (std::exception& e) {
+        spdlog::error(
+            "{}:{} Solver error: {}", __FILE__, __FUNCTION__, e.what());
+        is_detect_solver_exception = true;
+      }
     }
   }
 
