@@ -15,6 +15,10 @@ add_executable(example_kimera_backend example_kimera_backend.cpp)
 list(APPEND EXECUTABLE_TARGETS example_kimera_backend)
 add_executable(example_serialization example_serialization.cpp)
 list(APPEND EXECUTABLE_TARGETS example_serialization)
+add_executable(example_continuous_detection example_continuous_detection.cpp)
+list(APPEND EXECUTABLE_TARGETS example_continuous_detection)
+add_executable(example_cd_arg example_cd_arg.cpp)
+list(APPEND EXECUTABLE_TARGETS example_cd_arg)
 
 
 foreach (EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)

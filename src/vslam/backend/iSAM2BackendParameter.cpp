@@ -10,10 +10,11 @@ vslam::backend::iSAM2Backend::Parameter::Parameter() {
   /// Initialization
   reference_frame_id_ = 0;
 
-  //  5point ransac
-  pose_initialization_ransac_threshold_ = 0.0001 * M_PI / 180.0;
-  pose_initialization_ransac_max_iterations_ = 100;
-  pose_initialization_ransac_probability_ = 0.99;
+  //  3point ransac
+  pose_initialization_ransac_threshold_ =
+      0.1 * M_PI / 180.0;                            // 0.1 * M_PI / 180.0;
+  pose_initialization_ransac_max_iterations_ = 100;  // 100;
+  pose_initialization_ransac_probability_ = 0.99;    // 0.99;
 
   // motion only ba
   pose_refinement_reprojection_noise_sigma_ = 1.0;
@@ -22,13 +23,14 @@ vslam::backend::iSAM2Backend::Parameter::Parameter() {
   pose_refinement_previous_position_sigma_ = 0.1;
   pose_refinement_previous_orientation_sigma_ = 0.1;
 
-  /// Keyframe & ISAM2
+  /// ISAM2
+
   // Triangulation
   triangulation_reprojection_error_threshold_ = 5.0;
-  triangulation_minimum_parallax_threshold_ = 1.0 * M_PI / 180.0;
+  triangulation_minimum_parallax_threshold_ = 1.0 * M_PI / 180.0;  // 1
 
   // isam2 params
-  isam2_wildfire_threshold_ = 0.001;
+  isam2_wildfire_threshold_ = 0.1;  // 0.001;
   isam2_cache_linearized_factors_ = true;
   isam2_relinearize_threshold_ = 0.01;
   isam2_relinearize_skip_ = 1;
@@ -50,7 +52,7 @@ vslam::backend::iSAM2Backend::Parameter::Parameter() {
   //  //  isam2_params_.enableDetailedResults = false;     // only for
   //  debugging. isam2_params_.factorization = gtsam::ISAM2Params::CHOLESKY;
 
-  isam2_reprojection_noise_sigma_ = 0.1;
+  isam2_reprojection_noise_sigma_ = 1;  // 1  // 0.1
   isam2_prior_pose_position_sigma_ = 0.1;
   isam2_prior_pose_orientation_sigma_ = 0.1;
   isam2_iteration_number_ = 10;

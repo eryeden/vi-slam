@@ -135,6 +135,11 @@ find_package(Pangolin REQUIRED)
 # VTK
 #find_package(VTK REQUIRED)
 
+# argument parser
+include_directories(3rd/cxxopts/include)
+
+# ----- Set definitions -----
+add_definitions(-DPROJECT_ROOT_DIR="${PROJECT_SOURCE_DIR}")
 
 # ----- Build selection -----
 add_subdirectory(src)

@@ -1,0 +1,13 @@
+{
+  "value0": {
+    "max_feature_number": 300,
+    "min_feature_distance": 5.0,
+    "detection_feature_number": 600,
+    "detection_min_feature_distance": 0.5,
+    "detection_quality_level": 0.001,
+    "detection_block_size": 4,
+    "detection_use_harris_corner": false,
+    "detection_k": 0.04,
+    "detection_ignore_edge": 20
+  }
+}

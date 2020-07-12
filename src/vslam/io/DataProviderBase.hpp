@@ -10,6 +10,7 @@
 #include "csv.h"
 
 namespace vslam::dataprovider {
+
 class KimeraDataProviderBase {
  public:
   KimeraDataProviderBase(){};

@@ -32,6 +32,9 @@ class iSAM2Backend : public BackendBase {
     double pose_refinement_previous_orientation_sigma_;
 
     /// Keyframe & ISAM2
+    // KeyFrame selection
+    int32_t keyframe_min_frames_after_kf_;
+    double keyframe_new_kf_keypoints_threshold_;
     // Triangulation
     double triangulation_reprojection_error_threshold_;
     double triangulation_minimum_parallax_threshold_;
@@ -78,16 +81,6 @@ class iSAM2Backend : public BackendBase {
   std::shared_ptr<gtsam::ISAM2> isam_2_ptr_;
 
   /**
-   * @brief
-   * Landmarkの被観測情報を更新する。Landmarkが存在しない場合は新規登録し、被観測情報を追加する。
-   * @param map_database
-   * @param input_frame
-   */
-  void RegisterLandmarkObservation(
-      std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
-      const data::FrameWeakPtr& input_frame);
-
-  /**
    * @brief Mapの初期化を実施
    * @param map_database[in,out]
    * @param reference_frame[in,out] : 初期化の基準となるFrame
@@ -100,36 +93,6 @@ class iSAM2Backend : public BackendBase {
       data::FrameWeakPtr&& current_frame,
       const Parameter& parameter);
 
-  bool InitializeISAM2(
-      std::shared_ptr<gtsam::ISAM2>& isam_2,
-      std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
-      data::FrameWeakPtr&& reference_frame,
-      data::FrameWeakPtr&& current_frame,
-      double isam2_reprojection_noise_sigma,
-      double isam2_prior_pose_position_sigma,
-      double isam2_prior_pose_orientation_sigma,
-      int32_t isam2_iteration_number);
-
-  bool TriangulateKeyFrame(
-      std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
-      const data::FrameWeakPtr& current_key_frame,
-      const data::FrameWeakPtr& previous_key_frame,
-      vslam::EigenAllocatedUnorderedMap<database_index_t,
-                                        vslam::data::LandmarkWeakPtr>&
-          triangulated_landmarks,
-      double reprojection_error_threshold,
-      double minimum_parallax_threshold);
-
-
-  bool UpdateISAMObservation(
-      std::shared_ptr<gtsam::ISAM2>& isam_2,
-      std::shared_ptr<data::ThreadsafeMapDatabase>& map_database,
-      vslam::EigenAllocatedUnorderedMap<database_index_t,
-                                        vslam::data::LandmarkWeakPtr>&
-          triangulated_landmarks,
-      double isam2_reprojection_noise_sigma,
-      int32_t isam2_iteration_number,
-      double reprojection_error_threshold);
 };
 
 }  // namespace vslam::backend

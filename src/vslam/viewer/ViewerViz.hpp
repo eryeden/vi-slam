@@ -22,6 +22,7 @@ class ViewerViz {
    public:
     cv::viz::Widget widget_;
     cv::Affine3d pose_;
+    bool is_draw_;
   };
   using PrimitiveDatabase = std::unordered_map<std::string, PrimitiveInfo>;
 

@@ -5,6 +5,7 @@
 #pragma once
 
 #include <basalt/camera/double_sphere_camera.hpp>
+#include <basalt/camera/pinhole_camera.hpp>
 #include <exception>
 #include <memory>
 
@@ -210,6 +211,65 @@ class DoubleSphereCameraModel : public CameraModelBase {
 
  private:
   std::unique_ptr<basalt::DoubleSphereCamera<double>> ds_camera_model_ptr_;
+};
+
+class PinholeCameraModel : public CameraModelBase {
+ public:
+  PinholeCameraModel(uint8_t camera_id,
+                     uint32_t image_width_pixel,
+                     uint32_t image_height_pixel,
+                     double rate,
+                     double fx,
+                     double fy,
+                     double cx,
+                     double cy);
+  PinholeCameraModel();
+  PinholeCameraModel(const PinholeCameraModel& pinhole_camera_model);
+
+  ~PinholeCameraModel() = default;
+
+  /**
+   * @brief For deep copy
+   * @return
+   */
+  PinholeCameraModel* Clone();
+
+  /**
+   * @brief カメラ座標系での３次元ポイントを画像上に投影する
+   * @param pos_camera_frame
+   * @return
+   */
+  Vec2_t Project(const Vec3_t& pos_camera_frame) const;
+
+  /**
+   * カメラ座標系での3次元ポイントを画像座標系上に投影するとともに、3次元ポイントに関するヤコビアンを計算する
+   * @param pos_camera_frame
+   * @param jacobian_p3d
+   * @return
+   */
+  Vec2_t Project(const Vec3_t& pos_camera_frame,
+                 vslam::MatRC_t<2, 3>& jacobian_p3d) const;
+
+  /**
+   * @brief 画像上の２Dポイントをカメラ座標系でのBearing vectorに変換する
+   * @param pos_image_frame
+   * @return
+   */
+  Vec3_t Unproject(const Vec2_t& pos_image_frame) const;
+
+  /**
+   * @brief [fx,0,ux; 0,fy,uy; 0,0,1]からなる行列を返す
+   * @return
+   */
+  Mat33_t IntrinsicMatrix() const;
+
+  double fx_;
+  double fy_;
+  double cx_;
+  double cy_;
+
+ private:
+  std::unique_ptr<basalt::PinholeCamera<double>> pinhole_camera_model_ptr_;
 };
 
 }  // namespace vslam::data

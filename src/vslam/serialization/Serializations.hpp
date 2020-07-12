@@ -16,15 +16,30 @@
 #include <cereal/types/unordered_set.hpp>
 #include <cereal/types/vector.hpp>
 
-#include "Internals.hpp"
-#include "KimeraFrontend.hpp"
-#include "iSAM2Backend.hpp"
+#include "EurocKimeraDataProvider.hpp"
 #include "FeatureDetectorANMS.hpp"
 #include "FeatureTrackerLSSDLucasKanade.hpp"
-
+#include "Internals.hpp"
+#include "KimeraFrontend.hpp"
+#include "KittiKimeraDataProvider.hpp"
+#include "ThreadsafeContainer.hpp"
 #include "basalt/serialization/eigen_io.h"
+#include "iSAM2Backend.hpp"
 
 namespace cereal {
+
+template <class Archive>
+void serialize(Archive& ar, vslam::dataprovider::EurocKimeraDataProvider::Parameter& p) {
+  ar(cereal::make_nvp("euroc_dataset_root", p.euroc_dataset_root_),
+     cereal::make_nvp("ds_calibration_file", p.ds_calibration_file_),
+     cereal::make_nvp("mask_image", p.mask_image_));
+}
+
+template <class Archive>
+void serialize(Archive& ar, vslam::dataprovider::KittiKimeraDataProvider::Parameter& p) {
+  ar(cereal::make_nvp("kitti_dataset_root", p.kitti_dataset_root_),
+     cereal::make_nvp("mask_image", p.mask_image_));
+}
 
 template <class Archive>
 void serialize(Archive& ar, vslam::data::Landmark& p) {
@@ -33,6 +48,12 @@ void serialize(Archive& ar, vslam::data::Landmark& p) {
      cereal::make_nvp("is_initialized", p.is_initialized_),
      cereal::make_nvp("is_added", p.is_added_),
      cereal::make_nvp("is_outlier", p.is_outlier_),
+     cereal::make_nvp("is_nearby", p.is_nearby_),
+
+     cereal::make_nvp("triangulate_parallax_angle",
+                      p.triangulate_parallax_angle_),
+     cereal::make_nvp("triangulate_baseline_length",
+                      p.triangulate_baseline_length_),
 
      cereal::make_nvp("observed_frame_id", p.GetAllObservedFrameIndex()),
      cereal::make_nvp("position_in_world", p.GetLandmarkPosition()));
@@ -42,6 +63,7 @@ template <class Archive>
 void serialize(Archive& ar, vslam::data::InternalMaterials& p) {
   ar(cereal::make_nvp("frame_index", p.frame_index_),
      cereal::make_nvp("frame_id", p.frame_id_),
+     cereal::make_nvp("timestamp", p.timestamp_),
 
      cereal::make_nvp("is_keyframe", p.is_keyframe_),
      cereal::make_nvp("observing_feature_id", p.observing_feature_id_),
@@ -53,6 +75,7 @@ void serialize(Archive& ar, vslam::data::InternalMaterials& p) {
      cereal::make_nvp("observing_feature_number",
                       p.observing_feature_point_in_device_.size()),
      cereal::make_nvp("camera_pose", p.camera_pose_),
+     cereal::make_nvp("body_pose", p.body_pose_),
      cereal::make_nvp("landmarks", p.landmarks_),
 
      /// Internals
@@ -62,11 +85,30 @@ void serialize(Archive& ar, vslam::data::InternalMaterials& p) {
      cereal::make_nvp("features_after_tracking", p.features_after_tracking_),
      cereal::make_nvp("features_after_tracking_number",
                       p.features_after_tracking_.size()),
+     cereal::make_nvp("features_after_detection", p.features_after_detection_),
+     cereal::make_nvp("features_after_detection_number",
+                      p.features_after_detection_.size()),
      cereal::make_nvp("features_after_verification",
                       p.features_after_verification_),
      cereal::make_nvp("features_after_verification_number",
                       p.features_after_verification_.size()),
 
+     /// iSAM2に利用しているLandmarkの数
+
+     cereal::make_nvp("pose_initialization_landmark_number",
+                      p.pose_initialization_landmarks_.size()),
+     cereal::make_nvp("pose_optimization_landmark_number",
+                      p.pose_optimization_landmarks_.size()),
+     cereal::make_nvp("triangulated_landmark_number",
+                      p.triangulated_landmarks_.size()),
+     cereal::make_nvp("optimized_landmark_number",
+                      p.optimized_landmarks_.size()),
+     cereal::make_nvp("take_over_landmark_number",
+                      p.take_over_landmarks_.size()),
+     cereal::make_nvp("nearby_landmark_number", p.nearby_landmarks_.size()),
+     cereal::make_nvp("nearby_landmarks", p.nearby_landmarks_),
+
+     /// Frame pose
      cereal::make_nvp("frame_pose_initial", p.camera_pose_initial_),
      cereal::make_nvp("frame_pose_optimized", p.camera_pose_optimized_),
      cereal::make_nvp("frame_pose_isam2", p.camera_pose_isam2_));
@@ -124,6 +166,12 @@ void serialize(Archive& ar, vslam::frontend::KimeraFrontend::Parameter& p) {
 template <class Archive>
 void serialize(Archive& ar, vslam::backend::iSAM2Backend::Parameter& p) {
   ar(cereal::make_nvp("reference_frame_id", p.reference_frame_id_),
+
+     cereal::make_nvp("keyframe_new_kf_keypoints_threshold",
+                      p.keyframe_new_kf_keypoints_threshold_),
+     cereal::make_nvp("keyframe_min_frames_after_kf",
+                      p.keyframe_min_frames_after_kf_),
+
      cereal::make_nvp("pose_initialization_ransac_threshold",
                       p.pose_initialization_ransac_threshold_),
      cereal::make_nvp("pose_initialization_ransac_max_iterations",
@@ -140,10 +188,12 @@ void serialize(Archive& ar, vslam::backend::iSAM2Backend::Parameter& p) {
                       p.pose_refinement_previous_position_sigma_),
      cereal::make_nvp("pose_refinement_previous_orientation_sigma",
                       p.pose_refinement_previous_orientation_sigma_),
+
      cereal::make_nvp("triangulation_reprojection_error_threshold",
                       p.triangulation_reprojection_error_threshold_),
      cereal::make_nvp("triangulation_minimum_parallax_threshold",
                       p.triangulation_minimum_parallax_threshold_),
+
      cereal::make_nvp("isam2_reprojection_noise_sigma",
                       p.isam2_reprojection_noise_sigma_),
      cereal::make_nvp("isam2_prior_pose_position_sigma",
@@ -151,6 +201,7 @@ void serialize(Archive& ar, vslam::backend::iSAM2Backend::Parameter& p) {
      cereal::make_nvp("isam2_prior_pose_orientation_sigma",
                       p.isam2_prior_pose_orientation_sigma_),
      cereal::make_nvp("isam2_iteration_number", p.isam2_iteration_number_),
+
      cereal::make_nvp("optimization_reprojection_error_threshold_",
                       p.optimization_reprojection_error_threshold_),
 

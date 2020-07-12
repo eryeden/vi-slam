@@ -75,7 +75,7 @@ void vslam::viewer::ViewerViz::InitializeViewer(const std::string& window_name,
     int32_t count = 0;
     for (const auto& w : (*widget_ptr)->GetWidget()) {
       primitive_database_[(*widget_ptr)->GetTag() + std::to_string(count++)] =
-          PrimitiveInfo{w, (*widget_ptr)->GetPose()};
+          PrimitiveInfo{w, (*widget_ptr)->GetPose(), true};
     }
     //    primitive_database_[(*widget_ptr)->GetTag()] =
     //        PrimitiveInfo{(*widget_ptr)->GetWidget(),
@@ -101,7 +101,7 @@ void vslam::viewer::ViewerViz::ViewerLoop() {
       int32_t count = 0;
       for (const auto& w : (*widget_ptr)->GetWidget()) {
         primitive_database_[(*widget_ptr)->GetTag() + std::to_string(count++)] =
-            PrimitiveInfo{w, (*widget_ptr)->GetPose()};
+            PrimitiveInfo{w, (*widget_ptr)->GetPose(), true};
       }
       //      primitive_database_[(*widget_ptr)->GetTag()] =
       //          PrimitiveInfo{(*widget_ptr)->GetWidget(),
@@ -112,7 +112,9 @@ void vslam::viewer::ViewerViz::ViewerLoop() {
 
     // Render primitives
     for (const auto& [tag, widget] : primitive_database_) {
-      window_.showWidget(tag, widget.widget_, widget.pose_);
+      if (widget.is_draw_) {
+        window_.showWidget(tag, widget.widget_, widget.pose_);
+      }
     }
     window_.spinOnce(10, true);
   }

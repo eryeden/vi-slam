@@ -221,6 +221,13 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
    * 5. Pose推定(あとで実装)
    */
 
+  /**
+   * @brief A instance for logging
+   */
+  InternalMaterials internal_materials;
+  internal_materials.features_pre_frame_ =
+      last_frame->observing_feature_point_in_device_;
+
   FeatureAgeDatabase feature_age_database = last_frame->feature_point_age_;
   FeaturePositionDatabase feature_position_database =
       last_frame->observing_feature_point_in_device_;
@@ -242,6 +249,7 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
   //                                       frontend_input.frame_);
   feature_tracker_->Track(
       feature_position_database, feature_age_database, frontend_input.frame_);
+  internal_materials.features_after_tracking_ = feature_position_database;
 
   // update id list and feature bearing vector
   for (const auto& [id, pos] : feature_position_database) {
@@ -320,6 +328,7 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
     feature_bearing_database =
         verified_frame.observing_feature_bearing_in_camera_frame_;
     feature_age_database = verified_frame.feature_point_age_;
+    internal_materials.features_after_verification_ = feature_position_database;
 
     int32_t verified_feature_number = feature_position_database.size();
     spdlog::info("{} : Verified feature number {}, PassRate {}",
@@ -354,14 +363,16 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
                  static_cast<double>(detected_feature_number) /
                      static_cast<double>(input_feature_number) * 100.0);
 
-    return Frame(last_frame_->frame_id_ + 1,
-                 frontend_input.timestamp_,
-                 true,
-                 frontend_input.camera_model_ptr_,
-                 feature_id_database,
-                 feature_position_database,
-                 feature_bearing_database,
-                 feature_age_database);
+    auto output_frame = Frame(last_frame_->frame_id_ + 1,
+                              frontend_input.timestamp_,
+                              true,
+                              frontend_input.camera_model_ptr_,
+                              feature_id_database,
+                              feature_position_database,
+                              feature_bearing_database,
+                              feature_age_database);
+    output_frame.internal_materials_ = internal_materials;
+    return output_frame;
 
   } else {
     //    data::Frame tmp_frame(0,
@@ -381,13 +392,15 @@ Frame KimeraFrontend::ProcessFrame(const KimeraFrontendInput& frontend_input,
     //        verified_frame.observing_feature_bearing_in_camera_frame_;
     //    feature_age_database = verified_frame.feature_point_age_;
 
-    return Frame(last_frame_->frame_id_ + 1,
-                 frontend_input.timestamp_,
-                 false,
-                 frontend_input.camera_model_ptr_,
-                 feature_id_database,
-                 feature_position_database,
-                 feature_bearing_database,
-                 feature_age_database);
+    auto output_frame = Frame(last_frame_->frame_id_ + 1,
+                              frontend_input.timestamp_,
+                              false,
+                              frontend_input.camera_model_ptr_,
+                              feature_id_database,
+                              feature_position_database,
+                              feature_bearing_database,
+                              feature_age_database);
+    output_frame.internal_materials_ = internal_materials;
+    return output_frame;
   }
 }

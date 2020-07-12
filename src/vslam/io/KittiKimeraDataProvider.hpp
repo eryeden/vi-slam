@@ -1,5 +1,5 @@
 //
-// Created by ery on 2020/05/03.
+// Created by ery on 2020/06/14.
 //
 
 #pragma once
@@ -12,14 +12,13 @@
 
 namespace vslam::dataprovider {
 
-class EurocKimeraDataProvider : public KimeraDataProviderBase {
+class KittiKimeraDataProvider : public KimeraDataProviderBase {
  private:
   using LogPack = std::tuple<uint64_t,    // save time
                              std::string  // path to image
                              >;
 
  public:
-
   class Parameter {
    public:
     Parameter();
@@ -27,22 +26,17 @@ class EurocKimeraDataProvider : public KimeraDataProviderBase {
     /**
      * @brief Path to dataset
      */
-    std::string euroc_dataset_root_;
-    std::string ds_calibration_file_;
+    std::string kitti_dataset_root_;
     std::string mask_image_;
   };
 
-
   /**
-   * @param path_to_dataset_root : Specify the path to the root of EUROC. ex)
-   * path/to/dataset/V1_01_easy
-   * @param path_to_calibration_file : Specify the path to a basalt calibration
-   * file.
+   * @param path_to_dataset_root : Specify the path to the root of Kitti. ex)
+   * path/to/dataset/data_odometry_gray_dataset_sequence/00
    */
-  EurocKimeraDataProvider(const std::string& path_to_dataset_root,
-                          const std::string& path_to_calibration_file,
+  KittiKimeraDataProvider(const std::string& path_to_dataset_root,
                           const std::string& path_to_mask_image = "");
-  EurocKimeraDataProvider(const Parameter& parameter);
+  KittiKimeraDataProvider(const Parameter& parameter);
 
   /**
    * @brief Get data and increment a internal line index.
@@ -68,11 +62,7 @@ class EurocKimeraDataProvider : public KimeraDataProviderBase {
       const std::string& image_type);
   std::string Basename(const std::string& path);
   std::vector<LogPack> LogParser(const std::string& path_to_csv);
-  std::unique_ptr<data::CameraModelBase> ParseCameraParameters(
-      const std::string& path_to_calibration_file);
-
-  vslam::Pose_t ParseSensorPose(
-      const std::string& path_to_sensor_parameter_file);
+  std::unique_ptr<data::CameraModelBase> SetCameraParameters();
 
   std::string path_to_dataset_root_;
   std::string path_to_calibration_file_;

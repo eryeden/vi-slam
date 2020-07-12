@@ -38,6 +38,11 @@ class Landmark {
   std::atomic_bool is_initialized_;
   std::atomic_bool is_added_;
   std::atomic_bool is_outlier_;
+  std::atomic_bool is_nearby_;
+
+  //! Triangulate Info
+  std::atomic<double> triangulate_parallax_angle_;
+  std::atomic<double> triangulate_baseline_length_;
 
  private:
   //! 観測関係のデータ

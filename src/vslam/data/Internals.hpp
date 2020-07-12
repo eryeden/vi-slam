@@ -23,6 +23,7 @@ class InternalMaterials {
   /**
    * @brief Observations
    */
+  double timestamp_;
   bool is_keyframe_;
   std::set<database_index_t> observing_feature_id_;
   FeaturePositionDatabase observing_feature_point_in_device_;
@@ -30,14 +31,19 @@ class InternalMaterials {
   FeatureAgeDatabase feature_point_age_;
 
   Pose_t camera_pose_;
+  Pose_t body_pose_;
   std::unordered_map<database_index_t, Landmark> landmarks_;
 
   /// Internals
   FeaturePositionDatabase features_pre_frame_;
   FeaturePositionDatabase features_after_tracking_;
+  FeaturePositionDatabase features_after_detection_;
   FeaturePositionDatabase features_after_verification_;
+  /// 3point ransacによるカメラPose
   Pose_t camera_pose_initial_;
+  /// Motion only BAで推定したカメラPose
   Pose_t camera_pose_optimized_;
+  /// ISAM2で推定したカメラPose
   Pose_t camera_pose_isam2_;
 
   /**
@@ -51,6 +57,10 @@ class InternalMaterials {
   std::unordered_map<database_index_t, Landmark> triangulated_landmarks_;
   /// このFrameでTriangulateし、最適化を行ったLandmark
   std::unordered_map<database_index_t, Landmark> optimized_landmarks_;
+  /// 前回KeyFrameと共通して観測しているLandmark
+  std::unordered_map<database_index_t, Landmark> take_over_landmarks_;
+  /// Nearby判定となったLandmark
+  std::unordered_map<database_index_t, Landmark> nearby_landmarks_;
 };
 
 }  // namespace vslam::data

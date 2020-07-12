@@ -13,7 +13,10 @@ Landmark::Landmark(vslam::database_index_t id,
       position_in_world_(position_in_world),
       is_outlier_(is_outlier),
       is_added_(false),
-      is_initialized_(is_initialized) {
+      is_nearby_(false),
+      is_initialized_(is_initialized),
+      triangulate_baseline_length_(0),
+      triangulate_parallax_angle_(0) {
   ;
 }
 
@@ -26,7 +29,10 @@ Landmark::Landmark(const Landmark& landmark)
                landmark.position_in_world_,
                landmark.is_outlier_,
                landmark.is_initialized_) {
-  ;
+  triangulate_baseline_length_ =
+      static_cast<double>(landmark.triangulate_baseline_length_);
+  triangulate_parallax_angle_ =
+      static_cast<double>(landmark.triangulate_parallax_angle_);
 }
 
 void Landmark::SetObservedFrameIndex(vslam::database_index_t frame_index) {

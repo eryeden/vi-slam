@@ -1,0 +1,7 @@
+{
+  "value0": {
+    "ransac_threshold_angle_rad": 0.017453292519943297,
+    "ransac_max_iterations": 150,
+    "ransac_probability": 0.9
+  }
+}
