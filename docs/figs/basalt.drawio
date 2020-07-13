@@ -1,6 +1,6 @@
-<mxfile host="www.draw.io" modified="2020-07-13T20:49:14.537Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36" etag="7cXTxjrdO-zWfvIIEJAv" version="13.3.8" type="github">
+<mxfile host="www.draw.io" modified="2020-07-13T21:09:00.163Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36" etag="9UhDdblobC3c79i1b7AK" version="13.3.8" type="github">
   <diagram id="-X3X55rXStA9x6S70Jl4" name="Page-1">
-    <mxGraphModel dx="1209" dy="833" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="1001" dy="689" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -8,19 +8,22 @@
           <mxGeometry x="10" y="10" width="190" height="120" as="geometry" />
         </mxCell>
         <mxCell id="O7T-0wPgFSHERFyjUZqn-2" value="&lt;b&gt;Lie系について使っているものまとめ。&lt;br&gt;&lt;/b&gt;&lt;br&gt;Incremental rotation:&lt;br&gt;\( R \oplus \xi&amp;nbsp; = \rm{Exp} (\xi) R\)&lt;br&gt;&lt;br&gt;The difference between two rotations \(R_1, R_2\):&lt;br&gt;\( R_1 \ominus R_2 = \rm Log(R_1 R_2^{-1})\)&lt;br&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="20" y="170" width="300" height="140" as="geometry" />
+          <mxGeometry x="10" y="210" width="300" height="140" as="geometry" />
         </mxCell>
         <mxCell id="O7T-0wPgFSHERFyjUZqn-3" value="memo:&lt;br&gt;\( R \in SO(3) \)&lt;br&gt;\( \xi \in \frak{so} 3\):ここでの文脈ではRでの座標系における回転量差分(角速度のようなもの;時間の概念がないのでなんとも言えないが)を示す。&lt;br&gt;\( \rm Exp(\xi) \): \( \frak{so}3 \) \( \rightarrow SO(3) \)の変換関数になっていて、&lt;br&gt;SO(3)に変換するならば回転量差分のノルム分、回転軸方向に回転できる回転行列になる。これはロドリゲスの公式から得られる。" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
-          <mxGeometry x="320" y="150" width="790" height="80" as="geometry" />
+          <mxGeometry x="320" y="200" width="790" height="80" as="geometry" />
         </mxCell>
         <mxCell id="O7T-0wPgFSHERFyjUZqn-4" value="memo:&lt;br&gt;\( R_1, R_2 \)の相対的な位置関係を保ったまま、\(R_2\)を\(I\)になるように回転させた&lt;br&gt;ときの、\(R_1\)が\(R_1 R_2^{-1} \)になる。&lt;br&gt;\( \rm Log(R_1 R_2^{-1}) \)は、上記回転(\(R_1 R_2^{-1}\))を接空間に変換したもので、&lt;br&gt;\(R_2\)における接空間の基底ベクトルで成分表示したベクトル。&lt;br&gt;\(R_2\)における角速度ベクトルと同等。" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
-          <mxGeometry x="320" y="240" width="480" height="90" as="geometry" />
+          <mxGeometry x="320" y="290" width="480" height="90" as="geometry" />
         </mxCell>
         <mxCell id="O7T-0wPgFSHERFyjUZqn-5" value="memo:&lt;br&gt;ここでのポイントはexp, logではなく、Exp, Logとなっていること。&lt;br&gt;Exp, LogはCapitalized exponential mapとか言われている。&lt;br&gt;&lt;br&gt;Exp, Logでは、入出力がMとベクトルになる。" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
-          <mxGeometry x="320" y="360" width="380" height="80" as="geometry" />
+          <mxGeometry x="10" y="410" width="380" height="80" as="geometry" />
         </mxCell>
         <mxCell id="O7T-0wPgFSHERFyjUZqn-6" value="&lt;b&gt;最適化で利用する式関係&lt;br&gt;&lt;/b&gt;&lt;br&gt;\(s\) : rotationやvectorなどいろいろが含まれているvector&lt;br&gt;\(\xi\) : \(s \oplus \xi \)を定義できる、\(s\)中の要素をincrementできるvector。&lt;br&gt;\(r(s)\) : sを受け取って、rotationかvectorを作り出す関数&lt;br&gt;&lt;br&gt;\( J_{r(s)} = \lim_{\xi \rightarrow 0} \frac{r(s \oplus \xi) \ominus r(s)}{\xi} \) : \(r(s)\)についてのJacobian.&lt;br&gt;&lt;br&gt;\( E(s) = \frac{1}{2} r(s)^T W r(s) \) : コスト関数&lt;br&gt;\(r(s)\) :最小二乗法ではこれを最小化することを考える。これが基本となる式なので、rは値が大きいと望ましくない状態を示しているような式とする。&lt;br&gt;\(W\) : \(r(s)\)の各成分に対する重みを表現する。&lt;br&gt;&lt;br&gt;コスト関数の線形化:&lt;br&gt;\(E(s \oplus \xi) = E(s) + \xi^T J_{r(s)}^T Wr(s) + \frac{1}{2}\xi^T J_{r(s)}^T W J_{r(s)} \xi\)&lt;br&gt;&lt;br&gt;この線形化結果から、\(s\)の修正方向\(\xi^\star\)を計算できる。&lt;br&gt;\( \xi^\star = -(J_{r(s)}^T W J_{r(s)})^{-1} J_{r(s)}^T W r(s) \)&lt;br&gt;&lt;br&gt;これで、\(s\)をコスト関数が小さくなる方向に修正できるから、&lt;br&gt;\(s_{i+1} = s_i \oplus \xi^\star \)&lt;br&gt;としてこの修正量が収束するまで計算を続けていく。" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="10" y="480" width="480" height="140" as="geometry" />
+          <mxGeometry x="10" y="530" width="480" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="O7T-0wPgFSHERFyjUZqn-7" value="&lt;b&gt;イントロ：&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="10" y="150" width="280" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
