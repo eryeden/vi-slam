@@ -1,4 +1,4 @@
-<mxfile host="www.draw.io" modified="2020-07-13T21:09:00.163Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36" etag="9UhDdblobC3c79i1b7AK" version="13.3.8" type="github">
+<mxfile host="www.draw.io" modified="2020-07-13T23:02:26.883Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36" etag="rTes50IATpjloQjku1nh" version="13.3.8" type="github">
   <diagram id="-X3X55rXStA9x6S70Jl4" name="Page-1">
     <mxGraphModel dx="1001" dy="689" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
@@ -24,6 +24,12 @@
         </mxCell>
         <mxCell id="O7T-0wPgFSHERFyjUZqn-7" value="&lt;b&gt;イントロ：&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="10" y="150" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="O7T-0wPgFSHERFyjUZqn-8" value="&lt;b&gt;Visual-Inertial Bundle Adjustment：&lt;br&gt;&lt;br&gt;&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry y="1210" width="280" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="O7T-0wPgFSHERFyjUZqn-9" value="&lt;b&gt;Coordinate frames:&lt;/b&gt;&lt;br&gt;&lt;br&gt;W: World frame&lt;br&gt;\(C_i \): Frame of camera i、iはステレオカメラの右左など表される。マルチカメラセットアップでもこの表現となる。&lt;br&gt;\( T_{W I} \in SE(3) \) : Transformation From IMU to world frame.&lt;br&gt;\( T_{I C_i} \in SE(3) \) : From Camera frame i to IMU frame.&lt;br&gt;\( T_{W C_i} \in SE(3) \) : From Camera frame i to world frame. \( T_{W C_i} \) は、\(T_{WI}, T_{IC_i}\)から求める。&lt;br&gt;&lt;b&gt;&lt;br&gt;最適化関係の変数定義:&lt;br&gt;&lt;/b&gt;&lt;br&gt;\( s = \{s_k, s_f, s_l\} \)&lt;br&gt;\( s_k \) : n older Keyframe分のIMU Pose &amp;lt;= 直近nこ分のKeyFarme&lt;br&gt;\( s_f \) : m older most recent frame分のIMU Pose, velocities, baiases &amp;lt;= 直近mこ分のFrame（全Frame）&lt;br&gt;\( s_l \) : Landmarks &amp;lt;= どこまでの範囲のLandmarkが入っているのか？{\(s_k\)}で観測されたLMか？" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="10" y="1250" width="580" height="370" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
