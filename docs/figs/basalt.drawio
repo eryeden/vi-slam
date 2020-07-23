@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-07-16T03:25:16.071Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36" etag="0w4mpALSlMjXcD65Ysgb" version="13.4.4" type="github">
+<mxfile host="www.draw.io" modified="2020-07-23T03:40:46.231Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36" etag="cC4AMXM-ceiTZnb6IDEe" version="13.4.4" type="github">
   <diagram id="-X3X55rXStA9x6S70Jl4" name="Page-1">
-    <mxGraphModel dx="857" dy="593" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="614" dy="445" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -37,14 +37,20 @@
         <mxCell id="Qm4K0_n7RczL2NgGMYQ2-1" value="(a)&lt;br&gt;状況：FrameのMarginalizeが終わった状況。つまり、&lt;br&gt;KeyFrame: nまで&lt;br&gt;Frame: m-1まで(KeyFrameもここに含まれている可能性あり)&lt;br&gt;&lt;br&gt;なのでここで新しい、Frameが追加されると、&lt;br&gt;最古のFrameに属す、v(velocity), b(bias)はmarginalizeされる。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="1" vertex="1">
           <mxGeometry x="10" y="1720" width="350" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="3akbR3qlBxgnb9lVTaRy-1" value="Marginalizeとは？&lt;br&gt;現状の理解：&lt;br&gt;最適化の計算時に、コストの計算には寄与するが変数の値は更新&lt;br&gt;されない定数として、&lt;br&gt;今まで値の更新がされていた変数の扱いを変えること。定数値なので&lt;br&gt;逆行列を計算する必要がある正方行列のサイズは小さくなる。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+        <mxCell id="3akbR3qlBxgnb9lVTaRy-1" value="Marginalizeとは？&lt;br&gt;現状の理解：&lt;br&gt;最適化の計算時に、コストの計算には寄与するが変数の値は更新&lt;br&gt;されない定数として、&lt;br&gt;今まで値の更新がされていた変数の扱いを変えること。定数値なので&lt;br&gt;逆行列を計算する必要がある正方行列のサイズは小さくなる。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="1" vertex="1">
           <mxGeometry x="650" y="1520" width="390" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="3akbR3qlBxgnb9lVTaRy-2" value="(b)&lt;br&gt;状況：新しいFrameを追加した。かつ、最後のFrameがKeyFrameではなかった。&lt;br&gt;アクション：velocity, biasに加えT(Frame Pose)もMarginalizeされる。&lt;br&gt;&lt;br&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+        <mxCell id="3akbR3qlBxgnb9lVTaRy-2" value="(b)&lt;br&gt;状況：新しいFrameを追加した。かつ、最後のFrameがKeyFrameではなかった。&lt;br&gt;アクション：velocity, biasに加えT(Frame Pose)もMarginalizeされる。&lt;br&gt;&lt;br&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="1" vertex="1">
           <mxGeometry x="10" y="1840" width="450" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="3akbR3qlBxgnb9lVTaRy-3" value="(c)&lt;br&gt;状況：新しいFrameを追加した。かつ、MargianlizeするFrameがKeyFrame。&lt;br&gt;アクション：\(s_f\)に属すvelocity, biasはMarginalizeされる。TとProjectionFactorは残すす。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
-          <mxGeometry x="10" y="1915" width="510" height="50" as="geometry" />
+        <mxCell id="3akbR3qlBxgnb9lVTaRy-3" value="(c)&lt;br&gt;状況：新しいFrameを追加した。かつ、MargianlizeするFrameがKeyFrame。&lt;br&gt;アクション：\(s_f\)に属すvelocity, biasはMarginalizeされる。TとProjectionFactorは残す。" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="1" vertex="1">
+          <mxGeometry x="10" y="1915" width="500" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="lin4AKe74mI4X9SlHEVQ-1" value="&lt;b&gt;Optimization and Partial Marginalization：&lt;br&gt;&lt;br&gt;&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="10" y="2370" width="280" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="lin4AKe74mI4X9SlHEVQ-3" value="全ての新規追加Frameに対して、&lt;br&gt;・Reprojection&lt;br&gt;・IMU&lt;br&gt;・Marginalizaiton prior&lt;br&gt;から構成されるコスト関数E(文中ではEnergy)の最小化を行う。&lt;br&gt;&lt;br&gt;\( E&amp;nbsp; = \sum_{i \in P, t \in obs(i)}{r_{it}^T \Sigma_{it}^{-1} r_{it}} + \sum_{(i,j)\in C}{r_{ij} \Sigma_{ij}^{-1} r_{ij}} + E_m\)&lt;br&gt;&lt;br&gt;記号の説明：&lt;br&gt;\( P \) : 観測された特徴点の集合&lt;br&gt;\( obs(i) \) : 特徴点iを観測したFrameの集合&lt;br&gt;　＝＞\( i \in P, t \in obs(i) \) : ある特徴点集合Pを観測したFrameすべて&lt;br&gt;\( C \) : IMU Factorで接続されたFrameのペアの集合。std::vector&amp;lt;std::pair&amp;gt;みたいな感じ。&lt;br&gt;&lt;br&gt;疑問：&lt;br&gt;\(E_m\)がMarginalization priorでキモのはず。&lt;br&gt;ここでは単純に定数として書かれているが、そうなのか？&lt;br&gt;定数ならば、微分して消えるので意味がないはず。&lt;br&gt;どういった式から構成されるのか知りたい。" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="10" y="2400" width="620" height="270" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
