@@ -1,0 +1,7 @@
+{
+  "value0": {
+    "euroc_dataset_root": "/home/ery/subspace/docker_work/dataset/fukuroi/camlog_2020-07-26-02-56-22",
+    "ds_calibration_file": "/home/ery/subspace/docker_work/dataset/fukuroi/calib_result_half/calibration.json",
+    "mask_image": "/home/ery/subspace/docker_work/dataset/fukuroi/calib_result_half/vingette_0.png"
+  }
+}
