@@ -206,9 +206,14 @@ if __name__ == "__main__":
     # path_to_euroc_config = "/home/ery/Devel/vi-slam/params/EurocKimeraDataProvider.json"
     # path_to_euroc_config = "/home/ery/Devel/vi-slam/params/euroc_V1_01.json"
     # path_to_euroc_config = "/home/ery/Devel/vi-slam/params/euroc_V1_02.json"
+<<<<<<< HEAD
     # path_to_bin = "/home/ery/Devel/vi-slam/build/example/vslam/example_cd_arg"
 
     path_to_euroc_config = "/home/ery/Devel/vi-slam/params/euroc_V1_02.json"
+=======
+    # path_to_euroc_config = "/home/ery/Devel/vi-slam/params/myroom_V1_01.json"
+    path_to_euroc_config = "/home/ery/Devel/vi-slam/params/myroom_V1_02.json"
+>>>>>>> f52d3df0c5305a09663e3e81b5d84fb15ab672cd
     path_to_bin = "/home/ery/Devel/vi-slam/build/example/vslam/example_cd_arg"
 
     # tmp directoryを作成して、その中に結果を出力するようにする
