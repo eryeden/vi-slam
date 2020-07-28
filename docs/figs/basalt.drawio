@@ -1,6 +1,6 @@
-<mxfile host="www.draw.io" modified="2020-07-23T03:40:46.231Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36" etag="cC4AMXM-ceiTZnb6IDEe" version="13.4.4" type="github">
+<mxfile host="www.draw.io" modified="2020-07-28T22:32:43.367Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36" etag="1S3buqHFE2LZJrfsfL19" version="13.4.4" type="github">
   <diagram id="-X3X55rXStA9x6S70Jl4" name="Page-1">
-    <mxGraphModel dx="614" dy="445" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="847" dy="677" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -49,8 +49,14 @@
         <mxCell id="lin4AKe74mI4X9SlHEVQ-1" value="&lt;b&gt;Optimization and Partial Marginalization：&lt;br&gt;&lt;br&gt;&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="10" y="2370" width="280" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="lin4AKe74mI4X9SlHEVQ-3" value="全ての新規追加Frameに対して、&lt;br&gt;・Reprojection&lt;br&gt;・IMU&lt;br&gt;・Marginalizaiton prior&lt;br&gt;から構成されるコスト関数E(文中ではEnergy)の最小化を行う。&lt;br&gt;&lt;br&gt;\( E&amp;nbsp; = \sum_{i \in P, t \in obs(i)}{r_{it}^T \Sigma_{it}^{-1} r_{it}} + \sum_{(i,j)\in C}{r_{ij} \Sigma_{ij}^{-1} r_{ij}} + E_m\)&lt;br&gt;&lt;br&gt;記号の説明：&lt;br&gt;\( P \) : 観測された特徴点の集合&lt;br&gt;\( obs(i) \) : 特徴点iを観測したFrameの集合&lt;br&gt;　＝＞\( i \in P, t \in obs(i) \) : ある特徴点集合Pを観測したFrameすべて&lt;br&gt;\( C \) : IMU Factorで接続されたFrameのペアの集合。std::vector&amp;lt;std::pair&amp;gt;みたいな感じ。&lt;br&gt;&lt;br&gt;疑問：&lt;br&gt;\(E_m\)がMarginalization priorでキモのはず。&lt;br&gt;ここでは単純に定数として書かれているが、そうなのか？&lt;br&gt;定数ならば、微分して消えるので意味がないはず。&lt;br&gt;どういった式から構成されるのか知りたい。" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
-          <mxGeometry x="10" y="2400" width="620" height="270" as="geometry" />
+        <mxCell id="lin4AKe74mI4X9SlHEVQ-3" value="全ての新規追加Frameに対して、&lt;br&gt;・Reprojection&lt;br&gt;・IMU&lt;br&gt;・Marginalizaiton prior&lt;br&gt;から構成されるコスト関数E(文中ではEnergy)の最小化を行う。&lt;br&gt;&lt;br&gt;\( E&amp;nbsp; = \sum_{i \in P, t \in obs(i)}{r_{it}^T \Sigma_{it}^{-1} r_{it}} + \sum_{(i,j)\in C}{r_{ij} \Sigma_{ij}^{-1} r_{ij}} + E_m\)&lt;br&gt;&lt;br&gt;記号の説明：&lt;br&gt;\( P \) : 観測された特徴点の集合&lt;br&gt;\( obs(i) \) : 特徴点iを観測したFrameの集合&lt;br&gt;　＝＞\( i \in P, t \in obs(i) \) : ある特徴点集合Pを観測したFrameすべて&lt;br&gt;\( C \) : IMU Factorで接続されたFrameのペアの集合。std::vector&amp;lt;std::pair&amp;gt;みたいな感じ。&lt;br&gt;&lt;br&gt;疑問：&lt;br&gt;\(E_m\)がMarginalization priorでキモのはず。&lt;br&gt;ここでは単純に定数として書かれているが、そうなのか？&lt;br&gt;定数ならば、微分して消えるので意味がないはず。&lt;br&gt;どういった式から構成されるのか知りたい。&lt;br&gt;&lt;br&gt;結局Marginalizaitonというものがよくわからない。" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="10" y="2400" width="620" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="2" value="&lt;b&gt;Marginalizationとは？&lt;br&gt;&lt;/b&gt;&lt;br&gt;いろいろと調べてみる！？" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="10" y="2770" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="lin4AKe74mI4X9SlHEVQ-4" value="&lt;b&gt;Keyframe-Based Visual-Inertial SLAM Using&amp;nbsp;&lt;/b&gt;&lt;b&gt;Nonlinear Optimization&lt;/b&gt;&lt;br&gt;&lt;br&gt;basaltで引用されていた。Fixed-lag smootherを導入した手法。&lt;br&gt;基本Fixed-lag smootherを利用するには、最適化Windowの外側になった要素の扱いのためMarginalizeが必要になる。&lt;br&gt;&lt;br&gt;手法について：&lt;br&gt;最初に最適化ベースの手法つかったIMU + Vision。&lt;br&gt;&lt;br&gt;Fixed-lag smoother関係の参考文献：&lt;br&gt;&lt;div&gt;- Motion Tracking with Fixed-lag Smoothing:&amp;nbsp;&lt;span&gt;Algorithm and Consistency Analysis&lt;/span&gt;&lt;/div&gt;- Bundle adjustment – a modern synthesis (Fixed-lag smoothingについて記述なし)" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="10" y="2840" width="640" height="160" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
