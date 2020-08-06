@@ -1,4 +1,4 @@
-<mxfile host="www.draw.io" modified="2020-08-05T14:11:02.764Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36" etag="TI6xXGl4UEZ-4boNH81W" version="13.5.9" type="github" pages="2">
+<mxfile host="www.draw.io" modified="2020-08-06T10:18:31.475Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36" etag="yK8GBqBAtPsoXuXnbD6Z" version="13.5.9" type="github" pages="2">
   <diagram id="-X3X55rXStA9x6S70Jl4" name="Page-1">
     <mxGraphModel dx="1942" dy="1758" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
@@ -128,7 +128,7 @@
           <mxGeometry x="1300" y="160" width="270" height="50" as="geometry" />
         </mxCell>
         <mxCell id="BMM0GR0JN8__ElIirWxZ-5" value="Marginalization" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="eaqLGENp7viWKf9NEk_K-1">
-          <mxGeometry x="850" y="310" width="310" height="60" as="geometry" />
+          <mxGeometry x="827" y="340" width="310" height="60" as="geometry" />
         </mxCell>
         <mxCell id="BMM0GR0JN8__ElIirWxZ-6" value="" style="endArrow=none;dashed=1;html=1;" edge="1" parent="eaqLGENp7viWKf9NEk_K-1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
