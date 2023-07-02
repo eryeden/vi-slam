@@ -28,13 +28,15 @@ Try to make Visual Inertial SLAM
 - [OpenGV Memo](docs/opengv_memo.md)
 
 
-## Figs
-- [Overview](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Fvislam.drawio)
-- [Vision-frontend](https://app.diagrams.net/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2FVSLAM-Fontend.drawio)
-- [Vision-backend](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2FVisionBackend.drawio)
-- [Camera model](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2FCameraModel.drawio)
-- [Lie](https://app.diagrams.net/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2Flie.drawio)
-- [Basalt](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2Fbasalt.drawio)
+## Drawio docs
+- [Overview](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&title=vislam.drawio#Uhttps%3A%2F%2Fraw.githubusercontent.com%2Feryeden%2Fvi-slam%2Fmaster%2Fdocs%2Fvislam.drawio) 
+  [(drawio)](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Fvislam.drawio)
+- [Vision-frontend review and design](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&title=VSLAM-Fontend.drawio#Uhttps%3A%2F%2Fraw.githubusercontent.com%2Feryeden%2Fvi-slam%2Fmaster%2Fdocs%2FVSLAM-Fontend.drawio)  [(drawio)](https://app.diagrams.net/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2FVSLAM-Fontend.drawio)
+- [Vision-backend review and design](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&title=VisionBackend.drawio#Uhttps%3A%2F%2Fraw.githubusercontent.com%2Feryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2FVisionBackend.drawio)  [(drawio)](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2FVisionBackend.drawio)
+- [Camera model](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&title=CameraModel.drawio#Uhttps%3A%2F%2Fraw.githubusercontent.com%2Feryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2FCameraModel.drawio)  [(drawio)](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2FCameraModel.drawio)
+- [Lie theory](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&title=lie.drawio#Uhttps%3A%2F%2Fraw.githubusercontent.com%2Feryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2Flie.drawio) 
+ [(drawio)](https://app.diagrams.net/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2Flie.drawio)
+- [Basalt servay](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&title=basalt.drawio#Uhttps%3A%2F%2Fraw.githubusercontent.com%2Feryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2Fbasalt.drawio)  [(drawio)](https://www.draw.io/#Heryeden%2Fvi-slam%2Fmaster%2Fdocs%2Ffigs%2Fbasalt.drawio)
 
 ## Policy
 1. Keep a license of this repo as non-GPL.
